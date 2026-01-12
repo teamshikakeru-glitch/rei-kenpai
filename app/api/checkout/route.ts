@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { NextRequest, NextResponse } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2025-12-15.basil',
 });
 
 export async function POST(request: NextRequest) {
@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
     const { amount, donor_name, project_id, slug, message } = await request.json();
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
       line_items: [
         {
           price_data: {
