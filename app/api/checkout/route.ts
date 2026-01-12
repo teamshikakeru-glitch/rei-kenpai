@@ -1,22 +1,21 @@
 import Stripe from 'stripe';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-12-15.basil',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request: NextRequest) {
   try {
     const { amount, donor_name, project_id, slug, message } = await request.json();
 
     const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
       line_items: [
         {
           price_data: {
             currency: 'jpy',
             product_data: {
               name: '献杯',
-              description: `${donor_name}様からの献杯`,
             },
             unit_amount: amount,
           },
