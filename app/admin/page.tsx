@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 export default function AdminPage() {
-  const [projects, setProjects] = useState<any[]>([]);
   const [stats, setStats] = useState({ total_projects: 0, active_projects: 0 });
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ deceased_name: '', slug: '', family_message: '', use_default_message: true, family_password: '' });
@@ -22,7 +21,6 @@ export default function AdminPage() {
       const { data: funeralData } = await supabase.from('funeral_homes').select('*').limit(1).single();
       if (funeralData) setFuneralHomeId(funeralData.id);
       const { data: projectsData } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
-      setProjects(projectsData || []);
       setStats({
         total_projects: projectsData?.length || 0,
         active_projects: projectsData?.filter((p) => p.status === 'active').length || 0
@@ -63,8 +61,6 @@ export default function AdminPage() {
     if (fileInputRef.current) fileInputRef.current.value = '';
     fetchData(); setSubmitting(false); setTimeout(() => setMessage(null), 3000);
   };
-
-  const updateStatus = async (projectId: string, newStatus: string) => { await supabase.from('projects').update({ status: newStatus }).eq('id', projectId); fetchData(); };
 
   const today = new Date(); const japaneseYear = today.getFullYear() - 2018;
   const toKanji = (n: number) => { const k = ['〇', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']; if (n <= 10) return k[n]; if (n < 20) return '十' + k[n - 10]; return k[Math.floor(n / 10)] + '十' + (n % 10 ? k[n % 10] : ''); };
@@ -142,6 +138,24 @@ export default function AdminPage() {
         .mobile-nav-link:hover {
           background: rgba(255,255,255,0.1);
         }
+        .hero-box {
+          background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6e 100%);
+          color: white;
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+        .hero-title {
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin-bottom: 0.75rem;
+          line-height: 1.5;
+        }
+        .hero-text {
+          font-size: 0.875rem;
+          line-height: 1.7;
+          opacity: 0.9;
+        }
         @media (max-width: 768px) {
           .mobile-header {
             display: flex;
@@ -153,6 +167,15 @@ export default function AdminPage() {
           .main-content {
             margin-left: 0 !important;
             padding-top: 72px !important;
+          }
+          .hero-box {
+            padding: 1.25rem;
+          }
+          .hero-title {
+            font-size: 1rem;
+          }
+          .hero-text {
+            font-size: 0.8rem;
           }
         }
       `}</style>
@@ -171,7 +194,6 @@ export default function AdminPage() {
       {/* Mobile Navigation */}
       <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>🏠 ホーム</a>
-        <a href="/admin/projects" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>📋 ご案件一覧</a>
         <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>💰 ご入金管理</a>
         <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>⚙️ アカウント設定</a>
       </div>
@@ -180,13 +202,31 @@ export default function AdminPage() {
       <aside className="sidebar">
         <div className="sidebar-logo"><div className="sidebar-logo-icon">礼</div><div className="sidebar-logo-text"><h1>Rei</h1><span>献杯管理システム</span></div></div>
         <nav className="sidebar-nav">
-          <div style={{ marginBottom: '1.5rem' }}><div className="sidebar-section-title">メインメニュー</div><a href="/admin" className="sidebar-link active">ホーム</a><a href="/admin/projects" className="sidebar-link">ご案件一覧</a><a href="/admin/payments" className="sidebar-link">ご入金管理</a></div>
+          <div style={{ marginBottom: '1.5rem' }}><div className="sidebar-section-title">メインメニュー</div><a href="/admin" className="sidebar-link active">ホーム</a><a href="/admin/payments" className="sidebar-link">ご入金管理</a></div>
           <div><div className="sidebar-section-title">設定</div><a href="/admin/settings" className="sidebar-link">アカウント設定</a></div>
         </nav>
       </aside>
 
       <main className="main-content">
         <header className="page-header"><div><h2 className="page-header-title">ご案件管理</h2><p className="page-header-subtitle">献杯ページの作成・管理</p></div><div className="page-header-date"><div className="page-header-date-main">令和{toKanji(japaneseYear)}年 {toKanji(today.getMonth() + 1)}月{toKanji(today.getDate())}日</div><div>{['日', '月', '火', '水', '木', '金', '土'][today.getDay()]}曜日</div></div></header>
+
+        {/* Hero Message */}
+        <div className="hero-box">
+          <p className="hero-title">「見積もりに勝つ」ための献杯（支援金）ページ作成システム</p>
+          <p className="hero-text">基本情報を入力するだけで、ご遺族専用の受付ページを即座に発行。現場のオペレーションを変えることなく、集まった支援金で葬儀費用の負担を軽減します。</p>
+        </div>
+
+        {/* Stats */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div className="stat-card">
+            <div className="stat-label">総ご案件数</div>
+            <div className="stat-value">{stats.total_projects}<span className="stat-value-unit">件</span></div>
+          </div>
+          <div className="stat-card" style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' }}>
+            <div className="stat-label">進行中</div>
+            <div className="stat-value" style={{ color: '#2e7d32' }}>{stats.active_projects}<span className="stat-value-unit">件</span></div>
+          </div>
+        </div>
 
         {/* New Project Form */}
         <div className="card" style={{ marginBottom: '1.5rem' }}>
@@ -224,70 +264,6 @@ export default function AdminPage() {
                 <button type="submit" className="btn btn-primary" style={{ flex: '1', minWidth: '120px' }} disabled={!funeralHomeId || submitting}>{submitting ? '作成中...' : '＋ ご案件を作成'}</button>
               </div>
             </form>
-          </div>
-        </div>
-
-        {/* Stats - Only show project counts for privacy */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
-          <div className="stat-card">
-            <div className="stat-label">総ご案件数</div>
-            <div className="stat-value">{stats.total_projects}<span className="stat-value-unit">件</span></div>
-          </div>
-          <div className="stat-card" style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' }}>
-            <div className="stat-label">進行中</div>
-            <div className="stat-value" style={{ color: '#2e7d32' }}>{stats.active_projects}<span className="stat-value-unit">件</span></div>
-          </div>
-        </div>
-
-        {/* Project List - Privacy Protected */}
-        <div className="card">
-          <div className="card-header">
-            <h3 className="section-title">ご案件一覧</h3>
-            <span style={{ fontSize: '0.75rem', color: '#999' }}>🔒 プライバシー保護</span>
-          </div>
-          <div style={{ padding: '1rem' }}>
-            {projects.length === 0 ? (
-              <p style={{ textAlign: 'center', color: '#999', padding: '2rem' }}>ご案件がございません</p>
-            ) : projects.map((project) => (
-              <div key={project.id} style={{ 
-                background: '#fff', 
-                border: '1px solid #e8e8e8', 
-                borderRadius: '10px', 
-                padding: '1rem', 
-                marginBottom: '0.75rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '0.75rem'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <span className={`status-badge ${project.status === 'active' ? 'status-active' : project.status === 'closed' ? 'status-closed' : 'status-draft'}`}>
-                    {project.status === 'active' ? '受付中' : project.status === 'closed' ? '終了' : '準備中'}
-                  </span>
-                  <span style={{ fontSize: '0.85rem', color: '#666' }}>
-                    案件ID: {project.slug}
-                  </span>
-                </div>
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  {project.status === 'draft' && (
-                    <button className="action-btn" onClick={() => updateStatus(project.id, 'active')} style={{ background: 'rgba(72,187,120,0.1)', color: '#276749' }}>公開</button>
-                  )}
-                  {project.status === 'active' && (
-                    <button className="action-btn" onClick={() => updateStatus(project.id, 'closed')}>終了</button>
-                  )}
-                  {project.status === 'closed' && (
-                    <button className="action-btn" onClick={() => updateStatus(project.id, 'active')} style={{ background: 'rgba(72,187,120,0.1)', color: '#276749' }}>再開</button>
-                  )}
-                  <a href={`/${project.slug}`} target="_blank" className="action-btn" style={{ textDecoration: 'none' }}>表示</a>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ padding: '0 1rem 1rem', borderTop: '1px solid #e8e8e8', marginTop: '0.5rem', paddingTop: '1rem' }}>
-            <p style={{ fontSize: '0.8rem', color: '#888', textAlign: 'center' }}>
-              💡 金額・故人様名の詳細は「ご入金管理」からご確認ください
-            </p>
           </div>
         </div>
       </main>
