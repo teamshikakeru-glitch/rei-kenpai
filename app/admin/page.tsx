@@ -1,465 +1,203 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-export default function AdminPage() {
-  const [stats, setStats] = useState({ active_projects: 0 });
-  const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({ deceased_name: '', slug: '', family_message: '', use_default_message: true, family_password: '' });
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [funeralHomeId, setFuneralHomeId] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+export default function LoginPage() {
+  const [funeralHomeName, setFuneralHomeName] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const supabase = createClient();
 
-  const fetchData = async () => {
-    try {
-      const { data: funeralData } = await supabase.from('funeral_homes').select('*').limit(1).single();
-      if (funeralData) setFuneralHomeId(funeralData.id);
-      const { data: projectsData } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
-      setStats({
-        active_projects: projectsData?.filter((p) => p.status === 'active').length || 0
-      });
-    } catch (error) { console.error('Error:', error); } finally { setLoading(false); }
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    if (!funeralHomeName.trim()) {
+      setError('葬儀社名を入力してください');
+      setLoading(false);
+      return;
+    }
+
+    const { data, error: dbError } = await supabase
+      .from('funeral_homes')
+      .select('*')
+      .eq('name', funeralHomeName.trim())
+      .single();
+
+    if (dbError || !data) {
+      setError('登録されていない葬儀社名です');
+      setLoading(false);
+      return;
+    }
+
+    // Store funeral home ID in sessionStorage
+    sessionStorage.setItem('funeral_home_id', data.id);
+    sessionStorage.setItem('funeral_home_name', data.name);
+    router.push('/admin');
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleSlugChange = (value: string) => { 
-    setFormData({ ...formData, slug: value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') }); 
-  };
-
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) { 
-      setPhotoFile(file); 
-      const reader = new FileReader(); 
-      reader.onloadend = () => setPhotoPreview(reader.result as string); 
-      reader.readAsDataURL(file); 
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); 
-    setMessage(null); 
-    setSubmitting(true);
-    
-    if (!formData.deceased_name || !formData.slug || !formData.family_password) { 
-      setMessage({ type: 'error', text: '必須項目をご入力ください' }); 
-      setSubmitting(false); 
-      return; 
-    }
-    if (formData.family_password.length < 4) { 
-      setMessage({ type: 'error', text: 'パスワードは4文字以上でご設定ください' }); 
-      setSubmitting(false); 
-      return; 
-    }
-    if (!funeralHomeId) { 
-      setMessage({ type: 'error', text: '葬儀社情報が見つかりません' }); 
-      setSubmitting(false); 
-      return; 
-    }
-    
-    let photoUrl = null;
-    if (photoFile) {
-      const fileExt = photoFile.name.split('.').pop();
-      const fileName = `${formData.slug}-${Date.now()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage.from('photos').upload(fileName, photoFile);
-      if (uploadError) { 
-        setMessage({ type: 'error', text: '写真のアップロードに失敗しました' }); 
-        setSubmitting(false); 
-        return; 
-      }
-      const { data: { publicUrl } } = supabase.storage.from('photos').getPublicUrl(fileName);
-      photoUrl = publicUrl;
-    }
-    
-    const { error } = await supabase.from('projects').insert({ 
-      funeral_home_id: funeralHomeId, 
-      deceased_name: formData.deceased_name, 
-      slug: formData.slug, 
-      status: 'draft', 
-      photo_url: photoUrl, 
-      family_message: formData.use_default_message ? null : formData.family_message, 
-      use_default_message: formData.use_default_message, 
-      family_password: formData.family_password 
-    });
-    
-    if (error) { 
-      setMessage({ type: 'error', text: error.code === '23505' ? 'このURLは既に使用されております' : 'エラー: ' + error.message }); 
-      setSubmitting(false); 
-      return; 
-    }
-    
-    setMessage({ type: 'success', text: 'ご案件を作成いたしました' });
-    setFormData({ deceased_name: '', slug: '', family_message: '', use_default_message: true, family_password: '' });
-    setPhotoFile(null); 
-    setPhotoPreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
-    fetchData(); 
-    setSubmitting(false); 
-    setTimeout(() => setMessage(null), 3000);
-  };
-
-  const today = new Date(); 
-  const japaneseYear = today.getFullYear() - 2018;
-  const toKanji = (n: number) => { 
-    const k = ['〇', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']; 
-    if (n <= 10) return k[n]; 
-    if (n < 20) return '十' + k[n - 10]; 
-    return k[Math.floor(n / 10)] + '十' + (n % 10 ? k[n % 10] : ''); 
-  };
-
-  if (loading) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>読み込み中...</div>;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #faf9f7 0%, #f0eeeb 100%)', padding: '1rem' }}>
       <style jsx>{`
-        .form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
+        .login-container {
+          width: 100%;
+          max-width: 420px;
         }
-        .mobile-header {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 56px;
-          background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
-          z-index: 1000;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 1rem;
+        .login-card {
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+          overflow: hidden;
         }
-        .mobile-menu-btn {
-          background: none;
-          border: none;
+        .login-header {
+          background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6e 100%);
           color: white;
-          font-size: 1.5rem;
-          cursor: pointer;
-          padding: 0.5rem;
+          padding: 2rem;
+          text-align: center;
         }
-        .mobile-logo {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: white;
-        }
-        .mobile-logo-icon {
-          width: 32px;
-          height: 32px;
+        .login-logo {
+          width: 64px;
+          height: 64px;
           background: linear-gradient(135deg, #b8860b 0%, #d4a84b 100%);
-          border-radius: 6px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 1rem;
+          font-size: 2rem;
           font-weight: 600;
+          margin: 0 auto 1rem;
+          box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
         }
-        .mobile-nav {
-          display: none;
-          position: fixed;
-          top: 56px;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0,0,0,0.95);
-          z-index: 999;
-          flex-direction: column;
-          padding: 1rem;
-        }
-        .mobile-nav.open {
-          display: flex;
-        }
-        .mobile-nav-link {
-          color: white;
-          text-decoration: none;
-          padding: 1rem;
-          border-bottom: 1px solid rgba(255,255,255,0.1);
-          font-size: 1rem;
-        }
-        .mobile-nav-link:hover {
-          background: rgba(255,255,255,0.1);
-        }
-        .hero-box {
-          background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6e 100%);
-          color: white;
-          border-radius: 12px;
-          padding: 2rem;
-          margin-bottom: 1.5rem;
-          text-align: center;
-        }
-        .hero-title {
-          font-size: 1.25rem;
+        .login-title {
+          font-size: 1.5rem;
           font-weight: 600;
-          margin-bottom: 1rem;
-          line-height: 1.6;
+          margin-bottom: 0.5rem;
+          letter-spacing: 0.1em;
         }
-        .hero-text {
-          font-size: 0.9rem;
-          line-height: 1.8;
+        .login-subtitle {
+          font-size: 0.85rem;
           opacity: 0.9;
         }
-        .active-count {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: rgba(255,255,255,0.15);
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
+        .login-body {
+          padding: 2rem;
+        }
+        .login-description {
+          text-align: center;
+          color: #666;
+          font-size: 0.9rem;
+          margin-bottom: 1.5rem;
+          line-height: 1.6;
+        }
+        .login-input {
+          width: 100%;
+          padding: 1rem;
+          border: 2px solid #e0e0e0;
+          border-radius: 8px;
+          font-size: 1rem;
+          text-align: center;
+          transition: border-color 0.3s;
+        }
+        .login-input:focus {
+          outline: none;
+          border-color: #1e3a5f;
+        }
+        .login-input::placeholder {
+          color: #aaa;
+        }
+        .login-btn {
+          width: 100%;
+          padding: 1rem;
+          background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6e 100%);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 1rem;
+          font-weight: 500;
+          cursor: pointer;
           margin-top: 1rem;
-          font-size: 0.85rem;
+          transition: transform 0.2s, box-shadow 0.2s;
         }
-        .active-dot {
-          width: 8px;
-          height: 8px;
-          background: #48bb78;
-          border-radius: 50%;
-          animation: pulse 2s infinite;
+        .login-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
         }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
+        .login-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
         }
-        @media (max-width: 768px) {
-          .mobile-header {
-            display: flex;
-          }
-          .form-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-          .main-content {
-            margin-left: 0 !important;
-            padding-top: 72px !important;
-          }
-          .hero-box {
-            padding: 1.5rem 1rem;
-            margin-bottom: 1rem;
-          }
-          .hero-title {
-            font-size: 1rem;
-          }
-          .hero-text {
-            font-size: 0.8rem;
-            line-height: 1.7;
-          }
+        .login-error {
+          background: #fff5f5;
+          border: 1px solid #fc8181;
+          color: #c53030;
+          padding: 0.75rem;
+          border-radius: 8px;
+          text-align: center;
+          margin-bottom: 1rem;
+          font-size: 0.9rem;
+        }
+        .login-footer {
+          text-align: center;
+          padding: 1.5rem 2rem;
+          background: #f9f9f9;
+          border-top: 1px solid #eee;
+        }
+        .login-footer-text {
+          font-size: 0.8rem;
+          color: #888;
+        }
+        .login-footer-link {
+          color: #1e3a5f;
+          text-decoration: none;
+          font-weight: 500;
+        }
+        .login-footer-link:hover {
+          text-decoration: underline;
         }
       `}</style>
 
-      {/* Mobile Header */}
-      <div className="mobile-header">
-        <div className="mobile-logo">
-          <div className="mobile-logo-icon">礼</div>
-          <span style={{ fontWeight: 500 }}>Rei</span>
-        </div>
-        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? '✕' : '☰'}
-        </button>
-      </div>
+      <div className="login-container">
+        <div className="login-card">
+          <div className="login-header">
+            <div className="login-logo">礼</div>
+            <h1 className="login-title">Rei</h1>
+            <p className="login-subtitle">献杯管理システム</p>
+          </div>
 
-      {/* Mobile Navigation */}
-      <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
-        <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>🏠 ホーム</a>
-        <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>💰 ご入金管理</a>
-        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>⚙️ アカウント設定</a>
-      </div>
+          <div className="login-body">
+            <p className="login-description">
+              ご登録済みの葬儀社名を入力して<br />
+              ログインしてください
+            </p>
 
-      {/* Desktop Sidebar */}
-      <aside className="sidebar">
-        <div className="sidebar-logo">
-          <div className="sidebar-logo-icon">礼</div>
-          <div className="sidebar-logo-text">
-            <h1>Rei</h1>
-            <span>献杯管理システム</span>
-          </div>
-        </div>
-        <nav className="sidebar-nav">
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div className="sidebar-section-title">メインメニュー</div>
-            <a href="/admin" className="sidebar-link active">ホーム</a>
-            <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
-          </div>
-          <div>
-            <div className="sidebar-section-title">設定</div>
-            <a href="/admin/settings" className="sidebar-link">アカウント設定</a>
-          </div>
-        </nav>
-      </aside>
+            {error && <div className="login-error">{error}</div>}
 
-      <main className="main-content">
-        {/* Hero Message - Top */}
-        <div className="hero-box">
-          <p className="hero-title">
-            「見積もりに勝つ」ための<br />
-            献杯（支援金）ページ作成システム
-          </p>
-          <p className="hero-text">
-            基本情報を入力するだけで、ご遺族専用の受付ページを即座に発行。<br />
-            現場のオペレーションを変えることなく、<br />
-            集まった支援金で葬儀費用の負担を軽減します。
-          </p>
-          <div className="active-count">
-            <span className="active-dot"></span>
-            現在 {stats.active_projects} 件のページが稼働中
-          </div>
-        </div>
-
-        {/* Header */}
-        <header className="page-header" style={{ marginBottom: '1.5rem' }}>
-          <div>
-            <h2 className="page-header-title">新規ご案件作成</h2>
-            <p className="page-header-subtitle">献杯ページの作成</p>
-          </div>
-          <div className="page-header-date">
-            <div className="page-header-date-main">
-              令和{toKanji(japaneseYear)}年 {toKanji(today.getMonth() + 1)}月{toKanji(today.getDate())}日
-            </div>
-            <div>{['日', '月', '火', '水', '木', '金', '土'][today.getDay()]}曜日</div>
-          </div>
-        </header>
-
-        {/* New Project Form */}
-        <div className="card">
-          <div className="card-body">
-            {!funeralHomeId && (
-              <div className="message message-error" style={{ marginBottom: '1rem' }}>
-                葬儀社情報が見つかりません
-              </div>
-            )}
-            <form onSubmit={handleSubmit}>
-              {message && (
-                <div className={`message ${message.type === 'success' ? 'message-success' : 'message-error'}`}>
-                  {message.text}
-                </div>
-              )}
-              
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label">
-                    故人様のお名前
-                    <span className="form-label-required">必須</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    placeholder="例：山田 太郎" 
-                    value={formData.deceased_name} 
-                    onChange={(e) => setFormData({ ...formData, deceased_name: e.target.value })} 
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">
-                    URL用ID
-                    <span className="form-label-required">必須</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    placeholder="例：yamada-taro" 
-                    value={formData.slug} 
-                    onChange={(e) => handleSlugChange(e.target.value)} 
-                  />
-                </div>
-              </div>
-              
-              <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label className="form-label">
-                  ご遺族様用パスワード
-                  <span className="form-label-required">必須</span>
-                </label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  style={{ fontFamily: 'monospace', letterSpacing: '0.1em' }} 
-                  placeholder="例：1234" 
-                  value={formData.family_password} 
-                  onChange={(e) => setFormData({ ...formData, family_password: e.target.value })} 
-                />
-                <p className="form-hint">ご遺族様が入金状況を確認する際に使用（4文字以上）</p>
-              </div>
-              
-              <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label className="form-label">ご遺影のお写真</label>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                  {photoPreview && (
-                    <div style={{ width: '100px', height: '125px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #e0e0e0' }}>
-                      <img src={photoPreview} alt="プレビュー" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
-                  )}
-                  <div style={{ flex: 1, minWidth: '150px' }}>
-                    <input type="file" ref={fileInputRef} accept="image/*" onChange={handlePhotoChange} style={{ display: 'none' }} />
-                    <button 
-                      type="button" 
-                      className="btn btn-secondary" 
-                      onClick={() => fileInputRef.current?.click()} 
-                      style={{ width: '100%' }}
-                    >
-                      {photoPreview ? '写真を変更' : '写真を選択'}
-                    </button>
-                    <p className="form-hint" style={{ marginTop: '0.5rem' }}>献杯ページに表示（任意）</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label className="form-label">ご遺族様からのメッセージ</label>
-                <div style={{ marginBottom: '0.75rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
-                    <input 
-                      type="radio" 
-                      name="messageType" 
-                      checked={formData.use_default_message} 
-                      onChange={() => setFormData({ ...formData, use_default_message: true, family_message: '' })} 
-                    />
-                    <span>定型文を使用</span>
-                  </label>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem' }}>
-                    <input 
-                      type="radio" 
-                      name="messageType" 
-                      checked={!formData.use_default_message} 
-                      onChange={() => setFormData({ ...formData, use_default_message: false })} 
-                    />
-                    <span>カスタムメッセージ</span>
-                  </label>
-                </div>
-                {!formData.use_default_message && (
-                  <textarea 
-                    className="form-input" 
-                    style={{ minHeight: '100px', resize: 'vertical' }} 
-                    placeholder="例：父は生前、皆様との出会いに深く感謝しておりました。" 
-                    value={formData.family_message} 
-                    onChange={(e) => setFormData({ ...formData, family_message: e.target.value })} 
-                  />
-                )}
-              </div>
-              
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--sumi-100)', flexWrap: 'wrap' }}>
-                <button type="button" className="btn btn-secondary" style={{ flex: '1', minWidth: '120px' }}>
-                  キャンセル
-                </button>
-                <button 
-                  type="submit" 
-                  className="btn btn-primary" 
-                  style={{ flex: '1', minWidth: '120px' }} 
-                  disabled={!funeralHomeId || submitting}
-                >
-                  {submitting ? '作成中...' : '＋ ご案件を作成'}
-                </button>
-              </div>
+            <form onSubmit={handleLogin}>
+              <input
+                type="text"
+                className="login-input"
+                placeholder="葬儀社名を入力"
+                value={funeralHomeName}
+                onChange={(e) => setFuneralHomeName(e.target.value)}
+                autoFocus
+              />
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? 'ログイン中...' : 'ログイン'}
+              </button>
             </form>
           </div>
+
+          <div className="login-footer">
+            <p className="login-footer-text">
+              新規登録は <a href="/admin/register" className="login-footer-link">こちら</a>
+            </p>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
