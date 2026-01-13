@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
   const [funeralHomeName, setFuneralHomeName] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -16,8 +17,8 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    if (!funeralHomeName.trim()) {
-      setError('葬儀社名を入力してください');
+    if (!funeralHomeName.trim() || !password) {
+      setError('葬儀社名とパスワードを入力してください');
       setLoading(false);
       return;
     }
@@ -27,10 +28,11 @@ export default function LoginPage() {
         .from('funeral_homes')
         .select('*')
         .eq('name', funeralHomeName.trim())
+        .eq('password', password)
         .single();
 
       if (dbError || !data) {
-        setError('登録されていない葬儀社名です');
+        setError('葬儀社名またはパスワードが正しくありません');
         setLoading(false);
         return;
       }
@@ -49,212 +51,35 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: 'linear-gradient(160deg, #0a0f1a 0%, #1a1f2e 50%, #2a3040 100%)',
-    }}>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #0a0f1a 0%, #1a1f2e 50%, #2a3040 100%)' }}>
       <style jsx>{`
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes glow {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 0.8; }
-        }
-        .page-container {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 60px 24px;
-        }
-        .hero-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 8px 16px;
-          background: rgba(201, 162, 39, 0.1);
-          border: 1px solid rgba(201, 162, 39, 0.3);
-          border-radius: 100px;
-          font-size: 12px;
-          color: #c9a227;
-          letter-spacing: 0.1em;
-          margin-bottom: 24px;
-          animation: fadeUp 0.6s ease forwards;
-        }
-        .hero-title {
-          font-size: 32px;
-          font-weight: 300;
-          color: #fff;
-          text-align: center;
-          line-height: 1.5;
-          letter-spacing: 0.05em;
-          margin-bottom: 20px;
-          animation: fadeUp 0.6s ease forwards;
-          animation-delay: 0.1s;
-          opacity: 0;
-        }
-        .hero-title strong {
-          font-weight: 600;
-          background: linear-gradient(135deg, #c9a227, #e8c547);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        .hero-subtitle {
-          font-size: 14px;
-          color: rgba(255,255,255,0.5);
-          text-align: center;
-          line-height: 2;
-          max-width: 400px;
-          margin: 0 auto 48px;
-          animation: fadeUp 0.6s ease forwards;
-          animation-delay: 0.2s;
-          opacity: 0;
-        }
-        .login-card {
-          width: 100%;
-          max-width: 380px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 24px;
-          padding: 40px 32px;
-          backdrop-filter: blur(20px);
-          animation: fadeUp 0.6s ease forwards;
-          animation-delay: 0.3s;
-          opacity: 0;
-        }
-        .login-logo {
-          width: 64px;
-          height: 64px;
-          background: linear-gradient(145deg, #c9a227 0%, #a08020 100%);
-          border-radius: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 28px;
-          font-weight: 600;
-          color: white;
-          margin: 0 auto 20px;
-          box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3);
-        }
-        .login-title {
-          font-size: 24px;
-          font-weight: 300;
-          color: #fff;
-          text-align: center;
-          letter-spacing: 0.2em;
-          margin-bottom: 4px;
-        }
-        .login-subtitle-text {
-          font-size: 11px;
-          color: rgba(255,255,255,0.4);
-          text-align: center;
-          letter-spacing: 0.15em;
-          margin-bottom: 32px;
-        }
-        .form-label {
-          display: block;
-          font-size: 11px;
-          font-weight: 500;
-          color: rgba(255,255,255,0.5);
-          margin-bottom: 8px;
-          letter-spacing: 0.1em;
-        }
-        .login-input {
-          width: 100%;
-          padding: 16px 20px;
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 12px;
-          font-size: 15px;
-          color: #fff;
-          background: rgba(255,255,255,0.05);
-          transition: all 0.3s ease;
-          box-sizing: border-box;
-        }
-        .login-input:focus {
-          outline: none;
-          border-color: #c9a227;
-          background: rgba(255,255,255,0.08);
-        }
-        .login-input::placeholder {
-          color: rgba(255,255,255,0.3);
-        }
-        .login-btn {
-          width: 100%;
-          padding: 16px;
-          background: linear-gradient(135deg, #c9a227 0%, #a08020 100%);
-          color: #fff;
-          border: none;
-          border-radius: 12px;
-          font-size: 14px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          letter-spacing: 0.1em;
-          margin-top: 16px;
-        }
-        .login-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4);
-        }
-        .login-btn:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-          transform: none;
-        }
-        .error-message {
-          background: rgba(220, 38, 38, 0.1);
-          border: 1px solid rgba(220, 38, 38, 0.3);
-          color: #f87171;
-          padding: 12px 16px;
-          border-radius: 10px;
-          text-align: center;
-          margin-bottom: 16px;
-          font-size: 13px;
-        }
-        .login-footer {
-          text-align: center;
-          margin-top: 24px;
-          padding-top: 24px;
-          border-top: 1px solid rgba(255,255,255,0.08);
-        }
-        .login-footer-text {
-          font-size: 13px;
-          color: rgba(255,255,255,0.4);
-        }
-        .login-footer-link {
-          color: #c9a227;
-          text-decoration: none;
-          font-weight: 500;
-        }
-        .login-footer-link:hover {
-          text-decoration: underline;
-        }
-        .brand-footer {
-          margin-top: 48px;
-          font-size: 10px;
-          color: rgba(255,255,255,0.2);
-          letter-spacing: 0.2em;
-          animation: fadeUp 0.6s ease forwards;
-          animation-delay: 0.4s;
-          opacity: 0;
-        }
-        @media (max-width: 480px) {
-          .page-container {
-            padding: 40px 20px;
-          }
-          .hero-title {
-            font-size: 24px;
-          }
-          .hero-subtitle {
-            font-size: 12px;
-          }
-          .login-card {
-            padding: 32px 24px;
-          }
-        }
+        .page-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 24px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(201, 162, 39, 0.1); border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 100px; font-size: 12px; color: #c9a227; letter-spacing: 0.1em; margin-bottom: 24px; animation: fadeUp 0.6s ease forwards; }
+        .hero-title { font-size: 32px; font-weight: 300; color: #fff; text-align: center; line-height: 1.5; letter-spacing: 0.05em; margin-bottom: 20px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.1s; opacity: 0; }
+        .hero-title strong { font-weight: 600; background: linear-gradient(135deg, #c9a227, #e8c547); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.5); text-align: center; line-height: 2; max-width: 400px; margin: 0 auto 48px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; }
+        .login-card { width: 100%; max-width: 380px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px 32px; backdrop-filter: blur(20px); animation: fadeUp 0.6s ease forwards; animation-delay: 0.3s; opacity: 0; }
+        .login-logo { width: 64px; height: 64px; background: linear-gradient(145deg, #c9a227 0%, #a08020 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: white; margin: 0 auto 20px; box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3); }
+        .login-title { font-size: 24px; font-weight: 300; color: #fff; text-align: center; letter-spacing: 0.2em; margin-bottom: 4px; }
+        .login-subtitle-text { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; letter-spacing: 0.15em; margin-bottom: 32px; }
+        .form-label { display: block; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.5); margin-bottom: 8px; letter-spacing: 0.1em; }
+        .login-input { width: 100%; padding: 16px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 15px; color: #fff; background: rgba(255,255,255,0.05); transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 16px; }
+        .login-input:focus { outline: none; border-color: #c9a227; background: rgba(255,255,255,0.08); }
+        .login-input::placeholder { color: rgba(255,255,255,0.3); }
+        .login-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #c9a227 0%, #a08020 100%); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.1em; margin-top: 8px; }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4); }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .error-message { background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #f87171; padding: 12px 16px; border-radius: 10px; text-align: center; margin-bottom: 16px; font-size: 13px; }
+        .login-footer { text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .login-footer-text { font-size: 13px; color: rgba(255,255,255,0.4); }
+        .login-footer-link { color: #c9a227; text-decoration: none; font-weight: 500; }
+        .login-footer-link:hover { text-decoration: underline; }
+        .brand-footer { margin-top: 48px; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.2em; animation: fadeUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0; }
+        @media (max-width: 480px) { .page-container { padding: 40px 20px; } .hero-title { font-size: 24px; } .login-card { padding: 32px 24px; } }
       `}</style>
 
       <div className="page-container">
@@ -290,9 +115,19 @@ export default function LoginPage() {
               placeholder="ご登録の葬儀社名"
               value={funeralHomeName}
               onChange={(e) => setFuneralHomeName(e.target.value)}
-              autoFocus
               disabled={loading}
             />
+            
+            <label className="form-label">パスワード</label>
+            <input
+              type="password"
+              className="login-input"
+              placeholder="パスワード"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+            />
+            
             <button type="submit" className="login-btn" disabled={loading}>
               {loading ? '認証中...' : 'ログイン'}
             </button>
