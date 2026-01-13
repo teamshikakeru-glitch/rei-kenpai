@@ -51,322 +51,262 @@ export default function LoginPage() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      display: 'flex', 
-      flexDirection: 'column',
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      background: 'linear-gradient(160deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
-      padding: '1rem',
-      position: 'relative',
-      overflow: 'hidden'
+      background: 'linear-gradient(160deg, #0a0f1a 0%, #1a1f2e 50%, #2a3040 100%)',
     }}>
       <style jsx>{`
-        .background-pattern {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: 
-            radial-gradient(circle at 20% 80%, rgba(184, 134, 11, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(184, 134, 11, 0.08) 0%, transparent 50%);
-          pointer-events: none;
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        .hero-section {
-          text-align: center;
-          color: white;
-          margin-bottom: 2rem;
-          max-width: 500px;
-          z-index: 1;
+        @keyframes glow {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+        .page-container {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 60px 24px;
+        }
+        .hero-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
+          background: rgba(201, 162, 39, 0.1);
+          border: 1px solid rgba(201, 162, 39, 0.3);
+          border-radius: 100px;
+          font-size: 12px;
+          color: #c9a227;
+          letter-spacing: 0.1em;
+          margin-bottom: 24px;
+          animation: fadeUp 0.6s ease forwards;
         }
         .hero-title {
-          font-size: 1.5rem;
+          font-size: 32px;
+          font-weight: 300;
+          color: #fff;
+          text-align: center;
+          line-height: 1.5;
+          letter-spacing: 0.05em;
+          margin-bottom: 20px;
+          animation: fadeUp 0.6s ease forwards;
+          animation-delay: 0.1s;
+          opacity: 0;
+        }
+        .hero-title strong {
           font-weight: 600;
-          line-height: 1.6;
-          margin-bottom: 1rem;
+          background: linear-gradient(135deg, #c9a227, #e8c547);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
-        .hero-text {
-          font-size: 0.9rem;
-          line-height: 1.9;
-          opacity: 0.85;
-        }
-        .login-container {
-          width: 100%;
+        .hero-subtitle {
+          font-size: 14px;
+          color: rgba(255,255,255,0.5);
+          text-align: center;
+          line-height: 2;
           max-width: 400px;
-          position: relative;
-          z-index: 1;
+          margin: 0 auto 48px;
+          animation: fadeUp 0.6s ease forwards;
+          animation-delay: 0.2s;
+          opacity: 0;
         }
         .login-card {
-          background: rgba(255, 255, 255, 0.98);
+          width: 100%;
+          max-width: 380px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 24px;
-          box-shadow: 
-            0 25px 50px -12px rgba(0, 0, 0, 0.4),
-            0 0 0 1px rgba(255, 255, 255, 0.1);
-          overflow: hidden;
+          padding: 40px 32px;
           backdrop-filter: blur(20px);
-        }
-        .login-header {
-          padding: 3rem 2rem 2rem;
-          text-align: center;
-          position: relative;
+          animation: fadeUp 0.6s ease forwards;
+          animation-delay: 0.3s;
+          opacity: 0;
         }
         .login-logo {
-          width: 80px;
-          height: 80px;
-          background: linear-gradient(145deg, #c9a227 0%, #8b6914 100%);
-          border-radius: 20px;
+          width: 64px;
+          height: 64px;
+          background: linear-gradient(145deg, #c9a227 0%, #a08020 100%);
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 2.5rem;
-          font-weight: 700;
+          font-size: 28px;
+          font-weight: 600;
           color: white;
-          margin: 0 auto 1.5rem;
-          box-shadow: 
-            0 10px 30px rgba(184, 134, 11, 0.4),
-            inset 0 2px 4px rgba(255, 255, 255, 0.3);
-          font-family: 'Noto Serif JP', serif;
+          margin: 0 auto 20px;
+          box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3);
         }
         .login-title {
-          font-size: 2rem;
+          font-size: 24px;
           font-weight: 300;
-          color: #1a1a1a;
-          margin-bottom: 0.5rem;
-          letter-spacing: 0.3em;
-          font-family: 'Noto Serif JP', serif;
+          color: #fff;
+          text-align: center;
+          letter-spacing: 0.2em;
+          margin-bottom: 4px;
         }
-        .login-subtitle {
-          font-size: 0.8rem;
-          color: #888;
+        .login-subtitle-text {
+          font-size: 11px;
+          color: rgba(255,255,255,0.4);
+          text-align: center;
           letter-spacing: 0.15em;
-        }
-        .login-body {
-          padding: 0 2rem 2rem;
-        }
-        .login-divider {
-          display: flex;
-          align-items: center;
-          margin: 1.5rem 0;
-        }
-        .login-divider::before,
-        .login-divider::after {
-          content: '';
-          flex: 1;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, #ddd, transparent);
-        }
-        .login-divider-text {
-          padding: 0 1rem;
-          font-size: 0.75rem;
-          color: #999;
-          letter-spacing: 0.1em;
-        }
-        .form-group {
-          margin-bottom: 1rem;
+          margin-bottom: 32px;
         }
         .form-label {
           display: block;
-          font-size: 0.75rem;
-          font-weight: 600;
-          color: #666;
-          margin-bottom: 0.5rem;
-          letter-spacing: 0.05em;
-          text-transform: uppercase;
+          font-size: 11px;
+          font-weight: 500;
+          color: rgba(255,255,255,0.5);
+          margin-bottom: 8px;
+          letter-spacing: 0.1em;
         }
         .login-input {
           width: 100%;
-          padding: 1rem 1.25rem;
-          border: 2px solid #e8e8e8;
+          padding: 16px 20px;
+          border: 1px solid rgba(255,255,255,0.1);
           border-radius: 12px;
-          font-size: 1rem;
-          color: #333;
-          background: #fafafa;
+          font-size: 15px;
+          color: #fff;
+          background: rgba(255,255,255,0.05);
           transition: all 0.3s ease;
-          font-family: 'Noto Serif JP', serif;
           box-sizing: border-box;
         }
         .login-input:focus {
           outline: none;
           border-color: #c9a227;
-          background: white;
-          box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.1);
+          background: rgba(255,255,255,0.08);
         }
         .login-input::placeholder {
-          color: #bbb;
+          color: rgba(255,255,255,0.3);
         }
         .login-btn {
           width: 100%;
-          padding: 1rem 1.5rem;
-          background: linear-gradient(145deg, #1b263b 0%, #0d1b2a 100%);
-          color: white;
+          padding: 16px;
+          background: linear-gradient(135deg, #c9a227 0%, #a08020 100%);
+          color: #fff;
           border: none;
           border-radius: 12px;
-          font-size: 0.95rem;
+          font-size: 14px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
           letter-spacing: 0.1em;
-          position: relative;
-          overflow: hidden;
-        }
-        .login-btn::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-          transition: left 0.5s ease;
-        }
-        .login-btn:hover::before {
-          left: 100%;
+          margin-top: 16px;
         }
         .login-btn:hover {
           transform: translateY(-2px);
-          box-shadow: 0 10px 30px rgba(13, 27, 42, 0.3);
-        }
-        .login-btn:active {
-          transform: translateY(0);
+          box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4);
         }
         .login-btn:disabled {
-          opacity: 0.7;
+          opacity: 0.6;
           cursor: not-allowed;
           transform: none;
         }
-        .login-btn:disabled:hover {
-          transform: none;
-          box-shadow: none;
-        }
         .error-message {
-          background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
-          border: 1px solid #fc8181;
-          color: #c53030;
-          padding: 1rem;
-          border-radius: 12px;
+          background: rgba(220, 38, 38, 0.1);
+          border: 1px solid rgba(220, 38, 38, 0.3);
+          color: #f87171;
+          padding: 12px 16px;
+          border-radius: 10px;
           text-align: center;
-          margin-bottom: 1rem;
-          font-size: 0.9rem;
-          animation: shake 0.5s ease;
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
+          margin-bottom: 16px;
+          font-size: 13px;
         }
         .login-footer {
           text-align: center;
-          padding: 1.5rem 2rem;
-          background: #f8f8f8;
-          border-top: 1px solid #eee;
+          margin-top: 24px;
+          padding-top: 24px;
+          border-top: 1px solid rgba(255,255,255,0.08);
         }
         .login-footer-text {
-          font-size: 0.85rem;
-          color: #666;
+          font-size: 13px;
+          color: rgba(255,255,255,0.4);
         }
         .login-footer-link {
-          color: #1b263b;
+          color: #c9a227;
           text-decoration: none;
-          font-weight: 600;
-          transition: color 0.3s;
+          font-weight: 500;
         }
         .login-footer-link:hover {
-          color: #c9a227;
+          text-decoration: underline;
         }
-        .brand-badge {
-          position: absolute;
-          bottom: 1rem;
-          left: 50%;
-          transform: translateX(-50%);
-          font-size: 0.7rem;
-          color: rgba(255,255,255,0.4);
-          letter-spacing: 0.1em;
+        .brand-footer {
+          margin-top: 48px;
+          font-size: 10px;
+          color: rgba(255,255,255,0.2);
+          letter-spacing: 0.2em;
+          animation: fadeUp 0.6s ease forwards;
+          animation-delay: 0.4s;
+          opacity: 0;
         }
         @media (max-width: 480px) {
-          .hero-section {
-            margin-bottom: 1.5rem;
+          .page-container {
+            padding: 40px 20px;
           }
           .hero-title {
-            font-size: 1.2rem;
+            font-size: 24px;
           }
-          .hero-text {
-            font-size: 0.8rem;
+          .hero-subtitle {
+            font-size: 12px;
           }
-          .login-header {
-            padding: 2rem 1.5rem 1.5rem;
-          }
-          .login-body {
-            padding: 0 1.5rem 1.5rem;
-          }
-          .login-logo {
-            width: 70px;
-            height: 70px;
-            font-size: 2rem;
-          }
-          .login-title {
-            font-size: 1.5rem;
+          .login-card {
+            padding: 32px 24px;
           }
         }
       `}</style>
 
-      <div className="background-pattern"></div>
+      <div className="page-container">
+        <div className="hero-badge">
+          <span>✦</span>
+          <span>FOR FUNERAL DIRECTORS</span>
+          <span>✦</span>
+        </div>
 
-      {/* Hero Section */}
-      <div className="hero-section">
-        <h2 className="hero-title">
-          「見積もりに勝つ」ための<br />
-          献杯（支援金）ページ作成システム
-        </h2>
-        <p className="hero-text">
-          基本情報を入力するだけで、ご遺族専用の受付ページを即座に発行。<br />
-          現場のオペレーションを変えることなく、<br />
-          集まった支援金で葬儀費用の負担を軽減します。
+        <h1 className="hero-title">
+          <strong>見積もり競争</strong>を<br />
+          勝ち抜くための新提案
+        </h1>
+
+        <p className="hero-subtitle">
+          献杯ページを即座に発行。<br />
+          支援金で葬儀費用の負担を軽減する<br />
+          新しい価値を提供できます。
         </p>
-      </div>
 
-      <div className="login-container">
         <div className="login-card">
-          <div className="login-header">
-            <div className="login-logo">礼</div>
-            <h1 className="login-title">Rei</h1>
-            <p className="login-subtitle">献杯管理システム</p>
-          </div>
+          <div className="login-logo">礼</div>
+          <h2 className="login-title">Rei</h2>
+          <p className="login-subtitle-text">献杯管理システム</p>
 
-          <div className="login-body">
-            <div className="login-divider">
-              <span className="login-divider-text">葬儀社様専用</span>
-            </div>
+          {error && <div className="error-message">{error}</div>}
 
-            {error && <div className="error-message">{error}</div>}
-
-            <form onSubmit={handleLogin}>
-              <div className="form-group">
-                <label className="form-label">葬儀社名</label>
-                <input
-                  type="text"
-                  className="login-input"
-                  placeholder="ご登録の葬儀社名を入力"
-                  value={funeralHomeName}
-                  onChange={(e) => setFuneralHomeName(e.target.value)}
-                  autoFocus
-                  disabled={loading}
-                />
-              </div>
-              <button type="submit" className="login-btn" disabled={loading}>
-                {loading ? '認証中...' : 'ログイン'}
-              </button>
-            </form>
-          </div>
+          <form onSubmit={handleLogin}>
+            <label className="form-label">葬儀社名</label>
+            <input
+              type="text"
+              className="login-input"
+              placeholder="ご登録の葬儀社名"
+              value={funeralHomeName}
+              onChange={(e) => setFuneralHomeName(e.target.value)}
+              autoFocus
+              disabled={loading}
+            />
+            <button type="submit" className="login-btn" disabled={loading}>
+              {loading ? '認証中...' : 'ログイン'}
+            </button>
+          </form>
 
           <div className="login-footer">
             <p className="login-footer-text">
-              初めてご利用の方は <a href="/admin/register" className="login-footer-link">新規登録</a>
+              初めての方は <a href="/admin/register" className="login-footer-link">新規登録</a>
             </p>
           </div>
         </div>
-      </div>
 
-      <div className="brand-badge">POWERED BY REI</div>
+        <p className="brand-footer">POWERED BY REI</p>
+      </div>
     </div>
   );
 }

@@ -130,12 +130,16 @@ export default function AdminPage() {
       return; 
     }
     
-    // Show success modal with URL and QR
     setCreatedProject({
       slug: formData.slug,
       deceased_name: formData.deceased_name,
       password: formData.family_password
     });
+    
+    // 3分後にモーダルを自動で閉じる
+    setTimeout(() => {
+      setCreatedProject(null);
+    }, 180000);
     
     setFormData({ deceased_name: '', slug: '', family_message: '', use_default_message: true, family_password: '' });
     setPhotoFile(null); 
@@ -161,30 +165,11 @@ export default function AdminPage() {
 
   if (!isAuthenticated || loading) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        background: 'linear-gradient(160deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)'
-      }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0f1a' }}>
+        <style jsx>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         <div style={{ textAlign: 'center', color: 'white' }}>
-          <div style={{ 
-            width: '60px', 
-            height: '60px', 
-            border: '3px solid rgba(255,255,255,0.2)', 
-            borderTopColor: '#c9a227',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem'
-          }}></div>
-          <p style={{ opacity: 0.8 }}>読み込み中...</p>
+          <div style={{ width: '48px', height: '48px', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#c9a227', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem' }}></div>
         </div>
-        <style jsx>{`
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `}</style>
       </div>
     );
   }
@@ -192,285 +177,51 @@ export default function AdminPage() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <style jsx>{`
-        .form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-        }
-        .mobile-header {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 56px;
-          background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
-          z-index: 1000;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 1rem;
-        }
-        .mobile-menu-btn {
-          background: none;
-          border: none;
-          color: white;
-          font-size: 1.5rem;
-          cursor: pointer;
-          padding: 0.5rem;
-        }
-        .mobile-logo {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: white;
-        }
-        .mobile-logo-icon {
-          width: 32px;
-          height: 32px;
-          background: linear-gradient(135deg, #b8860b 0%, #d4a84b 100%);
-          border-radius: 6px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1rem;
-          font-weight: 600;
-        }
-        .mobile-nav {
-          display: none;
-          position: fixed;
-          top: 56px;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0,0,0,0.95);
-          z-index: 999;
-          flex-direction: column;
-          padding: 1rem;
-        }
-        .mobile-nav.open {
-          display: flex;
-        }
-        .mobile-nav-link {
-          color: white;
-          text-decoration: none;
-          padding: 1rem;
-          border-bottom: 1px solid rgba(255,255,255,0.1);
-          font-size: 1rem;
-        }
-        .mobile-nav-link:hover {
-          background: rgba(255,255,255,0.1);
-        }
-        .mobile-nav-logout {
-          color: #fc8181;
-          text-decoration: none;
-          padding: 1rem;
-          font-size: 1rem;
-          cursor: pointer;
-          background: none;
-          border: none;
-          text-align: left;
-          width: 100%;
-        }
-        .hero-box {
-          background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6e 100%);
-          color: white;
-          border-radius: 12px;
-          padding: 2rem;
-          margin-bottom: 1.5rem;
-          text-align: center;
-        }
-        .hero-title {
-          font-size: 1.25rem;
-          font-weight: 600;
-          margin-bottom: 1rem;
-          line-height: 1.6;
-        }
-        .hero-text {
-          font-size: 0.9rem;
-          line-height: 1.8;
-          opacity: 0.9;
-        }
-        .active-count {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: rgba(255,255,255,0.15);
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          margin-top: 1rem;
-          font-size: 0.85rem;
-        }
-        .active-dot {
-          width: 8px;
-          height: 8px;
-          background: #48bb78;
-          border-radius: 50%;
-          animation: pulse 2s infinite;
-        }
-        .welcome-bar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          background: white;
-          padding: 0.75rem 1rem;
-          border-radius: 8px;
-          margin-bottom: 1rem;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .welcome-text {
-          font-size: 0.9rem;
-          color: #333;
-        }
-        .welcome-name {
-          font-weight: 600;
-          color: #1e3a5f;
-        }
-        .logout-btn {
-          background: none;
-          border: 1px solid #e0e0e0;
-          padding: 0.5rem 1rem;
-          border-radius: 6px;
-          font-size: 0.8rem;
-          color: #666;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .logout-btn:hover {
-          background: #f5f5f5;
-          border-color: #ccc;
-        }
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0,0,0,0.6);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 2000;
-          padding: 1rem;
-        }
-        .modal-content {
-          background: white;
-          border-radius: 16px;
-          width: 100%;
-          max-width: 500px;
-          max-height: 90vh;
-          overflow-y: auto;
-        }
-        .modal-header {
-          background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-          color: white;
-          padding: 1.5rem;
-          text-align: center;
-          border-radius: 16px 16px 0 0;
-        }
-        .modal-body {
-          padding: 1.5rem;
-        }
-        .url-box {
-          background: #f7f5f2;
-          border: 2px solid #e0e0e0;
-          border-radius: 8px;
-          padding: 1rem;
-          margin-bottom: 1rem;
-          word-break: break-all;
-        }
-        .url-label {
-          font-size: 0.75rem;
-          color: #888;
-          margin-bottom: 0.25rem;
-        }
-        .url-text {
-          font-size: 0.95rem;
-          color: #1e3a5f;
-          font-weight: 500;
-        }
-        .copy-btn {
-          width: 100%;
-          padding: 0.75rem;
-          background: #1e3a5f;
-          color: white;
-          border: none;
-          border-radius: 8px;
-          font-size: 0.9rem;
-          cursor: pointer;
-          margin-bottom: 1.5rem;
-        }
-        .copy-btn:hover {
-          background: #2c4a6e;
-        }
-        .qr-container {
-          text-align: center;
-          padding: 1rem;
-          background: white;
-          border: 1px solid #e0e0e0;
-          border-radius: 8px;
-          margin-bottom: 1rem;
-        }
-        .info-box {
-          background: #fff3e0;
-          border-radius: 8px;
-          padding: 1rem;
-          margin-bottom: 1rem;
-        }
-        .info-label {
-          font-size: 0.75rem;
-          color: #888;
-          margin-bottom: 0.25rem;
-        }
-        .info-value {
-          font-size: 1rem;
-          font-weight: 600;
-          font-family: monospace;
-        }
-        .close-btn {
-          width: 100%;
-          padding: 1rem;
-          background: #e0e0e0;
-          color: #333;
-          border: none;
-          border-radius: 8px;
-          font-size: 0.95rem;
-          cursor: pointer;
-        }
-        .close-btn:hover {
-          background: #d0d0d0;
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; height: 56px; background: #0a0f1a; z-index: 1000; align-items: center; justify-content: space-between; padding: 0 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .mobile-menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
+        .mobile-logo { display: flex; align-items: center; gap: 0.5rem; color: white; }
+        .mobile-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #c9a227, #a08020); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+        .mobile-nav { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0f1a; z-index: 999; flex-direction: column; padding: 1rem; }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav-link { color: rgba(255,255,255,0.7); text-decoration: none; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.95rem; }
+        .mobile-nav-logout { color: #f87171; padding: 1rem; font-size: 0.95rem; cursor: pointer; background: none; border: none; text-align: left; }
+        .hero-section { background: linear-gradient(135deg, rgba(201,162,39,0.1) 0%, rgba(201,162,39,0.05) 100%); border: 1px solid rgba(201,162,39,0.2); border-radius: 16px; padding: 32px; margin-bottom: 24px; position: relative; overflow: hidden; }
+        .hero-section::before { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(201,162,39,0.1) 0%, transparent 70%); pointer-events: none; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(201,162,39,0.15); border-radius: 100px; font-size: 10px; color: #c9a227; letter-spacing: 0.15em; margin-bottom: 16px; }
+        .hero-title { font-size: 20px; font-weight: 500; color: #1a1a1a; margin-bottom: 12px; line-height: 1.5; }
+        .hero-title strong { color: #c9a227; }
+        .hero-text { font-size: 13px; color: #666; line-height: 1.8; }
+        .hero-stats { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 10px 16px; background: white; border-radius: 100px; font-size: 13px; color: #333; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .hero-stats-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+        .welcome-bar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .welcome-text { font-size: 14px; color: #333; }
+        .welcome-name { font-weight: 600; color: #1a1a1a; }
+        .logout-btn { background: none; border: 1px solid #e5e5e5; padding: 8px 16px; border-radius: 6px; font-size: 12px; color: #666; cursor: pointer; }
+        .logout-btn:hover { background: #f9f9f9; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; backdrop-filter: blur(4px); }
+        .modal-content { background: white; border-radius: 20px; width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; padding: 32px 24px; text-align: center; border-radius: 20px 20px 0 0; }
+        .modal-body { padding: 24px; }
+        .url-box { background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+        .url-label { font-size: 10px; color: #999; letter-spacing: 0.1em; margin-bottom: 4px; }
+        .url-text { font-size: 14px; color: #1a1a1a; word-break: break-all; font-weight: 500; }
+        .copy-btn { width: 100%; padding: 14px; background: #1a1a1a; color: white; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; margin-bottom: 20px; }
+        .copy-btn:hover { background: #333; }
+        .qr-container { text-align: center; padding: 20px; background: #f8f8f8; border-radius: 12px; margin-bottom: 16px; }
+        .info-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+        .info-label { font-size: 10px; color: #92400e; letter-spacing: 0.1em; margin-bottom: 4px; }
+        .info-value { font-size: 18px; font-weight: 600; font-family: monospace; color: #1a1a1a; }
+        .close-btn { width: 100%; padding: 14px; background: #f1f1f1; color: #333; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; }
+        .close-btn:hover { background: #e5e5e5; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         @media (max-width: 768px) {
-          .mobile-header {
-            display: flex;
-          }
-          .form-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-          .main-content {
-            margin-left: 0 !important;
-            padding-top: 72px !important;
-          }
-          .hero-box {
-            padding: 1.5rem 1rem;
-            margin-bottom: 1rem;
-          }
-          .hero-title {
-            font-size: 1rem;
-          }
-          .hero-text {
-            font-size: 0.8rem;
-            line-height: 1.7;
-          }
-          .welcome-bar {
-            flex-direction: column;
-            gap: 0.75rem;
-            text-align: center;
-          }
+          .mobile-header { display: flex; }
+          .form-grid { grid-template-columns: 1fr; gap: 1rem; }
+          .main-content { margin-left: 0 !important; padding-top: 72px !important; }
+          .hero-section { padding: 24px 20px; }
+          .hero-title { font-size: 17px; }
+          .welcome-bar { flex-direction: column; gap: 12px; text-align: center; }
         }
       `}</style>
 
@@ -479,9 +230,9 @@ export default function AdminPage() {
         <div className="modal-overlay" onClick={() => setCreatedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✓</p>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>献杯ページを作成しました</h3>
-              <p style={{ opacity: 0.9, fontSize: '0.9rem' }}>故 {createdProject.deceased_name} 様</p>
+              <div style={{ fontSize: '48px', marginBottom: '12px' }}>✓</div>
+              <h3 style={{ fontSize: '18px', marginBottom: '4px' }}>献杯ページを作成しました</h3>
+              <p style={{ opacity: 0.9, fontSize: '14px' }}>故 {createdProject.deceased_name} 様</p>
             </div>
             <div className="modal-body">
               <div className="url-box">
@@ -491,24 +242,19 @@ export default function AdminPage() {
               <button className="copy-btn" onClick={() => copyToClipboard(`${BASE_URL}/${createdProject.slug}`)}>
                 📋 URLをコピー
               </button>
-              
               <div className="qr-container">
-                <p style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.75rem' }}>QRコード</p>
+                <p style={{ fontSize: '11px', color: '#666', marginBottom: '12px', letterSpacing: '0.1em' }}>QRコード</p>
                 <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`${BASE_URL}/${createdProject.slug}`)}`} 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`${BASE_URL}/${createdProject.slug}`)}`} 
                   alt="QR Code"
-                  style={{ width: '180px', height: '180px' }}
+                  style={{ width: '160px', height: '160px' }}
                 />
               </div>
-              
               <div className="info-box">
                 <p className="info-label">ご遺族様用パスワード</p>
                 <p className="info-value">{createdProject.password}</p>
               </div>
-              
-              <button className="close-btn" onClick={() => setCreatedProject(null)}>
-                閉じる
-              </button>
+              <button className="close-btn" onClick={() => setCreatedProject(null)}>閉じる</button>
             </div>
           </div>
         </div>
@@ -518,7 +264,7 @@ export default function AdminPage() {
       <div className="mobile-header">
         <div className="mobile-logo">
           <div className="mobile-logo-icon">礼</div>
-          <span style={{ fontWeight: 500 }}>Rei</span>
+          <span style={{ fontWeight: 500, fontSize: '14px' }}>Rei</span>
         </div>
         <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           {mobileMenuOpen ? '✕' : '☰'}
@@ -527,9 +273,9 @@ export default function AdminPage() {
 
       {/* Mobile Navigation */}
       <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
-        <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>🏠 ホーム</a>
-        <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>💰 ご入金管理</a>
-        <button className="mobile-nav-logout" onClick={handleLogout}>🚪 ログアウト</button>
+        <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ホーム</a>
+        <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ご入金管理</a>
+        <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
       </div>
 
       {/* Desktop Sidebar */}
@@ -547,7 +293,7 @@ export default function AdminPage() {
           <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
         </nav>
         <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-          <button onClick={handleLogout} style={{ width: '100%', padding: '0.75rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: 'white', cursor: 'pointer', fontSize: '0.875rem' }}>
+          <button onClick={handleLogout} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '13px' }}>
             ログアウト
           </button>
         </div>
@@ -557,24 +303,27 @@ export default function AdminPage() {
         {/* Welcome Bar */}
         <div className="welcome-bar">
           <span className="welcome-text">
-            ようこそ、<span className="welcome-name">{funeralHomeName}</span> 様
+            <span className="welcome-name">{funeralHomeName}</span> 様
           </span>
           <button className="logout-btn" onClick={handleLogout}>ログアウト</button>
         </div>
 
-        {/* Hero Message */}
-        <div className="hero-box">
-          <p className="hero-title">
-            「見積もりに勝つ」ための<br />
-            献杯（支援金）ページ作成システム
-          </p>
+        {/* Hero Section */}
+        <div className="hero-section">
+          <div className="hero-badge">
+            <span>✦</span>
+            <span>COMPETITIVE ADVANTAGE</span>
+          </div>
+          <h2 className="hero-title">
+            <strong>見積もり競争</strong>を勝ち抜く<br />
+            新しい提案ツール
+          </h2>
           <p className="hero-text">
-            基本情報を入力するだけで、ご遺族専用の受付ページを即座に発行。<br />
-            現場のオペレーションを変えることなく、<br />
-            集まった支援金で葬儀費用の負担を軽減します。
+            献杯ページを発行し、支援金で葬儀費用の負担を軽減。<br />
+            他社との差別化を実現します。
           </p>
-          <div className="active-count">
-            <span className="active-dot"></span>
+          <div className="hero-stats">
+            <span className="hero-stats-dot"></span>
             現在 {stats.active_projects} 件のページが稼働中
           </div>
         </div>
@@ -609,26 +358,14 @@ export default function AdminPage() {
                     故人様のお名前
                     <span className="form-label-required">必須</span>
                   </label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    placeholder="例：山田 太郎" 
-                    value={formData.deceased_name} 
-                    onChange={(e) => setFormData({ ...formData, deceased_name: e.target.value })} 
-                  />
+                  <input type="text" className="form-input" placeholder="例：山田 太郎" value={formData.deceased_name} onChange={(e) => setFormData({ ...formData, deceased_name: e.target.value })} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">
                     URL用ID
                     <span className="form-label-required">必須</span>
                   </label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    placeholder="例：yamada-taro" 
-                    value={formData.slug} 
-                    onChange={(e) => handleSlugChange(e.target.value)} 
-                  />
+                  <input type="text" className="form-input" placeholder="例：yamada-taro" value={formData.slug} onChange={(e) => handleSlugChange(e.target.value)} />
                 </div>
               </div>
               
@@ -637,14 +374,7 @@ export default function AdminPage() {
                   ご遺族様用パスワード
                   <span className="form-label-required">必須</span>
                 </label>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  style={{ fontFamily: 'monospace', letterSpacing: '0.1em' }} 
-                  placeholder="例：1234" 
-                  value={formData.family_password} 
-                  onChange={(e) => setFormData({ ...formData, family_password: e.target.value })} 
-                />
+                <input type="text" className="form-input" style={{ fontFamily: 'monospace', letterSpacing: '0.1em' }} placeholder="例：1234" value={formData.family_password} onChange={(e) => setFormData({ ...formData, family_password: e.target.value })} />
                 <p className="form-hint">ご遺族様が入金状況を確認する際に使用（4文字以上）</p>
               </div>
               
@@ -658,12 +388,7 @@ export default function AdminPage() {
                   )}
                   <div style={{ flex: 1, minWidth: '150px' }}>
                     <input type="file" ref={fileInputRef} accept="image/*" onChange={handlePhotoChange} style={{ display: 'none' }} />
-                    <button 
-                      type="button" 
-                      className="btn btn-secondary" 
-                      onClick={() => fileInputRef.current?.click()} 
-                      style={{ width: '100%' }}
-                    >
+                    <button type="button" className="btn btn-secondary" onClick={() => fileInputRef.current?.click()} style={{ width: '100%' }}>
                       {photoPreview ? '写真を変更' : '写真を選択'}
                     </button>
                     <p className="form-hint" style={{ marginTop: '0.5rem' }}>献杯ページに表示（任意）</p>
@@ -675,45 +400,22 @@ export default function AdminPage() {
                 <label className="form-label">ご遺族様からのメッセージ</label>
                 <div style={{ marginBottom: '0.75rem' }}>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
-                    <input 
-                      type="radio" 
-                      name="messageType" 
-                      checked={formData.use_default_message} 
-                      onChange={() => setFormData({ ...formData, use_default_message: true, family_message: '' })} 
-                    />
+                    <input type="radio" name="messageType" checked={formData.use_default_message} onChange={() => setFormData({ ...formData, use_default_message: true, family_message: '' })} />
                     <span>定型文を使用</span>
                   </label>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem' }}>
-                    <input 
-                      type="radio" 
-                      name="messageType" 
-                      checked={!formData.use_default_message} 
-                      onChange={() => setFormData({ ...formData, use_default_message: false })} 
-                    />
+                    <input type="radio" name="messageType" checked={!formData.use_default_message} onChange={() => setFormData({ ...formData, use_default_message: false })} />
                     <span>カスタムメッセージ</span>
                   </label>
                 </div>
                 {!formData.use_default_message && (
-                  <textarea 
-                    className="form-input" 
-                    style={{ minHeight: '100px', resize: 'vertical' }} 
-                    placeholder="例：父は生前、皆様との出会いに深く感謝しておりました。" 
-                    value={formData.family_message} 
-                    onChange={(e) => setFormData({ ...formData, family_message: e.target.value })} 
-                  />
+                  <textarea className="form-input" style={{ minHeight: '100px', resize: 'vertical' }} placeholder="例：父は生前、皆様との出会いに深く感謝しておりました。" value={formData.family_message} onChange={(e) => setFormData({ ...formData, family_message: e.target.value })} />
                 )}
               </div>
               
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--sumi-100)', flexWrap: 'wrap' }}>
-                <button type="button" className="btn btn-secondary" style={{ flex: '1', minWidth: '120px' }}>
-                  キャンセル
-                </button>
-                <button 
-                  type="submit" 
-                  className="btn btn-primary" 
-                  style={{ flex: '1', minWidth: '120px' }} 
-                  disabled={submitting}
-                >
+                <button type="button" className="btn btn-secondary" style={{ flex: '1', minWidth: '120px' }}>キャンセル</button>
+                <button type="submit" className="btn btn-primary" style={{ flex: '1', minWidth: '120px' }} disabled={submitting}>
                   {submitting ? '作成中...' : '＋ ご案件を作成'}
                 </button>
               </div>
