@@ -21,7 +21,6 @@ export default function AdminPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    // Check if logged in
     if (typeof window === 'undefined') return;
     
     const storedId = sessionStorage.getItem('funeral_home_id');
@@ -147,7 +146,6 @@ export default function AdminPage() {
     return k[Math.floor(n / 10)] + '十' + (n % 10 ? k[n % 10] : ''); 
   };
 
-  // Show nothing while checking authentication
   if (!isAuthenticated || loading) {
     return (
       <div style={{ 
@@ -378,7 +376,6 @@ export default function AdminPage() {
       <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>🏠 ホーム</a>
         <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>💰 ご入金管理</a>
-        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>⚙️ アカウント設定</a>
         <button className="mobile-nav-logout" onClick={handleLogout}>🚪 ログアウト</button>
       </div>
 
@@ -392,15 +389,9 @@ export default function AdminPage() {
           </div>
         </div>
         <nav className="sidebar-nav">
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div className="sidebar-section-title">メインメニュー</div>
-            <a href="/admin" className="sidebar-link active">ホーム</a>
-            <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
-          </div>
-          <div>
-            <div className="sidebar-section-title">設定</div>
-            <a href="/admin/settings" className="sidebar-link">アカウント設定</a>
-          </div>
+          <div className="sidebar-section-title">メインメニュー</div>
+          <a href="/admin" className="sidebar-link active">ホーム</a>
+          <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
         </nav>
         <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <button onClick={handleLogout} style={{ width: '100%', padding: '0.75rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '6px', color: 'white', cursor: 'pointer', fontSize: '0.875rem' }}>
@@ -418,7 +409,7 @@ export default function AdminPage() {
           <button className="logout-btn" onClick={handleLogout}>ログアウト</button>
         </div>
 
-        {/* Hero Message - Top */}
+        {/* Hero Message */}
         <div className="hero-box">
           <p className="hero-title">
             「見積もりに勝つ」ための<br />
