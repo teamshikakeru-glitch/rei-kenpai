@@ -35,7 +35,6 @@ export default function LoginPage() {
         return;
       }
 
-      // Store funeral home ID in sessionStorage
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('funeral_home_id', data.id);
         sessionStorage.setItem('funeral_home_name', data.name);
@@ -53,6 +52,7 @@ export default function LoginPage() {
     <div style={{ 
       minHeight: '100vh', 
       display: 'flex', 
+      flexDirection: 'column',
       alignItems: 'center', 
       justifyContent: 'center', 
       background: 'linear-gradient(160deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
@@ -71,6 +71,24 @@ export default function LoginPage() {
             radial-gradient(circle at 20% 80%, rgba(184, 134, 11, 0.1) 0%, transparent 50%),
             radial-gradient(circle at 80% 20%, rgba(184, 134, 11, 0.08) 0%, transparent 50%);
           pointer-events: none;
+        }
+        .hero-section {
+          text-align: center;
+          color: white;
+          margin-bottom: 2rem;
+          max-width: 500px;
+          z-index: 1;
+        }
+        .hero-title {
+          font-size: 1.5rem;
+          font-weight: 600;
+          line-height: 1.6;
+          margin-bottom: 1rem;
+        }
+        .hero-text {
+          font-size: 0.9rem;
+          line-height: 1.9;
+          opacity: 0.85;
         }
         .login-container {
           width: 100%;
@@ -165,6 +183,7 @@ export default function LoginPage() {
           background: #fafafa;
           transition: all 0.3s ease;
           font-family: 'Noto Serif JP', serif;
+          box-sizing: border-box;
         }
         .login-input:focus {
           outline: none;
@@ -264,6 +283,15 @@ export default function LoginPage() {
           letter-spacing: 0.1em;
         }
         @media (max-width: 480px) {
+          .hero-section {
+            margin-bottom: 1.5rem;
+          }
+          .hero-title {
+            font-size: 1.2rem;
+          }
+          .hero-text {
+            font-size: 0.8rem;
+          }
           .login-header {
             padding: 2rem 1.5rem 1.5rem;
           }
@@ -282,6 +310,19 @@ export default function LoginPage() {
       `}</style>
 
       <div className="background-pattern"></div>
+
+      {/* Hero Section */}
+      <div className="hero-section">
+        <h2 className="hero-title">
+          「見積もりに勝つ」ための<br />
+          献杯（支援金）ページ作成システム
+        </h2>
+        <p className="hero-text">
+          基本情報を入力するだけで、ご遺族専用の受付ページを即座に発行。<br />
+          現場のオペレーションを変えることなく、<br />
+          集まった支援金で葬儀費用の負担を軽減します。
+        </p>
+      </div>
 
       <div className="login-container">
         <div className="login-card">
