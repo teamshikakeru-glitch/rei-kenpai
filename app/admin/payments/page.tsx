@@ -12,6 +12,7 @@ export default function PaymentsPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const supabase = createClient();
 
+  const BASE_URL = 'https://rei-kenpai.vercel.app';
   const STRIPE_FEE_RATE = 0.036;
   const calculatePayout = (amount: number) => Math.floor(amount * (1 - STRIPE_FEE_RATE));
 
@@ -31,6 +32,11 @@ export default function PaymentsPage() {
     setLoading(false);
   };
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert('コピーしました');
+  };
+
   const formatCurrency = (amount: number) => new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(amount);
   const formatDateTime = (dateString: string) => { const d = new Date(dateString); return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`; };
   const totalAmount = kenpaiList.reduce((sum, k) => sum + k.amount, 0);
@@ -38,6 +44,65 @@ export default function PaymentsPage() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <style jsx>{`
+        .url-qr-section {
+          background: linear-gradient(135deg, #f0f7ff 0%, #e8f4f8 100%);
+          border: 1px solid #cce5ff;
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+        .url-box {
+          background: white;
+          border: 2px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 0.75rem 1rem;
+          margin-bottom: 0.75rem;
+          word-break: break-all;
+        }
+        .url-label {
+          font-size: 0.7rem;
+          color: #888;
+          margin-bottom: 0.25rem;
+        }
+        .url-text {
+          font-size: 0.9rem;
+          color: #1e3a5f;
+          font-weight: 500;
+        }
+        .copy-btn {
+          padding: 0.625rem 1rem;
+          background: #1e3a5f;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          cursor: pointer;
+          margin-right: 0.5rem;
+        }
+        .copy-btn:hover {
+          background: #2c4a6e;
+        }
+        .qr-inline {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          flex-wrap: wrap;
+        }
+        .qr-img {
+          background: white;
+          padding: 0.5rem;
+          border-radius: 8px;
+          border: 1px solid #e0e0e0;
+        }
+        @media (max-width: 768px) {
+          .qr-inline {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+        }
+      `}</style>
+
       <aside className="sidebar">
         <div className="sidebar-logo">
           <div className="sidebar-logo-icon">礼</div>
@@ -89,6 +154,32 @@ export default function PaymentsPage() {
                 <p style={{ fontSize: '1.1rem', fontWeight: 500 }}>故 {project.deceased_name} 様</p>
               </div>
               <button onClick={() => { setAuthenticated(false); setProject(null); setKenpaiList([]); setFormData({ deceased_name: '', password: '' }); }} className="btn btn-secondary">別の案件を確認</button>
+            </div>
+
+            {/* URL & QR Section */}
+            <div className="url-qr-section">
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '1rem', color: '#1e3a5f' }}>📎 献杯ページ情報</h4>
+              <div className="qr-inline">
+                <div style={{ flex: 1, minWidth: '250px' }}>
+                  <div className="url-box">
+                    <p className="url-label">献杯ページURL</p>
+                    <p className="url-text">{BASE_URL}/{project.slug}</p>
+                  </div>
+                  <button className="copy-btn" onClick={() => copyToClipboard(`${BASE_URL}/${project.slug}`)}>
+                    📋 URLをコピー
+                  </button>
+                  <a href={`${BASE_URL}/${project.slug}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#1e3a5f' }}>
+                    ページを開く →
+                  </a>
+                </div>
+                <div className="qr-img">
+                  <img 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(`${BASE_URL}/${project.slug}`)}`} 
+                    alt="QR Code"
+                    style={{ width: '120px', height: '120px', display: 'block' }}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: '1.5rem' }}>

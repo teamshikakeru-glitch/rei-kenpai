@@ -16,9 +16,12 @@ export default function AdminPage() {
   const [funeralHomeName, setFuneralHomeName] = useState<string>('');
   const [submitting, setSubmitting] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [createdProject, setCreatedProject] = useState<{ slug: string; deceased_name: string; password: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const supabase = createClient();
+
+  const BASE_URL = 'https://rei-kenpai.vercel.app';
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -114,7 +117,7 @@ export default function AdminPage() {
       funeral_home_id: funeralHomeId, 
       deceased_name: formData.deceased_name, 
       slug: formData.slug, 
-      status: 'draft', 
+      status: 'active', 
       photo_url: photoUrl, 
       family_message: formData.use_default_message ? null : formData.family_message, 
       use_default_message: formData.use_default_message, 
@@ -127,14 +130,24 @@ export default function AdminPage() {
       return; 
     }
     
-    setMessage({ type: 'success', text: 'ご案件を作成いたしました' });
+    // Show success modal with URL and QR
+    setCreatedProject({
+      slug: formData.slug,
+      deceased_name: formData.deceased_name,
+      password: formData.family_password
+    });
+    
     setFormData({ deceased_name: '', slug: '', family_message: '', use_default_message: true, family_password: '' });
     setPhotoFile(null); 
     setPhotoPreview(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     if (funeralHomeId) fetchData(funeralHomeId); 
-    setSubmitting(false); 
-    setTimeout(() => setMessage(null), 3000);
+    setSubmitting(false);
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert('コピーしました');
   };
 
   const today = new Date(); 
@@ -326,6 +339,106 @@ export default function AdminPage() {
           background: #f5f5f5;
           border-color: #ccc;
         }
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 2000;
+          padding: 1rem;
+        }
+        .modal-content {
+          background: white;
+          border-radius: 16px;
+          width: 100%;
+          max-width: 500px;
+          max-height: 90vh;
+          overflow-y: auto;
+        }
+        .modal-header {
+          background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+          color: white;
+          padding: 1.5rem;
+          text-align: center;
+          border-radius: 16px 16px 0 0;
+        }
+        .modal-body {
+          padding: 1.5rem;
+        }
+        .url-box {
+          background: #f7f5f2;
+          border: 2px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 1rem;
+          word-break: break-all;
+        }
+        .url-label {
+          font-size: 0.75rem;
+          color: #888;
+          margin-bottom: 0.25rem;
+        }
+        .url-text {
+          font-size: 0.95rem;
+          color: #1e3a5f;
+          font-weight: 500;
+        }
+        .copy-btn {
+          width: 100%;
+          padding: 0.75rem;
+          background: #1e3a5f;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          cursor: pointer;
+          margin-bottom: 1.5rem;
+        }
+        .copy-btn:hover {
+          background: #2c4a6e;
+        }
+        .qr-container {
+          text-align: center;
+          padding: 1rem;
+          background: white;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          margin-bottom: 1rem;
+        }
+        .info-box {
+          background: #fff3e0;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 1rem;
+        }
+        .info-label {
+          font-size: 0.75rem;
+          color: #888;
+          margin-bottom: 0.25rem;
+        }
+        .info-value {
+          font-size: 1rem;
+          font-weight: 600;
+          font-family: monospace;
+        }
+        .close-btn {
+          width: 100%;
+          padding: 1rem;
+          background: #e0e0e0;
+          color: #333;
+          border: none;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          cursor: pointer;
+        }
+        .close-btn:hover {
+          background: #d0d0d0;
+        }
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.5; }
@@ -360,6 +473,46 @@ export default function AdminPage() {
           }
         }
       `}</style>
+
+      {/* Success Modal */}
+      {createdProject && (
+        <div className="modal-overlay" onClick={() => setCreatedProject(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✓</p>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>献杯ページを作成しました</h3>
+              <p style={{ opacity: 0.9, fontSize: '0.9rem' }}>故 {createdProject.deceased_name} 様</p>
+            </div>
+            <div className="modal-body">
+              <div className="url-box">
+                <p className="url-label">献杯ページURL</p>
+                <p className="url-text">{BASE_URL}/{createdProject.slug}</p>
+              </div>
+              <button className="copy-btn" onClick={() => copyToClipboard(`${BASE_URL}/${createdProject.slug}`)}>
+                📋 URLをコピー
+              </button>
+              
+              <div className="qr-container">
+                <p style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.75rem' }}>QRコード</p>
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`${BASE_URL}/${createdProject.slug}`)}`} 
+                  alt="QR Code"
+                  style={{ width: '180px', height: '180px' }}
+                />
+              </div>
+              
+              <div className="info-box">
+                <p className="info-label">ご遺族様用パスワード</p>
+                <p className="info-value">{createdProject.password}</p>
+              </div>
+              
+              <button className="close-btn" onClick={() => setCreatedProject(null)}>
+                閉じる
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Header */}
       <div className="mobile-header">
