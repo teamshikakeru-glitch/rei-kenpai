@@ -39,14 +39,26 @@ export default function PaymentsPage() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <aside className="sidebar">
-        <div className="sidebar-logo"><div className="sidebar-logo-icon">礼</div><div className="sidebar-logo-text"><h1>Rei</h1><span>献杯管理システム</span></div></div>
+        <div className="sidebar-logo">
+          <div className="sidebar-logo-icon">礼</div>
+          <div className="sidebar-logo-text">
+            <h1>Rei</h1>
+            <span>献杯管理システム</span>
+          </div>
+        </div>
         <nav className="sidebar-nav">
-          <div style={{ marginBottom: '1.5rem' }}><div className="sidebar-section-title">メインメニュー</div><a href="/admin" className="sidebar-link">ホーム</a><a href="/admin/projects" className="sidebar-link">ご案件一覧</a><a href="/admin/payments" className="sidebar-link active">ご入金管理</a></div>
-          <div><div className="sidebar-section-title">設定</div><a href="/admin/settings" className="sidebar-link">アカウント設定</a></div>
+          <div className="sidebar-section-title">メインメニュー</div>
+          <a href="/admin" className="sidebar-link">ホーム</a>
+          <a href="/admin/payments" className="sidebar-link active">ご入金管理</a>
         </nav>
       </aside>
       <main className="main-content">
-        <header className="page-header"><div><h2 className="page-header-title">ご入金管理</h2><p className="page-header-subtitle">ご遺族様向け入金状況確認</p></div></header>
+        <header className="page-header">
+          <div>
+            <h2 className="page-header-title">ご入金管理</h2>
+            <p className="page-header-subtitle">ご遺族様向け入金状況確認</p>
+          </div>
+        </header>
 
         {!authenticated ? (
           <div style={{ maxWidth: '500px' }}>
@@ -71,7 +83,7 @@ export default function PaymentsPage() {
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f7f5f2', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f7f5f2', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
                 <p style={{ fontSize: '0.85rem', color: '#666' }}>現在表示中</p>
                 <p style={{ fontSize: '1.1rem', fontWeight: 500 }}>故 {project.deceased_name} 様</p>
