@@ -31,7 +31,6 @@ export default function KenpaiPage() {
     if (error || !projectData) { setNotFound(true); setLoading(false); return; }
     setProject(projectData);
     
-    // Fetch kenpai list
     const { data: kenpaiData } = await supabase
       .from('kenpai')
       .select('id, donor_name, message, is_anonymous, created_at')
@@ -296,59 +295,15 @@ export default function KenpaiPage() {
           </div>
         </section>
 
-        {/* Kenpai History */}
-        {kenpaiList.length > 0 && (
-          <section className="animate-fade" style={{ 
-            background: '#fff', 
-            borderRadius: '12px', 
-            padding: '20px 24px',
-            marginBottom: '24px',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
-          }}>
-            <h2 style={{ fontSize: '14px', fontWeight: 600, color: '#2d2d2d', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#8b7355' }}>✦</span>
-              献杯いただいた皆様
-              <span style={{ fontSize: '12px', fontWeight: 400, color: '#999', marginLeft: 'auto' }}>{kenpaiList.length}名</span>
-            </h2>
-            
-            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {kenpaiList.map((kenpai, index) => (
-                <div key={kenpai.id} className="history-item" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: kenpai.message ? '8px' : 0 }}>
-                    <div>
-                      <p style={{ fontSize: '14px', fontWeight: 500, color: '#333' }}>
-                        {kenpai.is_anonymous || kenpai.donor_name === '匿名' ? '匿名の方' : `${kenpai.donor_name} 様`}
-                      </p>
-                      <p style={{ fontSize: '11px', color: '#aaa', marginTop: '2px' }}>{formatDate(kenpai.created_at)}</p>
-                    </div>
-                  </div>
-                  {kenpai.message && (
-                    <p style={{ 
-                      fontSize: '13px', 
-                      color: '#666', 
-                      lineHeight: 1.6,
-                      padding: '10px 12px',
-                      background: '#f8f6f3',
-                      borderRadius: '6px',
-                      marginTop: '8px'
-                    }}>
-                      {kenpai.message}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Form */}
+        {/* Form - Success Message or Form */}
         {submitStatus === 'success' ? (
           <section className="animate-fade" style={{ 
             background: '#fff', 
             borderRadius: '12px', 
             padding: '40px 24px',
             textAlign: 'center',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
+            boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+            marginBottom: '24px'
           }}>
             <div style={{ 
               width: '60px', 
@@ -382,7 +337,8 @@ export default function KenpaiPage() {
             background: '#fff', 
             borderRadius: '12px', 
             padding: '28px 24px',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
+            boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+            marginBottom: '24px'
           }}>
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
               <h2 style={{ fontSize: '16px', fontWeight: 600, color: '#2d2d2d', marginBottom: '6px' }}>
@@ -482,6 +438,58 @@ export default function KenpaiPage() {
             </form>
           </section>
         )}
+
+        {/* Kenpai History - Always Visible */}
+        <section className="animate-fade" style={{ 
+          background: '#fff', 
+          borderRadius: '12px', 
+          padding: '20px 24px',
+          marginBottom: '24px',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
+        }}>
+          <h2 style={{ fontSize: '14px', fontWeight: 600, color: '#2d2d2d', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ color: '#8b7355' }}>✦</span>
+            献杯いただいた皆様
+            <span style={{ fontSize: '12px', fontWeight: 400, color: '#999', marginLeft: 'auto' }}>
+              {kenpaiList.length > 0 ? `${kenpaiList.length}名` : ''}
+            </span>
+          </h2>
+          
+          {kenpaiList.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '30px 0' }}>
+              <p style={{ fontSize: '13px', color: '#bbb' }}>まだ献杯はございません</p>
+              <p style={{ fontSize: '12px', color: '#ccc', marginTop: '8px' }}>最初の献杯をお待ちしております</p>
+            </div>
+          ) : (
+            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+              {kenpaiList.map((kenpai, index) => (
+                <div key={kenpai.id} className="history-item" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: kenpai.message ? '8px' : 0 }}>
+                    <div>
+                      <p style={{ fontSize: '14px', fontWeight: 500, color: '#333' }}>
+                        {kenpai.is_anonymous || kenpai.donor_name === '匿名' ? '匿名の方' : `${kenpai.donor_name} 様`}
+                      </p>
+                      <p style={{ fontSize: '11px', color: '#aaa', marginTop: '2px' }}>{formatDate(kenpai.created_at)}</p>
+                    </div>
+                  </div>
+                  {kenpai.message && (
+                    <p style={{ 
+                      fontSize: '13px', 
+                      color: '#666', 
+                      lineHeight: 1.6,
+                      padding: '10px 12px',
+                      background: '#f8f6f3',
+                      borderRadius: '6px',
+                      marginTop: '8px'
+                    }}>
+                      {kenpai.message}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
         {/* Footer */}
         <div style={{ marginTop: '32px', textAlign: 'center' }}>
