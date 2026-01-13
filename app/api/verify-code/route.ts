@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'パスワードは6文字以上で設定してください' }, { status: 400 });
     }
 
-    // コードを検証
     const { data: verification, error: verifyError } = await supabase
       .from('verification_codes')
       .select('*')
@@ -32,7 +31,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '認証コードが無効または期限切れです' }, { status: 400 });
     }
 
-    // 葬儀社を登録
     const { data: newFuneralHome, error: insertError } = await supabase
       .from('funeral_homes')
       .insert({
@@ -44,10 +42,10 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (insertError) {
+      console.error('Insert error:', insertError);
       return NextResponse.json({ error: '登録に失敗しました' }, { status: 500 });
     }
 
-    // コードを使用済みに
     await supabase
       .from('verification_codes')
       .update({ used: true })
