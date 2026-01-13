@@ -2,52 +2,92 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
 
-export default function LoginPage() {
-  const [funeralHomeName, setFuneralHomeName] = useState('');
-  const [password, setPassword] = useState('');
+export default function RegisterPage() {
+  const [step, setStep] = useState<'form' | 'verify'>('form');
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    if (!funeralHomeName.trim() || !password) {
-      setError('葬儀社名とパスワードを入力してください');
+    if (!formData.name || !formData.email || !formData.password) {
+      setError('すべての項目を入力してください');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('パスワードは6文字以上で設定してください');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('パスワードが一致しません');
       setLoading(false);
       return;
     }
 
     try {
-      const { data, error: dbError } = await supabase
-        .from('funeral_homes')
-        .select('*')
-        .eq('name', funeralHomeName.trim())
-        .eq('password', password)
-        .single();
+      const res = await fetch('/api/send-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, funeral_home_name: formData.name })
+      });
 
-      if (dbError || !data) {
-        setError('葬儀社名またはパスワードが正しくありません');
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'エラーが発生しました');
         setLoading(false);
         return;
       }
 
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('funeral_home_id', data.id);
-        sessionStorage.setItem('funeral_home_name', data.name);
-      }
-      
-      router.push('/admin');
+      setStep('verify');
     } catch (err) {
-      console.error('Login error:', err);
-      setError('ログインに失敗しました');
-      setLoading(false);
+      setError('エラーが発生しました');
     }
+    setLoading(false);
+  };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    if (!code || code.length !== 6) {
+      setError('6桁の認証コードを入力してください');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, code, password: formData.password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'エラーが発生しました');
+        setLoading(false);
+        return;
+      }
+
+      alert('登録が完了しました。ログインしてください。');
+      router.push('/');
+    } catch (err) {
+      setError('エラーが発生しました');
+    }
+    setLoading(false);
   };
 
   return (
@@ -57,90 +97,135 @@ export default function LoginPage() {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .page-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 24px; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(201, 162, 39, 0.1); border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 100px; font-size: 12px; color: #c9a227; letter-spacing: 0.1em; margin-bottom: 24px; animation: fadeUp 0.6s ease forwards; }
-        .hero-title { font-size: 32px; font-weight: 300; color: #fff; text-align: center; line-height: 1.5; letter-spacing: 0.05em; margin-bottom: 20px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.1s; opacity: 0; }
-        .hero-title strong { font-weight: 600; background: linear-gradient(135deg, #c9a227, #e8c547); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.5); text-align: center; line-height: 2; max-width: 400px; margin: 0 auto 48px; animation: fadeUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; }
-        .login-card { width: 100%; max-width: 380px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px 32px; backdrop-filter: blur(20px); animation: fadeUp 0.6s ease forwards; animation-delay: 0.3s; opacity: 0; }
-        .login-logo { width: 64px; height: 64px; background: linear-gradient(145deg, #c9a227 0%, #a08020 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: white; margin: 0 auto 20px; box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3); }
-        .login-title { font-size: 24px; font-weight: 300; color: #fff; text-align: center; letter-spacing: 0.2em; margin-bottom: 4px; }
-        .login-subtitle-text { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; letter-spacing: 0.15em; margin-bottom: 32px; }
+        .page-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
+        .register-card { width: 100%; max-width: 420px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px 32px; backdrop-filter: blur(20px); animation: fadeUp 0.6s ease forwards; }
+        .card-header { text-align: center; margin-bottom: 32px; }
+        .logo { width: 56px; height: 56px; background: linear-gradient(145deg, #c9a227 0%, #a08020 100%); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 600; color: white; margin: 0 auto 16px; box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3); }
+        .card-title { font-size: 20px; font-weight: 400; color: #fff; letter-spacing: 0.1em; margin-bottom: 4px; }
+        .card-subtitle { font-size: 12px; color: rgba(255,255,255,0.4); }
+        .step-indicator { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 32px; }
+        .step { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; }
+        .step.active { background: #c9a227; color: white; }
+        .step.inactive { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); }
+        .step-line { width: 40px; height: 1px; background: rgba(255,255,255,0.2); }
         .form-label { display: block; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.5); margin-bottom: 8px; letter-spacing: 0.1em; }
-        .login-input { width: 100%; padding: 16px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 15px; color: #fff; background: rgba(255,255,255,0.05); transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 16px; }
-        .login-input:focus { outline: none; border-color: #c9a227; background: rgba(255,255,255,0.08); }
-        .login-input::placeholder { color: rgba(255,255,255,0.3); }
-        .login-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #c9a227 0%, #a08020 100%); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.1em; margin-top: 8px; }
-        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4); }
-        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .form-input { width: 100%; padding: 16px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 15px; color: #fff; background: rgba(255,255,255,0.05); transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 16px; }
+        .form-input:focus { outline: none; border-color: #c9a227; background: rgba(255,255,255,0.08); }
+        .form-input::placeholder { color: rgba(255,255,255,0.3); }
+        .code-input { width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 28px; color: #fff; background: rgba(255,255,255,0.05); text-align: center; letter-spacing: 12px; font-family: monospace; box-sizing: border-box; margin-bottom: 16px; }
+        .code-input:focus { outline: none; border-color: #c9a227; }
+        .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #c9a227 0%, #a08020 100%); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.1em; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .secondary-btn { width: 100%; padding: 14px; background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; font-size: 13px; cursor: pointer; margin-top: 12px; }
+        .secondary-btn:hover { background: rgba(255,255,255,0.05); }
         .error-message { background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #f87171; padding: 12px 16px; border-radius: 10px; text-align: center; margin-bottom: 16px; font-size: 13px; }
-        .login-footer { text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
-        .login-footer-text { font-size: 13px; color: rgba(255,255,255,0.4); }
-        .login-footer-link { color: #c9a227; text-decoration: none; font-weight: 500; }
-        .login-footer-link:hover { text-decoration: underline; }
-        .brand-footer { margin-top: 48px; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.2em; animation: fadeUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0; }
-        @media (max-width: 480px) { .page-container { padding: 40px 20px; } .hero-title { font-size: 24px; } .login-card { padding: 32px 24px; } }
+        .info-text { font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; margin-top: 16px; line-height: 1.7; }
+        .back-link { display: block; text-align: center; margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; }
+        .back-link:hover { color: #c9a227; }
+        @media (max-width: 480px) { .register-card { padding: 32px 24px; } }
       `}</style>
 
       <div className="page-container">
-        <div className="hero-badge">
-          <span>✦</span>
-          <span>FOR FUNERAL DIRECTORS</span>
-          <span>✦</span>
-        </div>
+        <div className="register-card">
+          <div className="card-header">
+            <div className="logo">礼</div>
+            <h1 className="card-title">新規登録</h1>
+            <p className="card-subtitle">Rei 献杯管理システム</p>
+          </div>
 
-        <h1 className="hero-title">
-          <strong>見積もり競争</strong>を<br />
-          勝ち抜くための新提案
-        </h1>
-
-        <p className="hero-subtitle">
-          献杯ページを即座に発行。<br />
-          支援金で葬儀費用の負担を軽減する<br />
-          新しい価値を提供できます。
-        </p>
-
-        <div className="login-card">
-          <div className="login-logo">礼</div>
-          <h2 className="login-title">Rei</h2>
-          <p className="login-subtitle-text">献杯管理システム</p>
+          <div className="step-indicator">
+            <div className={`step ${step === 'form' ? 'active' : 'inactive'}`}>1</div>
+            <div className="step-line"></div>
+            <div className={`step ${step === 'verify' ? 'active' : 'inactive'}`}>2</div>
+          </div>
 
           {error && <div className="error-message">{error}</div>}
 
-          <form onSubmit={handleLogin}>
-            <label className="form-label">葬儀社名</label>
-            <input
-              type="text"
-              className="login-input"
-              placeholder="ご登録の葬儀社名"
-              value={funeralHomeName}
-              onChange={(e) => setFuneralHomeName(e.target.value)}
-              disabled={loading}
-            />
-            
-            <label className="form-label">パスワード</label>
-            <input
-              type="password"
-              className="login-input"
-              placeholder="パスワード"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
-            
-            <button type="submit" className="login-btn" disabled={loading}>
-              {loading ? '認証中...' : 'ログイン'}
-            </button>
-          </form>
+          {step === 'form' ? (
+            <form onSubmit={handleSendCode}>
+              <label className="form-label">葬儀社名</label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="例：山田葬儀社"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                disabled={loading}
+              />
 
-          <div className="login-footer">
-            <p className="login-footer-text">
-              初めての方は <a href="/admin/register" className="login-footer-link">新規登録</a>
-            </p>
-          </div>
+              <label className="form-label">メールアドレス</label>
+              <input
+                type="email"
+                className="form-input"
+                placeholder="example@email.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                disabled={loading}
+              />
+
+              <label className="form-label">パスワード（6文字以上）</label>
+              <input
+                type="password"
+                className="form-input"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                disabled={loading}
+              />
+
+              <label className="form-label">パスワード（確認）</label>
+              <input
+                type="password"
+                className="form-input"
+                placeholder="••••••••"
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                disabled={loading}
+              />
+
+              <button type="submit" className="submit-btn" disabled={loading}>
+                {loading ? '送信中...' : '認証コードを送信'}
+              </button>
+
+              <p className="info-text">
+                入力されたメールアドレスに<br />6桁の認証コードをお送りします
+              </p>
+            </form>
+          ) : (
+            <form onSubmit={handleVerify}>
+              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: '24px', lineHeight: 1.7 }}>
+                <strong style={{ color: '#c9a227' }}>{formData.email}</strong><br />
+                に認証コードを送信しました
+              </p>
+
+              <label className="form-label">認証コード（6桁）</label>
+              <input
+                type="text"
+                className="code-input"
+                placeholder="000000"
+                value={code}
+                onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                maxLength={6}
+                disabled={loading}
+              />
+
+              <button type="submit" className="submit-btn" disabled={loading}>
+                {loading ? '確認中...' : '登録を完了する'}
+              </button>
+
+              <button type="button" className="secondary-btn" onClick={() => setStep('form')}>
+                ← 入力画面に戻る
+              </button>
+
+              <p className="info-text">
+                コードが届かない場合は、迷惑メールフォルダをご確認ください
+              </p>
+            </form>
+          )}
+
+          <a href="/" className="back-link">← ログイン画面に戻る</a>
         </div>
-
-        <p className="brand-footer">POWERED BY REI</p>
       </div>
     </div>
   );
