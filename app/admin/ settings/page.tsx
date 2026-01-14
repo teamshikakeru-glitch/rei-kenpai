@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useSession } from '@/lib/supabase/hooks/useSession';
 import SessionWarning from '@/components/SessionWarning';
@@ -14,6 +14,7 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
+  // メールアドレス変更用
   const [emailStep, setEmailStep] = useState<'form' | 'verify'>('form');
   const [newEmail, setNewEmail] = useState('');
   const [emailCode, setEmailCode] = useState('');
@@ -21,7 +22,15 @@ export default function SettingsPage() {
   const [emailSuccess, setEmailSuccess] = useState('');
   const [emailLoading, setEmailLoading] = useState(false);
 
+  // Stripe Connect 用
+  const [stripeStatus, setStripeStatus] = useState<{
+    connected: boolean;
+    onboarding_complete: boolean;
+  } | null>(null);
+  const [stripeLoading, setStripeLoading] = useState(false);
+
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
 
   useEffect(() => {
@@ -53,12 +62,62 @@ export default function SettingsPage() {
       if (data) {
         setCurrentEmail(data.email);
       }
+
+      // Stripe ステータスを取得
+      await checkStripeStatus(storedId);
       
       setLoading(false);
     };
 
     fetchData();
   }, [router, isAuthenticated, sessionLoading, supabase]);
+
+  // URLパラメータでStripe連携結果を確認
+  useEffect(() => {
+    const stripeParam = searchParams.get('stripe');
+    if (stripeParam === 'success' && funeralHomeId) {
+      checkStripeStatus(funeralHomeId);
+    }
+  }, [searchParams, funeralHomeId]);
+
+  const checkStripeStatus = async (homeId: string) => {
+    try {
+      const res = await fetch('/api/stripe/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ funeral_home_id: homeId })
+      });
+      const data = await res.json();
+      setStripeStatus(data);
+    } catch (error) {
+      console.error('Stripe status error:', error);
+    }
+  };
+
+  const handleStripeConnect = async () => {
+    if (!funeralHomeId) return;
+    setStripeLoading(true);
+
+    try {
+      const res = await fetch('/api/stripe/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ funeral_home_id: funeralHomeId })
+      });
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert('エラーが発生しました');
+      }
+    } catch (error) {
+      console.error('Stripe connect error:', error);
+      alert('エラーが発生しました');
+    }
+    setStripeLoading(false);
+  };
 
   const handleLogout = () => {
     logout();
@@ -201,6 +260,21 @@ export default function SettingsPage() {
         .logout-btn { background: none; border: 1px solid #e5e5e5; padding: 8px 16px; border-radius: 6px; font-size: 12px; color: #666; cursor: pointer; }
         .page-title { font-size: 24px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
         .page-subtitle { font-size: 14px; color: #666; margin-bottom: 32px; }
+        .stripe-status { display: flex; align-items: center; gap: 10px; padding: 16px; border-radius: 10px; margin-bottom: 20px; }
+        .stripe-status.connected { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); }
+        .stripe-status.not-connected { background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); }
+        .stripe-status-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .stripe-status.connected .stripe-status-icon { background: rgba(34, 197, 94, 0.2); }
+        .stripe-status.not-connected .stripe-status-icon { background: rgba(251, 191, 36, 0.2); }
+        .stripe-status-text { flex: 1; }
+        .stripe-status-title { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+        .stripe-status-desc { font-size: 12px; color: #666; margin-top: 2px; }
+        .stripe-connect-btn { padding: 14px 24px; background: #635bff; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .stripe-connect-btn:hover { background: #5148e6; }
+        .stripe-connect-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .fee-info { background: #f8f8f8; border-radius: 10px; padding: 16px; margin-top: 16px; }
+        .fee-info-title { font-size: 12px; color: #666; margin-bottom: 8px; }
+        .fee-info-row { display: flex; justify-content: space-between; font-size: 13px; color: #333; padding: 4px 0; }
         @media (max-width: 768px) {
           .mobile-header { display: flex; }
           .main-content { margin-left: 0 !important; padding-top: 72px !important; }
@@ -256,6 +330,74 @@ export default function SettingsPage() {
         <h1 className="page-title">設定</h1>
         <p className="page-subtitle">アカウント情報の変更</p>
 
+        {/* Stripe Connect セクション */}
+        <div className="settings-card">
+          <h2 className="settings-title">
+            <span className="settings-title-icon">💳</span>
+            入金設定（Stripe Connect）
+          </h2>
+          <p className="settings-description">
+            献杯金を直接受け取るために、Stripeアカウントを連携してください。<br />
+            連携後、献杯があると自動的にご登録の銀行口座に入金されます。
+          </p>
+
+          {stripeStatus?.onboarding_complete ? (
+            <div className="stripe-status connected">
+              <div className="stripe-status-icon">✓</div>
+              <div className="stripe-status-text">
+                <div className="stripe-status-title">連携完了</div>
+                <div className="stripe-status-desc">Stripeアカウントが正常に連携されています</div>
+              </div>
+            </div>
+          ) : stripeStatus?.connected ? (
+            <>
+              <div className="stripe-status not-connected">
+                <div className="stripe-status-icon">⚠</div>
+                <div className="stripe-status-text">
+                  <div className="stripe-status-title">設定を完了してください</div>
+                  <div className="stripe-status-desc">Stripeアカウントの設定が完了していません</div>
+                </div>
+              </div>
+              <button className="stripe-connect-btn" onClick={handleStripeConnect} disabled={stripeLoading}>
+                {stripeLoading ? '処理中...' : '設定を続ける →'}
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="stripe-status not-connected">
+                <div className="stripe-status-icon">💳</div>
+                <div className="stripe-status-text">
+                  <div className="stripe-status-title">未連携</div>
+                  <div className="stripe-status-desc">Stripeアカウントを連携して入金を受け取れるようにしましょう</div>
+                </div>
+              </div>
+              <button className="stripe-connect-btn" onClick={handleStripeConnect} disabled={stripeLoading}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/>
+                </svg>
+                {stripeLoading ? '処理中...' : 'Stripeアカウントを連携'}
+              </button>
+            </>
+          )}
+
+          <div className="fee-info">
+            <div className="fee-info-title">手数料について</div>
+            <div className="fee-info-row">
+              <span>Stripe決済手数料</span>
+              <span>3.6%</span>
+            </div>
+            <div className="fee-info-row">
+              <span>システム利用料</span>
+              <span>8%</span>
+            </div>
+            <div className="fee-info-row" style={{ borderTop: '1px solid #e0e0e0', marginTop: '8px', paddingTop: '8px', fontWeight: 600 }}>
+              <span>お受け取り</span>
+              <span>約88.4%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* メールアドレス変更 */}
         <div className="settings-card">
           <h2 className="settings-title">
             <span className="settings-title-icon">✉️</span>
