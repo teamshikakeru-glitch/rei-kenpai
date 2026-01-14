@@ -288,7 +288,7 @@ export default function AdminPage() {
       <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ホーム</a>
         <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ご入金管理</a>
-        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>設定</a>
+        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>入金口座連携</a>
         <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
       </div>
 
@@ -304,7 +304,7 @@ export default function AdminPage() {
           <div className="sidebar-section-title">メインメニュー</div>
           <a href="/admin" className="sidebar-link active">ホーム</a>
           <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
-          <a href="/admin/settings" className="sidebar-link">設定</a>
+          <a href="/admin/settings" className="sidebar-link">入金口座連携</a>
         </nav>
         <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <button onClick={handleLogout} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '13px' }}>
