@@ -43,17 +43,22 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Rei <onboarding@resend.dev>',
+        from: 'Rei <noreply@send.xn--zcktc494n4ien54d.com>',
         to: email,
         subject: '【Rei】認証コードのお知らせ',
         html: `
           <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 20px;">
-            <h1 style="font-size: 24px; text-align: center;">Rei 認証コード</h1>
-            <p>新規登録の認証コードをお送りします。</p>
-            <div style="background: #f5f5f5; padding: 24px; text-align: center; margin: 24px 0; border-radius: 8px;">
-              <p style="font-size: 32px; font-weight: bold; letter-spacing: 8px; margin: 0;">${code}</p>
+            <div style="text-align: center; margin-bottom: 32px;">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #c9a227, #8b6914); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">礼</div>
+              <h1 style="font-size: 24px; margin-top: 16px; color: #1a1a1a;">Rei</h1>
             </div>
-            <p style="color: #666; font-size: 14px;">このコードは10分間有効です。</p>
+            <p style="color: #333; line-height: 1.8;">新規登録の認証コードをお送りします。</p>
+            <div style="background: #f8f8f8; border-radius: 12px; padding: 24px; text-align: center; margin: 24px 0;">
+              <p style="font-size: 12px; color: #888; margin-bottom: 8px;">認証コード</p>
+              <p style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #1a1a1a; margin: 0;">${code}</p>
+            </div>
+            <p style="color: #888; font-size: 13px;">このコードは10分間有効です。</p>
+            <p style="color: #888; font-size: 13px;">心当たりがない場合は、このメールを無視してください。</p>
           </div>
         `
       })
