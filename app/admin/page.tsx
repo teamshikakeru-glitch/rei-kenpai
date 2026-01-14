@@ -3,10 +3,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { useSession } from '@/lib/supabase/hooks/useSession';
+import SessionWarning from '@/components/SessionWarning';
 
 export default function AdminPage() {
+  const { isAuthenticated, isLoading: sessionLoading, showWarning, remainingTime, logout, extendSession } = useSession();
   const [stats, setStats] = useState({ active_projects: 0 });
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ deceased_name: '', slug: '', family_message: '', use_default_message: true, family_password: '' });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -24,6 +26,13 @@ export default function AdminPage() {
   const BASE_URL = 'https://rei-kenpai.vercel.app';
 
   useEffect(() => {
+    if (sessionLoading) return;
+    
+    if (!isAuthenticated) {
+      router.replace('/');
+      return;
+    }
+
     if (typeof window === 'undefined') return;
     
     const storedId = sessionStorage.getItem('funeral_home_id');
@@ -36,9 +45,8 @@ export default function AdminPage() {
     
     setFuneralHomeId(storedId);
     setFuneralHomeName(storedName);
-    setIsAuthenticated(true);
     fetchData(storedId);
-  }, [router]);
+  }, [router, isAuthenticated, sessionLoading]);
 
   const fetchData = async (homeId: string) => {
     try {
@@ -59,9 +67,7 @@ export default function AdminPage() {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('funeral_home_id');
-    sessionStorage.removeItem('funeral_home_name');
-    router.replace('/');
+    logout();
   };
 
   const handleSlugChange = (value: string) => { 
@@ -136,7 +142,6 @@ export default function AdminPage() {
       password: formData.family_password
     });
     
-    // 3分後にモーダルを自動で閉じる
     setTimeout(() => {
       setCreatedProject(null);
     }, 180000);
@@ -163,7 +168,7 @@ export default function AdminPage() {
     return k[Math.floor(n / 10)] + '十' + (n % 10 ? k[n % 10] : ''); 
   };
 
-  if (!isAuthenticated || loading) {
+  if (sessionLoading || !isAuthenticated || loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0f1a' }}>
         <style jsx>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
@@ -176,6 +181,15 @@ export default function AdminPage() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Session Warning Modal */}
+      {showWarning && (
+        <SessionWarning
+          remainingTime={remainingTime}
+          onExtend={extendSession}
+          onLogout={handleLogout}
+        />
+      )}
+
       <style jsx>{`
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; height: 56px; background: #0a0f1a; z-index: 1000; align-items: center; justify-content: space-between; padding: 0 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -275,6 +289,7 @@ export default function AdminPage() {
       <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ホーム</a>
         <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ご入金管理</a>
+        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>設定</a>
         <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
       </div>
 
@@ -291,6 +306,7 @@ export default function AdminPage() {
           <div className="sidebar-section-title">メインメニュー</div>
           <a href="/admin" className="sidebar-link active">ホーム</a>
           <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
+          <a href="/admin/settings" className="sidebar-link">設定</a>
         </nav>
         <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <button onClick={handleLogout} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '13px' }}>
