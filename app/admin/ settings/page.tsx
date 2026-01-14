@@ -2,17 +2,16 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import { useSession } from '@/lib/supabase/hooks/useSession';
-import SessionWarning from '@/components/SessionWarning';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 function SettingsContent() {
-  const { isAuthenticated, isLoading: sessionLoading, showWarning, remainingTime, logout, extendSession } = useSession();
   const [funeralHomeId, setFuneralHomeId] = useState<string | null>(null);
   const [funeralHomeName, setFuneralHomeName] = useState('');
   const [currentEmail, setCurrentEmail] = useState('');
   const [loading, setLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const [emailStep, setEmailStep] = useState<'form' | 'verify'>('form');
   const [newEmail, setNewEmail] = useState('');
@@ -29,16 +28,10 @@ function SettingsContent() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const supabase = createClient();
 
   useEffect(() => {
-    if (sessionLoading) return;
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
     
-    if (!isAuthenticated) {
-      router.replace('/');
-      return;
-    }
-
     const fetchData = async () => {
       const storedId = sessionStorage.getItem('funeral_home_id');
       const storedName = sessionStorage.getItem('funeral_home_name');
@@ -67,7 +60,7 @@ function SettingsContent() {
     };
 
     fetchData();
-  }, [router, isAuthenticated, sessionLoading, supabase]);
+  }, [router]);
 
   useEffect(() => {
     const stripeParam = searchParams.get('stripe');
@@ -116,7 +109,9 @@ function SettingsContent() {
   };
 
   const handleLogout = () => {
-    logout();
+    sessionStorage.removeItem('funeral_home_id');
+    sessionStorage.removeItem('funeral_home_name');
+    router.replace('/');
   };
 
   const handleSendEmailCode = async (e: React.FormEvent) => {
@@ -205,35 +200,31 @@ function SettingsContent() {
     setEmailLoading(false);
   };
 
-  if (sessionLoading || !isAuthenticated || loading) {
+  if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0f1a' }}>
         <div style={{ textAlign: 'center', color: 'white' }}>
-          <div style={{ width: '48px', height: '48px', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#c9a227', borderRadius: '50%', margin: '0 auto 1rem' }}></div>
+          <div style={{ width: '48px', height: '48px', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#c9a227', borderRadius: '50%', margin: '0 auto 1rem', animation: 'spin 1s linear infinite' }}></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {showWarning && (
-        <SessionWarning
-          remainingTime={remainingTime}
-          onExtend={extendSession}
-          onLogout={handleLogout}
-        />
-      )}
-
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#0a0f1a' }}>
       <style jsx>{`
-        .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; height: 56px; background: #0a0f1a; z-index: 1000; align-items: center; justify-content: space-between; padding: 0 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .mobile-menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
-        .mobile-logo { display: flex; align-items: center; gap: 0.5rem; color: white; }
-        .mobile-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #c9a227, #a08020); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
-        .mobile-nav { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: #0a0f1a; z-index: 999; flex-direction: column; padding: 1rem; }
-        .mobile-nav.open { display: flex; }
-        .mobile-nav-link { color: rgba(255,255,255,0.7); text-decoration: none; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.95rem; }
-        .mobile-nav-logout { color: #f87171; padding: 1rem; font-size: 0.95rem; cursor: pointer; background: none; border: none; text-align: left; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .sidebar { width: 240px; background: #0a0f1a; padding: 24px 16px; display: flex; flexDirection: column; borderRight: 1px solid rgba(255,255,255,0.1); position: fixed; top: 0; left: 0; bottom: 0; }
+        .sidebar-logo { display: flex; align-items: center; gap: 12px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px; }
+        .sidebar-logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #c9a227, #a08020); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; font-weight: 600; }
+        .sidebar-logo-text h1 { color: white; font-size: 20px; font-weight: 600; margin: 0; }
+        .sidebar-logo-text span { color: rgba(255,255,255,0.5); font-size: 11px; }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+        .sidebar-section-title { color: rgba(255,255,255,0.4); font-size: 10px; letter-spacing: 0.1em; padding: 8px 12px; margin-bottom: 4px; }
+        .sidebar-link { color: rgba(255,255,255,0.7); text-decoration: none; padding: 12px; border-radius: 8px; font-size: 14px; transition: all 0.2s; display: block; }
+        .sidebar-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .sidebar-link.active { background: rgba(201,162,39,0.15); color: #c9a227; }
+        .main-content { flex: 1; margin-left: 240px; padding: 32px; background: #f5f5f0; min-height: 100vh; }
         .settings-card { background: white; border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .settings-title { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .settings-title-icon { width: 36px; height: 36px; background: linear-gradient(135deg, rgba(201,162,39,0.1), rgba(201,162,39,0.2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
@@ -272,27 +263,10 @@ function SettingsContent() {
         .fee-info-title { font-size: 12px; color: #666; margin-bottom: 8px; }
         .fee-info-row { display: flex; justify-content: space-between; font-size: 13px; color: #333; padding: 4px 0; }
         @media (max-width: 768px) {
-          .mobile-header { display: flex; }
-          .main-content { margin-left: 0 !important; padding-top: 72px !important; }
+          .sidebar { display: none; }
+          .main-content { margin-left: 0; padding: 16px; }
         }
       `}</style>
-
-      <div className="mobile-header">
-        <div className="mobile-logo">
-          <div className="mobile-logo-icon">礼</div>
-          <span style={{ fontWeight: 500, fontSize: '14px' }}>Rei</span>
-        </div>
-        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? '✕' : '☰'}
-        </button>
-      </div>
-
-      <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
-        <a href="/admin" className="mobile-nav-link">ホーム</a>
-        <a href="/admin/payments" className="mobile-nav-link">ご入金管理</a>
-        <a href="/admin/settings" className="mobile-nav-link">入金口座連携</a>
-        <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
-      </div>
 
       <aside className="sidebar">
         <div className="sidebar-logo">
@@ -341,7 +315,7 @@ function SettingsContent() {
               <div className="stripe-status-icon">✓</div>
               <div className="stripe-status-text">
                 <div className="stripe-status-title">連携完了</div>
-                <div className="stripe-status-desc">銀行口座が正常に連携されています。献杯金は自動で入金されます。</div>
+                <div className="stripe-status-desc">銀行口座が正常に連携されています。</div>
               </div>
             </div>
           ) : stripeStatus?.connected ? (
@@ -373,7 +347,7 @@ function SettingsContent() {
           )}
 
           <div className="fee-info">
-            <div className="fee-info-title">手数料について（税込）</div>
+            <div className="fee-info-title">手数料について</div>
             <div className="fee-info-row">
               <span>Stripe決済手数料</span>
               <span>3.6%</span>
@@ -386,9 +360,6 @@ function SettingsContent() {
               <span>お受け取り額</span>
               <span>約88.4%</span>
             </div>
-            <p style={{ fontSize: '11px', color: '#999', marginTop: '12px' }}>
-              例：10,000円の献杯 → 約8,840円がお振込みされます
-            </p>
           </div>
         </div>
 
@@ -426,10 +397,8 @@ function SettingsContent() {
             </form>
           ) : (
             <form onSubmit={handleVerifyEmailCode}>
-              <p style={{ fontSize: '14px', color: '#666', textAlign: 'center', marginBottom: '20px', lineHeight: 1.7 }}>
-                <strong style={{ color: '#c9a227' }}>{newEmail}</strong>
-                <br />
-                に認証コードを送信しました
+              <p style={{ fontSize: '14px', color: '#666', textAlign: 'center', marginBottom: '20px' }}>
+                <strong style={{ color: '#c9a227' }}>{newEmail}</strong> に認証コードを送信しました
               </p>
               <label className="form-label">認証コード（6桁）</label>
               <input
