@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Rei <noreply@send.xn--zcktc494n4ien54d.com>',
+        from: 'Rei <noreply@xn--zcktc494n4ien54d.com>',
         to: email,
         subject: '【Rei】認証コードのお知らせ',
         html: `
