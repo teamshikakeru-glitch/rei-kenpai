@@ -47,10 +47,13 @@ export async function POST(request: NextRequest) {
         .eq('id', funeral_home_id);
     }
 
+    // 動的にURLを取得
+    const origin = request.headers.get('origin') || 'https://rei-kenpai-b3z8.vercel.app';
+
     const accountLink = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: `https://rei-kenpai.vercel.app/admin/settings?stripe=refresh`,
-      return_url: `https://rei-kenpai.vercel.app/admin/settings?stripe=success`,
+      refresh_url: `${origin}/admin/settings?stripe=refresh`,
+      return_url: `${origin}/admin/settings?stripe=success`,
       type: 'account_onboarding'
     });
 
