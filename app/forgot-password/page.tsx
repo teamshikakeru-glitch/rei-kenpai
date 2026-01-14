@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 type Step = 'email' | 'code' | 'password' | 'complete';
 
@@ -141,201 +140,189 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#c9a227] to-[#8b6914] rounded-xl mb-4">
-            <span className="text-white text-2xl font-bold">礼</span>
-          </div>
-          <h1 className="text-3xl font-bold text-white">Rei</h1>
-          <p className="text-gray-400 mt-2">パスワードをお忘れの方</p>
-        </div>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #0a0f1a 0%, #1a1f2e 50%, #2a3040 100%)' }}>
+      <style jsx>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .page-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; }
+        .login-card { width: 100%; max-width: 380px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px 32px; backdrop-filter: blur(20px); animation: fadeUp 0.6s ease forwards; }
+        .login-logo { width: 64px; height: 64px; background: linear-gradient(145deg, #c9a227 0%, #a08020 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: white; margin: 0 auto 20px; box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3); }
+        .login-title { font-size: 24px; font-weight: 300; color: #fff; text-align: center; letter-spacing: 0.2em; margin-bottom: 4px; }
+        .login-subtitle-text { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; letter-spacing: 0.15em; margin-bottom: 32px; }
+        .step-title { font-size: 18px; font-weight: 400; color: #fff; text-align: center; margin-bottom: 12px; }
+        .step-description { font-size: 13px; color: rgba(255,255,255,0.5); text-align: center; line-height: 1.8; margin-bottom: 24px; }
+        .highlight-email { color: #c9a227; }
+        .form-label { display: block; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.5); margin-bottom: 8px; letter-spacing: 0.1em; }
+        .login-input { width: 100%; padding: 16px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 15px; color: #fff; background: rgba(255,255,255,0.05); transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 16px; }
+        .login-input:focus { outline: none; border-color: #c9a227; background: rgba(255,255,255,0.08); }
+        .login-input::placeholder { color: rgba(255,255,255,0.3); }
+        .code-input { text-align: center; font-size: 24px; letter-spacing: 0.5em; }
+        .login-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #c9a227 0%, #a08020 100%); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.1em; margin-top: 8px; }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4); }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .error-message { background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #f87171; padding: 12px 16px; border-radius: 10px; text-align: center; margin-bottom: 16px; font-size: 13px; }
+        .login-footer { text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .login-footer-link { color: #c9a227; text-decoration: none; font-weight: 500; font-size: 13px; }
+        .login-footer-link:hover { text-decoration: underline; }
+        .sub-link { display: block; margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.3s ease; }
+        .sub-link:hover { color: rgba(255,255,255,0.6); }
+        .success-icon { width: 64px; height: 64px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .success-icon svg { width: 32px; height: 32px; color: #22c55e; }
+        .brand-footer { margin-top: 48px; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.2em; }
+        @media (max-width: 480px) { .page-container { padding: 40px 20px; } .login-card { padding: 32px 24px; } }
+      `}</style>
 
-        <div className="bg-[#1a1a1a] rounded-2xl p-8 shadow-xl">
-          
+      <div className="page-container">
+        <div className="login-card">
+          <div className="login-logo">礼</div>
+          <h2 className="login-title">Rei</h2>
+          <p className="login-subtitle-text">パスワードをお忘れの方</p>
+
+          {/* ステップ1: メールアドレス入力 */}
           {step === 'email' && (
             <>
-              <h2 className="text-xl font-bold text-white mb-2 text-center">メールアドレスの確認</h2>
-              <p className="text-gray-400 text-sm text-center mb-6">
+              <h3 className="step-title">メールアドレスの確認</h3>
+              <p className="step-description">
                 ご登録のメールアドレスを入力してください。<br />
                 パスワードリセット用の認証コードをお送りします。
               </p>
-              
-              <form onSubmit={handleSendCode} className="space-y-5">
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">メールアドレス</label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-[#2a2a2a] border border-[#333] rounded-lg text-white focus:outline-none focus:border-[#c9a227] transition"
-                    placeholder="email@example.com"
-                    required
-                  />
-                </div>
 
-                {error && (
-                  <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3">
-                    <p className="text-red-400 text-sm text-center">{error}</p>
-                  </div>
-                )}
+              {error && <div className="error-message">{error}</div>}
 
-                <button
-                  type="submit"
+              <form onSubmit={handleSendCode}>
+                <label className="form-label">メールアドレス</label>
+                <input
+                  type="email"
+                  className="login-input"
+                  placeholder="email@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
-                  className="w-full py-3 bg-gradient-to-r from-[#c9a227] to-[#8b6914] text-white font-bold rounded-lg hover:opacity-90 transition disabled:opacity-50"
-                >
+                  required
+                />
+                
+                <button type="submit" className="login-btn" disabled={loading}>
                   {loading ? '送信中...' : '認証コードを送信'}
                 </button>
               </form>
+
+              <div className="login-footer">
+                <a href="/" className="login-footer-link">← ログインページに戻る</a>
+              </div>
             </>
           )}
 
+          {/* ステップ2: 認証コード入力 */}
           {step === 'code' && (
             <>
-              <h2 className="text-xl font-bold text-white mb-2 text-center">認証コードの入力</h2>
-              <p className="text-gray-400 text-sm text-center mb-6">
-                <span className="text-[#c9a227]">{email}</span> に<br />
+              <h3 className="step-title">認証コードの入力</h3>
+              <p className="step-description">
+                <span className="highlight-email">{email}</span> に<br />
                 6桁の認証コードを送信しました。
               </p>
-              
-              <form onSubmit={handleVerifyCode} className="space-y-5">
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">認証コード</label>
-                  <input
-                    type="text"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                    className="w-full px-4 py-3 bg-[#2a2a2a] border border-[#333] rounded-lg text-white text-center text-2xl tracking-[0.5em] focus:outline-none focus:border-[#c9a227] transition"
-                    placeholder="000000"
-                    maxLength={6}
-                    required
-                  />
-                </div>
 
-                {error && (
-                  <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3">
-                    <p className="text-red-400 text-sm text-center">{error}</p>
-                  </div>
-                )}
+              {error && <div className="error-message">{error}</div>}
 
-                <button
-                  type="submit"
-                  disabled={loading || code.length !== 6}
-                  className="w-full py-3 bg-gradient-to-r from-[#c9a227] to-[#8b6914] text-white font-bold rounded-lg hover:opacity-90 transition disabled:opacity-50"
-                >
+              <form onSubmit={handleVerifyCode}>
+                <label className="form-label">認証コード</label>
+                <input
+                  type="text"
+                  className="login-input code-input"
+                  placeholder="000000"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  maxLength={6}
+                  disabled={loading}
+                  required
+                />
+                
+                <button type="submit" className="login-btn" disabled={loading || code.length !== 6}>
                   {loading ? '確認中...' : '確認する'}
                 </button>
               </form>
 
-              <div className="mt-4 text-center">
+              <div className="login-footer">
                 <button
                   onClick={handleResendCode}
                   disabled={loading}
-                  className="text-[#c9a227] hover:text-[#d4af37] text-sm transition disabled:opacity-50"
+                  className="login-footer-link"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                   コードを再送信する
                 </button>
-              </div>
-
-              <div className="mt-2 text-center">
-                <button
-                  onClick={() => { setStep('email'); setError(''); }}
-                  className="text-gray-500 hover:text-gray-400 text-sm transition"
-                >
+                <a href="#" onClick={() => { setStep('email'); setError(''); }} className="sub-link">
                   メールアドレスを変更する
-                </button>
+                </a>
               </div>
             </>
           )}
 
+          {/* ステップ3: 新しいパスワード設定 */}
           {step === 'password' && (
             <>
-              <h2 className="text-xl font-bold text-white mb-2 text-center">新しいパスワードの設定</h2>
-              <p className="text-gray-400 text-sm text-center mb-6">
+              <h3 className="step-title">新しいパスワードの設定</h3>
+              <p className="step-description">
                 新しいパスワードを入力してください。<br />
                 6文字以上で設定してください。
               </p>
-              
-              <form onSubmit={handleResetPassword} className="space-y-5">
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">新しいパスワード</label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-[#2a2a2a] border border-[#333] rounded-lg text-white focus:outline-none focus:border-[#c9a227] transition"
-                    placeholder="••••••••"
-                    minLength={6}
-                    required
-                  />
-                </div>
 
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">パスワード（確認）</label>
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-[#2a2a2a] border border-[#333] rounded-lg text-white focus:outline-none focus:border-[#c9a227] transition"
-                    placeholder="••••••••"
-                    minLength={6}
-                    required
-                  />
-                </div>
+              {error && <div className="error-message">{error}</div>}
 
-                {error && (
-                  <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3">
-                    <p className="text-red-400 text-sm text-center">{error}</p>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
+              <form onSubmit={handleResetPassword}>
+                <label className="form-label">新しいパスワード</label>
+                <input
+                  type="password"
+                  className="login-input"
+                  placeholder="6文字以上"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  minLength={6}
                   disabled={loading}
-                  className="w-full py-3 bg-gradient-to-r from-[#c9a227] to-[#8b6914] text-white font-bold rounded-lg hover:opacity-90 transition disabled:opacity-50"
-                >
+                  required
+                />
+
+                <label className="form-label">パスワード（確認）</label>
+                <input
+                  type="password"
+                  className="login-input"
+                  placeholder="もう一度入力"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  minLength={6}
+                  disabled={loading}
+                  required
+                />
+                
+                <button type="submit" className="login-btn" disabled={loading}>
                   {loading ? '更新中...' : 'パスワードを更新'}
                 </button>
               </form>
             </>
           )}
 
+          {/* ステップ4: 完了 */}
           {step === 'complete' && (
             <>
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
-                  <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h2 className="text-xl font-bold text-white mb-2">パスワードを更新しました</h2>
-                <p className="text-gray-400 text-sm mb-6">
-                  新しいパスワードでログインできます。
-                </p>
-                
-                <Link
-                  href="/"
-                  className="inline-block w-full py-3 bg-gradient-to-r from-[#c9a227] to-[#8b6914] text-white font-bold rounded-lg hover:opacity-90 transition text-center"
-                >
-                  ログインページへ
-                </Link>
+              <div className="success-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
               </div>
+              <h3 className="step-title">パスワードを更新しました</h3>
+              <p className="step-description">
+                新しいパスワードでログインできます。
+              </p>
+              
+              <a href="/" className="login-btn" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+                ログインページへ
+              </a>
             </>
-          )}
-
-          {step !== 'complete' && (
-            <div className="mt-6 pt-6 border-t border-[#333] text-center">
-              <Link href="/" className="text-gray-500 hover:text-gray-400 text-sm transition">
-                ← ログインページに戻る
-              </Link>
-            </div>
           )}
         </div>
 
-        <p className="text-center text-gray-600 text-xs mt-8">
-          © 2024 Rei. All rights reserved.
-        </p>
+        <p className="brand-footer">POWERED BY REI</p>
       </div>
     </div>
   );
