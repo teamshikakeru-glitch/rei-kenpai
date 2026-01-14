@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
@@ -8,9 +8,40 @@ export default function LoginPage() {
   const [funeralHomeName, setFuneralHomeName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [nameError, setNameError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+
+  // 葬儀社名のバリデーション
+  const validateName = (name: string): string => {
+    if (!name) return '';
+    
+    // 前後のスペースチェック
+    if (name !== name.trim()) {
+      return '前後にスペースが含まれています';
+    }
+    
+    // 連続スペースチェック
+    if (/\s{2,}/.test(name)) {
+      return '連続するスペースは使用できません';
+    }
+    
+    // 特殊文字チェック（日本語、英数字、一部の記号のみ許可）
+    const invalidChars = name.match(/[^\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z0-9\s\-・．.()（）]/g);
+    if (invalidChars) {
+      const uniqueChars = [...new Set(invalidChars)].join(' ');
+      return `使用できない文字が含まれています: ${uniqueChars}`;
+    }
+    
+    return '';
+  };
+
+  // 葬儀社名が変更されたときにバリデーション
+  useEffect(() => {
+    const error = validateName(funeralHomeName);
+    setNameError(error);
+  }, [funeralHomeName]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +50,14 @@ export default function LoginPage() {
 
     if (!funeralHomeName.trim() || !password) {
       setError('葬儀社名とパスワードを入力してください');
+      setLoading(false);
+      return;
+    }
+
+    // 葬儀社名バリデーション
+    const nameValidationError = validateName(funeralHomeName);
+    if (nameValidationError) {
+      setError(nameValidationError);
       setLoading(false);
       return;
     }
@@ -66,10 +105,14 @@ export default function LoginPage() {
         .login-logo { width: 64px; height: 64px; background: linear-gradient(145deg, #c9a227 0%, #a08020 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: white; margin: 0 auto 20px; box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3); }
         .login-title { font-size: 24px; font-weight: 300; color: #fff; text-align: center; letter-spacing: 0.2em; margin-bottom: 4px; }
         .login-subtitle-text { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; letter-spacing: 0.15em; margin-bottom: 32px; }
+        .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.5); margin-bottom: 8px; letter-spacing: 0.1em; }
-        .login-input { width: 100%; padding: 16px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 15px; color: #fff; background: rgba(255,255,255,0.05); transition: all 0.3s ease; box-sizing: border-box; margin-bottom: 16px; }
+        .login-input { width: 100%; padding: 16px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 15px; color: #fff; background: rgba(255,255,255,0.05); transition: all 0.3s ease; box-sizing: border-box; }
         .login-input:focus { outline: none; border-color: #c9a227; background: rgba(255,255,255,0.08); }
         .login-input::placeholder { color: rgba(255,255,255,0.3); }
+        .login-input.error { border-color: rgba(220, 38, 38, 0.5); }
+        .field-error { font-size: 11px; color: #f87171; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+        .field-error::before { content: "⚠"; }
         .login-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #c9a227 0%, #a08020 100%); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.1em; margin-top: 8px; }
         .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4); }
         .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
@@ -110,27 +153,32 @@ export default function LoginPage() {
           {error && <div className="error-message">{error}</div>}
 
           <form onSubmit={handleLogin}>
-            <label className="form-label">葬儀社名</label>
-            <input
-              type="text"
-              className="login-input"
-              placeholder="ご登録の葬儀社名"
-              value={funeralHomeName}
-              onChange={(e) => setFuneralHomeName(e.target.value)}
-              disabled={loading}
-            />
+            <div className="form-group">
+              <label className="form-label">葬儀社名</label>
+              <input
+                type="text"
+                className={`login-input ${nameError ? 'error' : ''}`}
+                placeholder="ご登録の葬儀社名"
+                value={funeralHomeName}
+                onChange={(e) => setFuneralHomeName(e.target.value)}
+                disabled={loading}
+              />
+              {nameError && <div className="field-error">{nameError}</div>}
+            </div>
             
-            <label className="form-label">パスワード</label>
-            <input
-              type="password"
-              className="login-input"
-              placeholder="パスワード"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
+            <div className="form-group">
+              <label className="form-label">パスワード</label>
+              <input
+                type="password"
+                className="login-input"
+                placeholder="パスワード"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
+            </div>
             
-            <button type="submit" className="login-btn" disabled={loading}>
+            <button type="submit" className="login-btn" disabled={loading || !!nameError}>
               {loading ? '認証中...' : 'ログイン'}
             </button>
           </form>
