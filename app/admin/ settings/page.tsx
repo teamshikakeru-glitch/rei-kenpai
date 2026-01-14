@@ -265,7 +265,7 @@ function SettingsContent() {
         .stripe-status-text { flex: 1; }
         .stripe-status-title { font-size: 14px; font-weight: 600; color: #1a1a1a; }
         .stripe-status-desc { font-size: 12px; color: #666; margin-top: 2px; }
-        .stripe-connect-btn { padding: 14px 24px; background: #635bff; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .stripe-connect-btn { padding: 14px 24px; background: #635bff; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
         .stripe-connect-btn:hover { background: #5148e6; }
         .stripe-connect-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .fee-info { background: #f8f8f8; border-radius: 10px; padding: 16px; margin-top: 16px; }
@@ -290,7 +290,7 @@ function SettingsContent() {
       <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <a href="/admin" className="mobile-nav-link">ホーム</a>
         <a href="/admin/payments" className="mobile-nav-link">ご入金管理</a>
-        <a href="/admin/settings" className="mobile-nav-link">設定</a>
+        <a href="/admin/settings" className="mobile-nav-link">入金口座連携</a>
         <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
       </div>
 
@@ -306,7 +306,7 @@ function SettingsContent() {
           <div className="sidebar-section-title">メインメニュー</div>
           <a href="/admin" className="sidebar-link">ホーム</a>
           <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
-          <a href="/admin/settings" className="sidebar-link active">設定</a>
+          <a href="/admin/settings" className="sidebar-link active">入金口座連携</a>
         </nav>
         <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <button onClick={handleLogout} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '13px' }}>
@@ -323,14 +323,13 @@ function SettingsContent() {
           <button className="logout-btn" onClick={handleLogout}>ログアウト</button>
         </div>
 
-        <h1 className="page-title">設定</h1>
-        <p className="page-subtitle">アカウント情報の変更</p>
+        <h1 className="page-title">入金口座連携</h1>
+        <p className="page-subtitle">献杯金を受け取るための設定</p>
 
-        {/* Stripe Connect セクション */}
         <div className="settings-card">
           <h2 className="settings-title">
-            <span className="settings-title-icon">💳</span>
-            入金設定（Stripe Connect）
+            <span className="settings-title-icon">🏦</span>
+            銀行口座の連携（Stripe Connect）
           </h2>
           <p className="settings-description">
             献杯金を直接受け取るために、Stripeアカウントを連携してください。<br />
@@ -342,7 +341,7 @@ function SettingsContent() {
               <div className="stripe-status-icon">✓</div>
               <div className="stripe-status-text">
                 <div className="stripe-status-title">連携完了</div>
-                <div className="stripe-status-desc">Stripeアカウントが正常に連携されています</div>
+                <div className="stripe-status-desc">銀行口座が正常に連携されています。献杯金は自動で入金されます。</div>
               </div>
             </div>
           ) : stripeStatus?.connected ? (
@@ -351,7 +350,7 @@ function SettingsContent() {
                 <div className="stripe-status-icon">⚠</div>
                 <div className="stripe-status-text">
                   <div className="stripe-status-title">設定を完了してください</div>
-                  <div className="stripe-status-desc">Stripeアカウントの設定が完了していません</div>
+                  <div className="stripe-status-desc">銀行口座の設定が完了していません</div>
                 </div>
               </div>
               <button className="stripe-connect-btn" onClick={handleStripeConnect} disabled={stripeLoading}>
@@ -361,20 +360,20 @@ function SettingsContent() {
           ) : (
             <>
               <div className="stripe-status not-connected">
-                <div className="stripe-status-icon">💳</div>
+                <div className="stripe-status-icon">🏦</div>
                 <div className="stripe-status-text">
                   <div className="stripe-status-title">未連携</div>
-                  <div className="stripe-status-desc">Stripeアカウントを連携して入金を受け取れるようにしましょう</div>
+                  <div className="stripe-status-desc">銀行口座を連携して献杯金を受け取れるようにしましょう</div>
                 </div>
               </div>
               <button className="stripe-connect-btn" onClick={handleStripeConnect} disabled={stripeLoading}>
-                {stripeLoading ? '処理中...' : 'Stripeアカウントを連携'}
+                {stripeLoading ? '処理中...' : '🏦 銀行口座を連携する'}
               </button>
             </>
           )}
 
           <div className="fee-info">
-            <div className="fee-info-title">手数料について</div>
+            <div className="fee-info-title">手数料について（税込）</div>
             <div className="fee-info-row">
               <span>Stripe決済手数料</span>
               <span>3.6%</span>
@@ -384,13 +383,15 @@ function SettingsContent() {
               <span>8%</span>
             </div>
             <div className="fee-info-row" style={{ borderTop: '1px solid #e0e0e0', marginTop: '8px', paddingTop: '8px', fontWeight: 600 }}>
-              <span>お受け取り</span>
+              <span>お受け取り額</span>
               <span>約88.4%</span>
             </div>
+            <p style={{ fontSize: '11px', color: '#999', marginTop: '12px' }}>
+              例：10,000円の献杯 → 約8,840円がお振込みされます
+            </p>
           </div>
         </div>
 
-        {/* メールアドレス変更 */}
         <div className="settings-card">
           <h2 className="settings-title">
             <span className="settings-title-icon">✉️</span>
