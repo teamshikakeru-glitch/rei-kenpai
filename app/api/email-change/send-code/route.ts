@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '必須項目が不足しています' }, { status: 400 });
     }
 
-    // 新しいメールアドレスが既に使用されていないか確認
     const { data: existingEmail } = await supabase
       .from('funeral_homes')
       .select('id')
@@ -25,17 +24,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'このメールアドレスは既に使用されています' }, { status: 400 });
     }
 
-    // 6桁の認証コードを生成
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10分間有効
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-    // 既存の認証コードを削除
     await supabase
       .from('email_change_codes')
       .delete()
       .eq('funeral_home_id', funeral_home_id);
 
-    // 新しい認証コードを保存
     const { error: insertError } = await supabase.from('email_change_codes').insert({
       funeral_home_id,
       new_email,
@@ -48,7 +44,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'エラーが発生しました' }, { status: 500 });
     }
 
-    // Resend APIでメール送信
     const resendRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -71,15 +66,13 @@ export async function POST(request: NextRequest) {
               <p style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #1a1a1a; margin: 0;">${code}</p>
             </div>
             <p style="color: #888; font-size: 13px;">このコードは10分間有効です。</p>
-            <p style="color: #888; font-size: 13px;">心当たりがない場合は、このメールを無視してください。</p>
           </div>
         `
       })
     });
 
     if (!resendRes.ok) {
-      const errorText = await resendRes.text();
-      console.error('Resend error:', errorText);
+      console.error('Resend error:', await resendRes.text());
       return NextResponse.json({ error: 'メール送信に失敗しました' }, { status: 500 });
     }
 
