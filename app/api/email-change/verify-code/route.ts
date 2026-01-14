@@ -14,36 +14,44 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '必須項目が不足しています' }, { status: 400 });
     }
 
+    if (password.length < 6) {
+      return NextResponse.json({ error: 'パスワードは6文字以上で設定してください' }, { status: 400 });
+    }
+
     const { data: verification, error: verifyError } = await supabase
       .from('verification_codes')
       .select('*')
       .eq('email', email)
       .eq('code', code)
+      .eq('used', false)
+      .gt('expires_at', new Date().toISOString())
       .single();
 
     if (verifyError || !verification) {
-      return NextResponse.json({ error: '認証コードが無効です' }, { status: 400 });
+      return NextResponse.json({ error: '認証コードが無効または期限切れです' }, { status: 400 });
     }
 
-    if (new Date(verification.expires_at) < new Date()) {
-      return NextResponse.json({ error: '認証コードの有効期限が切れています' }, { status: 400 });
-    }
-
-    const { error: insertError } = await supabase
+    const { data: newFuneralHome, error: insertError } = await supabase
       .from('funeral_homes')
       .insert({
         name: verification.funeral_home_name,
         email: email,
         password: password
-      });
+      })
+      .select()
+      .single();
 
     if (insertError) {
+      console.error('Insert error:', insertError);
       return NextResponse.json({ error: '登録に失敗しました' }, { status: 500 });
     }
 
-    await supabase.from('verification_codes').delete().eq('email', email);
+    await supabase
+      .from('verification_codes')
+      .update({ used: true })
+      .eq('id', verification.id);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, funeral_home: newFuneralHome });
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'エラーが発生しました' }, { status: 500 });

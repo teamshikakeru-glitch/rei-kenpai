@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(request: NextRequest) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   try {
     const { funeral_home_id } = await request.json();
 
@@ -29,7 +28,6 @@ export async function POST(request: NextRequest) {
 
     let accountId = funeralHome.stripe_account_id;
 
-    // Stripe Connect アカウントがない場合は作成
     if (!accountId) {
       const account = await stripe.accounts.create({
         type: 'standard',
@@ -49,7 +47,6 @@ export async function POST(request: NextRequest) {
         .eq('id', funeral_home_id);
     }
 
-    // オンボーディングリンクを生成
     const accountLink = await stripe.accountLinks.create({
       account: accountId,
       refresh_url: `https://rei-kenpai.vercel.app/admin/settings?stripe=refresh`,

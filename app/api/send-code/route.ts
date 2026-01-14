@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(request: NextRequest) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   try {
     const { email, funeral_home_name } = await request.json();
 
@@ -14,26 +14,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '必須項目が不足しています' }, { status: 400 });
     }
 
-    // 葬儀社名の重複チェック
-    const { data: existingName } = await supabase
+    const { data: existing } = await supabase
       .from('funeral_homes')
       .select('id')
-      .eq('name', funeral_home_name.trim())
+      .eq('name', funeral_home_name)
       .single();
 
-    if (existingName) {
+    if (existing) {
       return NextResponse.json({ error: 'この葬儀社名は既に登録されています' }, { status: 400 });
-    }
-
-    // メールアドレスの重複チェック
-    const { data: existingEmail } = await supabase
-      .from('funeral_homes')
-      .select('id')
-      .eq('email', email.trim())
-      .single();
-
-    if (existingEmail) {
-      return NextResponse.json({ error: 'このメールアドレスは既に登録されています' }, { status: 400 });
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -44,7 +32,7 @@ export async function POST(request: NextRequest) {
     await supabase.from('verification_codes').insert({
       email,
       code,
-      funeral_home_name: funeral_home_name.trim(),
+      funeral_home_name,
       expires_at: expiresAt.toISOString()
     });
 
@@ -70,15 +58,12 @@ export async function POST(request: NextRequest) {
               <p style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #1a1a1a; margin: 0;">${code}</p>
             </div>
             <p style="color: #888; font-size: 13px;">このコードは10分間有効です。</p>
-            <p style="color: #888; font-size: 13px;">心当たりがない場合は、このメールを無視してください。</p>
           </div>
         `
       })
     });
 
     if (!resendRes.ok) {
-      const errorText = await resendRes.text();
-      console.error('Resend error:', errorText);
       return NextResponse.json({ error: 'メール送信に失敗しました' }, { status: 500 });
     }
 
