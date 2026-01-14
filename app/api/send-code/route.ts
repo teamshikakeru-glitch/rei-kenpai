@@ -14,14 +14,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '必須項目が不足しています' }, { status: 400 });
     }
 
-    const { data: existing } = await supabase
+    // 葬儀社名の重複チェック
+    const { data: existingName } = await supabase
       .from('funeral_homes')
       .select('id')
-      .eq('name', funeral_home_name)
+      .eq('name', funeral_home_name.trim())
       .single();
 
-    if (existing) {
+    if (existingName) {
       return NextResponse.json({ error: 'この葬儀社名は既に登録されています' }, { status: 400 });
+    }
+
+    // メールアドレスの重複チェック
+    const { data: existingEmail } = await supabase
+      .from('funeral_homes')
+      .select('id')
+      .eq('email', email.trim())
+      .single();
+
+    if (existingEmail) {
+      return NextResponse.json({ error: 'このメールアドレスは既に登録されています' }, { status: 400 });
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -32,7 +44,7 @@ export async function POST(request: NextRequest) {
     await supabase.from('verification_codes').insert({
       email,
       code,
-      funeral_home_name,
+      funeral_home_name: funeral_home_name.trim(),
       expires_at: expiresAt.toISOString()
     });
 
