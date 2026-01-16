@@ -189,24 +189,22 @@ export default function AdminPage() {
           transition: all 0.3s ease;
         }
         .card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
         .stat-card {
           background: white;
           border-radius: 16px;
-          padding: 24px;
+          padding: 20px;
           box-shadow: 0 4px 20px rgba(0,0,0,0.05);
           transition: all 0.3s ease;
-          cursor: default;
         }
         .stat-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 28px rgba(0,0,0,0.1);
         }
         .input-field {
           width: 100%;
-          padding: 16px 18px;
+          padding: 14px 16px;
           border: 2px solid #e8e4dc;
           border-radius: 12px;
           font-size: 16px;
@@ -219,11 +217,10 @@ export default function AdminPage() {
           border-color: #c9a227;
           box-shadow: 0 0 0 4px rgba(201,162,39,0.1);
         }
-        .input-field::placeholder {
-          color: #bbb;
-        }
+        .input-field::placeholder { color: #bbb; }
         .btn-primary {
-          padding: 16px 32px;
+          width: 100%;
+          padding: 16px 24px;
           background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
           color: white;
           border: none;
@@ -237,41 +234,32 @@ export default function AdminPage() {
           transform: translateY(-2px);
           box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
-        .btn-primary:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-          transform: none;
-        }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .btn-secondary {
-          padding: 14px 24px;
+          padding: 12px 20px;
           background: white;
           color: #666;
           border: 2px solid #e8e4dc;
-          border-radius: 12px;
+          border-radius: 10px;
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
         }
-        .btn-secondary:hover {
-          border-color: #c9a227;
-          color: #c9a227;
-        }
+        .btn-secondary:hover { border-color: #c9a227; color: #c9a227; }
         .sidebar {
-          width: 260px;
+          width: 240px;
           background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
           position: fixed;
           top: 0;
           left: 0;
           bottom: 0;
-          padding: 24px 16px;
+          padding: 20px 14px;
           display: flex;
           flex-direction: column;
           z-index: 100;
         }
         .sidebar-link {
-          display: flex;
-          align-items: center;
-          gap: 12px;
+          display: block;
           padding: 14px 16px;
           color: rgba(255,255,255,0.7);
           text-decoration: none;
@@ -280,21 +268,15 @@ export default function AdminPage() {
           transition: all 0.3s ease;
           margin-bottom: 4px;
         }
-        .sidebar-link:hover {
-          background: rgba(255,255,255,0.08);
-          color: white;
-        }
-        .sidebar-link.active {
-          background: rgba(201,162,39,0.15);
-          color: #c9a227;
-        }
+        .sidebar-link:hover { background: rgba(255,255,255,0.08); color: white; }
+        .sidebar-link.active { background: rgba(201,162,39,0.15); color: #c9a227; }
         .mobile-header {
           display: none;
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
-          height: 60px;
+          height: 56px;
           background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
           z-index: 1000;
           align-items: center;
@@ -305,49 +287,39 @@ export default function AdminPage() {
         .mobile-nav {
           display: none;
           position: fixed;
-          top: 60px;
+          top: 56px;
           left: 0;
           right: 0;
           bottom: 0;
           background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
           z-index: 999;
           flex-direction: column;
-          padding: 16px;
+          padding: 8px 16px;
+          overflow-y: auto;
         }
         .mobile-nav.open { display: flex; }
         .mobile-nav-link {
           color: rgba(255,255,255,0.8);
           text-decoration: none;
           padding: 16px;
-          border-bottom: 1px solid rgba(255,255,255,0.1);
+          border-radius: 10px;
           font-size: 15px;
           transition: all 0.3s ease;
+          margin-bottom: 4px;
         }
-        .mobile-nav-link:hover, .mobile-nav-link.active {
-          color: #c9a227;
-          background: rgba(255,255,255,0.05);
-        }
+        .mobile-nav-link:hover, .mobile-nav-link.active { color: #c9a227; background: rgba(255,255,255,0.05); }
         .status-badge {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          padding: 6px 12px;
+          padding: 4px 10px;
           border-radius: 100px;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 500;
         }
-        .status-active {
-          background: rgba(34,197,94,0.1);
-          color: #16a34a;
-        }
-        .status-draft {
-          background: rgba(251,191,36,0.1);
-          color: #d97706;
-        }
-        .status-closed {
-          background: rgba(107,114,128,0.1);
-          color: #6b7280;
-        }
+        .status-active { background: rgba(34,197,94,0.1); color: #16a34a; }
+        .status-draft { background: rgba(251,191,36,0.1); color: #d97706; }
+        .status-closed { background: rgba(107,114,128,0.1); color: #6b7280; }
         .modal-overlay {
           position: fixed;
           top: 0;
@@ -364,22 +336,40 @@ export default function AdminPage() {
         }
         .modal-content {
           background: white;
-          border-radius: 24px;
+          border-radius: 20px;
           width: 100%;
-          max-width: 440px;
+          max-width: 400px;
           max-height: 90vh;
           overflow-y: auto;
         }
+        .icon-box {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          font-weight: 600;
+          flex-shrink: 0;
+        }
         @media (max-width: 1024px) {
-          .sidebar { width: 220px; }
-          .main-content { margin-left: 220px !important; }
+          .sidebar { width: 200px; }
+          .main-content { margin-left: 200px !important; }
         }
         @media (max-width: 768px) {
           .sidebar { display: none; }
           .mobile-header { display: flex; }
-          .main-content { margin-left: 0 !important; padding-top: 76px !important; }
+          .main-content { margin-left: 0 !important; padding: 16px !important; padding-top: 72px !important; }
+          .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+          .content-grid { grid-template-columns: 1fr !important; }
+          .form-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+          .stat-card { padding: 16px; }
+          .stat-value { font-size: 24px !important; }
+          .card-padding { padding: 20px !important; }
+        }
+        @media (max-width: 480px) {
           .stats-grid { grid-template-columns: 1fr !important; }
-          .form-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -391,28 +381,28 @@ export default function AdminPage() {
       {createdProject && (
         <div className="modal-overlay" onClick={() => setCreatedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)', color: 'white', padding: '36px 24px', textAlign: 'center', borderRadius: '24px 24px 0 0' }}>
-              <div style={{ width: '64px', height: '64px', background: 'rgba(255,255,255,0.2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '28px' }}>✓</div>
-              <h3 style={{ fontSize: '20px', marginBottom: '8px', fontWeight: '500' }}>献杯ページを作成しました</h3>
-              <p style={{ opacity: 0.9, fontSize: '15px' }}>故 {createdProject.deceased_name} 様</p>
+            <div style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)', color: 'white', padding: '32px 20px', textAlign: 'center', borderRadius: '20px 20px 0 0' }}>
+              <div style={{ width: '56px', height: '56px', background: 'rgba(255,255,255,0.2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', fontSize: '24px' }}>✓</div>
+              <h3 style={{ fontSize: '18px', marginBottom: '6px', fontWeight: '500' }}>作成完了</h3>
+              <p style={{ opacity: 0.9, fontSize: '14px' }}>故 {createdProject.deceased_name} 様</p>
             </div>
-            <div style={{ padding: '28px 24px' }}>
-              <div style={{ background: '#f8f6f2', border: '1px solid #e8e4dc', borderRadius: '12px', padding: '16px', marginBottom: '16px' }}>
-                <p style={{ fontSize: '11px', color: '#888', marginBottom: '6px', letterSpacing: '0.1em' }}>献杯ページURL</p>
-                <p style={{ fontSize: '14px', color: '#1a1a1a', wordBreak: 'break-all', fontWeight: '500' }}>{BASE_URL}/{createdProject.slug}</p>
+            <div style={{ padding: '24px 20px' }}>
+              <div style={{ background: '#f8f6f2', border: '1px solid #e8e4dc', borderRadius: '10px', padding: '14px', marginBottom: '14px' }}>
+                <p style={{ fontSize: '10px', color: '#888', marginBottom: '4px', letterSpacing: '0.1em' }}>献杯ページURL</p>
+                <p style={{ fontSize: '13px', color: '#1a1a1a', wordBreak: 'break-all', fontWeight: '500' }}>{BASE_URL}/{createdProject.slug}</p>
               </div>
-              <button onClick={() => copyToClipboard(`${BASE_URL}/${createdProject.slug}`)} style={{ width: '100%', padding: '14px', background: '#1a1a1a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '14px', cursor: 'pointer', marginBottom: '20px' }}>
-                📋 URLをコピー
+              <button onClick={() => copyToClipboard(`${BASE_URL}/${createdProject.slug}`)} style={{ width: '100%', padding: '12px', background: '#1a1a1a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '14px', cursor: 'pointer', marginBottom: '16px' }}>
+                URLをコピー
               </button>
-              <div style={{ textAlign: 'center', padding: '20px', background: '#f8f6f2', borderRadius: '12px', marginBottom: '16px' }}>
-                <p style={{ fontSize: '11px', color: '#888', marginBottom: '12px' }}>QRコード</p>
-                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(`${BASE_URL}/${createdProject.slug}`)}`} alt="QR Code" style={{ width: '140px', height: '140px' }} />
+              <div style={{ textAlign: 'center', padding: '16px', background: '#f8f6f2', borderRadius: '10px', marginBottom: '14px' }}>
+                <p style={{ fontSize: '10px', color: '#888', marginBottom: '10px' }}>QRコード</p>
+                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(`${BASE_URL}/${createdProject.slug}`)}`} alt="QR Code" style={{ width: '120px', height: '120px' }} />
               </div>
-              <div style={{ background: '#fffbf0', border: '1px solid #f0e6c8', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
-                <p style={{ fontSize: '11px', color: '#92400e', marginBottom: '6px', letterSpacing: '0.1em' }}>ご遺族様用パスワード</p>
-                <p style={{ fontSize: '24px', fontWeight: '600', fontFamily: 'monospace', color: '#1a1a1a', letterSpacing: '0.1em' }}>{createdProject.password}</p>
+              <div style={{ background: '#fffbf0', border: '1px solid #f0e6c8', borderRadius: '10px', padding: '14px', marginBottom: '16px' }}>
+                <p style={{ fontSize: '10px', color: '#92400e', marginBottom: '4px', letterSpacing: '0.1em' }}>ご遺族様用パスワード</p>
+                <p style={{ fontSize: '20px', fontWeight: '600', fontFamily: 'monospace', color: '#1a1a1a', letterSpacing: '0.1em' }}>{createdProject.password}</p>
               </div>
-              <button onClick={() => setCreatedProject(null)} style={{ width: '100%', padding: '14px', background: '#f1f1f1', color: '#666', border: 'none', borderRadius: '10px', fontSize: '14px', cursor: 'pointer' }}>
+              <button onClick={() => setCreatedProject(null)} style={{ width: '100%', padding: '12px', background: '#f1f1f1', color: '#666', border: 'none', borderRadius: '10px', fontSize: '14px', cursor: 'pointer' }}>
                 閉じる
               </button>
             </div>
@@ -422,234 +412,219 @@ export default function AdminPage() {
 
       {/* モバイルヘッダー */}
       <div className="mobile-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #c9a227 0%, #d4af37 100%)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '16px', fontWeight: '600' }}>礼</div>
-          <span style={{ color: 'white', fontSize: '16px', fontWeight: '500' }}>Rei</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ width: '32px', height: '32px', background: 'linear-gradient(135deg, #c9a227 0%, #d4af37 100%)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '14px', fontWeight: '600' }}>礼</div>
+          <span style={{ color: 'white', fontSize: '15px', fontWeight: '500' }}>Rei</span>
         </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '24px', cursor: 'pointer', padding: '8px' }}>
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '20px', cursor: 'pointer', padding: '8px' }}>
           {mobileMenuOpen ? '✕' : '☰'}
         </button>
       </div>
 
       {/* モバイルナビ */}
       <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
-        <a href="/admin" className="mobile-nav-link active" onClick={() => setMobileMenuOpen(false)}>🏠 ホーム</a>
-        <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>💰 ご入金管理</a>
-        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>⚙️ 入金口座連携</a>
-        <button onClick={handleLogout} style={{ color: '#f87171', padding: '16px', fontSize: '15px', cursor: 'pointer', background: 'none', border: 'none', textAlign: 'left', borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: 'auto' }}>
-          ログアウト
-        </button>
+        <a href="/admin" className="mobile-nav-link active" onClick={() => setMobileMenuOpen(false)}>ホーム</a>
+        <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ご入金管理</a>
+        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>入金口座連携</a>
+        <div style={{ marginTop: 'auto', padding: '16px 0', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', marginBottom: '8px' }}>ログイン中: {funeralHomeName}</p>
+          <button onClick={handleLogout} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '8px', color: '#f87171', fontSize: '14px', cursor: 'pointer' }}>
+            ログアウト
+          </button>
+        </div>
       </div>
 
       {/* サイドバー（デスクトップ） */}
       <aside className="sidebar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: '24px' }}>
-          <div style={{ width: '44px', height: '44px', background: 'linear-gradient(135deg, #c9a227 0%, #d4af37 100%)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '20px', fontWeight: '600', boxShadow: '0 4px 12px rgba(201,162,39,0.3)' }}>礼</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingBottom: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: '20px' }}>
+          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #c9a227 0%, #d4af37 100%)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '18px', fontWeight: '600' }}>礼</div>
           <div>
-            <p style={{ color: 'white', fontSize: '18px', fontWeight: '600', letterSpacing: '0.1em' }}>Rei</p>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', letterSpacing: '0.05em' }}>献杯管理システム</p>
+            <p style={{ color: 'white', fontSize: '16px', fontWeight: '600', letterSpacing: '0.1em' }}>Rei</p>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px' }}>献杯管理システム</p>
           </div>
         </div>
 
         <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', letterSpacing: '0.15em', padding: '0 16px', marginBottom: '8px' }}>MENU</p>
         <nav>
-          <a href="/admin" className="sidebar-link active">🏠 ホーム</a>
-          <a href="/admin/payments" className="sidebar-link">💰 ご入金管理</a>
-          <a href="/admin/settings" className="sidebar-link">⚙️ 入金口座連携</a>
+          <a href="/admin" className="sidebar-link active">ホーム</a>
+          <a href="/admin/payments" className="sidebar-link">ご入金管理</a>
+          <a href="/admin/settings" className="sidebar-link">入金口座連携</a>
         </nav>
 
         <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-          <div style={{ padding: '12px 16px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', marginBottom: '12px' }}>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', marginBottom: '4px' }}>ログイン中</p>
+          <div style={{ padding: '12px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '10px' }}>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', marginBottom: '2px' }}>ログイン中</p>
             <p style={{ color: 'white', fontSize: '13px', fontWeight: '500' }}>{funeralHomeName}</p>
           </div>
-          <button onClick={handleLogout} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '13px', transition: 'all 0.3s ease' }}>
+          <button onClick={handleLogout} style={{ width: '100%', padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '12px' }}>
             ログアウト
           </button>
         </div>
       </aside>
 
       {/* メインコンテンツ */}
-      <main className="main-content" style={{ marginLeft: '260px', padding: '32px' }}>
+      <main className="main-content" style={{ marginLeft: '240px', padding: '24px' }}>
         {/* ヘッダー */}
-        <div className="fade-in" style={{ marginBottom: '32px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-            <div>
-              <h1 style={{ fontSize: '28px', fontWeight: '500', color: '#1a1a1a', marginBottom: '4px' }}>ダッシュボード</h1>
-              <p style={{ color: '#888', fontSize: '14px' }}>献杯ページの作成・管理</p>
-            </div>
-            <div style={{ background: 'white', padding: '12px 20px', borderRadius: '12px', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
-              <p style={{ fontSize: '13px', color: '#888' }}>
-                {new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
-              </p>
-            </div>
-          </div>
+        <div className="fade-in" style={{ marginBottom: '24px' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: '500', color: '#1a1a1a', marginBottom: '4px' }}>ダッシュボード</h1>
+          <p style={{ color: '#888', fontSize: '13px' }}>{new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' })}</p>
         </div>
 
         {/* 統計カード */}
-        <div className="fade-in-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '32px' }}>
+        <div className="stats-grid fade-in-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
           <div className="stat-card">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ width: '48px', height: '48px', background: 'linear-gradient(135deg, #c9a227 0%, #d4af37 100%)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>📄</div>
-              <span style={{ color: '#888', fontSize: '14px' }}>稼働中ページ</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div className="icon-box" style={{ background: 'linear-gradient(135deg, #c9a227 0%, #d4af37 100%)', color: 'white' }}>P</div>
+              <span style={{ color: '#888', fontSize: '13px' }}>稼働中</span>
             </div>
-            <p style={{ fontSize: '36px', fontWeight: '600', color: '#1a1a1a' }}>{stats.active_projects}<span style={{ fontSize: '16px', color: '#888', marginLeft: '4px' }}>件</span></p>
+            <p className="stat-value" style={{ fontSize: '32px', fontWeight: '600', color: '#1a1a1a' }}>{stats.active_projects}<span style={{ fontSize: '14px', color: '#888', marginLeft: '2px' }}>件</span></p>
           </div>
 
           <div className="stat-card">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ width: '48px', height: '48px', background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>🙏</div>
-              <span style={{ color: '#888', fontSize: '14px' }}>総献杯数</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div className="icon-box" style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', color: 'white' }}>K</div>
+              <span style={{ color: '#888', fontSize: '13px' }}>献杯数</span>
             </div>
-            <p style={{ fontSize: '36px', fontWeight: '600', color: '#1a1a1a' }}>{stats.total_kenpai}<span style={{ fontSize: '16px', color: '#888', marginLeft: '4px' }}>件</span></p>
+            <p className="stat-value" style={{ fontSize: '32px', fontWeight: '600', color: '#1a1a1a' }}>{stats.total_kenpai}<span style={{ fontSize: '14px', color: '#888', marginLeft: '2px' }}>件</span></p>
           </div>
 
           <div className="stat-card" style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ width: '48px', height: '48px', background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>💰</div>
-              <span style={{ color: '#166534', fontSize: '14px' }}>総献杯金額</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div className="icon-box" style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)', color: 'white' }}>¥</div>
+              <span style={{ color: '#166534', fontSize: '13px' }}>総金額</span>
             </div>
-            <p style={{ fontSize: '36px', fontWeight: '600', color: '#166534' }}>¥{stats.total_amount.toLocaleString()}</p>
+            <p className="stat-value" style={{ fontSize: '32px', fontWeight: '600', color: '#166534' }}>¥{stats.total_amount.toLocaleString()}</p>
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '24px', alignItems: 'start' }}>
+        <div className="content-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '20px', alignItems: 'start' }}>
           {/* 新規作成フォーム */}
-          <div className="card fade-in-up" style={{ padding: '0' }}>
-            <div style={{ padding: '24px 28px', borderBottom: '1px solid #f0ebe3' }}>
-              <h2 style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ color: '#c9a227' }}>✦</span>
-                新規献杯ページ作成
-              </h2>
+          <div className="card fade-in-up">
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid #f0ebe3' }}>
+              <h2 style={{ fontSize: '16px', fontWeight: '500', color: '#1a1a1a' }}>新規献杯ページ作成</h2>
             </div>
-            <div style={{ padding: '28px' }}>
+            <div className="card-padding" style={{ padding: '24px' }}>
               <form onSubmit={handleSubmit}>
                 {message && (
                   <div style={{
-                    marginBottom: '20px',
-                    padding: '14px 18px',
+                    marginBottom: '16px',
+                    padding: '12px 16px',
                     background: message.type === 'success' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)',
                     border: `1px solid ${message.type === 'success' ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}`,
-                    borderRadius: '12px',
+                    borderRadius: '10px',
                     color: message.type === 'success' ? '#16a34a' : '#dc2626',
-                    fontSize: '14px'
+                    fontSize: '13px'
                   }}>
                     {message.text}
                   </div>
                 )}
 
                 {/* 基本情報 */}
-                <div style={{ marginBottom: '28px' }}>
-                  <p style={{ fontSize: '13px', color: '#888', marginBottom: '16px', letterSpacing: '0.1em' }}>基本情報</p>
+                <div style={{ marginBottom: '24px' }}>
+                  <p style={{ fontSize: '12px', color: '#888', marginBottom: '12px', letterSpacing: '0.1em' }}>基本情報</p>
                   <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#666', marginBottom: '8px' }}>
-                        故人様のお名前 <span style={{ color: '#c9a227' }}>必須</span>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#666', marginBottom: '6px' }}>
+                        故人様のお名前 <span style={{ color: '#c9a227' }}>*</span>
                       </label>
-                      <input type="text" className="input-field" placeholder="例：山田 太郎" value={formData.deceased_name} onChange={(e) => setFormData({ ...formData, deceased_name: e.target.value })} />
+                      <input type="text" className="input-field" placeholder="山田 太郎" value={formData.deceased_name} onChange={(e) => setFormData({ ...formData, deceased_name: e.target.value })} />
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#666', marginBottom: '8px' }}>
-                        URL用ID <span style={{ color: '#c9a227' }}>必須</span>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#666', marginBottom: '6px' }}>
+                        URL用ID <span style={{ color: '#c9a227' }}>*</span>
                       </label>
-                      <input type="text" className="input-field" placeholder="例：yamada-taro" value={formData.slug} onChange={(e) => handleSlugChange(e.target.value)} />
+                      <input type="text" className="input-field" placeholder="yamada-taro" value={formData.slug} onChange={(e) => handleSlugChange(e.target.value)} />
                     </div>
                   </div>
                   {formData.slug && (
-                    <p style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>
-                      URL: {BASE_URL}/<span style={{ color: '#c9a227', fontWeight: '500' }}>{formData.slug}</span>
+                    <p style={{ marginTop: '6px', fontSize: '11px', color: '#888' }}>
+                      {BASE_URL}/<span style={{ color: '#c9a227' }}>{formData.slug}</span>
                     </p>
                   )}
                 </div>
 
-                {/* ご遺族用パスワード */}
-                <div style={{ marginBottom: '28px' }}>
-                  <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#666', marginBottom: '8px' }}>
-                    ご遺族様用パスワード <span style={{ color: '#c9a227' }}>必須</span>
+                {/* パスワード */}
+                <div style={{ marginBottom: '24px' }}>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#666', marginBottom: '6px' }}>
+                    ご遺族様用パスワード <span style={{ color: '#c9a227' }}>*</span>
                   </label>
-                  <input type="text" className="input-field" style={{ fontFamily: 'monospace', letterSpacing: '0.15em', maxWidth: '200px' }} placeholder="例：1234" value={formData.family_password} onChange={(e) => setFormData({ ...formData, family_password: e.target.value })} />
-                  <p style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>ご遺族様が入金状況を確認する際に使用（4文字以上）</p>
+                  <input type="text" className="input-field" style={{ fontFamily: 'monospace', letterSpacing: '0.1em', maxWidth: '180px' }} placeholder="1234" value={formData.family_password} onChange={(e) => setFormData({ ...formData, family_password: e.target.value })} />
+                  <p style={{ marginTop: '6px', fontSize: '11px', color: '#888' }}>入金状況確認用（4文字以上）</p>
                 </div>
 
-                {/* 写真アップロード */}
-                <div style={{ marginBottom: '28px' }}>
-                  <p style={{ fontSize: '13px', color: '#888', marginBottom: '16px', letterSpacing: '0.1em' }}>ご遺影</p>
-                  <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                {/* 写真 */}
+                <div style={{ marginBottom: '24px' }}>
+                  <p style={{ fontSize: '12px', color: '#888', marginBottom: '12px', letterSpacing: '0.1em' }}>ご遺影（任意）</p>
+                  <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     {photoPreview ? (
-                      <div style={{ width: '120px', height: '150px', borderRadius: '12px', overflow: 'hidden', border: '3px solid #c9a227', boxShadow: '0 4px 16px rgba(0,0,0,0.1)' }}>
+                      <div style={{ width: '100px', height: '125px', borderRadius: '10px', overflow: 'hidden', border: '2px solid #c9a227' }}>
                         <img src={photoPreview} alt="プレビュー" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
                     ) : (
-                      <div style={{ width: '120px', height: '150px', borderRadius: '12px', border: '2px dashed #d4cfc4', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontSize: '13px' }}>
+                      <div style={{ width: '100px', height: '125px', borderRadius: '10px', border: '2px dashed #d4cfc4', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontSize: '12px' }}>
                         未選択
                       </div>
                     )}
                     <div>
                       <input type="file" ref={fileInputRef} accept="image/*" onChange={handlePhotoChange} style={{ display: 'none' }} />
                       <button type="button" className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
-                        {photoPreview ? '写真を変更' : '写真を選択'}
+                        {photoPreview ? '変更' : '選択'}
                       </button>
-                      <p style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>献杯ページに表示されます（任意）</p>
                     </div>
                   </div>
                 </div>
 
                 {/* メッセージ */}
-                <div style={{ marginBottom: '28px' }}>
-                  <p style={{ fontSize: '13px', color: '#888', marginBottom: '16px', letterSpacing: '0.1em' }}>ご遺族様からのメッセージ</p>
-                  <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '12px 16px', background: formData.use_default_message ? 'linear-gradient(135deg, #fffbf0 0%, #fff8e7 100%)' : '#f8f6f2', border: formData.use_default_message ? '2px solid #c9a227' : '2px solid transparent', borderRadius: '10px', transition: 'all 0.3s ease' }}>
+                <div style={{ marginBottom: '24px' }}>
+                  <p style={{ fontSize: '12px', color: '#888', marginBottom: '12px', letterSpacing: '0.1em' }}>メッセージ</p>
+                  <div style={{ display: 'flex', gap: '12px', marginBottom: '10px', flexWrap: 'wrap' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', padding: '10px 14px', background: formData.use_default_message ? '#fffbf0' : '#f8f6f2', border: formData.use_default_message ? '2px solid #c9a227' : '2px solid transparent', borderRadius: '8px', fontSize: '13px' }}>
                       <input type="radio" name="messageType" checked={formData.use_default_message} onChange={() => setFormData({ ...formData, use_default_message: true, family_message: '' })} style={{ accentColor: '#c9a227' }} />
-                      <span style={{ fontSize: '14px', color: '#1a1a1a' }}>定型文を使用</span>
+                      定型文
                     </label>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '12px 16px', background: !formData.use_default_message ? 'linear-gradient(135deg, #fffbf0 0%, #fff8e7 100%)' : '#f8f6f2', border: !formData.use_default_message ? '2px solid #c9a227' : '2px solid transparent', borderRadius: '10px', transition: 'all 0.3s ease' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', padding: '10px 14px', background: !formData.use_default_message ? '#fffbf0' : '#f8f6f2', border: !formData.use_default_message ? '2px solid #c9a227' : '2px solid transparent', borderRadius: '8px', fontSize: '13px' }}>
                       <input type="radio" name="messageType" checked={!formData.use_default_message} onChange={() => setFormData({ ...formData, use_default_message: false })} style={{ accentColor: '#c9a227' }} />
-                      <span style={{ fontSize: '14px', color: '#1a1a1a' }}>カスタム</span>
+                      カスタム
                     </label>
                   </div>
                   {!formData.use_default_message && (
-                    <textarea className="input-field" style={{ minHeight: '100px', resize: 'vertical' }} placeholder="例：父は生前、皆様との出会いに深く感謝しておりました。" value={formData.family_message} onChange={(e) => setFormData({ ...formData, family_message: e.target.value })} />
+                    <textarea className="input-field" style={{ minHeight: '80px', resize: 'vertical' }} placeholder="メッセージを入力..." value={formData.family_message} onChange={(e) => setFormData({ ...formData, family_message: e.target.value })} />
                   )}
                 </div>
 
                 {/* 送信ボタン */}
-                <div style={{ display: 'flex', gap: '12px', paddingTop: '16px', borderTop: '1px solid #f0ebe3' }}>
-                  <button type="button" className="btn-secondary" style={{ flex: 1 }} onClick={() => { setFormData({ deceased_name: '', slug: '', family_message: '', use_default_message: true, family_password: '' }); setPhotoFile(null); setPhotoPreview(null); }}>
-                    クリア
-                  </button>
-                  <button type="submit" className="btn-primary" style={{ flex: 2 }} disabled={submitting}>
-                    {submitting ? '作成中...' : '✦ 献杯ページを作成'}
-                  </button>
-                </div>
+                <button type="submit" className="btn-primary" disabled={submitting}>
+                  {submitting ? '作成中...' : '献杯ページを作成'}
+                </button>
               </form>
             </div>
           </div>
 
           {/* 最近の案件 */}
-          <div className="card fade-in-up" style={{ padding: '0' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid #f0ebe3', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '500', color: '#1a1a1a' }}>最近の案件</h3>
-              <span style={{ fontSize: '12px', color: '#888' }}>{recentProjects.length}件</span>
+          <div className="card fade-in-up">
+            <div style={{ padding: '16px 20px', borderBottom: '1px solid #f0ebe3', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: '500', color: '#1a1a1a' }}>最近の案件</h3>
+              <span style={{ fontSize: '11px', color: '#888' }}>{recentProjects.length}件</span>
             </div>
             <div>
               {recentProjects.length === 0 ? (
-                <div style={{ padding: '48px 24px', textAlign: 'center' }}>
-                  <p style={{ color: '#888', fontSize: '14px' }}>まだ案件がありません</p>
+                <div style={{ padding: '40px 20px', textAlign: 'center' }}>
+                  <p style={{ color: '#888', fontSize: '13px' }}>案件がありません</p>
                 </div>
               ) : (
                 recentProjects.map((project, index) => (
-                  <div key={project.id} style={{ padding: '16px 24px', borderBottom: index < recentProjects.length - 1 ? '1px solid #f0ebe3' : 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <p style={{ fontSize: '15px', fontWeight: '500', color: '#1a1a1a', marginBottom: '4px' }}>
+                  <div key={project.id} style={{ padding: '14px 20px', borderBottom: index < recentProjects.length - 1 ? '1px solid #f0ebe3' : 'none' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <p style={{ fontSize: '14px', fontWeight: '500', color: '#1a1a1a' }}>
                         故 {project.deceased_name} 様
                       </p>
-                      <p style={{ fontSize: '12px', color: '#888' }}>{formatDate(project.created_at)}</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <span className={`status-badge ${project.status === 'active' ? 'status-active' : project.status === 'draft' ? 'status-draft' : 'status-closed'}`}>
-                        {project.status === 'active' ? '● 公開中' : project.status === 'draft' ? '○ 下書き' : '× 終了'}
+                        {project.status === 'active' ? '公開中' : project.status === 'draft' ? '下書き' : '終了'}
                       </span>
-                      <a href={`/${project.slug}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '12px', color: '#c9a227', textDecoration: 'none' }}>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <p style={{ fontSize: '11px', color: '#888' }}>{formatDate(project.created_at)}</p>
+                      <a href={`/${project.slug}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '11px', color: '#c9a227', textDecoration: 'none' }}>
                         開く →
                       </a>
                     </div>
