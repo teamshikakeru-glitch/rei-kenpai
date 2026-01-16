@@ -14,6 +14,7 @@ function SettingsContent() {
   const [loading, setLoading] = useState(true);
   const [stripeStatus, setStripeStatus] = useState<{ connected: boolean; onboarding_complete: boolean } | null>(null);
   const [stripeLoading, setStripeLoading] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const [emailStep, setEmailStep] = useState<'view' | 'form' | 'verify'>('view');
   const [newEmail, setNewEmail] = useState('');
@@ -100,7 +101,136 @@ function SettingsContent() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f5f0' }}>
-      <aside style={{ width: 240, background: '#0a0f1a', padding: '24px 16px', position: 'fixed', top: 0, left: 0, bottom: 0, display: 'flex', flexDirection: 'column' }}>
+      <style jsx>{`
+        .mobile-header {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 56px;
+          background: #0a0f1a;
+          z-index: 1000;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 1rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-menu-btn {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0.5rem;
+        }
+        .mobile-logo {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: white;
+          text-decoration: none;
+        }
+        .mobile-logo-icon {
+          width: 32px;
+          height: 32px;
+          background: linear-gradient(135deg, #c9a227, #a08020);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 600;
+        }
+        .mobile-nav {
+          display: none;
+          position: fixed;
+          top: 56px;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: #0a0f1a;
+          z-index: 999;
+          flex-direction: column;
+          padding: 1rem;
+        }
+        .mobile-nav.open {
+          display: flex;
+        }
+        .mobile-nav-link {
+          color: rgba(255,255,255,0.7);
+          text-decoration: none;
+          padding: 1rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+          font-size: 0.95rem;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+          color: white;
+          background: rgba(255,255,255,0.05);
+        }
+        .mobile-nav-logout {
+          color: #f87171;
+          padding: 1rem;
+          font-size: 0.95rem;
+          cursor: pointer;
+          background: none;
+          border: none;
+          text-align: left;
+          width: 100%;
+        }
+        .desktop-sidebar {
+          width: 240px;
+          background: #0a0f1a;
+          padding: 24px 16px;
+          position: fixed;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          display: flex;
+          flex-direction: column;
+        }
+        .main-content {
+          flex: 1;
+          margin-left: 240px;
+          padding: 32px;
+        }
+        @media (max-width: 768px) {
+          .mobile-header {
+            display: flex;
+          }
+          .desktop-sidebar {
+            display: none;
+          }
+          .main-content {
+            margin-left: 0;
+            padding: 16px;
+            padding-top: 72px;
+          }
+        }
+      `}</style>
+
+      {/* モバイルヘッダー */}
+      <div className="mobile-header">
+        <a href="/admin" className="mobile-logo">
+          <div className="mobile-logo-icon">礼</div>
+          <span style={{ fontWeight: 500, fontSize: '14px' }}>Rei</span>
+        </a>
+        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? '✕' : '☰'}
+        </button>
+      </div>
+
+      {/* モバイルナビ */}
+      <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
+        <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ホーム</a>
+        <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ご入金管理</a>
+        <a href="/admin/settings" className="mobile-nav-link active" onClick={() => setMobileMenuOpen(false)}>入金口座連携</a>
+        <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
+      </div>
+
+      {/* デスクトップサイドバー */}
+      <aside className="desktop-sidebar">
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingBottom: 24, borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: 24 }}>
           <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #c9a227, #a08020)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 20, fontWeight: 600 }}>礼</div>
           <div>
@@ -117,8 +247,8 @@ function SettingsContent() {
         <button onClick={handleLogout} style={{ marginTop: 'auto', width: '100%', padding: 12, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: 13 }}>ログアウト</button>
       </aside>
 
-      <main style={{ flex: 1, marginLeft: 240, padding: 32 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white', padding: '12px 16px', borderRadius: 10, marginBottom: 24 }}>
+      <main className="main-content">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white', padding: '12px 16px', borderRadius: 10, marginBottom: 24, flexWrap: 'wrap', gap: '12px' }}>
           <span><strong>{funeralHomeName}</strong> 様</span>
           <button onClick={handleLogout} style={{ background: 'none', border: '1px solid #e5e5e5', padding: '8px 16px', borderRadius: 6, fontSize: 12, color: '#666', cursor: 'pointer' }}>ログアウト</button>
         </div>
@@ -218,7 +348,7 @@ function SettingsContent() {
               <p style={{ fontSize: 11, color: '#888', marginBottom: 16 }}>
                 ※ 半角英数字と記号（@._-）のみ使用できます
               </p>
-              <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <button onClick={handleSendEmailCode} disabled={emailLoading} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #c9a227, #a08020)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', opacity: emailLoading ? 0.6 : 1 }}>
                   {emailLoading ? '送信中...' : '認証コードを送信'}
                 </button>
@@ -246,7 +376,7 @@ function SettingsContent() {
               <p style={{ fontSize: 11, color: '#888', marginBottom: 16 }}>
                 ※ 認証コードは10分間有効です
               </p>
-              <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <button onClick={handleVerifyEmailCode} disabled={emailLoading || emailCode.length !== 6} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #c9a227, #a08020)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', opacity: (emailLoading || emailCode.length !== 6) ? 0.6 : 1 }}>
                   {emailLoading ? '確認中...' : 'メールアドレスを変更'}
                 </button>
