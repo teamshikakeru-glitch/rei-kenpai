@@ -10,6 +10,7 @@ export default function PaymentsPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const supabase = createClient();
 
   const BASE_URL = 'https://rei-kenpai.vercel.app';
@@ -37,6 +38,12 @@ export default function PaymentsPage() {
     alert('コピーしました');
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('funeral_home_id');
+    sessionStorage.removeItem('funeral_home_name');
+    window.location.href = '/';
+  };
+
   const formatCurrency = (amount: number) => new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(amount);
   const formatDateTime = (dateString: string) => { const d = new Date(dateString); return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`; };
   const totalAmount = kenpaiList.reduce((sum, k) => sum + k.amount, 0);
@@ -45,6 +52,83 @@ export default function PaymentsPage() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <style jsx>{`
+        .mobile-header {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 56px;
+          background: #0a0f1a;
+          z-index: 1000;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 1rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-menu-btn {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0.5rem;
+        }
+        .mobile-logo {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: white;
+          text-decoration: none;
+        }
+        .mobile-logo-icon {
+          width: 32px;
+          height: 32px;
+          background: linear-gradient(135deg, #c9a227, #a08020);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 600;
+        }
+        .mobile-nav {
+          display: none;
+          position: fixed;
+          top: 56px;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: #0a0f1a;
+          z-index: 999;
+          flex-direction: column;
+          padding: 1rem;
+        }
+        .mobile-nav.open {
+          display: flex;
+        }
+        .mobile-nav-link {
+          color: rgba(255,255,255,0.7);
+          text-decoration: none;
+          padding: 1rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+          font-size: 0.95rem;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+          color: white;
+          background: rgba(255,255,255,0.05);
+        }
+        .mobile-nav-logout {
+          color: #f87171;
+          padding: 1rem;
+          font-size: 0.95rem;
+          cursor: pointer;
+          background: none;
+          border: none;
+          text-align: left;
+          width: 100%;
+        }
         .url-qr-section {
           background: linear-gradient(135deg, #f0f7ff 0%, #e8f4f8 100%);
           border: 1px solid #cce5ff;
@@ -96,12 +180,38 @@ export default function PaymentsPage() {
           border: 1px solid #e0e0e0;
         }
         @media (max-width: 768px) {
+          .mobile-header {
+            display: flex;
+          }
+          .main-content {
+            margin-left: 0 !important;
+            padding-top: 72px !important;
+          }
           .qr-inline {
             flex-direction: column;
             align-items: flex-start;
           }
         }
       `}</style>
+
+      {/* モバイルヘッダー */}
+      <div className="mobile-header">
+        <a href="/admin" className="mobile-logo">
+          <div className="mobile-logo-icon">礼</div>
+          <span style={{ fontWeight: 500, fontSize: '14px' }}>Rei</span>
+        </a>
+        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? '✕' : '☰'}
+        </button>
+      </div>
+
+      {/* モバイルナビ */}
+      <div className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
+        <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ホーム</a>
+        <a href="/admin/payments" className="mobile-nav-link active" onClick={() => setMobileMenuOpen(false)}>ご入金管理</a>
+        <a href="/admin/settings" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>入金口座連携</a>
+        <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
+      </div>
 
       <aside className="sidebar">
         <div className="sidebar-logo">
@@ -115,8 +225,15 @@ export default function PaymentsPage() {
           <div className="sidebar-section-title">メインメニュー</div>
           <a href="/admin" className="sidebar-link">ホーム</a>
           <a href="/admin/payments" className="sidebar-link active">ご入金管理</a>
+          <a href="/admin/settings" className="sidebar-link">入金口座連携</a>
         </nav>
+        <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <button onClick={handleLogout} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '13px' }}>
+            ログアウト
+          </button>
+        </div>
       </aside>
+
       <main className="main-content">
         <header className="page-header">
           <div>
