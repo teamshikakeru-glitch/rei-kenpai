@@ -13,6 +13,26 @@ export default function LPPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  // ページ読み込み時に一番上にスクロール
+  useEffect(() => {
+    // 即座にスクロールをリセット
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    
+    // ブラウザの履歴によるスクロール復元を無効化
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    // 少し遅延させて再度リセット（ブラウザの復元処理対策）
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -1293,7 +1313,7 @@ export default function LPPage() {
       `}</style>
 
       {/* Header */}
-      <header className="header">
+      <header className="header" id="top">
         <div className="header-inner">
           <div className="logo">
             <div className="logo-icon">礼</div>
