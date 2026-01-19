@@ -92,6 +92,24 @@ export default function LPPage() {
           box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4);
         }
 
+        /* キャンペーンバナー */
+        .campaign-banner {
+          background: linear-gradient(135deg, #ef4444, #dc2626);
+          color: white;
+          text-align: center;
+          padding: 12px 24px;
+          position: fixed;
+          top: 73px;
+          left: 0;
+          right: 0;
+          z-index: 99;
+          font-size: 14px;
+          font-weight: 600;
+        }
+        .campaign-banner-highlight {
+          color: #fef08a;
+        }
+
         /* ヒーローセクション */
         .hero {
           min-height: 100vh;
@@ -99,7 +117,7 @@ export default function LPPage() {
           align-items: center;
           justify-content: center;
           position: relative;
-          padding: 120px 24px 80px;
+          padding: 160px 24px 80px;
           overflow: hidden;
         }
         .hero-bg {
@@ -112,6 +130,24 @@ export default function LPPage() {
           position: relative;
           max-width: 900px;
           text-align: center;
+        }
+        .hero-campaign {
+          display: inline-block;
+          background: linear-gradient(135deg, #ef4444, #dc2626);
+          color: white;
+          padding: 12px 28px;
+          border-radius: 100px;
+          font-size: 15px;
+          font-weight: 700;
+          margin-bottom: 20px;
+          animation: pulse 2s infinite;
+        }
+        .hero-campaign-highlight {
+          color: #fef08a;
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
         }
         .hero-badge {
           display: inline-block;
@@ -129,6 +165,7 @@ export default function LPPage() {
           font-weight: 700;
           line-height: 1.3;
           margin-bottom: 24px;
+          color: #ffffff;
         }
         .hero-title-gold {
           color: #c9a227;
@@ -161,6 +198,9 @@ export default function LPPage() {
         .section {
           padding: 100px 24px;
         }
+        .section-dark {
+          background: #0f0f0f;
+        }
         .section-inner {
           max-width: 1100px;
           margin: 0 auto;
@@ -178,6 +218,7 @@ export default function LPPage() {
           text-align: center;
           margin-bottom: 24px;
           line-height: 1.4;
+          color: #ffffff;
         }
         .section-desc {
           font-size: 16px;
@@ -188,10 +229,106 @@ export default function LPPage() {
           line-height: 1.8;
         }
 
-        /* 課題セクション */
-        .problem-section {
-          background: #0f0f0f;
+        /* キャンペーンセクション */
+        .campaign-section {
+          background: linear-gradient(135deg, #7f1d1d, #991b1b);
+          position: relative;
+          overflow: hidden;
         }
+        .campaign-section::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .campaign-inner {
+          position: relative;
+          text-align: center;
+        }
+        .campaign-label {
+          display: inline-block;
+          background: #fef08a;
+          color: #7f1d1d;
+          padding: 8px 24px;
+          border-radius: 100px;
+          font-size: 14px;
+          font-weight: 700;
+          margin-bottom: 24px;
+        }
+        .campaign-title {
+          font-size: clamp(28px, 5vw, 48px);
+          font-weight: 700;
+          margin-bottom: 16px;
+          color: #ffffff;
+        }
+        .campaign-title-highlight {
+          color: #fef08a;
+        }
+        .campaign-subtitle {
+          font-size: clamp(18px, 3vw, 24px);
+          color: rgba(255, 255, 255, 0.9);
+          margin-bottom: 32px;
+        }
+        .campaign-subtitle-highlight {
+          color: #fef08a;
+        }
+        .campaign-detail {
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 20px;
+          padding: 32px;
+          max-width: 700px;
+          margin: 0 auto 32px;
+        }
+        .campaign-detail-title {
+          font-size: 18px;
+          color: #fef08a;
+          margin-bottom: 16px;
+          font-weight: 600;
+        }
+        .campaign-detail-text {
+          font-size: 16px;
+          color: rgba(255, 255, 255, 0.9);
+          line-height: 1.8;
+        }
+        .campaign-detail-highlight {
+          color: #fef08a;
+        }
+        .campaign-example {
+          display: flex;
+          justify-content: center;
+          gap: 24px;
+          flex-wrap: wrap;
+          margin-top: 24px;
+        }
+        .campaign-example-item {
+          background: rgba(254, 240, 138, 0.1);
+          border: 1px solid rgba(254, 240, 138, 0.3);
+          border-radius: 12px;
+          padding: 20px 32px;
+          text-align: center;
+        }
+        .campaign-example-label {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.7);
+          margin-bottom: 8px;
+        }
+        .campaign-example-value {
+          font-size: 28px;
+          font-weight: 700;
+          color: #fef08a;
+        }
+        .campaign-example-sub {
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.6);
+          margin-top: 4px;
+        }
+        .campaign-note {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.6);
+          margin-top: 24px;
+        }
+
+        /* 課題セクション */
         .problem-cards {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -211,6 +348,7 @@ export default function LPPage() {
           font-size: 20px;
           font-weight: 600;
           margin-bottom: 12px;
+          color: #ffffff;
         }
         .problem-card-text {
           font-size: 14px;
@@ -231,12 +369,13 @@ export default function LPPage() {
           font-size: clamp(24px, 3vw, 32px);
           font-weight: 700;
           margin-bottom: 16px;
+          color: #ffffff;
         }
         .solution-box-text {
           font-size: 18px;
           color: rgba(255, 255, 255, 0.8);
         }
-        .solution-box-text b {
+        .text-gold {
           color: #c9a227;
         }
 
@@ -271,11 +410,9 @@ export default function LPPage() {
         }
         .flow-step-text {
           font-size: 18px;
+          color: #ffffff;
         }
-        .flow-step-text b {
-          color: #c9a227;
-        }
-        .flow-step.highlight {
+        .flow-step-highlight {
           background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(201, 162, 39, 0.1));
           border: 1px solid #c9a227;
         }
@@ -302,6 +439,7 @@ export default function LPPage() {
           font-size: 22px;
           font-weight: 700;
           margin-bottom: 16px;
+          color: #ffffff;
         }
         .feature-text {
           font-size: 15px;
@@ -310,9 +448,6 @@ export default function LPPage() {
         }
 
         /* 料金セクション */
-        .pricing-section {
-          background: #0f0f0f;
-        }
         .pricing-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -325,31 +460,34 @@ export default function LPPage() {
           padding: 40px;
           text-align: center;
         }
-        .pricing-card.highlight {
+        .pricing-card-highlight {
           background: linear-gradient(135deg, #c9a227, #8b6914);
-          color: #0a0a0a;
         }
         .pricing-label {
           font-size: 14px;
           color: rgba(255, 255, 255, 0.5);
           margin-bottom: 12px;
         }
-        .pricing-card.highlight .pricing-label {
+        .pricing-card-highlight .pricing-label {
           color: rgba(0, 0, 0, 0.6);
         }
         .pricing-value {
           font-size: 48px;
           font-weight: 700;
           margin-bottom: 8px;
+          color: #ffffff;
         }
-        .pricing-value span {
+        .pricing-card-highlight .pricing-value {
+          color: #0a0a0a;
+        }
+        .pricing-value-unit {
           font-size: 24px;
         }
         .pricing-note {
           font-size: 13px;
           color: rgba(255, 255, 255, 0.4);
         }
-        .pricing-card.highlight .pricing-note {
+        .pricing-card-highlight .pricing-note {
           color: rgba(0, 0, 0, 0.5);
         }
         .subsidy-box {
@@ -365,6 +503,7 @@ export default function LPPage() {
           font-weight: 600;
           margin-bottom: 24px;
           grid-column: 1 / -1;
+          color: #ffffff;
         }
         .subsidy-item {
           background: rgba(201, 162, 39, 0.1);
@@ -387,11 +526,6 @@ export default function LPPage() {
           font-size: 13px;
           color: rgba(255, 255, 255, 0.5);
           text-align: center;
-        }
-        @media (max-width: 600px) {
-          .subsidy-box {
-            grid-template-columns: 1fr;
-          }
         }
 
         /* 手数料セクション */
@@ -448,12 +582,16 @@ export default function LPPage() {
           align-items: center;
           gap: 8px;
           font-size: 15px;
+          color: #ffffff;
         }
         .fee-breakdown-dot {
           width: 10px;
           height: 10px;
           background: #c9a227;
           border-radius: 50%;
+        }
+        .fee-breakdown-total {
+          color: rgba(255,255,255,0.5);
         }
 
         /* 比較セクション */
@@ -487,10 +625,10 @@ export default function LPPage() {
           font-size: 48px;
           font-weight: 700;
         }
-        .compare-item-value.red {
+        .compare-item-value-red {
           color: #ef4444;
         }
-        .compare-item-value.gold {
+        .compare-item-value-gold {
           color: #c9a227;
         }
         .compare-vs {
@@ -501,9 +639,6 @@ export default function LPPage() {
           margin-top: 24px;
           font-size: 18px;
           color: rgba(255, 255, 255, 0.8);
-        }
-        .compare-message b {
-          color: #c9a227;
         }
 
         /* CTAセクション */
@@ -519,6 +654,7 @@ export default function LPPage() {
           font-size: clamp(24px, 4vw, 36px);
           font-weight: 700;
           margin-bottom: 16px;
+          color: #ffffff;
         }
         .cta-text {
           font-size: 16px;
@@ -527,15 +663,24 @@ export default function LPPage() {
         }
 
         /* フォームセクション */
-        .form-section {
-          background: #0f0f0f;
-        }
         .form-container {
           max-width: 600px;
           margin: 0 auto;
           background: #1a1a1a;
           border-radius: 24px;
           padding: 48px;
+        }
+        .form-campaign-note {
+          background: linear-gradient(135deg, #7f1d1d, #991b1b);
+          border-radius: 12px;
+          padding: 16px 20px;
+          margin-bottom: 32px;
+          text-align: center;
+          font-size: 14px;
+          color: #ffffff;
+        }
+        .form-campaign-highlight {
+          color: #fef08a;
         }
         .form-group {
           margin-bottom: 24px;
@@ -546,7 +691,7 @@ export default function LPPage() {
           color: rgba(255, 255, 255, 0.7);
           margin-bottom: 8px;
         }
-        .form-label .required {
+        .form-required {
           color: #c9a227;
           margin-left: 4px;
         }
@@ -611,6 +756,7 @@ export default function LPPage() {
           font-size: 24px;
           font-weight: 700;
           margin-bottom: 12px;
+          color: #ffffff;
         }
         .form-success-text {
           color: rgba(255, 255, 255, 0.6);
@@ -647,6 +793,7 @@ export default function LPPage() {
           font-size: 16px;
           font-weight: 600;
           margin-bottom: 4px;
+          color: #ffffff;
         }
         .footer-company-rep {
           font-size: 14px;
@@ -662,6 +809,14 @@ export default function LPPage() {
           .header-cta {
             display: none;
           }
+          .campaign-banner {
+            top: 73px;
+            font-size: 12px;
+            padding: 10px 16px;
+          }
+          .hero {
+            padding-top: 180px;
+          }
           .section {
             padding: 60px 20px;
           }
@@ -670,6 +825,9 @@ export default function LPPage() {
           }
           .pricing-card, .feature-card {
             padding: 32px 24px;
+          }
+          .subsidy-box {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
@@ -685,10 +843,18 @@ export default function LPPage() {
         </div>
       </header>
 
+      {/* キャンペーンバナー */}
+      <div className="campaign-banner">
+        🎉 <span className="campaign-banner-highlight">先着10社限定</span>：システム利用料8%を<span className="campaign-banner-highlight">半年間 貴社に還元</span>キャンペーン実施中！
+      </div>
+
       {/* ヒーロー */}
       <section className="hero">
         <div className="hero-bg" />
         <div className="hero-content">
+          <div className="hero-campaign">
+            🎁 先着<span className="hero-campaign-highlight">10社限定</span>：半年間 手数料8%が<span className="hero-campaign-highlight">貴社の収益に</span>
+          </div>
           <span className="hero-badge">葬儀社様向け 遠隔献杯システム</span>
           <h1 className="hero-title">
             競合他社の相見積もりに<br />
@@ -705,13 +871,53 @@ export default function LPPage() {
         </div>
       </section>
 
+      {/* キャンペーンセクション */}
+      <section className="section campaign-section">
+        <div className="section-inner campaign-inner">
+          <span className="campaign-label">🎉 期間限定キャンペーン</span>
+          <h2 className="campaign-title">
+            先着<span className="campaign-title-highlight">10社</span>限定<br />
+            システム利用料8%を<span className="campaign-title-highlight">半年間 貴社に還元</span>
+          </h2>
+          <p className="campaign-subtitle">
+            献杯が集まるほど、<span className="campaign-subtitle-highlight">葬儀社様の収益もアップ</span>！
+          </p>
+          <div className="campaign-detail">
+            <p className="campaign-detail-title">キャンペーン内容</p>
+            <p className="campaign-detail-text">
+              導入から<span className="campaign-detail-highlight">6ヶ月間</span>、システム利用料<span className="campaign-detail-highlight">8%を貴社に還元</span>いたします。<br />
+              献杯金額の8%が<span className="campaign-detail-highlight">葬儀社様の収益</span>になります。
+            </p>
+            <div className="campaign-example">
+              <div className="campaign-example-item">
+                <p className="campaign-example-label">10万円の献杯で</p>
+                <p className="campaign-example-value">8,000円</p>
+                <p className="campaign-example-sub">貴社の収益に</p>
+              </div>
+              <div className="campaign-example-item">
+                <p className="campaign-example-label">50万円の献杯で</p>
+                <p className="campaign-example-value">40,000円</p>
+                <p className="campaign-example-sub">貴社の収益に</p>
+              </div>
+            </div>
+            <p className="campaign-note">
+              ※先着10社に達し次第、キャンペーンは終了となります
+            </p>
+          </div>
+          <a href="#contact" className="hero-cta">
+            今すぐキャンペーンに申し込む
+            <span>→</span>
+          </a>
+        </div>
+      </section>
+
       {/* 課題セクション */}
-      <section className="section problem-section">
+      <section className="section section-dark">
         <div className="section-inner">
           <p className="section-label">PROBLEM</p>
-          <h2 className="section-title">葬儀業界の"本当の苦しさ"</h2>
+          <h2 className="section-title">葬儀業界の&quot;本当の苦しさ&quot;</h2>
           <p className="section-desc">
-            葬儀って、"値上げしづらい業界"ですよね。<br />
+            葬儀って、&quot;値上げしづらい業界&quot;ですよね。<br />
             物価も人件費も上がっているのに、見積もりは上げられない。
           </p>
           <div className="problem-cards">
@@ -720,7 +926,7 @@ export default function LPPage() {
               <h3 className="problem-card-title">価格競争の激化</h3>
               <p className="problem-card-text">
                 他社より高く見えたら即アウト。<br />
-                "内容"ではなく"金額の見え方"で選ばれる時代。
+                &quot;内容&quot;ではなく&quot;金額の見え方&quot;で選ばれる時代。
               </p>
             </div>
             <div className="problem-card">
@@ -753,13 +959,13 @@ export default function LPPage() {
               香典をデジタル化するシステムではありません。
             </h3>
             <p className="solution-box-text">
-              <b>成約率</b>と<b>見積の印象</b>を変える仕組みです。
+              <span className="text-gold">成約率</span>と<span className="text-gold">見積の印象</span>を変える仕組みです。
             </p>
           </div>
           <div className="flow-steps">
             <div className="flow-step">
               <div className="flow-step-num">1</div>
-              <p className="flow-step-text">葬儀社様が献杯ページを作成<b>（3分で完了）</b></p>
+              <p className="flow-step-text">葬儀社様が献杯ページを作成<span className="text-gold">（3分で完了）</span></p>
             </div>
             <div className="flow-step">
               <div className="flow-step-num">2</div>
@@ -767,22 +973,22 @@ export default function LPPage() {
             </div>
             <div className="flow-step">
               <div className="flow-step-num">3</div>
-              <p className="flow-step-text"><b>遺族がリンクをLINEで共有</b>（遠方の親族・知人へ）</p>
+              <p className="flow-step-text"><span className="text-gold">遺族がリンクをLINEで共有</span>（遠方の親族・知人へ）</p>
             </div>
             <div className="flow-step">
               <div className="flow-step-num">4</div>
               <p className="flow-step-text">遠方の方がスマホから献杯（支援金）を送金</p>
             </div>
-            <div className="flow-step highlight">
+            <div className="flow-step flow-step-highlight">
               <div className="flow-step-num">5</div>
-              <p className="flow-step-text"><b>集まったお金は葬儀費用に充当可能</b></p>
+              <p className="flow-step-text"><span className="text-gold">集まったお金は葬儀費用に充当可能</span></p>
             </div>
           </div>
         </div>
       </section>
 
       {/* 特徴セクション */}
-      <section className="section" style={{ background: '#0f0f0f' }}>
+      <section className="section section-dark">
         <div className="section-inner">
           <p className="section-label">FEATURES</p>
           <h2 className="section-title">Reiが選ばれる理由</h2>
@@ -813,19 +1019,19 @@ export default function LPPage() {
       </section>
 
       {/* 料金セクション */}
-      <section className="section pricing-section" id="pricing">
+      <section className="section section-dark" id="pricing">
         <div className="section-inner">
           <p className="section-label">PRICING</p>
           <h2 className="section-title">料金体系</h2>
           <div className="pricing-grid">
             <div className="pricing-card">
               <p className="pricing-label">初期導入費用</p>
-              <p className="pricing-value">500<span>万円</span></p>
+              <p className="pricing-value">500<span className="pricing-value-unit">万円</span></p>
               <p className="pricing-note">（税別）</p>
             </div>
-            <div className="pricing-card highlight">
+            <div className="pricing-card pricing-card-highlight">
               <p className="pricing-label">月額費用</p>
-              <p className="pricing-value">0<span>円</span></p>
+              <p className="pricing-value">0<span className="pricing-value-unit">円</span></p>
               <p className="pricing-note">完全無料</p>
             </div>
           </div>
@@ -876,21 +1082,21 @@ export default function LPPage() {
           <div className="fee-breakdown">
             <div className="fee-breakdown-item">
               <div className="fee-breakdown-dot" />
-              <span>決済手数料（Stripe）：<b style={{ color: '#c9a227' }}>3.6%</b></span>
+              <span>決済手数料（Stripe）：<span className="text-gold">3.6%</span></span>
             </div>
             <div className="fee-breakdown-item">
               <div className="fee-breakdown-dot" />
-              <span>システム利用料：<b style={{ color: '#c9a227' }}>8%</b></span>
+              <span>システム利用料：<span className="text-gold">8%</span></span>
             </div>
             <div className="fee-breakdown-item">
-              <span style={{ color: 'rgba(255,255,255,0.5)' }}>合計：<b style={{ color: '#fff' }}>11.6%</b></span>
+              <span className="fee-breakdown-total">合計：<strong>11.6%</strong></span>
             </div>
           </div>
         </div>
       </section>
 
       {/* 比較セクション */}
-      <section className="section" style={{ background: '#0f0f0f' }}>
+      <section className="section section-dark">
         <div className="section-inner">
           <p className="section-label">COMPARISON</p>
           <h2 className="section-title">Reiを使わなければ、<br />遠方からの献杯は0円です</h2>
@@ -899,16 +1105,16 @@ export default function LPPage() {
             <div className="compare-row">
               <div className="compare-item">
                 <p className="compare-item-label">Reiなし</p>
-                <p className="compare-item-value red">0円</p>
+                <p className="compare-item-value compare-item-value-red">0円</p>
               </div>
               <span className="compare-vs">vs</span>
               <div className="compare-item">
                 <p className="compare-item-label">Reiあり</p>
-                <p className="compare-item-value gold">88,400円</p>
+                <p className="compare-item-value compare-item-value-gold">88,400円</p>
               </div>
             </div>
             <p className="compare-message">
-              <b>0円</b>と<b>88,400円</b>。どちらがご遺族のためになりますか？
+              <span className="text-gold">0円</span>と<span className="text-gold">88,400円</span>。どちらがご遺族のためになりますか？
             </p>
           </div>
         </div>
@@ -920,7 +1126,7 @@ export default function LPPage() {
           <div className="cta-content">
             <h2 className="cta-title">
               「他社より安くできます」ではなく、<br />
-              <span style={{ color: '#c9a227' }}>「お客様の負担を減らせます」</span>という提案を。
+              <span className="text-gold">「お客様の負担を減らせます」</span>という提案を。
             </h2>
             <p className="cta-text">
               Reiで、価格競争から価値競争へ。
@@ -934,7 +1140,7 @@ export default function LPPage() {
       </section>
 
       {/* フォームセクション */}
-      <section className="section form-section" id="contact">
+      <section className="section section-dark" id="contact">
         <div className="section-inner">
           <p className="section-label">CONTACT</p>
           <h2 className="section-title">お問い合わせ</h2>
@@ -943,6 +1149,9 @@ export default function LPPage() {
             お気軽にお問い合わせください。
           </p>
           <div className="form-container">
+            <div className="form-campaign-note">
+              🎁 今なら<span className="form-campaign-highlight">先着10社限定</span>で、システム利用料8%が<span className="form-campaign-highlight">半年間 貴社の収益に</span>！
+            </div>
             {submitted ? (
               <div className="form-success">
                 <div className="form-success-icon">✓</div>
@@ -956,7 +1165,7 @@ export default function LPPage() {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label className="form-label">
-                    葬儀社名<span className="required">*</span>
+                    葬儀社名<span className="form-required">*</span>
                   </label>
                   <input
                     type="text"
@@ -969,7 +1178,7 @@ export default function LPPage() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">
-                    お名前<span className="required">*</span>
+                    お名前<span className="form-required">*</span>
                   </label>
                   <input
                     type="text"
@@ -982,7 +1191,7 @@ export default function LPPage() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">
-                    メールアドレス<span className="required">*</span>
+                    メールアドレス<span className="form-required">*</span>
                   </label>
                   <input
                     type="email"
