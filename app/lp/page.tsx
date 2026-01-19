@@ -215,9 +215,15 @@ export default function LPPage() {
           font-weight: 800;
           color: var(--white);
           line-height: 1.4;
-          margin-bottom: 16px;
+          margin-bottom: 12px;
           text-shadow: 0 2px 20px rgba(0,0,0,0.2);
           white-space: nowrap;
+        }
+        .hero-top-desc {
+          font-size: clamp(12px, 3vw, 15px);
+          color: rgba(255,255,255,0.8);
+          line-height: 1.6;
+          margin-bottom: 16px;
         }
         .hero-divider {
           width: 60px;
@@ -1346,6 +1352,7 @@ export default function LPPage() {
           <div className="hero-main">
             <p className="hero-top-label">SMART KENPAI</p>
             <h2 className="hero-top-catch">見積競争に勝ち抜くための新提案</h2>
+            <p className="hero-top-desc">参列できない方から献杯（支援金）を集め、葬儀費用の負担を軽減するシステム</p>
             <div className="hero-divider" />
             <p className="hero-catch">他社の見積もりに勝つ、新しい武器</p>
             <h1 className="hero-title">
@@ -1357,10 +1364,6 @@ export default function LPPage() {
               </span>
               <span className="hero-title-line">という提案ができる</span>
             </h1>
-            <p className="hero-desc">
-              参列できない方から献杯（支援金）を集め、<br className="sp-only" />
-              葬儀費用の負担を軽減するシステム
-            </p>
           </div>
 
           <div className="hero-stats">
