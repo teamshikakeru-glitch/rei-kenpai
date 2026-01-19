@@ -53,6 +53,8 @@ export default function LPPage() {
           color: var(--text);
           background: var(--bg);
           min-height: 100vh;
+          word-break: keep-all;
+          overflow-wrap: break-word;
         }
 
         /* Header */
@@ -114,6 +116,30 @@ export default function LPPage() {
           max-width: 700px;
           margin: 0 auto;
         }
+        .hero-catch {
+          font-size: 15px;
+          color: var(--text-sub);
+          margin-bottom: 8px;
+        }
+        .hero-title {
+          font-size: clamp(24px, 5vw, 36px);
+          font-weight: 700;
+          line-height: 1.5;
+          margin-bottom: 16px;
+          word-break: keep-all;
+          overflow-wrap: break-word;
+        }
+        .hero-title-em {
+          color: var(--primary);
+        }
+        .hero-sub {
+          font-size: 15px;
+          color: var(--text-sub);
+          line-height: 1.8;
+          margin-bottom: 32px;
+          word-break: keep-all;
+          overflow-wrap: break-word;
+        }
         .hero-badge {
           display: inline-block;
           background: var(--accent);
@@ -123,15 +149,6 @@ export default function LPPage() {
           font-size: 13px;
           font-weight: 600;
           margin-bottom: 24px;
-        }
-        .hero-title {
-          font-size: clamp(26px, 5.5vw, 38px);
-          font-weight: 700;
-          line-height: 1.5;
-          margin-bottom: 32px;
-        }
-        .hero-title-em {
-          color: var(--primary);
         }
 
         /* What Box */
@@ -436,15 +453,20 @@ export default function LPPage() {
           font-size: 13px;
           font-weight: 700;
           color: var(--primary);
+          flex-shrink: 0;
         }
         .feature-title {
           font-size: 17px;
           font-weight: 700;
+          word-break: keep-all;
+          overflow-wrap: break-word;
         }
         .feature-text {
           font-size: 14px;
           color: var(--text-sub);
           line-height: 1.8;
+          word-break: keep-all;
+          overflow-wrap: break-word;
         }
         .feature-list {
           margin-top: 12px;
@@ -458,6 +480,8 @@ export default function LPPage() {
           color: var(--text-sub);
           line-height: 1.8;
           margin-bottom: 6px;
+          word-break: keep-all;
+          overflow-wrap: break-word;
         }
         .feature-list li::before {
           content: '•';
@@ -873,18 +897,21 @@ export default function LPPage() {
       {/* Hero */}
       <section className="hero">
         <div className="hero-inner">
-          <span className="hero-badge">🎁 先着10社限定キャンペーン中</span>
+          <p className="hero-catch">「他社より安くできます」ではなく</p>
           <h1 className="hero-title">
-            遠方の方から<span className="hero-title-em">献杯</span>を集めて<br />
-            <span className="hero-title-em">葬儀費用の負担</span>を軽減
+            <span className="hero-title-em">「お客様の負担を減らせます」</span>という提案ができる仕組み
           </h1>
+          <p className="hero-sub">
+            遠方の方から献杯（支援金）を集めて葬儀費用の負担を軽減。見積もり競争で選ばれる葬儀社へ。
+          </p>
+
+          <span className="hero-badge">🎁 先着10社限定キャンペーン中</span>
 
           {/* What Box */}
           <div className="what-box">
             <p className="what-label">Reiとは？</p>
             <p className="what-title">
-              参列できない方からオンラインで献杯（支援金）を集める<br />
-              葬儀社様向けシステムです
+              参列できない方からオンラインで献杯を集めるシステムです
             </p>
             <div className="what-points">
               <div className="what-point">
@@ -972,43 +999,43 @@ export default function LPPage() {
               <div className="flow-content">
                 <p className="flow-title">献杯ページを作成</p>
                 <p className="flow-text">
-                  故人のお名前・写真・メッセージを入力。<span className="flow-em">所要時間はわずか3分</span>で完了します。
+                  故人のお名前・写真・メッセージを入力。<span className="flow-em">約3分で完了</span>します。
                 </p>
               </div>
             </div>
             <div className="flow-item">
               <div className="flow-num">2</div>
               <div className="flow-content">
-                <p className="flow-title">専用リンクを遺族にお伝え</p>
+                <p className="flow-title">リンクを遺族にお伝え</p>
                 <p className="flow-text">
-                  作成されたページのURLを遺族にお渡しします。印刷用QRコードも自動生成されます。
+                  ページのURLを遺族にお渡し。QRコードも自動生成されます。
                 </p>
               </div>
             </div>
             <div className="flow-item">
               <div className="flow-num">3</div>
               <div className="flow-content">
-                <p className="flow-title">遺族がLINEで親族・知人に共有</p>
+                <p className="flow-title">遺族がLINEで共有</p>
                 <p className="flow-text">
-                  遺族がリンクをLINEやメールで送信。<span className="flow-em">葬儀社様の作業はここで完了</span>です。
+                  遺族がリンクを親族・知人に送信。<span className="flow-em">葬儀社様の作業は完了</span>です。
                 </p>
               </div>
             </div>
             <div className="flow-item">
               <div className="flow-num">4</div>
               <div className="flow-content">
-                <p className="flow-title">遠方の方がスマホから送金</p>
+                <p className="flow-title">遠方の方がスマホで送金</p>
                 <p className="flow-text">
-                  参列できない方がスマホで金額を選び、クレジットカードで献杯（支援金）を送ります。
+                  参列できない方がスマホから献杯（支援金）を送ります。
                 </p>
               </div>
             </div>
             <div className="flow-item flow-highlight">
               <div className="flow-num">5</div>
               <div className="flow-content">
-                <p className="flow-title">集まったお金を葬儀費用に充当</p>
+                <p className="flow-title">葬儀費用に充当</p>
                 <p className="flow-text">
-                  <span className="flow-em">集まった献杯は葬儀費用に充てることが可能。</span>「実質10万円引き」という提案ができます。
+                  <span className="flow-em">集まった献杯は葬儀費用に充当可能。</span>「実質10万円引き」の提案ができます。
                 </p>
               </div>
             </div>
@@ -1033,26 +1060,26 @@ export default function LPPage() {
                 <h3 className="feature-title">現場の負担ゼロ</h3>
               </div>
               <p className="feature-text">
-                映像配信や複雑なシステム操作は一切不要。リンクを1つお伝えするだけです。
+                映像配信や複雑な操作は不要。リンクを1つお伝えするだけです。
               </p>
               <ul className="feature-list">
-                <li>専用アプリのインストール不要</li>
-                <li>スタッフの研修・教育コスト不要</li>
-                <li>当日の運用オペレーション変更なし</li>
+                <li>アプリのインストール不要</li>
+                <li>スタッフ研修不要</li>
+                <li>当日のオペ変更なし</li>
               </ul>
             </div>
             <div className="feature">
               <div className="feature-head">
                 <span className="feature-num">02</span>
-                <h3 className="feature-title">「物」ではなく「お金」</h3>
+                <h3 className="feature-title">物ではなくお金</h3>
               </div>
               <p className="feature-text">
-                返礼品を送る物販型とは違い、集まったお金をそのまま葬儀費用に充当できます。
+                返礼品を送る物販型と違い、集まったお金を葬儀費用に充当できます。
               </p>
               <ul className="feature-list">
-                <li>返礼品の手配・発送作業が不要</li>
-                <li>在庫管理のリスクなし</li>
-                <li>遺族の実質負担を直接軽減</li>
+                <li>返礼品の手配・発送不要</li>
+                <li>在庫リスクなし</li>
+                <li>遺族の負担を直接軽減</li>
               </ul>
             </div>
             <div className="feature">
@@ -1061,7 +1088,7 @@ export default function LPPage() {
                 <h3 className="feature-title">安心の直接入金</h3>
               </div>
               <p className="feature-text">
-                弊社がお金を預かることはありません。貴社の口座に直接入金されます。
+                弊社はお金を預かりません。貴社の口座に直接入金されます。
               </p>
               <ul className="feature-list">
                 <li>運営会社の倒産リスクなし</li>
@@ -1161,7 +1188,7 @@ export default function LPPage() {
               </div>
             </div>
             <p className="fee-breakdown-text">
-              ※Stripeは世界最大級の決済プラットフォームです。セキュリティ面でも安心してご利用いただけます。
+              ※Stripeは世界最大級の決済プラットフォームです。セキュリティも安心。
             </p>
           </div>
         </div>
@@ -1174,7 +1201,7 @@ export default function LPPage() {
             <p className="section-label">COMPARISON</p>
             <h2 className="section-title">Reiがなければ、0円です</h2>
             <p className="section-desc">
-              遠方の方がお気持ちを届ける手段がなければ、集まるはずだった支援金は0円のままです。
+              遠方の方がお気持ちを届ける手段がなければ、支援金は0円のままです。
             </p>
           </div>
           <div className="compare">
@@ -1201,11 +1228,10 @@ export default function LPPage() {
       <section className="section cta-section">
         <div className="section-inner">
           <h2 className="cta-section-title">
-            「他社より安くできます」ではなく<br />
-            <span className="cta-section-em">「お客様の負担を減らせます」</span>という提案を
+            価格競争から<span className="cta-section-em">価値競争</span>へ
           </h2>
           <p className="cta-section-text">
-            Reiで、価格競争から価値競争へ
+            Reiで、選ばれる葬儀社になりませんか？
           </p>
           <a href="#contact" className="cta-main">資料請求・お問い合わせ →</a>
         </div>
