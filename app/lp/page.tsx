@@ -176,6 +176,28 @@ export default function LPPage() {
         .hero-main {
           margin-bottom: 40px;
         }
+        .hero-top-label {
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.3em;
+          color: rgba(255,255,255,0.6);
+          margin-bottom: 12px;
+        }
+        .hero-top-catch {
+          font-size: clamp(24px, 6vw, 40px);
+          font-weight: 800;
+          color: var(--white);
+          line-height: 1.3;
+          margin-bottom: 20px;
+          text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+        .hero-divider {
+          width: 60px;
+          height: 3px;
+          background: linear-gradient(90deg, var(--accent), rgba(232, 168, 48, 0.3));
+          margin: 0 auto 24px;
+          border-radius: 2px;
+        }
         .hero-catch {
           display: inline-block;
           background: rgba(255,255,255,0.15);
@@ -185,7 +207,7 @@ export default function LPPage() {
           font-size: 13px;
           font-weight: 600;
           color: rgba(255,255,255,0.9);
-          margin-bottom: 24px;
+          margin-bottom: 20px;
           letter-spacing: 0.05em;
         }
         .hero-title {
@@ -1073,6 +1095,9 @@ export default function LPPage() {
         </div>
         <div className="hero-inner">
           <div className="hero-main">
+            <p className="hero-top-label">SMART KENPAI</p>
+            <h2 className="hero-top-catch">見積競争に勝ち抜くための新提案</h2>
+            <div className="hero-divider" />
             <p className="hero-catch">他社の見積もりに勝つ、新しい武器</p>
             <h1 className="hero-title">
               <span className="hero-title-line">遠方の献杯を集めて</span>
