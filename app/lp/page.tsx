@@ -53,8 +53,9 @@ export default function LPPage() {
           color: var(--text);
           background: var(--bg);
           min-height: 100vh;
-          word-break: keep-all;
+          word-break: break-word;
           overflow-wrap: break-word;
+          overflow-x: hidden;
         }
 
         /* Header */
@@ -262,11 +263,11 @@ export default function LPPage() {
           justify-items: center;
           background: rgba(255,255,255,0.1);
           backdrop-filter: blur(8px);
-          border-radius: 16px;
-          padding: 24px 20px;
-          margin-bottom: 32px;
+          border-radius: 14px;
+          padding: 16px 12px;
+          margin-bottom: 28px;
           border: 1px solid rgba(255,255,255,0.15);
-          max-width: 500px;
+          max-width: 340px;
           margin-left: auto;
           margin-right: auto;
         }
@@ -277,20 +278,19 @@ export default function LPPage() {
           text-align: center;
         }
         .hero-stat-value {
-          font-size: clamp(26px, 6vw, 34px);
+          font-size: clamp(20px, 5vw, 28px);
           font-weight: 700;
           color: var(--white);
           line-height: 1.2;
         }
         .hero-stat-label {
-          font-size: 11px;
+          font-size: 10px;
           color: rgba(255,255,255,0.7);
-          margin-top: 4px;
-          white-space: nowrap;
+          margin-top: 2px;
         }
         .hero-stat-divider {
           width: 1px;
-          height: 40px;
+          height: 32px;
           background: rgba(255,255,255,0.2);
         }
 
@@ -304,12 +304,12 @@ export default function LPPage() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 12px;
+          gap: 10px;
           background: var(--white);
           color: var(--primary);
-          padding: 20px 48px;
-          border-radius: 16px;
-          font-size: 18px;
+          padding: 16px 36px;
+          border-radius: 14px;
+          font-size: 16px;
           font-weight: 700;
           text-decoration: none;
           transition: all 0.3s;
@@ -320,19 +320,19 @@ export default function LPPage() {
           box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
         .hero-cta-arrow {
-          font-size: 20px;
+          font-size: 18px;
           transition: transform 0.3s;
         }
         .hero-cta-main:hover .hero-cta-arrow {
           transform: translateX(4px);
         }
         .hero-cta-note {
-          margin-top: 16px;
-          font-size: 14px;
+          margin-top: 12px;
+          font-size: 12px;
           color: var(--white);
           background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(180, 40, 50, 0.9));
-          padding: 12px 24px;
-          border-radius: 10px;
+          padding: 10px 16px;
+          border-radius: 8px;
           font-weight: 600;
           text-align: center;
           animation: pulse 2s ease-in-out infinite;
@@ -359,7 +359,7 @@ export default function LPPage() {
         .campaign {
           background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
           color: var(--white);
-          padding: 60px 20px;
+          padding: 48px 20px;
           text-align: center;
           position: relative;
           overflow: hidden;
@@ -449,44 +449,44 @@ export default function LPPage() {
         .campaign-example {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
-          margin-bottom: 20px;
+          gap: 10px;
+          margin-bottom: 16px;
         }
         .campaign-example-item {
           background: rgba(232, 168, 48, 0.15);
           border: 1px solid rgba(232, 168, 48, 0.3);
-          border-radius: 12px;
-          padding: 16px;
+          border-radius: 10px;
+          padding: 12px 8px;
           text-align: center;
         }
         .campaign-example-label {
           display: block;
-          font-size: 12px;
+          font-size: 10px;
           opacity: 0.8;
-          margin-bottom: 6px;
+          margin-bottom: 4px;
         }
         .campaign-example-value {
           display: block;
-          font-size: 24px;
+          font-size: 20px;
           font-weight: 700;
           color: var(--accent);
         }
         .campaign-note {
-          font-size: 12px;
+          font-size: 11px;
           opacity: 0.7;
-          margin-bottom: 24px;
-          line-height: 1.7;
+          margin-bottom: 20px;
+          line-height: 1.6;
         }
         .campaign-btn {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 8px;
           background: linear-gradient(135deg, var(--accent), #d4922a);
           color: #1a1a1a;
-          padding: 18px 40px;
-          border-radius: 14px;
-          font-size: 17px;
+          padding: 16px 32px;
+          border-radius: 12px;
+          font-size: 15px;
           font-weight: 700;
           text-decoration: none;
           transition: all 0.3s;
@@ -509,6 +509,7 @@ export default function LPPage() {
           background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
           padding: 64px 20px;
           text-align: center;
+          overflow: hidden;
         }
         .easy-start-inner {
           max-width: 700px;
@@ -526,75 +527,80 @@ export default function LPPage() {
           letter-spacing: 0.1em;
         }
         .easy-start-title {
-          font-size: clamp(22px, 5vw, 30px);
+          font-size: clamp(20px, 5vw, 30px);
           font-weight: 700;
           line-height: 1.5;
-          margin-bottom: 36px;
+          margin-bottom: 32px;
         }
         .easy-start-em {
           color: var(--primary);
           background: linear-gradient(transparent 70%, rgba(26, 107, 82, 0.15) 70%);
         }
         .easy-start-points {
-          display: grid;
-          grid-template-columns: 1fr;
+          display: flex;
+          flex-direction: column;
           gap: 12px;
           margin-bottom: 24px;
         }
         .easy-start-point {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 24px 20px;
+          border-radius: 14px;
+          padding: 16px;
           box-shadow: 0 2px 12px rgba(0,0,0,0.04);
           transition: all 0.3s;
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 14px;
           text-align: left;
+          overflow: hidden;
         }
         .easy-start-point:hover {
           transform: translateY(-2px);
           box-shadow: 0 8px 24px rgba(0,0,0,0.08);
         }
         .easy-start-icon {
-          font-size: 32px;
+          font-size: 24px;
           flex-shrink: 0;
-          width: 56px;
-          height: 56px;
+          width: 48px;
+          height: 48px;
           background: linear-gradient(135deg, #e6f2ee, #d4ebe3);
-          border-radius: 14px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
         .easy-start-point-content {
           flex: 1;
+          min-width: 0;
+          overflow: hidden;
         }
         .easy-start-point-title {
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 700;
-          margin-bottom: 4px;
+          margin-bottom: 2px;
           color: var(--text);
         }
         .easy-start-point-text {
-          font-size: 13px;
+          font-size: 12px;
           color: var(--text-sub);
           line-height: 1.5;
+          word-break: break-word;
         }
         .easy-start-note {
-          font-size: 14px;
+          font-size: 12px;
           color: var(--primary);
           font-weight: 600;
           background: linear-gradient(135deg, #e6f2ee, #d4ebe3);
           display: inline-block;
-          padding: 10px 24px;
+          padding: 10px 20px;
           border-radius: 100px;
         }
 
         /* Section */
         .section {
-          padding: 72px 20px;
+          padding: 64px 20px;
+          overflow: hidden;
         }
         .section-alt {
           background: var(--bg-alt);
@@ -631,7 +637,7 @@ export default function LPPage() {
         .flow-list {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 12px;
           max-width: 600px;
           margin: 0 auto;
         }
@@ -639,45 +645,50 @@ export default function LPPage() {
           background: var(--white);
           border: 1px solid var(--border);
           border-radius: 16px;
-          padding: 24px;
+          padding: 20px 16px;
           display: flex;
           align-items: flex-start;
-          gap: 18px;
+          gap: 14px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
           transition: all 0.3s;
-          min-height: 100px;
+          overflow: hidden;
         }
         .flow-item:hover {
           box-shadow: 0 4px 16px rgba(0,0,0,0.08);
           transform: translateY(-2px);
         }
         .flow-num {
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
           background: linear-gradient(135deg, var(--primary), var(--primary-light));
-          border-radius: 12px;
+          border-radius: 10px;
           color: var(--white);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 700;
           flex-shrink: 0;
           box-shadow: 0 2px 8px rgba(26, 107, 82, 0.25);
         }
         .flow-content {
           flex: 1;
+          min-width: 0;
+          overflow: hidden;
         }
         .flow-title {
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 700;
-          margin-bottom: 6px;
+          margin-bottom: 4px;
+          word-break: break-word;
         }
         .flow-text {
-          font-size: 14px;
+          font-size: 13px;
           color: var(--text-sub);
-          line-height: 1.7;
+          line-height: 1.6;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
         .flow-em {
           color: var(--primary);
@@ -696,20 +707,21 @@ export default function LPPage() {
         .features {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 16px;
           max-width: 900px;
           margin: 0 auto;
         }
         .feature {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 20px;
-          padding: 32px 28px;
+          border-radius: 16px;
+          padding: 24px 20px;
           box-shadow: 0 2px 12px rgba(0,0,0,0.04);
           transition: all 0.3s;
           display: flex;
           flex-direction: column;
           text-align: center;
+          overflow: hidden;
         }
         .feature:hover {
           box-shadow: 0 8px 24px rgba(0,0,0,0.08);
@@ -719,31 +731,32 @@ export default function LPPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 14px;
-          margin-bottom: 16px;
+          gap: 12px;
+          margin-bottom: 12px;
         }
         .feature-num {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 700;
           color: var(--white);
           background: var(--primary);
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
         }
         .feature-title {
-          font-size: 20px;
+          font-size: 17px;
           font-weight: 700;
         }
         .feature-text {
-          font-size: 14px;
+          font-size: 13px;
           color: var(--text-sub);
-          line-height: 1.8;
-          margin-bottom: 20px;
+          line-height: 1.7;
+          margin-bottom: 16px;
+          word-break: break-word;
         }
         .feature-list {
           margin-top: auto;
@@ -751,21 +764,21 @@ export default function LPPage() {
           list-style: none;
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 8px;
         }
         .feature-list li {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
-          font-size: 14px;
+          gap: 6px;
+          font-size: 13px;
           color: var(--text);
         }
         .feature-list li::before {
           content: '✓';
           color: var(--primary);
           font-weight: 700;
-          font-size: 16px;
+          font-size: 14px;
         }
 
         /* Pricing */
@@ -908,24 +921,26 @@ export default function LPPage() {
           background: var(--white);
           border: 1px solid var(--border);
           border-radius: 16px;
-          padding: 24px;
+          padding: 20px 16px;
           text-align: center;
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .fee-breakdown-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           gap: 8px;
-          font-size: 12px;
+          font-size: 11px;
         }
         .fee-breakdown-item {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 6px;
-          padding: 8px;
+          gap: 4px;
+          padding: 6px 10px;
           background: var(--bg-alt);
-          border-radius: 8px;
+          border-radius: 6px;
+          white-space: nowrap;
         }
         .fee-dot {
           width: 8px;
@@ -934,10 +949,10 @@ export default function LPPage() {
           border-radius: 50%;
         }
         .fee-breakdown-text {
-          margin-top: 16px;
-          font-size: 12px;
+          margin-top: 12px;
+          font-size: 11px;
           color: var(--text-sub);
-          line-height: 1.7;
+          line-height: 1.6;
         }
 
         /* Compare */
@@ -1145,7 +1160,7 @@ export default function LPPage() {
         .footer {
           background: var(--white);
           border-top: 1px solid var(--border);
-          padding: 48px 20px 100px;
+          padding: 40px 20px 80px;
           text-align: center;
         }
         .footer-logo {
@@ -1175,25 +1190,25 @@ export default function LPPage() {
           background: rgba(255,255,255,0.98);
           backdrop-filter: blur(10px);
           border-top: 1px solid rgba(0,0,0,0.08);
-          padding: 8px 16px;
-          padding-bottom: calc(8px + env(safe-area-inset-bottom));
+          padding: 6px 12px;
+          padding-bottom: calc(6px + env(safe-area-inset-bottom));
           box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
         }
         .fixed-nav-inner {
-          max-width: 400px;
+          max-width: 360px;
           margin: 0 auto;
           display: grid;
           grid-template-columns: repeat(5, 1fr);
-          gap: 4px;
+          gap: 2px;
         }
         .fixed-nav-item {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 8px 4px;
-          border-radius: 10px;
-          font-size: 10px;
+          padding: 6px 2px;
+          border-radius: 8px;
+          font-size: 9px;
           font-weight: 600;
           color: var(--text-sub);
           text-decoration: none;
@@ -1210,7 +1225,7 @@ export default function LPPage() {
           color: var(--primary);
         }
         .fixed-nav-icon {
-          font-size: 18px;
+          font-size: 16px;
           margin-bottom: 2px;
         }
         .fixed-nav-item-cta {
@@ -1232,25 +1247,26 @@ export default function LPPage() {
             font-size: 140px;
           }
           .hero-stats {
-            max-width: 520px;
-            padding: 28px 32px;
+            max-width: 420px;
+            padding: 20px 24px;
           }
           .sp-only {
             display: none;
           }
           .easy-start-points {
+            display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 16px;
           }
           .easy-start-point {
             flex-direction: column;
             text-align: center;
-            padding: 32px 20px;
+            padding: 28px 16px;
           }
           .easy-start-icon {
-            width: 64px;
-            height: 64px;
-            font-size: 28px;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
             margin-bottom: 8px;
           }
           .section {
@@ -1262,7 +1278,7 @@ export default function LPPage() {
             gap: 24px;
           }
           .feature {
-            min-height: 320px;
+            min-height: 280px;
           }
           .pricing-cards {
             grid-template-columns: repeat(2, 1fr);
@@ -1310,8 +1326,8 @@ export default function LPPage() {
               <span className="hero-title-line">という提案ができる</span>
             </h1>
             <p className="hero-desc">
-              参列できない方からオンラインで献杯（支援金）を集め、<br className="sp-only" />
-              葬儀費用の負担を軽減する葬儀社様向けシステム
+              参列できない方から献杯（支援金）を集め、<br className="sp-only" />
+              葬儀費用の負担を軽減するシステム
             </p>
           </div>
 
@@ -1337,7 +1353,7 @@ export default function LPPage() {
               <span>無料で資料請求</span>
               <span className="hero-cta-arrow">→</span>
             </a>
-            <p className="hero-cta-note">🔥 先着10社限定：手数料8%が半年間貴社の収益に → 残り枠わずか</p>
+            <p className="hero-cta-note">🔥 先着10社限定：手数料8%を半年間還元</p>
           </div>
 
           <div className="hero-scroll">
@@ -1372,7 +1388,7 @@ export default function LPPage() {
               <span className="campaign-example-value">+40,000円</span>
             </div>
           </div>
-          <p className="campaign-note">※通常は弊社へのシステム利用料となる8%が、キャンペーン期間中は全額貴社の収益になります</p>
+          <p className="campaign-note">※通常は弊社へのシステム利用料となる8%が、<br className="sp-only" />キャンペーン期間中は全額貴社の収益になります</p>
           <a href="#contact" className="campaign-btn">
             <span>今すぐ枠を確保する</span>
             <span className="campaign-btn-arrow">→</span>
@@ -1393,25 +1409,25 @@ export default function LPPage() {
               <div className="easy-start-icon">📱</div>
               <div className="easy-start-point-content">
                 <p className="easy-start-point-title">スマホだけでOK</p>
-                <p className="easy-start-point-text">PC不要。お手持ちのスマートフォンだけで全ての操作が完結します</p>
+                <p className="easy-start-point-text">PC不要。スマホで全て完結</p>
               </div>
             </div>
             <div className="easy-start-point">
               <div className="easy-start-icon">👥</div>
               <div className="easy-start-point-content">
                 <p className="easy-start-point-title">従業員様も利用可能</p>
-                <p className="easy-start-point-text">各スタッフのスマホに導入OK。複数人での運用もスムーズです</p>
+                <p className="easy-start-point-text">各スタッフのスマホに導入OK</p>
               </div>
             </div>
             <div className="easy-start-point">
               <div className="easy-start-icon">🔗</div>
               <div className="easy-start-point-content">
                 <p className="easy-start-point-title">リンク1つで開始</p>
-                <p className="easy-start-point-text">弊社から専用リンクをお送りするだけ。面倒な設定は一切不要です</p>
+                <p className="easy-start-point-text">弊社から専用リンクをお送りするだけ</p>
               </div>
             </div>
           </div>
-          <p className="easy-start-note">✓ インストール不要　✓ 初期設定不要　✓ 研修不要</p>
+          <p className="easy-start-note">✓ インストール不要 ✓ 初期設定不要 ✓ 研修不要</p>
         </div>
       </section>
 
@@ -1430,45 +1446,35 @@ export default function LPPage() {
               <div className="flow-num">1</div>
               <div className="flow-content">
                 <p className="flow-title">献杯ページを作成</p>
-                <p className="flow-text">
-                  故人のお名前・写真・メッセージを入力。<span className="flow-em">約3分で完了</span>します。
-                </p>
+                <p className="flow-text">故人名・写真・メッセージを入力。<span className="flow-em">約3分</span>で完了</p>
               </div>
             </div>
             <div className="flow-item">
               <div className="flow-num">2</div>
               <div className="flow-content">
                 <p className="flow-title">リンクを遺族にお伝え</p>
-                <p className="flow-text">
-                  ページのURLを遺族にお渡し。QRコードも自動生成されます。
-                </p>
+                <p className="flow-text">URLをお渡し。QRコードも自動生成</p>
               </div>
             </div>
             <div className="flow-item">
               <div className="flow-num">3</div>
               <div className="flow-content">
                 <p className="flow-title">遺族がLINEで共有</p>
-                <p className="flow-text">
-                  遺族がリンクを親族・知人に送信。<span className="flow-em">葬儀社様の作業は完了</span>です。
-                </p>
+                <p className="flow-text">親族・知人に送信。<span className="flow-em">葬儀社様の作業完了</span></p>
               </div>
             </div>
             <div className="flow-item">
               <div className="flow-num">4</div>
               <div className="flow-content">
                 <p className="flow-title">遠方の方がスマホで送金</p>
-                <p className="flow-text">
-                  参列できない方がスマホから献杯（支援金）を送ります。
-                </p>
+                <p className="flow-text">参列できない方がスマホから献杯を送ります</p>
               </div>
             </div>
             <div className="flow-item flow-highlight">
               <div className="flow-num">5</div>
               <div className="flow-content">
                 <p className="flow-title">葬儀費用に充当</p>
-                <p className="flow-text">
-                  <span className="flow-em">集まった献杯は葬儀費用に充当可能。</span>「実質10万円引き」の提案ができます。
-                </p>
+                <p className="flow-text"><span className="flow-em">集まった献杯は葬儀費用に充当可能</span></p>
               </div>
             </div>
           </div>
@@ -1491,11 +1497,9 @@ export default function LPPage() {
                 <span className="feature-num">01</span>
                 <h3 className="feature-title">現場の負担ゼロ</h3>
               </div>
-              <p className="feature-text">
-                映像配信や複雑な操作は不要。リンクを1つお伝えするだけです。
-              </p>
+              <p className="feature-text">映像配信や複雑な操作は不要。リンクを1つお伝えするだけ</p>
               <ul className="feature-list">
-                <li>アプリのインストール不要</li>
+                <li>アプリ不要</li>
                 <li>スタッフ研修不要</li>
                 <li>当日のオペ変更なし</li>
               </ul>
@@ -1505,13 +1509,11 @@ export default function LPPage() {
                 <span className="feature-num">02</span>
                 <h3 className="feature-title">物ではなくお金</h3>
               </div>
-              <p className="feature-text">
-                返礼品を送る物販型と違い、集まったお金を葬儀費用に充当できます。
-              </p>
+              <p className="feature-text">返礼品を送る物販型と違い、集まったお金を葬儀費用に充当</p>
               <ul className="feature-list">
-                <li>返礼品の手配・発送不要</li>
+                <li>返礼品の手配不要</li>
                 <li>在庫リスクなし</li>
-                <li>遺族の負担を直接軽減</li>
+                <li>遺族の負担を軽減</li>
               </ul>
             </div>
             <div className="feature">
@@ -1519,13 +1521,11 @@ export default function LPPage() {
                 <span className="feature-num">03</span>
                 <h3 className="feature-title">安心の直接入金</h3>
               </div>
-              <p className="feature-text">
-                弊社はお金を預かりません。貴社の口座に直接入金されます。
-              </p>
+              <p className="feature-text">弊社はお金を預かりません。貴社の口座に直接入金</p>
               <ul className="feature-list">
-                <li>運営会社の倒産リスクなし</li>
+                <li>倒産リスクなし</li>
                 <li>入金遅延の心配なし</li>
-                <li>法的にも安心な仕組み</li>
+                <li>法的にも安心</li>
               </ul>
             </div>
           </div>
@@ -1620,7 +1620,7 @@ export default function LPPage() {
               </div>
             </div>
             <p className="fee-breakdown-text">
-              ※Stripeは世界最大級の決済プラットフォームです。セキュリティも安心。
+              ※Stripeは世界最大級の決済基盤。セキュリティも安心
             </p>
           </div>
         </div>
@@ -1633,7 +1633,7 @@ export default function LPPage() {
             <p className="section-label">COMPARISON</p>
             <h2 className="section-title">Reiがなければ、0円です</h2>
             <p className="section-desc">
-              遠方の方がお気持ちを届ける手段がなければ、支援金は0円のままです。
+              遠方の方がお気持ちを届ける手段がなければ、0円のままです
             </p>
           </div>
           <div className="compare">
@@ -1682,7 +1682,7 @@ export default function LPPage() {
           <div className="form-wrap">
             <div className="form-campaign">
               <span className="form-campaign-badge">🔥 残り枠わずか</span>
-              <span className="form-campaign-text">先着<span className="form-campaign-em">10社限定</span>で手数料8%が<span className="form-campaign-em">半年間貴社の収益</span>に</span>
+              <span className="form-campaign-text">先着<span className="form-campaign-em">10社限定</span>で手数料8%を<span className="form-campaign-em">半年間還元</span></span>
             </div>
             {submitted ? (
               <div className="form-success">
