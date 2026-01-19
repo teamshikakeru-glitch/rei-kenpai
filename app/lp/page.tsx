@@ -64,8 +64,9 @@ export default function LPPage() {
           left: 0;
           right: 0;
           z-index: 100;
-          background: rgba(255,255,255,0.98);
-          border-bottom: 1px solid var(--border);
+          background: rgba(255,255,255,0.95);
+          backdrop-filter: blur(10px);
+          border-bottom: 1px solid rgba(0,0,0,0.06);
         }
         .header-inner {
           max-width: 1000px;
@@ -81,29 +82,36 @@ export default function LPPage() {
           gap: 10px;
         }
         .logo-icon {
-          width: 36px;
-          height: 36px;
-          background: var(--primary);
-          border-radius: 8px;
+          width: 38px;
+          height: 38px;
+          background: linear-gradient(135deg, var(--primary), var(--primary-light));
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
           color: var(--white);
           font-weight: 700;
           font-size: 18px;
+          box-shadow: 0 2px 8px rgba(26, 107, 82, 0.25);
         }
         .logo-text {
           font-size: 20px;
           font-weight: 700;
         }
         .header-btn {
-          background: var(--primary);
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: var(--white);
-          padding: 10px 20px;
-          border-radius: 6px;
+          padding: 10px 22px;
+          border-radius: 8px;
           font-size: 13px;
           font-weight: 600;
           text-decoration: none;
+          transition: all 0.3s;
+          box-shadow: 0 2px 8px rgba(26, 107, 82, 0.25);
+        }
+        .header-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(26, 107, 82, 0.35);
         }
 
         /* Hero */
@@ -155,40 +163,43 @@ export default function LPPage() {
         .what-box {
           background: var(--white);
           border: 2px solid var(--primary);
-          border-radius: 16px;
-          padding: 28px 24px;
-          margin-bottom: 32px;
+          border-radius: 20px;
+          padding: 32px 28px;
+          margin-bottom: 36px;
           text-align: center;
+          box-shadow: 0 4px 20px rgba(26, 107, 82, 0.08);
         }
         .what-label {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 700;
           color: var(--primary);
-          letter-spacing: 0.08em;
+          letter-spacing: 0.15em;
           margin-bottom: 12px;
+          text-transform: uppercase;
         }
         .what-title {
-          font-size: 17px;
+          font-size: 16px;
           font-weight: 700;
-          line-height: 1.6;
-          margin-bottom: 24px;
+          line-height: 1.7;
+          margin-bottom: 28px;
         }
         .what-points {
-          display: flex;
-          flex-direction: column;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
           gap: 16px;
         }
         .what-point {
           display: flex;
+          flex-direction: column;
           align-items: center;
-          justify-content: center;
-          gap: 10px;
-          font-size: 15px;
+          gap: 8px;
+          font-size: 13px;
+          font-weight: 500;
         }
         .what-check {
-          width: 24px;
-          height: 24px;
-          background: var(--primary);
+          width: 28px;
+          height: 28px;
+          background: linear-gradient(135deg, var(--primary), var(--primary-light));
           border-radius: 50%;
           color: var(--white);
           display: flex;
@@ -196,27 +207,27 @@ export default function LPPage() {
           justify-content: center;
           font-size: 14px;
           flex-shrink: 0;
+          box-shadow: 0 2px 8px rgba(26, 107, 82, 0.25);
         }
 
         /* Stats */
         .stats {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          margin-bottom: 32px;
-          max-width: 500px;
-          margin-left: auto;
-          margin-right: auto;
+          gap: 12px;
+          margin: 0 auto 32px;
+          max-width: 420px;
         }
         .stat {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 20px 16px;
+          border-radius: 16px;
+          padding: 24px 16px;
           text-align: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .stat-value {
-          font-size: 26px;
+          font-size: 28px;
           font-weight: 700;
           color: var(--primary);
           line-height: 1.2;
@@ -224,7 +235,7 @@ export default function LPPage() {
         .stat-label {
           font-size: 12px;
           color: var(--text-sub);
-          margin-top: 4px;
+          margin-top: 6px;
         }
 
         /* CTA */
@@ -240,17 +251,19 @@ export default function LPPage() {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          background: var(--primary);
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: var(--white);
-          padding: 16px 40px;
-          border-radius: 8px;
+          padding: 18px 44px;
+          border-radius: 12px;
           font-size: 16px;
           font-weight: 700;
           text-decoration: none;
-          transition: background 0.3s;
+          transition: all 0.3s;
+          box-shadow: 0 4px 16px rgba(26, 107, 82, 0.3);
         }
         .cta-main:hover {
-          background: var(--primary-light);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 24px rgba(26, 107, 82, 0.4);
         }
         .cta-sub {
           display: inline-flex;
@@ -258,93 +271,122 @@ export default function LPPage() {
           justify-content: center;
           gap: 6px;
           background: var(--white);
-          color: var(--text);
-          padding: 12px 32px;
-          border-radius: 8px;
+          color: var(--primary);
+          padding: 14px 32px;
+          border-radius: 10px;
           font-size: 14px;
           font-weight: 600;
           text-decoration: none;
-          border: 1px solid var(--border);
+          border: 2px solid var(--primary);
+          transition: all 0.3s;
+        }
+        .cta-sub:hover {
+          background: var(--primary);
+          color: var(--white);
         }
 
         /* Nav Links */
         .nav-links {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 12px;
-          max-width: 500px;
+          gap: 10px;
+          max-width: 480px;
           margin: 0 auto;
         }
         .nav-link {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 8px;
-          padding: 14px 12px;
-          font-size: 13px;
+          border-radius: 12px;
+          padding: 16px 12px;
+          font-size: 12px;
           font-weight: 600;
           color: var(--text);
           cursor: pointer;
-          transition: all 0.2s;
+          transition: all 0.3s;
           text-align: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .nav-link:hover {
           border-color: var(--primary);
           color: var(--primary);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(26, 107, 82, 0.12);
         }
         .nav-link-icon {
           display: block;
-          font-size: 18px;
-          margin-bottom: 4px;
+          font-size: 20px;
+          margin-bottom: 6px;
         }
 
         /* Campaign */
         .campaign {
-          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+          background: linear-gradient(135deg, var(--primary), #0d4a38);
           color: var(--white);
-          padding: 40px 20px;
+          padding: 48px 20px;
           text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+        .campaign::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+          pointer-events: none;
         }
         .campaign-inner {
           max-width: 600px;
           margin: 0 auto;
+          position: relative;
+          z-index: 1;
         }
         .campaign-badge {
           display: inline-block;
           background: var(--accent);
-          padding: 4px 14px;
+          padding: 6px 18px;
           border-radius: 100px;
           font-size: 12px;
           font-weight: 700;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
+          letter-spacing: 0.05em;
         }
         .campaign-title {
-          font-size: clamp(20px, 4.5vw, 26px);
+          font-size: clamp(18px, 4vw, 24px);
           font-weight: 700;
-          line-height: 1.5;
+          line-height: 1.6;
           margin-bottom: 12px;
         }
         .campaign-text {
           font-size: 14px;
           opacity: 0.9;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
           line-height: 1.7;
         }
         .campaign-btn {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
           background: var(--white);
           color: var(--primary);
-          padding: 14px 28px;
-          border-radius: 8px;
+          padding: 16px 32px;
+          border-radius: 10px;
           font-size: 15px;
           font-weight: 700;
           text-decoration: none;
+          transition: all 0.3s;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .campaign-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 24px rgba(0,0,0,0.2);
         }
 
         /* Section */
         .section {
-          padding: 64px 20px;
+          padding: 72px 20px;
         }
         .section-alt {
           background: var(--bg-alt);
@@ -355,14 +397,15 @@ export default function LPPage() {
         }
         .section-head {
           text-align: center;
-          margin-bottom: 40px;
+          margin-bottom: 48px;
         }
         .section-label {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 700;
           color: var(--primary);
-          letter-spacing: 0.12em;
-          margin-bottom: 8px;
+          letter-spacing: 0.2em;
+          margin-bottom: 10px;
+          text-transform: uppercase;
         }
         .section-title {
           font-size: clamp(22px, 5vw, 28px);
@@ -372,7 +415,7 @@ export default function LPPage() {
         .section-desc {
           font-size: 15px;
           color: var(--text-sub);
-          margin-top: 12px;
+          margin-top: 14px;
           line-height: 1.8;
         }
 
@@ -387,17 +430,23 @@ export default function LPPage() {
         .flow-item {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 20px;
+          border-radius: 16px;
+          padding: 24px;
           display: flex;
           align-items: flex-start;
-          gap: 16px;
+          gap: 18px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          transition: all 0.3s;
+        }
+        .flow-item:hover {
+          box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+          transform: translateY(-2px);
         }
         .flow-num {
-          width: 36px;
-          height: 36px;
-          background: var(--primary);
-          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          background: linear-gradient(135deg, var(--primary), var(--primary-light));
+          border-radius: 12px;
           color: var(--white);
           display: flex;
           align-items: center;
@@ -405,6 +454,7 @@ export default function LPPage() {
           font-size: 16px;
           font-weight: 700;
           flex-shrink: 0;
+          box-shadow: 0 2px 8px rgba(26, 107, 82, 0.25);
         }
         .flow-content {
           flex: 1;
@@ -424,11 +474,12 @@ export default function LPPage() {
           font-weight: 600;
         }
         .flow-highlight {
-          background: linear-gradient(135deg, #e6f2ee, #d4ebe3);
+          background: linear-gradient(135deg, #e8f5f0, #d8efe7);
           border-color: var(--primary);
+          border-width: 2px;
         }
         .flow-highlight .flow-num {
-          background: var(--accent);
+          background: linear-gradient(135deg, var(--accent), #d4922a);
         }
 
         /* Features */
@@ -440,23 +491,32 @@ export default function LPPage() {
         .feature {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 24px;
+          border-radius: 20px;
+          padding: 28px;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+          transition: all 0.3s;
+        }
+        .feature:hover {
+          box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+          transform: translateY(-4px);
         }
         .feature-head {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 12px;
+          gap: 14px;
+          margin-bottom: 14px;
         }
         .feature-num {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 700;
-          color: var(--primary);
+          color: var(--white);
+          background: var(--primary);
+          padding: 4px 10px;
+          border-radius: 6px;
           flex-shrink: 0;
         }
         .feature-title {
-          font-size: 17px;
+          font-size: 18px;
           font-weight: 700;
           word-break: keep-all;
           overflow-wrap: break-word;
@@ -469,22 +529,22 @@ export default function LPPage() {
           overflow-wrap: break-word;
         }
         .feature-list {
-          margin-top: 12px;
+          margin-top: 16px;
           padding-left: 0;
           list-style: none;
         }
         .feature-list li {
           position: relative;
-          padding-left: 20px;
+          padding-left: 24px;
           font-size: 14px;
           color: var(--text-sub);
           line-height: 1.8;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
           word-break: keep-all;
           overflow-wrap: break-word;
         }
         .feature-list li::before {
-          content: '•';
+          content: '✓';
           position: absolute;
           left: 0;
           color: var(--primary);
@@ -496,51 +556,55 @@ export default function LPPage() {
           display: flex;
           flex-direction: column;
           gap: 16px;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
         }
         .pricing-card {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 28px 24px;
+          border-radius: 20px;
+          padding: 32px 28px;
           text-align: center;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
         .pricing-card-main {
-          background: var(--primary);
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: var(--white);
           border: none;
+          box-shadow: 0 4px 20px rgba(26, 107, 82, 0.3);
         }
         .pricing-label {
           font-size: 14px;
-          margin-bottom: 8px;
+          margin-bottom: 10px;
         }
         .pricing-card-main .pricing-label {
           opacity: 0.85;
         }
         .pricing-value {
-          font-size: 42px;
+          font-size: 48px;
           font-weight: 700;
           line-height: 1.2;
         }
         .pricing-unit {
-          font-size: 20px;
+          font-size: 22px;
         }
         .pricing-note {
           font-size: 13px;
-          margin-top: 4px;
+          margin-top: 6px;
           opacity: 0.7;
         }
         .subsidy {
           background: var(--white);
-          border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 24px;
+          border: 2px solid var(--accent);
+          border-radius: 20px;
+          padding: 28px;
           text-align: center;
+          box-shadow: 0 4px 16px rgba(232, 168, 48, 0.15);
         }
         .subsidy-title {
-          font-size: 16px;
+          font-size: 17px;
           font-weight: 700;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
+          color: var(--text);
         }
         .subsidy-grid {
           display: grid;
@@ -549,20 +613,20 @@ export default function LPPage() {
           margin-bottom: 16px;
         }
         .subsidy-item {
-          background: var(--bg-alt);
-          border-radius: 8px;
+          background: linear-gradient(135deg, #fef9f0, #fdf3e0);
+          border-radius: 12px;
           padding: 20px 16px;
           text-align: center;
         }
         .subsidy-item-label {
           font-size: 12px;
           color: var(--text-sub);
-          margin-bottom: 4px;
+          margin-bottom: 6px;
         }
         .subsidy-item-value {
-          font-size: 26px;
+          font-size: 28px;
           font-weight: 700;
-          color: var(--primary);
+          color: var(--accent);
         }
         .subsidy-note {
           font-size: 12px;
@@ -571,17 +635,18 @@ export default function LPPage() {
 
         /* Fee */
         .fee-main {
-          background: var(--primary);
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: var(--white);
-          border-radius: 12px;
-          padding: 28px 24px;
+          border-radius: 20px;
+          padding: 32px 28px;
           text-align: center;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
+          box-shadow: 0 4px 20px rgba(26, 107, 82, 0.3);
         }
         .fee-main-title {
-          font-size: 20px;
+          font-size: 22px;
           font-weight: 700;
-          margin-bottom: 4px;
+          margin-bottom: 6px;
         }
         .fee-main-sub {
           font-size: 14px;
@@ -596,32 +661,34 @@ export default function LPPage() {
         .fee-item {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 8px;
-          padding: 16px;
+          border-radius: 16px;
+          padding: 20px 16px;
           text-align: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .fee-item-label {
           font-size: 13px;
           color: var(--text-sub);
-          margin-bottom: 4px;
+          margin-bottom: 6px;
         }
         .fee-item-value {
-          font-size: 20px;
+          font-size: 22px;
           font-weight: 700;
           color: var(--primary);
         }
         .fee-breakdown {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 8px;
-          padding: 20px;
+          border-radius: 16px;
+          padding: 24px;
           text-align: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .fee-breakdown-row {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          font-size: 14px;
+          gap: 12px;
+          font-size: 13px;
         }
         .fee-breakdown-item {
           display: flex;
@@ -636,8 +703,8 @@ export default function LPPage() {
           border-radius: 50%;
         }
         .fee-breakdown-text {
-          margin-top: 12px;
-          font-size: 13px;
+          margin-top: 16px;
+          font-size: 12px;
           color: var(--text-sub);
           line-height: 1.7;
         }
@@ -646,21 +713,22 @@ export default function LPPage() {
         .compare {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 32px 24px;
+          border-radius: 24px;
+          padding: 40px 28px;
           text-align: center;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
         .compare-label {
           font-size: 14px;
           color: var(--text-sub);
-          margin-bottom: 24px;
+          margin-bottom: 28px;
         }
         .compare-row {
           display: grid;
           grid-template-columns: 1fr auto 1fr;
           align-items: center;
           gap: 24px;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
           max-width: 400px;
           margin-left: auto;
           margin-right: auto;
@@ -671,21 +739,26 @@ export default function LPPage() {
         .compare-item-label {
           font-size: 13px;
           color: var(--text-sub);
-          margin-bottom: 8px;
+          margin-bottom: 10px;
         }
         .compare-item-value {
-          font-size: 36px;
+          font-size: 40px;
           font-weight: 700;
         }
-        .compare-red { color: #dc3545; }
-        .compare-green { color: var(--primary); }
+        .compare-red { 
+          color: #dc3545; 
+        }
+        .compare-green { 
+          color: var(--primary); 
+        }
         .compare-vs {
-          font-size: 18px;
-          color: #ccc;
+          font-size: 16px;
+          color: #bbb;
+          font-weight: 600;
         }
         .compare-msg {
           font-size: 15px;
-          line-height: 1.7;
+          line-height: 1.8;
         }
         .compare-msg strong {
           color: var(--primary);
@@ -697,44 +770,46 @@ export default function LPPage() {
           background: linear-gradient(180deg, var(--bg-alt), var(--bg));
         }
         .cta-section-title {
-          font-size: clamp(20px, 4.5vw, 26px);
+          font-size: clamp(22px, 5vw, 30px);
           font-weight: 700;
           line-height: 1.6;
           margin-bottom: 16px;
         }
         .cta-section-em {
           color: var(--primary);
+          background: linear-gradient(transparent 70%, rgba(26, 107, 82, 0.15) 70%);
         }
         .cta-section-text {
           font-size: 15px;
           color: var(--text-sub);
-          margin-bottom: 24px;
+          margin-bottom: 28px;
         }
 
         /* Form */
         .form-wrap {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 32px 24px;
+          border-radius: 24px;
+          padding: 36px 28px;
           max-width: 500px;
           margin: 0 auto;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.06);
         }
         .form-campaign {
-          background: var(--primary);
-          border-radius: 8px;
-          padding: 14px 16px;
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+          border-radius: 12px;
+          padding: 16px 20px;
           text-align: center;
           color: var(--white);
           font-size: 14px;
-          margin-bottom: 28px;
+          margin-bottom: 32px;
         }
         .form-campaign-em {
           color: var(--accent);
           font-weight: 700;
         }
         .form-group {
-          margin-bottom: 20px;
+          margin-bottom: 22px;
         }
         .form-label {
           display: block;
@@ -748,62 +823,71 @@ export default function LPPage() {
         }
         .form-input {
           width: 100%;
-          padding: 14px 16px;
-          border: 1px solid var(--border);
-          border-radius: 8px;
+          padding: 16px 18px;
+          border: 2px solid var(--border);
+          border-radius: 12px;
           font-size: 16px;
           font-family: inherit;
           background: var(--bg);
           color: var(--text);
+          transition: all 0.3s;
         }
         .form-input:focus {
           outline: none;
           border-color: var(--primary);
           background: var(--white);
+          box-shadow: 0 0 0 4px rgba(26, 107, 82, 0.1);
         }
         .form-input::placeholder {
           color: #999;
         }
         .form-textarea {
-          min-height: 100px;
+          min-height: 120px;
           resize: vertical;
         }
         .form-btn {
           width: 100%;
-          padding: 16px;
-          background: var(--primary);
+          padding: 18px;
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: var(--white);
           border: none;
-          border-radius: 8px;
+          border-radius: 12px;
           font-size: 16px;
           font-weight: 700;
           font-family: inherit;
           cursor: pointer;
+          transition: all 0.3s;
+          box-shadow: 0 4px 16px rgba(26, 107, 82, 0.3);
+        }
+        .form-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 24px rgba(26, 107, 82, 0.4);
         }
         .form-btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
+          transform: none;
         }
         .form-success {
           text-align: center;
-          padding: 40px 20px;
+          padding: 48px 24px;
         }
         .form-success-icon {
-          width: 60px;
-          height: 60px;
-          background: #e6f2ee;
+          width: 72px;
+          height: 72px;
+          background: linear-gradient(135deg, #e8f5f0, #d8efe7);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 20px;
-          font-size: 28px;
+          margin: 0 auto 24px;
+          font-size: 32px;
           color: var(--primary);
         }
         .form-success-title {
-          font-size: 20px;
+          font-size: 22px;
           font-weight: 700;
-          margin-bottom: 8px;
+          margin-bottom: 10px;
         }
         .form-success-text {
           font-size: 14px;
@@ -815,7 +899,7 @@ export default function LPPage() {
         .footer {
           background: var(--white);
           border-top: 1px solid var(--border);
-          padding: 40px 20px;
+          padding: 48px 20px;
           text-align: center;
         }
         .footer-logo {
@@ -823,12 +907,12 @@ export default function LPPage() {
           align-items: center;
           justify-content: center;
           gap: 10px;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
         .footer-info {
           font-size: 13px;
           color: var(--text-sub);
-          margin-bottom: 8px;
+          margin-bottom: 10px;
         }
         .footer-copy {
           font-size: 12px;
@@ -840,28 +924,15 @@ export default function LPPage() {
           .hero {
             padding: 130px 20px 80px;
           }
-          .what-points {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-          }
-          .what-point {
-            flex-direction: column;
-            text-align: center;
-          }
           .stats {
-            max-width: 480px;
-            gap: 20px;
-          }
-          .stat {
-            padding: 24px 20px;
+            max-width: 450px;
           }
           .cta-wrap {
             flex-direction: row;
             justify-content: center;
           }
           .section {
-            padding: 80px 20px;
+            padding: 96px 20px;
           }
           .features {
             display: grid;
@@ -878,7 +949,7 @@ export default function LPPage() {
             grid-template-columns: repeat(4, 1fr);
           }
           .form-wrap {
-            padding: 40px;
+            padding: 48px;
           }
         }
       `}</style>
