@@ -872,16 +872,15 @@ export default function LPPage() {
           <span className="hero-badge">🎁 先着10社限定キャンペーン中</span>
           <h1 className="hero-title">
             遠方の方から<span className="hero-title-em">献杯</span>を集めて<br />
-            <span className="hero-title-em">葬儀費用の負担</span>を軽減する<br />
-            葬儀社様向けシステム
+            <span className="hero-title-em">葬儀費用の負担</span>を軽減
           </h1>
 
           {/* What Box */}
           <div className="what-box">
             <p className="what-label">Reiとは？</p>
             <p className="what-title">
-              参列できない方からオンラインで<br />
-              献杯（支援金）を集めるシステムです
+              参列できない方からオンラインで献杯（支援金）を集める<br />
+              葬儀社様向けシステムです
             </p>
             <div className="what-points">
               <div className="what-point">
@@ -944,12 +943,10 @@ export default function LPPage() {
         <div className="campaign-inner">
           <span className="campaign-badge">期間限定</span>
           <h2 className="campaign-title">
-            先着10社限定<br />
-            手数料8%を半年間貴社に還元
+            先着10社限定で手数料8%を半年間貴社に還元
           </h2>
           <p className="campaign-text">
-            10万円の献杯で8,000円、50万円で40,000円が<br />
-            葬儀社様の収益になります
+            10万円の献杯で8,000円、50万円なら40,000円が葬儀社様の収益に
           </p>
           <a href="#contact" className="campaign-btn">キャンペーンに申し込む →</a>
         </div>
@@ -962,8 +959,7 @@ export default function LPPage() {
             <p className="section-label">HOW IT WORKS</p>
             <h2 className="section-title">使い方はシンプル</h2>
             <p className="section-desc">
-              難しい操作は一切ありません。<br />
-              リンクを共有するだけで献杯が集まります。
+              難しい操作は一切ありません。リンクを共有するだけで献杯が集まります。
             </p>
           </div>
           <div className="flow-list">
@@ -972,8 +968,7 @@ export default function LPPage() {
               <div className="flow-content">
                 <p className="flow-title">献杯ページを作成</p>
                 <p className="flow-text">
-                  故人のお名前・写真・メッセージを入力。<br />
-                  <span className="flow-em">所要時間はわずか3分</span>で完了します。
+                  故人のお名前・写真・メッセージを入力。<span className="flow-em">所要時間はわずか3分</span>で完了します。
                 </p>
               </div>
             </div>
@@ -982,8 +977,7 @@ export default function LPPage() {
               <div className="flow-content">
                 <p className="flow-title">専用リンクを遺族にお伝え</p>
                 <p className="flow-text">
-                  作成されたページのURLを遺族にお渡しします。<br />
-                  印刷用のQRコードも自動生成されます。
+                  作成されたページのURLを遺族にお渡しします。印刷用QRコードも自動生成されます。
                 </p>
               </div>
             </div>
@@ -992,8 +986,7 @@ export default function LPPage() {
               <div className="flow-content">
                 <p className="flow-title">遺族がLINEで親族・知人に共有</p>
                 <p className="flow-text">
-                  遺族がリンクをLINEやメールで送信。<br />
-                  <span className="flow-em">葬儀社様の作業はここで完了</span>です。
+                  遺族がリンクをLINEやメールで送信。<span className="flow-em">葬儀社様の作業はここで完了</span>です。
                 </p>
               </div>
             </div>
@@ -1002,8 +995,7 @@ export default function LPPage() {
               <div className="flow-content">
                 <p className="flow-title">遠方の方がスマホから送金</p>
                 <p className="flow-text">
-                  参列できない方がスマホで金額を選び、<br />
-                  クレジットカードで献杯（支援金）を送ります。
+                  参列できない方がスマホで金額を選び、クレジットカードで献杯（支援金）を送ります。
                 </p>
               </div>
             </div>
@@ -1012,8 +1004,7 @@ export default function LPPage() {
               <div className="flow-content">
                 <p className="flow-title">集まったお金を葬儀費用に充当</p>
                 <p className="flow-text">
-                  <span className="flow-em">集まった献杯は葬儀費用に充てることが可能。</span><br />
-                  「実質10万円引き」という提案ができます。
+                  <span className="flow-em">集まった献杯は葬儀費用に充てることが可能。</span>「実質10万円引き」という提案ができます。
                 </p>
               </div>
             </div>
@@ -1038,8 +1029,7 @@ export default function LPPage() {
                 <h3 className="feature-title">現場の負担ゼロ</h3>
               </div>
               <p className="feature-text">
-                映像配信や複雑なシステム操作は一切不要。
-                リンクを1つお伝えするだけです。
+                映像配信や複雑なシステム操作は一切不要。リンクを1つお伝えするだけです。
               </p>
               <ul className="feature-list">
                 <li>専用アプリのインストール不要</li>
@@ -1053,8 +1043,7 @@ export default function LPPage() {
                 <h3 className="feature-title">「物」ではなく「お金」</h3>
               </div>
               <p className="feature-text">
-                返礼品を送る物販型とは違い、
-                集まったお金をそのまま葬儀費用に充当できます。
+                返礼品を送る物販型とは違い、集まったお金をそのまま葬儀費用に充当できます。
               </p>
               <ul className="feature-list">
                 <li>返礼品の手配・発送作業が不要</li>
@@ -1068,8 +1057,7 @@ export default function LPPage() {
                 <h3 className="feature-title">安心の直接入金</h3>
               </div>
               <p className="feature-text">
-                弊社がお金を預かることはありません。
-                貴社の口座に直接入金されます。
+                弊社がお金を預かることはありません。貴社の口座に直接入金されます。
               </p>
               <ul className="feature-list">
                 <li>運営会社の倒産リスクなし</li>
@@ -1088,7 +1076,7 @@ export default function LPPage() {
             <p className="section-label">PRICING</p>
             <h2 className="section-title">料金体系</h2>
             <p className="section-desc">
-              初期導入費用のみ。月額費用は一切かかりません。
+              初期導入費用のみで、月額費用は一切かかりません。
             </p>
           </div>
           <div className="pricing-cards">
@@ -1129,12 +1117,12 @@ export default function LPPage() {
             <p className="section-label">FEE</p>
             <h2 className="section-title">献杯手数料</h2>
             <p className="section-desc">
-              月額費用0円。献杯があったときだけ手数料が発生します。
+              月額費用0円の成果報酬型。献杯があったときだけ手数料が発生します。
             </p>
           </div>
           <div className="fee-main">
             <p className="fee-main-title">献杯金額の約9割がご遺族に届きます</p>
-            <p className="fee-main-sub">成果報酬型だから、リスクなく導入できます</p>
+            <p className="fee-main-sub">成果報酬型だからリスクなく導入できます</p>
           </div>
           <div className="fee-grid">
             <div className="fee-item">
@@ -1169,8 +1157,7 @@ export default function LPPage() {
               </div>
             </div>
             <p className="fee-breakdown-text">
-              ※Stripeは世界最大級の決済プラットフォームです。<br />
-              セキュリティ面でも安心してご利用いただけます。
+              ※Stripeは世界最大級の決済プラットフォームです。セキュリティ面でも安心してご利用いただけます。
             </p>
           </div>
         </div>
@@ -1183,8 +1170,7 @@ export default function LPPage() {
             <p className="section-label">COMPARISON</p>
             <h2 className="section-title">Reiがなければ、0円です</h2>
             <p className="section-desc">
-              遠方の方がお気持ちを届ける手段がなければ、<br />
-              集まるはずだった支援金は0円のままです。
+              遠方の方がお気持ちを届ける手段がなければ、集まるはずだった支援金は0円のままです。
             </p>
           </div>
           <div className="compare">
@@ -1201,8 +1187,7 @@ export default function LPPage() {
               </div>
             </div>
             <p className="compare-msg">
-              <strong>0円</strong>と<strong>88,400円</strong>。<br />
-              どちらがご遺族のためになりますか？
+              <strong>0円</strong>と<strong>88,400円</strong>、どちらがご遺族のためになりますか？
             </p>
           </div>
         </div>
@@ -1213,8 +1198,7 @@ export default function LPPage() {
         <div className="section-inner">
           <h2 className="cta-section-title">
             「他社より安くできます」ではなく<br />
-            <span className="cta-section-em">「お客様の負担を減らせます」</span><br />
-            という提案を
+            <span className="cta-section-em">「お客様の負担を減らせます」</span>という提案を
           </h2>
           <p className="cta-section-text">
             Reiで、価格競争から価値競争へ
@@ -1230,14 +1214,12 @@ export default function LPPage() {
             <p className="section-label">CONTACT</p>
             <h2 className="section-title">お問い合わせ</h2>
             <p className="section-desc">
-              資料請求・デモのご依頼・ご質問など、<br />
-              お気軽にお問い合わせください。
+              資料請求・デモのご依頼・ご質問など、お気軽にお問い合わせください。
             </p>
           </div>
           <div className="form-wrap">
             <div className="form-campaign">
-              🎁 今なら<span className="form-campaign-em">先着10社限定</span>で<br />
-              手数料8%が<span className="form-campaign-em">半年間 貴社の収益に</span>
+              🎁 今なら<span className="form-campaign-em">先着10社限定</span>で手数料8%が<span className="form-campaign-em">半年間貴社の収益に</span>
             </div>
             {submitted ? (
               <div className="form-success">
