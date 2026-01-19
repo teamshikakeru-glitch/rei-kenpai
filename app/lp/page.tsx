@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 
 export default function LPPage() {
   const [formData, setFormData] = useState({
@@ -13,24 +13,31 @@ export default function LPPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // ページ読み込み時に一番上にスクロール
-  useEffect(() => {
-    // 即座にスクロールをリセット
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    
+  // ページ読み込み時に一番上にスクロール（レンダリング前に実行）
+  useLayoutEffect(() => {
     // ブラウザの履歴によるスクロール復元を無効化
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
+    // 即座にスクロールをリセット
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
-    // 少し遅延させて再度リセット（ブラウザの復元処理対策）
-    const timer = setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 0);
+  // 追加の保険としてuseEffectでも実行
+  useEffect(() => {
+    // 複数回リセットを試行（ブラウザの復元処理対策）
+    window.scrollTo(0, 0);
+    const timers = [
+      setTimeout(() => window.scrollTo(0, 0), 0),
+      setTimeout(() => window.scrollTo(0, 0), 10),
+      setTimeout(() => window.scrollTo(0, 0), 50),
+      setTimeout(() => window.scrollTo(0, 0), 100),
+      setTimeout(() => window.scrollTo(0, 0), 200),
+    ];
 
-    return () => clearTimeout(timer);
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,7 +57,6 @@ export default function LPPage() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
         body { overflow-x: hidden; }
       `}</style>
       
@@ -979,35 +985,47 @@ export default function LPPage() {
         .compare {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 24px;
-          padding: 40px 28px;
+          border-radius: 20px;
+          padding: 28px 20px;
           text-align: center;
           box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-          max-width: 500px;
+          max-width: 320px;
           margin: 0 auto;
         }
         .compare-label {
-          font-size: 14px;
+          font-size: 13px;
           color: var(--text-sub);
-          margin-bottom: 28px;
+          margin-bottom: 20px;
         }
-        .compare-row {
-          display: grid;
-          grid-template-columns: 1fr 40px 1fr;
-          align-items: center;
-          gap: 16px;
-          margin-bottom: 28px;
+        .compare-items {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-bottom: 20px;
         }
         .compare-item {
           text-align: center;
+          padding: 16px;
+          border-radius: 12px;
+          background: var(--bg-alt);
+        }
+        .compare-item-highlight {
+          background: linear-gradient(135deg, #e6f5f0, #d4ede5);
+          border: 2px solid var(--primary);
         }
         .compare-item-label {
-          font-size: 13px;
+          font-size: 12px;
           color: var(--text-sub);
-          margin-bottom: 10px;
+          margin-bottom: 6px;
         }
         .compare-item-value {
-          font-size: 40px;
+          font-size: 32px;
+          font-weight: 700;
+          line-height: 1.2;
+        }
+        .compare-arrow {
+          font-size: 20px;
+          color: var(--primary);
           font-weight: 700;
         }
         .compare-red { 
@@ -1016,17 +1034,10 @@ export default function LPPage() {
         .compare-green { 
           color: var(--primary); 
         }
-        .compare-vs {
-          font-size: 16px;
-          color: #bbb;
-          font-weight: 600;
-        }
         .compare-msg {
-          font-size: 15px;
-          line-height: 1.8;
-        }
-        .compare-msg strong {
-          color: var(--primary);
+          font-size: 13px;
+          line-height: 1.6;
+          color: var(--text-sub);
         }
 
         /* CTA Section */
@@ -1657,20 +1668,20 @@ export default function LPPage() {
             </p>
           </div>
           <div className="compare">
-            <p className="compare-label">10万円の献杯があった場合の比較</p>
-            <div className="compare-row">
+            <p className="compare-label">10万円の献杯があった場合</p>
+            <div className="compare-items">
               <div className="compare-item">
                 <p className="compare-item-label">Reiなし</p>
                 <p className="compare-item-value compare-red">0円</p>
               </div>
-              <span className="compare-vs">vs</span>
-              <div className="compare-item">
+              <div className="compare-arrow">↓</div>
+              <div className="compare-item compare-item-highlight">
                 <p className="compare-item-label">Reiあり</p>
                 <p className="compare-item-value compare-green">88,400円</p>
               </div>
             </div>
             <p className="compare-msg">
-              <strong>0円</strong>と<strong>88,400円</strong>、どちらがご遺族のためになりますか？
+              どちらがご遺族のためになりますか？
             </p>
           </div>
         </div>
