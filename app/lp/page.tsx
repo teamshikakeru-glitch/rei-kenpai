@@ -234,16 +234,19 @@ export default function LPPage() {
         .sp-only { display: inline; }
 
         .hero-stats {
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr auto 1fr auto 1fr;
           align-items: center;
-          justify-content: center;
-          gap: 20px;
+          justify-items: center;
           background: rgba(255,255,255,0.1);
           backdrop-filter: blur(8px);
           border-radius: 16px;
-          padding: 20px 24px;
+          padding: 24px 20px;
           margin-bottom: 32px;
           border: 1px solid rgba(255,255,255,0.15);
+          max-width: 500px;
+          margin-left: auto;
+          margin-right: auto;
         }
         .hero-stat {
           display: flex;
@@ -252,7 +255,7 @@ export default function LPPage() {
           text-align: center;
         }
         .hero-stat-value {
-          font-size: clamp(24px, 6vw, 32px);
+          font-size: clamp(26px, 6vw, 34px);
           font-weight: 700;
           color: var(--white);
           line-height: 1.2;
@@ -261,6 +264,7 @@ export default function LPPage() {
           font-size: 11px;
           color: rgba(255,255,255,0.7);
           margin-top: 4px;
+          white-space: nowrap;
         }
         .hero-stat-divider {
           width: 1px;
@@ -270,6 +274,9 @@ export default function LPPage() {
 
         .hero-cta {
           margin-bottom: 40px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
         .hero-cta-main {
           display: inline-flex;
@@ -300,12 +307,12 @@ export default function LPPage() {
         .hero-cta-note {
           margin-top: 16px;
           font-size: 13px;
-          color: rgba(255,255,255,0.8);
-          background: rgba(232, 168, 48, 0.2);
-          display: inline-block;
-          padding: 8px 16px;
+          color: rgba(255,255,255,0.9);
+          background: rgba(232, 168, 48, 0.25);
+          padding: 10px 20px;
           border-radius: 8px;
-          border: 1px solid rgba(232, 168, 48, 0.3);
+          border: 1px solid rgba(232, 168, 48, 0.4);
+          text-align: center;
         }
 
         .hero-scroll {
@@ -444,6 +451,7 @@ export default function LPPage() {
           gap: 18px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
           transition: all 0.3s;
+          min-height: 100px;
         }
         .flow-item:hover {
           box-shadow: 0 4px 16px rgba(0,0,0,0.08);
@@ -452,6 +460,7 @@ export default function LPPage() {
         .flow-num {
           width: 40px;
           height: 40px;
+          min-width: 40px;
           background: linear-gradient(135deg, var(--primary), var(--primary-light));
           border-radius: 12px;
           color: var(--white);
@@ -502,6 +511,8 @@ export default function LPPage() {
           padding: 28px;
           box-shadow: 0 2px 12px rgba(0,0,0,0.04);
           transition: all 0.3s;
+          display: flex;
+          flex-direction: column;
         }
         .feature:hover {
           box-shadow: 0 8px 24px rgba(0,0,0,0.08);
@@ -518,8 +529,12 @@ export default function LPPage() {
           font-weight: 700;
           color: var(--white);
           background: var(--primary);
-          padding: 4px 10px;
-          border-radius: 6px;
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           flex-shrink: 0;
         }
         .feature-title {
@@ -534,6 +549,7 @@ export default function LPPage() {
           line-height: 1.8;
           word-break: keep-all;
           overflow-wrap: break-word;
+          flex: 1;
         }
         .feature-list {
           margin-top: 16px;
@@ -560,8 +576,8 @@ export default function LPPage() {
 
         /* Pricing */
         .pricing-cards {
-          display: flex;
-          flex-direction: column;
+          display: grid;
+          grid-template-columns: 1fr;
           gap: 16px;
           margin-bottom: 28px;
         }
@@ -572,6 +588,9 @@ export default function LPPage() {
           padding: 32px 28px;
           text-align: center;
           box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
         .pricing-card-main {
           background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -624,6 +643,10 @@ export default function LPPage() {
           border-radius: 12px;
           padding: 20px 16px;
           text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          min-height: 90px;
         }
         .subsidy-item-label {
           font-size: 12px;
@@ -672,6 +695,10 @@ export default function LPPage() {
           padding: 20px 16px;
           text-align: center;
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          min-height: 100px;
         }
         .fee-item-label {
           font-size: 13px;
@@ -693,15 +720,18 @@ export default function LPPage() {
         }
         .fee-breakdown-row {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
-          font-size: 13px;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 8px;
+          font-size: 12px;
         }
         .fee-breakdown-item {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
+          gap: 6px;
+          padding: 8px;
+          background: var(--bg-alt);
+          border-radius: 8px;
         }
         .fee-dot {
           width: 8px;
@@ -724,6 +754,8 @@ export default function LPPage() {
           padding: 40px 28px;
           text-align: center;
           box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+          max-width: 500px;
+          margin: 0 auto;
         }
         .compare-label {
           font-size: 14px;
@@ -732,13 +764,10 @@ export default function LPPage() {
         }
         .compare-row {
           display: grid;
-          grid-template-columns: 1fr auto 1fr;
+          grid-template-columns: 1fr 40px 1fr;
           align-items: center;
-          gap: 24px;
+          gap: 16px;
           margin-bottom: 28px;
-          max-width: 400px;
-          margin-left: auto;
-          margin-right: auto;
         }
         .compare-item {
           text-align: center;
@@ -810,6 +839,7 @@ export default function LPPage() {
           color: var(--white);
           font-size: 14px;
           margin-bottom: 32px;
+          line-height: 1.7;
         }
         .form-campaign-em {
           color: var(--accent);
@@ -936,12 +966,12 @@ export default function LPPage() {
           background: rgba(255,255,255,0.98);
           backdrop-filter: blur(10px);
           border-top: 1px solid rgba(0,0,0,0.08);
-          padding: 8px 12px;
+          padding: 8px 16px;
           padding-bottom: calc(8px + env(safe-area-inset-bottom));
           box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
         }
         .fixed-nav-inner {
-          max-width: 500px;
+          max-width: 400px;
           margin: 0 auto;
           display: grid;
           grid-template-columns: repeat(5, 1fr);
@@ -963,6 +993,7 @@ export default function LPPage() {
           border: none;
           cursor: pointer;
           font-family: inherit;
+          text-align: center;
         }
         .fixed-nav-item:hover,
         .fixed-nav-item:active {
@@ -992,8 +1023,8 @@ export default function LPPage() {
             font-size: 140px;
           }
           .hero-stats {
-            gap: 40px;
-            padding: 24px 48px;
+            max-width: 520px;
+            padding: 28px 32px;
           }
           .sp-only {
             display: none;
@@ -1005,12 +1036,13 @@ export default function LPPage() {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
+            align-items: stretch;
+          }
+          .feature {
+            height: 100%;
           }
           .pricing-cards {
-            flex-direction: row;
-          }
-          .pricing-card {
-            flex: 1;
+            grid-template-columns: repeat(2, 1fr);
           }
           .fee-grid {
             grid-template-columns: repeat(4, 1fr);
