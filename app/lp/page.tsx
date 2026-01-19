@@ -98,7 +98,7 @@ export default function LPPage() {
         .header-inner {
           max-width: 1000px;
           margin: 0 auto;
-          padding: 14px 20px;
+          padding: 12px 16px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -106,31 +106,31 @@ export default function LPPage() {
         .logo {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
         }
         .logo-icon {
-          width: 38px;
-          height: 38px;
+          width: 34px;
+          height: 34px;
           background: linear-gradient(135deg, var(--primary), var(--primary-light));
-          border-radius: 10px;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
           color: var(--white);
           font-weight: 700;
-          font-size: 18px;
+          font-size: 16px;
           box-shadow: 0 2px 8px rgba(26, 107, 82, 0.25);
         }
         .logo-text {
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 700;
         }
         .header-btn {
           background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: var(--white);
-          padding: 10px 22px;
+          padding: 8px 18px;
           border-radius: 8px;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 600;
           text-decoration: none;
           transition: all 0.3s;
@@ -204,19 +204,20 @@ export default function LPPage() {
           margin-bottom: 40px;
         }
         .hero-top-label {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 600;
-          letter-spacing: 0.3em;
+          letter-spacing: 0.2em;
           color: rgba(255,255,255,0.6);
-          margin-bottom: 12px;
+          margin-bottom: 10px;
         }
         .hero-top-catch {
-          font-size: clamp(24px, 6vw, 40px);
+          font-size: clamp(18px, 5vw, 36px);
           font-weight: 800;
           color: var(--white);
-          line-height: 1.3;
-          margin-bottom: 20px;
+          line-height: 1.4;
+          margin-bottom: 16px;
           text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+          white-space: nowrap;
         }
         .hero-divider {
           width: 60px;
@@ -229,38 +230,39 @@ export default function LPPage() {
           display: inline-block;
           background: rgba(255,255,255,0.15);
           backdrop-filter: blur(4px);
-          padding: 8px 20px;
+          padding: 6px 16px;
           border-radius: 100px;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 600;
           color: rgba(255,255,255,0.9);
-          margin-bottom: 20px;
-          letter-spacing: 0.05em;
+          margin-bottom: 16px;
+          letter-spacing: 0.03em;
+          white-space: nowrap;
         }
         .hero-title {
           color: var(--white);
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
         .hero-title-line {
           display: block;
-          font-size: clamp(16px, 4vw, 22px);
+          font-size: clamp(14px, 3.5vw, 20px);
           font-weight: 500;
           opacity: 0.9;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
         .hero-title-big {
           display: flex;
           align-items: baseline;
           justify-content: center;
-          gap: 4px;
-          margin: 16px 0;
+          gap: 2px;
+          margin: 12px 0;
         }
         .hero-title-em {
-          font-size: clamp(24px, 6vw, 36px);
+          font-size: clamp(20px, 5vw, 32px);
           font-weight: 700;
         }
         .hero-title-number {
-          font-size: clamp(72px, 18vw, 120px);
+          font-size: clamp(56px, 15vw, 100px);
           font-weight: 800;
           line-height: 1;
           background: linear-gradient(135deg, #fff 0%, #ffd700 50%, #fff 100%);
@@ -276,9 +278,9 @@ export default function LPPage() {
           50% { background-position: 100% 50%; }
         }
         .hero-desc {
-          font-size: 14px;
+          font-size: 13px;
           color: rgba(255,255,255,0.8);
-          line-height: 1.8;
+          line-height: 1.7;
         }
         .sp-only { display: inline; }
 
@@ -412,23 +414,23 @@ export default function LPPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 12px;
-          margin-bottom: 20px;
+          gap: 8px;
+          margin-bottom: 16px;
           flex-wrap: wrap;
         }
         .campaign-badge {
           background: linear-gradient(135deg, var(--accent), #d4922a);
-          padding: 8px 20px;
+          padding: 6px 14px;
           border-radius: 100px;
-          font-size: 13px;
+          font-size: 11px;
           font-weight: 700;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.03em;
         }
         .campaign-badge-sub {
           background: rgba(220, 53, 69, 0.9);
-          padding: 6px 14px;
+          padding: 5px 12px;
           border-radius: 100px;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 700;
           animation: pulse 2s ease-in-out infinite;
         }
@@ -437,39 +439,39 @@ export default function LPPage() {
           50% { opacity: 0.8; transform: scale(1.05); }
         }
         .campaign-title {
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
         .campaign-title-small {
           display: block;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 500;
           opacity: 0.8;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
         .campaign-title-big {
           display: block;
-          font-size: clamp(28px, 7vw, 42px);
+          font-size: clamp(24px, 6vw, 36px);
           font-weight: 800;
           line-height: 1.3;
         }
         .campaign-highlight {
           color: var(--accent);
-          font-size: 1.2em;
+          font-size: 1.1em;
         }
         .campaign-benefit {
           background: rgba(255,255,255,0.1);
           border: 1px solid rgba(255,255,255,0.15);
-          border-radius: 16px;
-          padding: 24px;
-          margin-bottom: 24px;
+          border-radius: 14px;
+          padding: 20px 16px;
+          margin-bottom: 20px;
         }
         .campaign-benefit-label {
-          font-size: 16px;
+          font-size: 14px;
           opacity: 0.9;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
         .campaign-benefit-value {
-          font-size: clamp(22px, 5vw, 30px);
+          font-size: clamp(18px, 4.5vw, 26px);
           font-weight: 700;
         }
         .campaign-example {
@@ -507,12 +509,12 @@ export default function LPPage() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
+          gap: 6px;
           background: linear-gradient(135deg, var(--accent), #d4922a);
           color: #1a1a1a;
-          padding: 16px 32px;
-          border-radius: 12px;
-          font-size: 15px;
+          padding: 14px 28px;
+          border-radius: 10px;
+          font-size: 14px;
           font-weight: 700;
           text-decoration: none;
           transition: all 0.3s;
@@ -523,7 +525,7 @@ export default function LPPage() {
           box-shadow: 0 8px 30px rgba(232, 168, 48, 0.5);
         }
         .campaign-btn-arrow {
-          font-size: 20px;
+          font-size: 16px;
           transition: transform 0.3s;
         }
         .campaign-btn:hover .campaign-btn-arrow {
@@ -553,10 +555,10 @@ export default function LPPage() {
           letter-spacing: 0.1em;
         }
         .easy-start-title {
-          font-size: clamp(20px, 5vw, 30px);
+          font-size: clamp(18px, 4.5vw, 26px);
           font-weight: 700;
           line-height: 1.5;
-          margin-bottom: 32px;
+          margin-bottom: 28px;
         }
         .easy-start-em {
           color: var(--primary);
@@ -602,24 +604,23 @@ export default function LPPage() {
           overflow: hidden;
         }
         .easy-start-point-title {
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 700;
           margin-bottom: 2px;
           color: var(--text);
         }
         .easy-start-point-text {
-          font-size: 12px;
+          font-size: 11px;
           color: var(--text-sub);
-          line-height: 1.5;
-          word-break: break-word;
+          line-height: 1.4;
         }
         .easy-start-note {
-          font-size: 12px;
+          font-size: 11px;
           color: var(--primary);
           font-weight: 600;
           background: linear-gradient(135deg, #e6f2ee, #d4ebe3);
           display: inline-block;
-          padding: 10px 20px;
+          padding: 8px 16px;
           border-radius: 100px;
         }
 
@@ -637,26 +638,26 @@ export default function LPPage() {
         }
         .section-head {
           text-align: center;
-          margin-bottom: 48px;
+          margin-bottom: 40px;
         }
         .section-label {
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 700;
           color: var(--primary);
-          letter-spacing: 0.2em;
-          margin-bottom: 10px;
+          letter-spacing: 0.15em;
+          margin-bottom: 8px;
           text-transform: uppercase;
         }
         .section-title {
-          font-size: clamp(22px, 5vw, 28px);
+          font-size: clamp(20px, 5vw, 26px);
           font-weight: 700;
-          line-height: 1.5;
+          line-height: 1.4;
         }
         .section-desc {
-          font-size: 15px;
+          font-size: 13px;
           color: var(--text-sub);
-          margin-top: 14px;
-          line-height: 1.8;
+          margin-top: 12px;
+          line-height: 1.7;
         }
 
         /* Flow */
@@ -1046,68 +1047,68 @@ export default function LPPage() {
           background: linear-gradient(180deg, var(--bg-alt), var(--bg));
         }
         .cta-section-title {
-          font-size: clamp(22px, 5vw, 30px);
+          font-size: clamp(18px, 4.5vw, 26px);
           font-weight: 700;
-          line-height: 1.6;
-          margin-bottom: 16px;
+          line-height: 1.5;
+          margin-bottom: 12px;
         }
         .cta-section-em {
           color: var(--primary);
           background: linear-gradient(transparent 70%, rgba(26, 107, 82, 0.15) 70%);
         }
         .cta-section-text {
-          font-size: 15px;
+          font-size: 13px;
           color: var(--text-sub);
-          margin-bottom: 28px;
+          margin-bottom: 24px;
         }
 
         /* Form */
         .form-wrap {
           background: var(--white);
           border: 1px solid var(--border);
-          border-radius: 24px;
-          padding: 36px 28px;
+          border-radius: 20px;
+          padding: 28px 20px;
           max-width: 500px;
           margin: 0 auto;
           box-shadow: 0 4px 24px rgba(0,0,0,0.06);
         }
         .form-campaign {
           background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-          border-radius: 12px;
-          padding: 20px;
+          border-radius: 10px;
+          padding: 16px;
           text-align: center;
           color: var(--white);
-          font-size: 14px;
-          margin-bottom: 32px;
+          font-size: 13px;
+          margin-bottom: 24px;
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 6px;
         }
         .form-campaign-badge {
           display: inline-block;
           background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(180, 40, 50, 0.9));
-          padding: 4px 12px;
+          padding: 4px 10px;
           border-radius: 100px;
-          font-size: 12px;
+          font-size: 10px;
           font-weight: 700;
           animation: pulse 2s ease-in-out infinite;
         }
         .form-campaign-text {
-          font-size: 14px;
-          line-height: 1.6;
+          font-size: 12px;
+          line-height: 1.5;
         }
         .form-campaign-em {
           color: var(--accent);
           font-weight: 700;
         }
         .form-group {
-          margin-bottom: 22px;
+          margin-bottom: 18px;
         }
         .form-label {
           display: block;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
         .form-req {
           color: #dc3545;
@@ -1115,10 +1116,10 @@ export default function LPPage() {
         }
         .form-input {
           width: 100%;
-          padding: 16px 18px;
+          padding: 14px 16px;
           border: 2px solid var(--border);
-          border-radius: 12px;
-          font-size: 16px;
+          border-radius: 10px;
+          font-size: 15px;
           font-family: inherit;
           background: var(--bg);
           color: var(--text);
@@ -1128,23 +1129,23 @@ export default function LPPage() {
           outline: none;
           border-color: var(--primary);
           background: var(--white);
-          box-shadow: 0 0 0 4px rgba(26, 107, 82, 0.1);
+          box-shadow: 0 0 0 3px rgba(26, 107, 82, 0.1);
         }
         .form-input::placeholder {
           color: #999;
         }
         .form-textarea {
-          min-height: 120px;
+          min-height: 100px;
           resize: vertical;
         }
         .form-btn {
           width: 100%;
-          padding: 18px;
+          padding: 16px;
           background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: var(--white);
           border: none;
-          border-radius: 12px;
-          font-size: 16px;
+          border-radius: 10px;
+          font-size: 15px;
           font-weight: 700;
           font-family: inherit;
           cursor: pointer;
@@ -1432,33 +1433,33 @@ export default function LPPage() {
         <div className="easy-start-inner">
           <div className="easy-start-badge">かんたん導入</div>
           <h2 className="easy-start-title">
-            専用リンクをお送りするだけ<br />
+            リンクをお送りするだけ<br />
             <span className="easy-start-em">最短即日</span>で導入完了
           </h2>
           <div className="easy-start-points">
             <div className="easy-start-point">
               <div className="easy-start-icon">📱</div>
               <div className="easy-start-point-content">
-                <p className="easy-start-point-title">スマホだけでOK</p>
-                <p className="easy-start-point-text">PC不要。スマホで全て完結</p>
+                <p className="easy-start-point-title">スマホでOK</p>
+                <p className="easy-start-point-text">PCは不要です</p>
               </div>
             </div>
             <div className="easy-start-point">
               <div className="easy-start-icon">👥</div>
               <div className="easy-start-point-content">
-                <p className="easy-start-point-title">従業員様も利用可能</p>
-                <p className="easy-start-point-text">各スタッフのスマホに導入OK</p>
+                <p className="easy-start-point-title">複数人で利用可</p>
+                <p className="easy-start-point-text">従業員様も使えます</p>
               </div>
             </div>
             <div className="easy-start-point">
               <div className="easy-start-icon">🔗</div>
               <div className="easy-start-point-content">
                 <p className="easy-start-point-title">リンク1つで開始</p>
-                <p className="easy-start-point-text">弊社から専用リンクをお送りするだけ</p>
+                <p className="easy-start-point-text">設定作業は不要</p>
               </div>
             </div>
           </div>
-          <p className="easy-start-note">✓ インストール不要 ✓ 初期設定不要 ✓ 研修不要</p>
+          <p className="easy-start-note">インストール不要・初期設定不要・研修不要</p>
         </div>
       </section>
 
