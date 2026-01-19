@@ -206,6 +206,7 @@ export default function LPPage() {
         }
         .hero-inner {
           max-width: 800px;
+          text-align: left;
         }
         .hero-campaign-badge {
           display: inline-flex;
@@ -353,10 +354,10 @@ export default function LPPage() {
         }
         .section-title {
           font-family: var(--font-display);
-          font-size: clamp(28px, 4vw, 42px);
+          font-size: clamp(26px, 3.5vw, 38px);
           font-weight: 700;
           color: var(--color-text);
-          line-height: 1.35;
+          line-height: 1.5;
           margin-bottom: 20px;
         }
         .section-subtitle {
@@ -389,6 +390,7 @@ export default function LPPage() {
         }
         .campaign-section .section-title {
           color: var(--color-white);
+          line-height: 1.6;
         }
         .campaign-highlight {
           color: var(--color-accent-light);
@@ -404,6 +406,7 @@ export default function LPPage() {
           padding: clamp(32px, 5vw, 48px);
           max-width: 800px;
           margin: 0 auto 40px;
+          text-align: left;
         }
         .campaign-card-title {
           font-family: var(--font-display);
@@ -420,13 +423,18 @@ export default function LPPage() {
         }
         .campaign-metrics {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          grid-template-columns: repeat(2, 1fr);
           gap: 20px;
+        }
+        @media (max-width: 500px) {
+          .campaign-metrics {
+            grid-template-columns: 1fr;
+          }
         }
         .campaign-metric {
           background: rgba(255, 255, 255, 0.08);
           border-radius: 16px;
-          padding: 24px;
+          padding: 28px 24px;
           text-align: center;
         }
         .campaign-metric-label {
@@ -492,6 +500,7 @@ export default function LPPage() {
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
           border: 1px solid var(--color-border);
           transition: all 0.5s var(--ease-out-expo);
+          text-align: left;
         }
         .problem-card:hover {
           transform: translateY(-8px);
@@ -532,10 +541,11 @@ export default function LPPage() {
         }
         .solution-intro-title {
           font-family: var(--font-display);
-          font-size: clamp(22px, 3vw, 30px);
-          font-weight: 700;
+          font-size: clamp(20px, 2.5vw, 26px);
+          font-weight: 600;
           color: var(--color-text);
           margin-bottom: 16px;
+          line-height: 1.5;
         }
         .solution-intro-text {
           font-size: clamp(16px, 2vw, 19px);
@@ -582,9 +592,10 @@ export default function LPPage() {
           padding-top: 6px;
         }
         .flow-step-text {
-          font-size: 17px;
+          font-size: 16px;
           color: var(--color-text);
           line-height: 1.7;
+          text-align: left;
         }
         .flow-step-text strong {
           color: var(--color-primary);
@@ -624,6 +635,7 @@ export default function LPPage() {
           position: relative;
           overflow: hidden;
           transition: all 0.5s var(--ease-out-expo);
+          text-align: left;
         }
         .feature-card::before {
           content: '';
@@ -693,18 +705,19 @@ export default function LPPage() {
         .pricing-label {
           font-size: 14px;
           color: var(--color-text-light);
-          margin-bottom: 12px;
+          margin-bottom: 16px;
+          letter-spacing: 0.05em;
         }
         .pricing-card-highlight .pricing-label {
-          color: rgba(255, 255, 255, 0.75);
+          color: rgba(255, 255, 255, 0.8);
         }
         .pricing-value {
           font-family: var(--font-display);
-          font-size: clamp(42px, 6vw, 56px);
+          font-size: clamp(40px, 5.5vw, 52px);
           font-weight: 700;
           color: var(--color-text);
           line-height: 1;
-          margin-bottom: 8px;
+          margin-bottom: 12px;
         }
         .pricing-card-highlight .pricing-value {
           color: var(--color-white);
@@ -738,7 +751,7 @@ export default function LPPage() {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 20px;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
         }
         @media (max-width: 500px) {
           .subsidy-grid {
@@ -748,17 +761,18 @@ export default function LPPage() {
         .subsidy-item {
           background: linear-gradient(135deg, rgba(26, 95, 74, 0.06), rgba(26, 95, 74, 0.02));
           border-radius: 16px;
-          padding: 24px;
+          padding: 28px 24px;
           text-align: center;
         }
         .subsidy-item-label {
           font-size: 13px;
           color: var(--color-text-light);
-          margin-bottom: 8px;
+          margin-bottom: 12px;
+          letter-spacing: 0.02em;
         }
         .subsidy-item-value {
           font-family: var(--font-display);
-          font-size: 32px;
+          font-size: 30px;
           font-weight: 700;
           color: var(--color-primary);
         }
@@ -796,15 +810,20 @@ export default function LPPage() {
           gap: 16px;
           margin-bottom: 32px;
         }
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
           .fee-examples {
             grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 500px) {
+          .fee-examples {
+            grid-template-columns: 1fr;
           }
         }
         .fee-example {
           background: var(--color-white);
           border-radius: 16px;
-          padding: 24px 20px;
+          padding: 28px 20px;
           text-align: center;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
           border: 1px solid var(--color-border);
@@ -823,10 +842,11 @@ export default function LPPage() {
         .fee-breakdown {
           background: var(--color-white);
           border-radius: 16px;
-          padding: 24px 32px;
+          padding: 28px 32px;
           display: flex;
           justify-content: center;
-          gap: 40px;
+          align-items: center;
+          gap: 32px;
           flex-wrap: wrap;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
           border: 1px solid var(--color-border);
@@ -835,8 +855,9 @@ export default function LPPage() {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 15px;
+          font-size: 14px;
           color: var(--color-text);
+          white-space: nowrap;
         }
         .fee-breakdown-dot {
           width: 10px;
@@ -881,8 +902,9 @@ export default function LPPage() {
         }
         .comparison-item-value {
           font-family: var(--font-display);
-          font-size: clamp(40px, 6vw, 56px);
+          font-size: clamp(36px, 5vw, 48px);
           font-weight: 700;
+          letter-spacing: -0.02em;
         }
         .comparison-item-value-red {
           color: #dc3545;
@@ -896,8 +918,9 @@ export default function LPPage() {
           font-weight: 300;
         }
         .comparison-message {
-          font-size: 18px;
+          font-size: 17px;
           color: var(--color-text);
+          line-height: 1.6;
         }
         .comparison-message strong {
           color: var(--color-primary);
@@ -916,11 +939,11 @@ export default function LPPage() {
         }
         .cta-title {
           font-family: var(--font-display);
-          font-size: clamp(26px, 4vw, 38px);
+          font-size: clamp(24px, 3.5vw, 34px);
           font-weight: 700;
           color: var(--color-text);
           margin-bottom: 20px;
-          line-height: 1.4;
+          line-height: 1.6;
         }
         .cta-title-highlight {
           color: var(--color-primary);
@@ -1019,7 +1042,7 @@ export default function LPPage() {
         }
         .form-success {
           text-align: center;
-          padding: 40px 20px;
+          padding: 48px 20px;
         }
         .form-success-icon {
           width: 72px;
@@ -1035,14 +1058,15 @@ export default function LPPage() {
         }
         .form-success-title {
           font-family: var(--font-display);
-          font-size: 24px;
+          font-size: 22px;
           font-weight: 700;
           color: var(--color-text);
-          margin-bottom: 12px;
+          margin-bottom: 16px;
         }
         .form-success-text {
           color: var(--color-text-light);
-          line-height: 1.8;
+          line-height: 1.9;
+          font-size: 15px;
         }
 
         /* ========== Footer ========== */
@@ -1058,7 +1082,7 @@ export default function LPPage() {
         .footer-top {
           display: flex;
           justify-content: space-between;
-          align-items: flex-start;
+          align-items: center;
           flex-wrap: wrap;
           gap: 40px;
           margin-bottom: 40px;
@@ -1070,19 +1094,20 @@ export default function LPPage() {
         }
         .footer-company-name {
           font-family: var(--font-display);
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 600;
           color: var(--color-text);
           margin-bottom: 6px;
         }
         .footer-company-rep {
-          font-size: 14px;
+          font-size: 13px;
           color: var(--color-text-light);
         }
         .footer-bottom {
           text-align: center;
-          font-size: 13px;
+          font-size: 12px;
           color: var(--color-text-light);
+          letter-spacing: 0.02em;
         }
 
         /* ========== Responsive ========== */
