@@ -183,18 +183,20 @@ export default function LPPage() {
 
         /* Stats */
         .stats {
-          display: flex;
-          justify-content: center;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
           gap: 16px;
           margin-bottom: 32px;
+          max-width: 500px;
+          margin-left: auto;
+          margin-right: auto;
         }
         .stat {
           background: var(--white);
           border: 1px solid var(--border);
           border-radius: 12px;
-          padding: 20px 24px;
+          padding: 20px 16px;
           text-align: center;
-          min-width: 100px;
         }
         .stat-value {
           font-size: 26px;
@@ -250,16 +252,17 @@ export default function LPPage() {
 
         /* Nav Links */
         .nav-links {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
           gap: 12px;
+          max-width: 500px;
+          margin: 0 auto;
         }
         .nav-link {
           background: var(--white);
           border: 1px solid var(--border);
           border-radius: 8px;
-          padding: 12px 20px;
+          padding: 14px 12px;
           font-size: 13px;
           font-weight: 600;
           color: var(--text);
@@ -516,15 +519,15 @@ export default function LPPage() {
           margin-bottom: 20px;
         }
         .subsidy-grid {
-          display: flex;
-          justify-content: center;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
           gap: 16px;
           margin-bottom: 16px;
         }
         .subsidy-item {
           background: var(--bg-alt);
           border-radius: 8px;
-          padding: 16px 24px;
+          padding: 20px 16px;
           text-align: center;
         }
         .subsidy-item-label {
@@ -591,15 +594,15 @@ export default function LPPage() {
           text-align: center;
         }
         .fee-breakdown-row {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 20px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
           font-size: 14px;
         }
         .fee-breakdown-item {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
         }
         .fee-dot {
@@ -629,11 +632,14 @@ export default function LPPage() {
           margin-bottom: 24px;
         }
         .compare-row {
-          display: flex;
-          justify-content: center;
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
           align-items: center;
           gap: 24px;
           margin-bottom: 24px;
+          max-width: 400px;
+          margin-left: auto;
+          margin-right: auto;
         }
         .compare-item {
           text-align: center;
@@ -811,26 +817,24 @@ export default function LPPage() {
             padding: 130px 20px 80px;
           }
           .what-points {
-            flex-direction: row;
-            justify-content: center;
-            gap: 40px;
-          }
-          .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
           }
-          .stat {
-            min-width: 140px;
-            padding: 24px 32px;
+          .what-point {
+            flex-direction: column;
+            text-align: center;
           }
-          .stat-value {
-            font-size: 32px;
+          .stats {
+            max-width: 480px;
+            gap: 20px;
+          }
+          .stat {
+            padding: 24px 20px;
           }
           .cta-wrap {
             flex-direction: row;
             justify-content: center;
-          }
-          .nav-links {
-            gap: 16px;
           }
           .section {
             padding: 80px 20px;
@@ -885,11 +889,11 @@ export default function LPPage() {
             <div className="what-points">
               <div className="what-point">
                 <span className="what-check">✓</span>
-                <span>LINEでリンクを共有するだけ</span>
+                <span>LINEで共有するだけ</span>
               </div>
               <div className="what-point">
                 <span className="what-check">✓</span>
-                <span>集めたお金は葬儀費用に充当</span>
+                <span>葬儀費用に充当可能</span>
               </div>
               <div className="what-point">
                 <span className="what-check">✓</span>
