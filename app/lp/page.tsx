@@ -29,8 +29,8 @@ export default function LPPage() {
       <style jsx>{`
         .lp-page {
           min-height: 100vh;
-          background: #0a0a0a;
-          color: #ffffff;
+          background: #ffffff;
+          color: #333333;
           font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
         }
 
@@ -41,9 +41,10 @@ export default function LPPage() {
           left: 0;
           right: 0;
           z-index: 100;
-          background: rgba(10, 10, 10, 0.95);
+          background: rgba(255, 255, 255, 0.95);
           backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+          border-bottom: 1px solid #e5e7eb;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         .header-inner {
           max-width: 1200px;
@@ -62,7 +63,7 @@ export default function LPPage() {
         .logo-icon {
           width: 40px;
           height: 40px;
-          background: linear-gradient(145deg, #c9a227, #8b6914);
+          background: linear-gradient(145deg, #2563eb, #1d4ed8);
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -74,12 +75,12 @@ export default function LPPage() {
         .logo-text {
           font-size: 24px;
           font-weight: 600;
-          color: #ffffff;
-          letter-spacing: 0.1em;
+          color: #1f2937;
+          letter-spacing: 0.05em;
         }
         .header-cta {
-          background: linear-gradient(135deg, #c9a227, #8b6914);
-          color: #0a0a0a;
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
+          color: #ffffff;
           padding: 12px 24px;
           border-radius: 8px;
           font-weight: 600;
@@ -89,12 +90,12 @@ export default function LPPage() {
         }
         .header-cta:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4);
+          box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
         }
 
         /* キャンペーンバナー */
         .campaign-banner {
-          background: linear-gradient(135deg, #ef4444, #dc2626);
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
           color: white;
           text-align: center;
           padding: 12px 24px;
@@ -107,7 +108,7 @@ export default function LPPage() {
           font-weight: 600;
         }
         .campaign-banner-highlight {
-          color: #fef08a;
+          color: #fde047;
         }
 
         /* ヒーローセクション */
@@ -119,12 +120,13 @@ export default function LPPage() {
           position: relative;
           padding: 160px 24px 80px;
           overflow: hidden;
+          background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
         }
         .hero-bg {
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at top right, rgba(201, 162, 39, 0.15) 0%, transparent 50%),
-                      radial-gradient(ellipse at bottom left, rgba(201, 162, 39, 0.1) 0%, transparent 50%);
+          background: radial-gradient(ellipse at top right, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+                      radial-gradient(ellipse at bottom left, rgba(14, 165, 233, 0.08) 0%, transparent 50%);
         }
         .hero-content {
           position: relative;
@@ -133,27 +135,22 @@ export default function LPPage() {
         }
         .hero-campaign {
           display: inline-block;
-          background: linear-gradient(135deg, #ef4444, #dc2626);
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
           color: white;
           padding: 12px 28px;
           border-radius: 100px;
           font-size: 15px;
           font-weight: 700;
           margin-bottom: 20px;
-          animation: pulse 2s infinite;
         }
         .hero-campaign-highlight {
-          color: #fef08a;
-        }
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.02); }
+          color: #fde047;
         }
         .hero-badge {
           display: inline-block;
-          background: rgba(201, 162, 39, 0.15);
-          border: 1px solid rgba(201, 162, 39, 0.3);
-          color: #c9a227;
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
+          color: #2563eb;
           padding: 8px 20px;
           border-radius: 100px;
           font-size: 14px;
@@ -165,14 +162,14 @@ export default function LPPage() {
           font-weight: 700;
           line-height: 1.3;
           margin-bottom: 24px;
-          color: #ffffff;
+          color: #1f2937;
         }
-        .hero-title-gold {
-          color: #c9a227;
+        .hero-title-blue {
+          color: #2563eb;
         }
         .hero-subtitle {
           font-size: clamp(16px, 2vw, 20px);
-          color: rgba(255, 255, 255, 0.7);
+          color: #6b7280;
           line-height: 1.8;
           margin-bottom: 48px;
         }
@@ -180,34 +177,39 @@ export default function LPPage() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: linear-gradient(135deg, #c9a227, #8b6914);
-          color: #0a0a0a;
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
+          color: #ffffff;
           padding: 20px 48px;
           border-radius: 12px;
           font-weight: 700;
           font-size: 18px;
           text-decoration: none;
           transition: all 0.3s ease;
+          box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
         }
         .hero-cta:hover {
           transform: translateY(-3px);
-          box-shadow: 0 12px 32px rgba(201, 162, 39, 0.4);
+          box-shadow: 0 12px 32px rgba(37, 99, 235, 0.4);
         }
 
         /* セクション共通 */
         .section {
           padding: 100px 24px;
         }
-        .section-dark {
-          background: #0f0f0f;
+        .section-gray {
+          background: #f9fafb;
+        }
+        .section-blue {
+          background: linear-gradient(180deg, #eff6ff 0%, #f9fafb 100%);
         }
         .section-inner {
           max-width: 1100px;
           margin: 0 auto;
         }
         .section-label {
-          color: #c9a227;
+          color: #2563eb;
           font-size: 14px;
+          font-weight: 600;
           letter-spacing: 0.2em;
           margin-bottom: 16px;
           text-align: center;
@@ -218,11 +220,11 @@ export default function LPPage() {
           text-align: center;
           margin-bottom: 24px;
           line-height: 1.4;
-          color: #ffffff;
+          color: #1f2937;
         }
         .section-desc {
           font-size: 16px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #6b7280;
           text-align: center;
           max-width: 700px;
           margin: 0 auto 60px;
@@ -231,7 +233,7 @@ export default function LPPage() {
 
         /* キャンペーンセクション */
         .campaign-section {
-          background: linear-gradient(135deg, #7f1d1d, #991b1b);
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
           position: relative;
           overflow: hidden;
         }
@@ -244,11 +246,12 @@ export default function LPPage() {
         .campaign-inner {
           position: relative;
           text-align: center;
+          color: white;
         }
         .campaign-label {
           display: inline-block;
-          background: #fef08a;
-          color: #7f1d1d;
+          background: #fde047;
+          color: #1e40af;
           padding: 8px 24px;
           border-radius: 100px;
           font-size: 14px;
@@ -262,7 +265,7 @@ export default function LPPage() {
           color: #ffffff;
         }
         .campaign-title-highlight {
-          color: #fef08a;
+          color: #fde047;
         }
         .campaign-subtitle {
           font-size: clamp(18px, 3vw, 24px);
@@ -270,28 +273,31 @@ export default function LPPage() {
           margin-bottom: 32px;
         }
         .campaign-subtitle-highlight {
-          color: #fef08a;
+          color: #fde047;
         }
         .campaign-detail {
-          background: rgba(0, 0, 0, 0.3);
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
           border-radius: 20px;
           padding: 32px;
           max-width: 700px;
           margin: 0 auto 32px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .campaign-detail-title {
           font-size: 18px;
-          color: #fef08a;
+          color: #fde047;
           margin-bottom: 16px;
           font-weight: 600;
         }
         .campaign-detail-text {
           font-size: 16px;
-          color: rgba(255, 255, 255, 0.9);
+          color: rgba(255, 255, 255, 0.95);
           line-height: 1.8;
         }
         .campaign-detail-highlight {
-          color: #fef08a;
+          color: #fde047;
+          font-weight: 600;
         }
         .campaign-example {
           display: flex;
@@ -301,31 +307,49 @@ export default function LPPage() {
           margin-top: 24px;
         }
         .campaign-example-item {
-          background: rgba(254, 240, 138, 0.1);
-          border: 1px solid rgba(254, 240, 138, 0.3);
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
           border-radius: 12px;
           padding: 20px 32px;
           text-align: center;
         }
         .campaign-example-label {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.7);
+          color: rgba(255, 255, 255, 0.8);
           margin-bottom: 8px;
         }
         .campaign-example-value {
           font-size: 28px;
           font-weight: 700;
-          color: #fef08a;
+          color: #fde047;
         }
         .campaign-example-sub {
           font-size: 13px;
-          color: rgba(255, 255, 255, 0.6);
+          color: rgba(255, 255, 255, 0.7);
           margin-top: 4px;
         }
         .campaign-note {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.6);
+          color: rgba(255, 255, 255, 0.7);
           margin-top: 24px;
+        }
+        .campaign-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #ffffff;
+          color: #2563eb;
+          padding: 20px 48px;
+          border-radius: 12px;
+          font-weight: 700;
+          font-size: 18px;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        }
+        .campaign-cta:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
         }
 
         /* 課題セクション */
@@ -335,10 +359,12 @@ export default function LPPage() {
           gap: 24px;
         }
         .problem-card {
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 16px;
           padding: 32px;
           text-align: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .problem-card-icon {
           font-size: 48px;
@@ -348,18 +374,18 @@ export default function LPPage() {
           font-size: 20px;
           font-weight: 600;
           margin-bottom: 12px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .problem-card-text {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #6b7280;
           line-height: 1.7;
         }
 
         /* ソリューションセクション */
         .solution-box {
-          background: linear-gradient(135deg, rgba(201, 162, 39, 0.15), rgba(201, 162, 39, 0.05));
-          border: 1px solid rgba(201, 162, 39, 0.3);
+          background: linear-gradient(135deg, #eff6ff, #dbeafe);
+          border: 1px solid #bfdbfe;
           border-radius: 24px;
           padding: 48px;
           text-align: center;
@@ -369,14 +395,15 @@ export default function LPPage() {
           font-size: clamp(24px, 3vw, 32px);
           font-weight: 700;
           margin-bottom: 16px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .solution-box-text {
           font-size: 18px;
-          color: rgba(255, 255, 255, 0.8);
+          color: #4b5563;
         }
-        .text-gold {
-          color: #c9a227;
+        .text-blue {
+          color: #2563eb;
+          font-weight: 600;
         }
 
         /* 仕組みセクション */
@@ -391,30 +418,32 @@ export default function LPPage() {
           display: flex;
           align-items: center;
           gap: 20px;
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 16px;
           padding: 24px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .flow-step-num {
           width: 48px;
           height: 48px;
-          background: linear-gradient(135deg, #c9a227, #8b6914);
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 20px;
           font-weight: 700;
-          color: #0a0a0a;
+          color: #ffffff;
           flex-shrink: 0;
         }
         .flow-step-text {
           font-size: 18px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .flow-step-highlight {
-          background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(201, 162, 39, 0.1));
-          border: 1px solid #c9a227;
+          background: linear-gradient(135deg, #eff6ff, #dbeafe);
+          border: 2px solid #2563eb;
         }
 
         /* 特徴セクション */
@@ -424,13 +453,14 @@ export default function LPPage() {
           gap: 32px;
         }
         .feature-card {
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 20px;
           padding: 40px 32px;
-          border-top: 4px solid #c9a227;
+          border-top: 4px solid #2563eb;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
         .feature-num {
-          color: #c9a227;
+          color: #2563eb;
           font-size: 14px;
           font-weight: 600;
           margin-bottom: 12px;
@@ -439,11 +469,11 @@ export default function LPPage() {
           font-size: 22px;
           font-weight: 700;
           margin-bottom: 16px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .feature-text {
           font-size: 15px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #6b7280;
           line-height: 1.8;
         }
 
@@ -455,86 +485,91 @@ export default function LPPage() {
           margin-bottom: 48px;
         }
         .pricing-card {
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 20px;
           padding: 40px;
           text-align: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .pricing-card-highlight {
-          background: linear-gradient(135deg, #c9a227, #8b6914);
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
+          border: none;
         }
         .pricing-label {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.5);
+          color: #6b7280;
           margin-bottom: 12px;
         }
         .pricing-card-highlight .pricing-label {
-          color: rgba(0, 0, 0, 0.6);
+          color: rgba(255, 255, 255, 0.8);
         }
         .pricing-value {
           font-size: 48px;
           font-weight: 700;
           margin-bottom: 8px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .pricing-card-highlight .pricing-value {
-          color: #0a0a0a;
+          color: #ffffff;
         }
         .pricing-value-unit {
           font-size: 24px;
         }
         .pricing-note {
           font-size: 13px;
-          color: rgba(255, 255, 255, 0.4);
+          color: #9ca3af;
         }
         .pricing-card-highlight .pricing-note {
-          color: rgba(0, 0, 0, 0.5);
+          color: rgba(255, 255, 255, 0.7);
         }
         .subsidy-box {
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 20px;
           padding: 40px;
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 24px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .subsidy-title {
           font-size: 20px;
           font-weight: 600;
           margin-bottom: 24px;
           grid-column: 1 / -1;
-          color: #ffffff;
+          color: #1f2937;
         }
         .subsidy-item {
-          background: rgba(201, 162, 39, 0.1);
+          background: #eff6ff;
           border-radius: 12px;
           padding: 20px;
           text-align: center;
         }
         .subsidy-item-label {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #6b7280;
           margin-bottom: 8px;
         }
         .subsidy-item-value {
           font-size: 32px;
           font-weight: 700;
-          color: #c9a227;
+          color: #2563eb;
         }
         .subsidy-note {
           grid-column: 1 / -1;
           font-size: 13px;
-          color: rgba(255, 255, 255, 0.5);
+          color: #9ca3af;
           text-align: center;
         }
 
         /* 手数料セクション */
         .fee-box {
-          background: linear-gradient(135deg, #c9a227, #8b6914);
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
           border-radius: 20px;
           padding: 40px;
           text-align: center;
-          color: #0a0a0a;
+          color: #ffffff;
           margin-bottom: 40px;
         }
         .fee-box-title {
@@ -544,7 +579,7 @@ export default function LPPage() {
         }
         .fee-box-subtitle {
           font-size: 16px;
-          opacity: 0.8;
+          opacity: 0.9;
         }
         .fee-examples {
           display: grid;
@@ -553,57 +588,63 @@ export default function LPPage() {
           margin-bottom: 32px;
         }
         .fee-example {
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 12px;
           padding: 24px;
           text-align: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .fee-example-label {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.5);
+          color: #6b7280;
           margin-bottom: 8px;
         }
         .fee-example-value {
           font-size: 24px;
           font-weight: 700;
-          color: #c9a227;
+          color: #2563eb;
         }
         .fee-breakdown {
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 16px;
           padding: 24px 32px;
           display: flex;
           justify-content: center;
           gap: 40px;
           flex-wrap: wrap;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .fee-breakdown-item {
           display: flex;
           align-items: center;
           gap: 8px;
           font-size: 15px;
-          color: #ffffff;
+          color: #4b5563;
         }
         .fee-breakdown-dot {
           width: 10px;
           height: 10px;
-          background: #c9a227;
+          background: #2563eb;
           border-radius: 50%;
         }
         .fee-breakdown-total {
-          color: rgba(255,255,255,0.5);
+          color: #9ca3af;
         }
 
         /* 比較セクション */
         .compare-box {
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 20px;
           padding: 40px;
           text-align: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .compare-title {
           font-size: 18px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #6b7280;
           margin-bottom: 24px;
         }
         .compare-row {
@@ -618,7 +659,7 @@ export default function LPPage() {
         }
         .compare-item-label {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.5);
+          color: #6b7280;
           margin-bottom: 8px;
         }
         .compare-item-value {
@@ -628,24 +669,24 @@ export default function LPPage() {
         .compare-item-value-red {
           color: #ef4444;
         }
-        .compare-item-value-gold {
-          color: #c9a227;
+        .compare-item-value-blue {
+          color: #2563eb;
         }
         .compare-vs {
           font-size: 24px;
-          color: rgba(255, 255, 255, 0.3);
+          color: #d1d5db;
         }
         .compare-message {
           margin-top: 24px;
           font-size: 18px;
-          color: rgba(255, 255, 255, 0.8);
+          color: #4b5563;
         }
 
         /* CTAセクション */
         .cta-section {
-          background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(201, 162, 39, 0.05));
-          border-top: 1px solid rgba(201, 162, 39, 0.2);
-          border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+          background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+          border-top: 1px solid #e5e7eb;
+          border-bottom: 1px solid #e5e7eb;
         }
         .cta-content {
           text-align: center;
@@ -654,11 +695,11 @@ export default function LPPage() {
           font-size: clamp(24px, 4vw, 36px);
           font-weight: 700;
           margin-bottom: 16px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .cta-text {
           font-size: 16px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #6b7280;
           margin-bottom: 32px;
         }
 
@@ -666,12 +707,14 @@ export default function LPPage() {
         .form-container {
           max-width: 600px;
           margin: 0 auto;
-          background: #1a1a1a;
+          background: #ffffff;
           border-radius: 24px;
           padding: 48px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          border: 1px solid #e5e7eb;
         }
         .form-campaign-note {
-          background: linear-gradient(135deg, #7f1d1d, #991b1b);
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
           border-radius: 12px;
           padding: 16px 20px;
           margin-bottom: 32px;
@@ -680,7 +723,8 @@ export default function LPPage() {
           color: #ffffff;
         }
         .form-campaign-highlight {
-          color: #fef08a;
+          color: #fde047;
+          font-weight: 600;
         }
         .form-group {
           margin-bottom: 24px;
@@ -688,30 +732,32 @@ export default function LPPage() {
         .form-label {
           display: block;
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.7);
+          color: #4b5563;
           margin-bottom: 8px;
+          font-weight: 500;
         }
         .form-required {
-          color: #c9a227;
+          color: #ef4444;
           margin-left: 4px;
         }
         .form-input {
           width: 100%;
           padding: 16px;
-          background: #0a0a0a;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
           border-radius: 12px;
-          color: #ffffff;
+          color: #1f2937;
           font-size: 16px;
           transition: all 0.3s ease;
         }
         .form-input:focus {
           outline: none;
-          border-color: #c9a227;
-          box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+          border-color: #2563eb;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+          background: #ffffff;
         }
         .form-input::placeholder {
-          color: rgba(255, 255, 255, 0.3);
+          color: #9ca3af;
         }
         .form-textarea {
           min-height: 120px;
@@ -720,18 +766,19 @@ export default function LPPage() {
         .form-submit {
           width: 100%;
           padding: 18px;
-          background: linear-gradient(135deg, #c9a227, #8b6914);
-          color: #0a0a0a;
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
+          color: #ffffff;
           border: none;
           border-radius: 12px;
           font-size: 18px;
           font-weight: 700;
           cursor: pointer;
           transition: all 0.3s ease;
+          box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
         }
         .form-submit:hover:not(:disabled) {
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4);
+          box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
         }
         .form-submit:disabled {
           opacity: 0.6;
@@ -744,28 +791,30 @@ export default function LPPage() {
         .form-success-icon {
           width: 80px;
           height: 80px;
-          background: rgba(34, 197, 94, 0.2);
+          background: #dcfce7;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           margin: 0 auto 24px;
           font-size: 40px;
+          color: #22c55e;
         }
         .form-success-title {
           font-size: 24px;
           font-weight: 700;
           margin-bottom: 12px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .form-success-text {
-          color: rgba(255, 255, 255, 0.6);
+          color: #6b7280;
         }
 
         /* フッター */
         .footer {
-          background: #050505;
+          background: #f9fafb;
           padding: 60px 24px 40px;
+          border-top: 1px solid #e5e7eb;
         }
         .footer-inner {
           max-width: 1100px;
@@ -779,7 +828,7 @@ export default function LPPage() {
           gap: 40px;
           margin-bottom: 40px;
           padding-bottom: 40px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid #e5e7eb;
         }
         .footer-logo {
           display: flex;
@@ -793,16 +842,16 @@ export default function LPPage() {
           font-size: 16px;
           font-weight: 600;
           margin-bottom: 4px;
-          color: #ffffff;
+          color: #1f2937;
         }
         .footer-company-rep {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.5);
+          color: #6b7280;
         }
         .footer-bottom {
           text-align: center;
           font-size: 13px;
-          color: rgba(255, 255, 255, 0.4);
+          color: #9ca3af;
         }
 
         @media (max-width: 768px) {
@@ -858,7 +907,7 @@ export default function LPPage() {
           <span className="hero-badge">葬儀社様向け 遠隔献杯システム</span>
           <h1 className="hero-title">
             競合他社の相見積もりに<br />
-            <span className="hero-title-gold">負けない</span>ための新提案
+            <span className="hero-title-blue">負けない</span>ための新提案
           </h1>
           <p className="hero-subtitle">
             遠方の方から献杯（支援金）を集め、<br />
@@ -904,7 +953,7 @@ export default function LPPage() {
               ※先着10社に達し次第、キャンペーンは終了となります
             </p>
           </div>
-          <a href="#contact" className="hero-cta">
+          <a href="#contact" className="campaign-cta">
             今すぐキャンペーンに申し込む
             <span>→</span>
           </a>
@@ -912,25 +961,25 @@ export default function LPPage() {
       </section>
 
       {/* 課題セクション */}
-      <section className="section section-dark">
+      <section className="section section-gray">
         <div className="section-inner">
           <p className="section-label">PROBLEM</p>
-          <h2 className="section-title">葬儀業界の&quot;本当の苦しさ&quot;</h2>
+          <h2 className="section-title">葬儀業界の&quot;本当の課題&quot;</h2>
           <p className="section-desc">
-            葬儀って、&quot;値上げしづらい業界&quot;ですよね。<br />
+            葬儀業界は&quot;値上げしづらい&quot;業界。<br />
             物価も人件費も上がっているのに、見積もりは上げられない。
           </p>
           <div className="problem-cards">
             <div className="problem-card">
-              <div className="problem-card-icon">📈</div>
+              <div className="problem-card-icon">📊</div>
               <h3 className="problem-card-title">価格競争の激化</h3>
               <p className="problem-card-text">
-                他社より高く見えたら即アウト。<br />
-                &quot;内容&quot;ではなく&quot;金額の見え方&quot;で選ばれる時代。
+                他社より高く見えたら選ばれない。<br />
+                &quot;内容&quot;ではなく&quot;金額の見え方&quot;で決まる時代。
               </p>
             </div>
             <div className="problem-card">
-              <div className="problem-card-icon">💸</div>
+              <div className="problem-card-icon">💰</div>
               <h3 className="problem-card-title">遺族の経済的負担</h3>
               <p className="problem-card-text">
                 葬儀費用の全国平均は約150万円。<br />
@@ -938,7 +987,7 @@ export default function LPPage() {
               </p>
             </div>
             <div className="problem-card">
-              <div className="problem-card-icon">🚫</div>
+              <div className="problem-card-icon">🌏</div>
               <h3 className="problem-card-title">参列できない方の増加</h3>
               <p className="problem-card-text">
                 遠方・高齢・仕事の都合で参列できない方が、<br />
@@ -959,13 +1008,13 @@ export default function LPPage() {
               香典をデジタル化するシステムではありません。
             </h3>
             <p className="solution-box-text">
-              <span className="text-gold">成約率</span>と<span className="text-gold">見積の印象</span>を変える仕組みです。
+              <span className="text-blue">成約率</span>と<span className="text-blue">見積の印象</span>を変える仕組みです。
             </p>
           </div>
           <div className="flow-steps">
             <div className="flow-step">
               <div className="flow-step-num">1</div>
-              <p className="flow-step-text">葬儀社様が献杯ページを作成<span className="text-gold">（3分で完了）</span></p>
+              <p className="flow-step-text">葬儀社様が献杯ページを作成<span className="text-blue">（3分で完了）</span></p>
             </div>
             <div className="flow-step">
               <div className="flow-step-num">2</div>
@@ -973,7 +1022,7 @@ export default function LPPage() {
             </div>
             <div className="flow-step">
               <div className="flow-step-num">3</div>
-              <p className="flow-step-text"><span className="text-gold">遺族がリンクをLINEで共有</span>（遠方の親族・知人へ）</p>
+              <p className="flow-step-text"><span className="text-blue">遺族がリンクをLINEで共有</span>（遠方の親族・知人へ）</p>
             </div>
             <div className="flow-step">
               <div className="flow-step-num">4</div>
@@ -981,14 +1030,14 @@ export default function LPPage() {
             </div>
             <div className="flow-step flow-step-highlight">
               <div className="flow-step-num">5</div>
-              <p className="flow-step-text"><span className="text-gold">集まったお金は葬儀費用に充当可能</span></p>
+              <p className="flow-step-text"><span className="text-blue">集まったお金は葬儀費用に充当可能</span></p>
             </div>
           </div>
         </div>
       </section>
 
       {/* 特徴セクション */}
-      <section className="section section-dark">
+      <section className="section section-gray">
         <div className="section-inner">
           <p className="section-label">FEATURES</p>
           <h2 className="section-title">Reiが選ばれる理由</h2>
@@ -1011,7 +1060,7 @@ export default function LPPage() {
               <p className="feature-num">03</p>
               <h3 className="feature-title">安心・安全なお金の管理</h3>
               <p className="feature-text">
-                貴社の口座へ直接入金。弊社はお金を預かりません。運営会社の倒産リスクや入金遅延のリスクがありません。
+                貴社の口座へ直接入金。弊社はお金を預かりません。運営会社の倒産リスクや入金遅延の心配がありません。
               </p>
             </div>
           </div>
@@ -1019,7 +1068,7 @@ export default function LPPage() {
       </section>
 
       {/* 料金セクション */}
-      <section className="section section-dark" id="pricing">
+      <section className="section section-blue" id="pricing">
         <div className="section-inner">
           <p className="section-label">PRICING</p>
           <h2 className="section-title">料金体系</h2>
@@ -1082,11 +1131,11 @@ export default function LPPage() {
           <div className="fee-breakdown">
             <div className="fee-breakdown-item">
               <div className="fee-breakdown-dot" />
-              <span>決済手数料（Stripe）：<span className="text-gold">3.6%</span></span>
+              <span>決済手数料（Stripe）：<span className="text-blue">3.6%</span></span>
             </div>
             <div className="fee-breakdown-item">
               <div className="fee-breakdown-dot" />
-              <span>システム利用料：<span className="text-gold">8%</span></span>
+              <span>システム利用料：<span className="text-blue">8%</span></span>
             </div>
             <div className="fee-breakdown-item">
               <span className="fee-breakdown-total">合計：<strong>11.6%</strong></span>
@@ -1096,7 +1145,7 @@ export default function LPPage() {
       </section>
 
       {/* 比較セクション */}
-      <section className="section section-dark">
+      <section className="section section-gray">
         <div className="section-inner">
           <p className="section-label">COMPARISON</p>
           <h2 className="section-title">Reiを使わなければ、<br />遠方からの献杯は0円です</h2>
@@ -1110,11 +1159,11 @@ export default function LPPage() {
               <span className="compare-vs">vs</span>
               <div className="compare-item">
                 <p className="compare-item-label">Reiあり</p>
-                <p className="compare-item-value compare-item-value-gold">88,400円</p>
+                <p className="compare-item-value compare-item-value-blue">88,400円</p>
               </div>
             </div>
             <p className="compare-message">
-              <span className="text-gold">0円</span>と<span className="text-gold">88,400円</span>。どちらがご遺族のためになりますか？
+              <span className="text-blue">0円</span>と<span className="text-blue">88,400円</span>。どちらがご遺族のためになりますか？
             </p>
           </div>
         </div>
@@ -1126,7 +1175,7 @@ export default function LPPage() {
           <div className="cta-content">
             <h2 className="cta-title">
               「他社より安くできます」ではなく、<br />
-              <span className="text-gold">「お客様の負担を減らせます」</span>という提案を。
+              <span className="text-blue">「お客様の負担を減らせます」</span>という提案を。
             </h2>
             <p className="cta-text">
               Reiで、価格競争から価値競争へ。
@@ -1140,7 +1189,7 @@ export default function LPPage() {
       </section>
 
       {/* フォームセクション */}
-      <section className="section section-dark" id="contact">
+      <section className="section section-gray" id="contact">
         <div className="section-inner">
           <p className="section-label">CONTACT</p>
           <h2 className="section-title">お問い合わせ</h2>
