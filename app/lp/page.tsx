@@ -504,6 +504,94 @@ export default function LPPage() {
           transform: translateX(4px);
         }
 
+        /* Easy Start */
+        .easy-start {
+          background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+          padding: 64px 20px;
+          text-align: center;
+        }
+        .easy-start-inner {
+          max-width: 700px;
+          margin: 0 auto;
+        }
+        .easy-start-badge {
+          display: inline-block;
+          background: var(--primary);
+          color: var(--white);
+          padding: 6px 16px;
+          border-radius: 100px;
+          font-size: 12px;
+          font-weight: 700;
+          margin-bottom: 16px;
+          letter-spacing: 0.1em;
+        }
+        .easy-start-title {
+          font-size: clamp(22px, 5vw, 30px);
+          font-weight: 700;
+          line-height: 1.5;
+          margin-bottom: 36px;
+        }
+        .easy-start-em {
+          color: var(--primary);
+          background: linear-gradient(transparent 70%, rgba(26, 107, 82, 0.15) 70%);
+        }
+        .easy-start-points {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+          margin-bottom: 24px;
+        }
+        .easy-start-point {
+          background: var(--white);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 24px 20px;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+          transition: all 0.3s;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          text-align: left;
+        }
+        .easy-start-point:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .easy-start-icon {
+          font-size: 32px;
+          flex-shrink: 0;
+          width: 56px;
+          height: 56px;
+          background: linear-gradient(135deg, #e6f2ee, #d4ebe3);
+          border-radius: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .easy-start-point-content {
+          flex: 1;
+        }
+        .easy-start-point-title {
+          font-size: 16px;
+          font-weight: 700;
+          margin-bottom: 4px;
+          color: var(--text);
+        }
+        .easy-start-point-text {
+          font-size: 13px;
+          color: var(--text-sub);
+          line-height: 1.5;
+        }
+        .easy-start-note {
+          font-size: 14px;
+          color: var(--primary);
+          font-weight: 600;
+          background: linear-gradient(135deg, #e6f2ee, #d4ebe3);
+          display: inline-block;
+          padding: 10px 24px;
+          border-radius: 100px;
+        }
+
         /* Section */
         .section {
           padding: 72px 20px;
@@ -1150,6 +1238,21 @@ export default function LPPage() {
           .sp-only {
             display: none;
           }
+          .easy-start-points {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+          }
+          .easy-start-point {
+            flex-direction: column;
+            text-align: center;
+            padding: 32px 20px;
+          }
+          .easy-start-icon {
+            width: 64px;
+            height: 64px;
+            font-size: 28px;
+            margin-bottom: 8px;
+          }
           .section {
             padding: 96px 20px;
           }
@@ -1274,6 +1377,41 @@ export default function LPPage() {
             <span>今すぐ枠を確保する</span>
             <span className="campaign-btn-arrow">→</span>
           </a>
+        </div>
+      </section>
+
+      {/* Easy Start */}
+      <section className="easy-start">
+        <div className="easy-start-inner">
+          <div className="easy-start-badge">かんたん導入</div>
+          <h2 className="easy-start-title">
+            専用リンクをお送りするだけ<br />
+            <span className="easy-start-em">最短即日</span>で導入完了
+          </h2>
+          <div className="easy-start-points">
+            <div className="easy-start-point">
+              <div className="easy-start-icon">📱</div>
+              <div className="easy-start-point-content">
+                <p className="easy-start-point-title">スマホだけでOK</p>
+                <p className="easy-start-point-text">PC不要。お手持ちのスマートフォンだけで全ての操作が完結します</p>
+              </div>
+            </div>
+            <div className="easy-start-point">
+              <div className="easy-start-icon">👥</div>
+              <div className="easy-start-point-content">
+                <p className="easy-start-point-title">従業員様も利用可能</p>
+                <p className="easy-start-point-text">各スタッフのスマホに導入OK。複数人での運用もスムーズです</p>
+              </div>
+            </div>
+            <div className="easy-start-point">
+              <div className="easy-start-icon">🔗</div>
+              <div className="easy-start-point-content">
+                <p className="easy-start-point-title">リンク1つで開始</p>
+                <p className="easy-start-point-text">弊社から専用リンクをお送りするだけ。面倒な設定は一切不要です</p>
+              </div>
+            </div>
+          </div>
+          <p className="easy-start-note">✓ インストール不要　✓ 初期設定不要　✓ 研修不要</p>
         </div>
       </section>
 
