@@ -116,206 +116,213 @@ export default function LPPage() {
 
         /* Hero */
         .hero {
-          padding: 100px 20px 60px;
-          background: linear-gradient(180deg, #e6f2ee 0%, var(--bg) 100%);
-          text-align: center;
+          min-height: 100vh;
+          min-height: 100dvh;
+          padding: 80px 20px 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(165deg, #0d3d2d 0%, #1a6b52 50%, #238c6a 100%);
+        }
+        .hero-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        .hero-bg-circle {
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.03);
+        }
+        .hero-bg-circle-1 {
+          width: 600px;
+          height: 600px;
+          top: -200px;
+          right: -200px;
+          animation: float 20s ease-in-out infinite;
+        }
+        .hero-bg-circle-2 {
+          width: 400px;
+          height: 400px;
+          bottom: -100px;
+          left: -100px;
+          animation: float 15s ease-in-out infinite reverse;
+        }
+        .hero-bg-circle-3 {
+          width: 300px;
+          height: 300px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          animation: float 25s ease-in-out infinite;
+        }
+        @keyframes float {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(30px, -30px) scale(1.05); }
         }
         .hero-inner {
-          max-width: 700px;
+          max-width: 800px;
           margin: 0 auto;
+          text-align: center;
+          position: relative;
+          z-index: 1;
+        }
+        .hero-main {
+          margin-bottom: 40px;
         }
         .hero-catch {
-          font-size: 15px;
-          color: var(--text-sub);
-          margin-bottom: 8px;
-        }
-        .hero-title {
-          font-size: clamp(24px, 5vw, 36px);
-          font-weight: 700;
-          line-height: 1.5;
-          margin-bottom: 16px;
-          word-break: keep-all;
-          overflow-wrap: break-word;
-        }
-        .hero-title-em {
-          color: var(--primary);
-        }
-        .hero-sub {
-          font-size: 15px;
-          color: var(--text-sub);
-          line-height: 1.8;
-          margin-bottom: 32px;
-          word-break: keep-all;
-          overflow-wrap: break-word;
-        }
-        .hero-badge {
           display: inline-block;
-          background: var(--accent);
-          color: var(--white);
-          padding: 6px 16px;
+          background: rgba(255,255,255,0.15);
+          backdrop-filter: blur(4px);
+          padding: 8px 20px;
           border-radius: 100px;
           font-size: 13px;
           font-weight: 600;
+          color: rgba(255,255,255,0.9);
+          margin-bottom: 24px;
+          letter-spacing: 0.05em;
+        }
+        .hero-title {
+          color: var(--white);
           margin-bottom: 24px;
         }
-
-        /* What Box */
-        .what-box {
-          background: var(--white);
-          border: 2px solid var(--primary);
-          border-radius: 20px;
-          padding: 32px 28px;
-          margin-bottom: 36px;
-          text-align: center;
-          box-shadow: 0 4px 20px rgba(26, 107, 82, 0.08);
-        }
-        .what-label {
-          font-size: 12px;
-          font-weight: 700;
-          color: var(--primary);
-          letter-spacing: 0.15em;
-          margin-bottom: 12px;
-          text-transform: uppercase;
-        }
-        .what-title {
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 1.7;
-          margin-bottom: 28px;
-        }
-        .what-points {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-        }
-        .what-point {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-          font-size: 13px;
+        .hero-title-line {
+          display: block;
+          font-size: clamp(16px, 4vw, 22px);
           font-weight: 500;
+          opacity: 0.9;
+          margin-bottom: 8px;
         }
-        .what-check {
-          width: 28px;
-          height: 28px;
-          background: linear-gradient(135deg, var(--primary), var(--primary-light));
-          border-radius: 50%;
-          color: var(--white);
+        .hero-title-big {
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+          gap: 4px;
+          margin: 16px 0;
+        }
+        .hero-title-em {
+          font-size: clamp(24px, 6vw, 36px);
+          font-weight: 700;
+        }
+        .hero-title-number {
+          font-size: clamp(72px, 18vw, 120px);
+          font-weight: 800;
+          line-height: 1;
+          background: linear-gradient(135deg, #fff 0%, #ffd700 50%, #fff 100%);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shine 3s ease-in-out infinite;
+          text-shadow: 0 4px 30px rgba(255,215,0,0.3);
+        }
+        @keyframes shine {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .hero-desc {
+          font-size: 14px;
+          color: rgba(255,255,255,0.8);
+          line-height: 1.8;
+        }
+        .sp-only { display: inline; }
+
+        .hero-stats {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 14px;
-          flex-shrink: 0;
-          box-shadow: 0 2px 8px rgba(26, 107, 82, 0.25);
-        }
-
-        /* Stats */
-        .stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
-          margin: 0 auto 32px;
-          max-width: 420px;
-        }
-        .stat {
-          background: var(--white);
-          border: 1px solid var(--border);
+          gap: 20px;
+          background: rgba(255,255,255,0.1);
+          backdrop-filter: blur(8px);
           border-radius: 16px;
-          padding: 24px 16px;
-          text-align: center;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          padding: 20px 24px;
+          margin-bottom: 32px;
+          border: 1px solid rgba(255,255,255,0.15);
         }
-        .stat-value {
-          font-size: 28px;
+        .hero-stat {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .hero-stat-value {
+          font-size: clamp(24px, 6vw, 32px);
           font-weight: 700;
-          color: var(--primary);
+          color: var(--white);
           line-height: 1.2;
         }
-        .stat-label {
-          font-size: 12px;
-          color: var(--text-sub);
-          margin-top: 6px;
+        .hero-stat-label {
+          font-size: 11px;
+          color: rgba(255,255,255,0.7);
+          margin-top: 4px;
+        }
+        .hero-stat-divider {
+          width: 1px;
+          height: 40px;
+          background: rgba(255,255,255,0.2);
         }
 
-        /* CTA */
-        .cta-wrap {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 12px;
+        .hero-cta {
           margin-bottom: 40px;
         }
-        .cta-main {
+        .hero-cta-main {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
-          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-          color: var(--white);
-          padding: 18px 44px;
-          border-radius: 12px;
-          font-size: 16px;
+          gap: 12px;
+          background: var(--white);
+          color: var(--primary);
+          padding: 20px 48px;
+          border-radius: 16px;
+          font-size: 18px;
           font-weight: 700;
           text-decoration: none;
           transition: all 0.3s;
-          box-shadow: 0 4px 16px rgba(26, 107, 82, 0.3);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
-        .cta-main:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 24px rgba(26, 107, 82, 0.4);
+        .hero-cta-main:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
-        .cta-sub {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 6px;
-          background: var(--white);
-          color: var(--primary);
-          padding: 14px 32px;
-          border-radius: 10px;
-          font-size: 14px;
-          font-weight: 600;
-          text-decoration: none;
-          border: 2px solid var(--primary);
-          transition: all 0.3s;
+        .hero-cta-arrow {
+          font-size: 20px;
+          transition: transform 0.3s;
         }
-        .cta-sub:hover {
-          background: var(--primary);
-          color: var(--white);
+        .hero-cta-main:hover .hero-cta-arrow {
+          transform: translateX(4px);
+        }
+        .hero-cta-note {
+          margin-top: 16px;
+          font-size: 13px;
+          color: rgba(255,255,255,0.8);
+          background: rgba(232, 168, 48, 0.2);
+          display: inline-block;
+          padding: 8px 16px;
+          border-radius: 8px;
+          border: 1px solid rgba(232, 168, 48, 0.3);
         }
 
-        /* Nav Links */
-        .nav-links {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 10px;
-          max-width: 480px;
-          margin: 0 auto;
-        }
-        .nav-link {
-          background: var(--white);
-          border: 1px solid var(--border);
-          border-radius: 12px;
-          padding: 16px 12px;
+        .hero-scroll {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          color: rgba(255,255,255,0.6);
           font-size: 12px;
-          font-weight: 600;
-          color: var(--text);
-          cursor: pointer;
-          transition: all 0.3s;
-          text-align: center;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          animation: bounce 2s ease-in-out infinite;
         }
-        .nav-link:hover {
-          border-color: var(--primary);
-          color: var(--primary);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(26, 107, 82, 0.12);
+        .hero-scroll-icon {
+          font-size: 16px;
         }
-        .nav-link-icon {
-          display: block;
-          font-size: 20px;
-          margin-bottom: 6px;
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(8px); }
         }
 
         /* Campaign */
@@ -979,14 +986,17 @@ export default function LPPage() {
         /* Desktop */
         @media (min-width: 768px) {
           .hero {
-            padding: 130px 20px 80px;
+            padding: 100px 20px 60px;
           }
-          .stats {
-            max-width: 450px;
+          .hero-title-number {
+            font-size: 140px;
           }
-          .cta-wrap {
-            flex-direction: row;
-            justify-content: center;
+          .hero-stats {
+            gap: 40px;
+            padding: 24px 48px;
+          }
+          .sp-only {
+            display: none;
           }
           .section {
             padding: 96px 20px;
@@ -1024,75 +1034,57 @@ export default function LPPage() {
 
       {/* Hero */}
       <section className="hero">
+        <div className="hero-bg">
+          <div className="hero-bg-circle hero-bg-circle-1" />
+          <div className="hero-bg-circle hero-bg-circle-2" />
+          <div className="hero-bg-circle hero-bg-circle-3" />
+        </div>
         <div className="hero-inner">
-          <p className="hero-catch">「他社より安くできます」ではなく</p>
-          <h1 className="hero-title">
-            <span className="hero-title-em">「お客様の負担を減らせます」</span>という提案ができる仕組み
-          </h1>
-          <p className="hero-sub">
-            遠方の方から献杯（支援金）を集めて葬儀費用の負担を軽減。見積もり競争で選ばれる葬儀社へ。
-          </p>
-
-          <span className="hero-badge">🎁 先着10社限定キャンペーン中</span>
-
-          {/* What Box */}
-          <div className="what-box">
-            <p className="what-label">Reiとは？</p>
-            <p className="what-title">
-              参列できない方からオンラインで献杯を集めるシステムです
+          <div className="hero-main">
+            <p className="hero-catch">他社の見積もりに勝つ、新しい武器</p>
+            <h1 className="hero-title">
+              <span className="hero-title-line">遠方の献杯を集めて</span>
+              <span className="hero-title-big">
+                <span className="hero-title-em">実質</span>
+                <span className="hero-title-number">10</span>
+                <span className="hero-title-em">万円引き</span>
+              </span>
+              <span className="hero-title-line">という提案ができる</span>
+            </h1>
+            <p className="hero-desc">
+              参列できない方からオンラインで献杯（支援金）を集め、<br className="sp-only" />
+              葬儀費用の負担を軽減する葬儀社様向けシステム
             </p>
-            <div className="what-points">
-              <div className="what-point">
-                <span className="what-check">✓</span>
-                <span>LINEで共有するだけ</span>
-              </div>
-              <div className="what-point">
-                <span className="what-check">✓</span>
-                <span>葬儀費用に充当可能</span>
-              </div>
-              <div className="what-point">
-                <span className="what-check">✓</span>
-                <span>現場の負担ゼロ</span>
-              </div>
+          </div>
+
+          <div className="hero-stats">
+            <div className="hero-stat">
+              <span className="hero-stat-value">約9割</span>
+              <span className="hero-stat-label">ご遺族に届く</span>
+            </div>
+            <div className="hero-stat-divider" />
+            <div className="hero-stat">
+              <span className="hero-stat-value">0円</span>
+              <span className="hero-stat-label">月額費用</span>
+            </div>
+            <div className="hero-stat-divider" />
+            <div className="hero-stat">
+              <span className="hero-stat-value">3分</span>
+              <span className="hero-stat-label">で作成完了</span>
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="stats">
-            <div className="stat">
-              <div className="stat-value">約9割</div>
-              <div className="stat-label">ご遺族に届く</div>
-            </div>
-            <div className="stat">
-              <div className="stat-value">0円</div>
-              <div className="stat-label">月額費用</div>
-            </div>
-            <div className="stat">
-              <div className="stat-value">3分</div>
-              <div className="stat-label">ページ作成</div>
-            </div>
+          <div className="hero-cta">
+            <a href="#contact" className="hero-cta-main">
+              <span>無料で資料請求</span>
+              <span className="hero-cta-arrow">→</span>
+            </a>
+            <p className="hero-cta-note">🎁 先着10社限定：手数料8%を半年間還元</p>
           </div>
 
-          {/* CTA */}
-          <div className="cta-wrap">
-            <a href="#contact" className="cta-main">資料請求・お問い合わせ →</a>
-            <a href="#pricing" className="cta-sub">料金を見る</a>
-          </div>
-
-          {/* Nav Links */}
-          <div className="nav-links">
-            <button className="nav-link" onClick={() => scrollTo('flow')}>
-              <span className="nav-link-icon">📋</span>使い方
-            </button>
-            <button className="nav-link" onClick={() => scrollTo('features')}>
-              <span className="nav-link-icon">✨</span>特徴
-            </button>
-            <button className="nav-link" onClick={() => scrollTo('pricing')}>
-              <span className="nav-link-icon">💰</span>料金
-            </button>
-            <button className="nav-link" onClick={() => scrollTo('fee')}>
-              <span className="nav-link-icon">📊</span>手数料
-            </button>
+          <div className="hero-scroll">
+            <span>詳しく見る</span>
+            <span className="hero-scroll-icon">↓</span>
           </div>
         </div>
       </section>
