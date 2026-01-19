@@ -30,965 +30,678 @@ export default function LPPage() {
     setSubmitting(false);
   };
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="lp-page">
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+        
+        *, *::before, *::after {
+          box-sizing: border-box;
+        }
+        
+        html {
+          scroll-behavior: smooth;
+        }
       `}</style>
       
       <style jsx>{`
         .lp-page {
-          --color-primary: #1a5f4a;
-          --color-primary-light: #2d8a6e;
-          --color-primary-dark: #0f3d2f;
-          --color-accent: #c4a052;
-          --color-accent-light: #d4b86a;
-          --color-bg: #fafaf8;
-          --color-bg-warm: #f5f3ef;
-          --color-text: #2d3436;
-          --color-text-light: #636e72;
-          --color-white: #ffffff;
-          --color-border: #e8e6e1;
-          
-          --font-display: 'Noto Serif JP', serif;
-          --font-body: 'Outfit', sans-serif;
-          
-          --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-          --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+          --primary: #1a6b52;
+          --primary-light: #2a8a6e;
+          --primary-dark: #145542;
+          --accent: #d4a853;
+          --bg: #fafafa;
+          --bg-alt: #f4f4f2;
+          --text: #222;
+          --text-light: #666;
+          --border: #e0e0e0;
+          --white: #fff;
+          --radius: 12px;
+          --radius-lg: 20px;
           
           min-height: 100vh;
-          background: var(--color-bg);
-          color: var(--color-text);
-          font-family: var(--font-body);
-          font-weight: 400;
+          background: var(--bg);
+          color: var(--text);
+          font-family: 'Noto Sans JP', sans-serif;
+          font-size: 15px;
           line-height: 1.7;
           overflow-x: hidden;
+          width: 100%;
         }
 
-        /* ========== Header ========== */
+        /* ===== Header ===== */
         .header {
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
           z-index: 1000;
-          padding: 0 clamp(20px, 5vw, 60px);
-          transition: all 0.5s var(--ease-out-expo);
-        }
-        .header.scrolled {
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(20px);
-          box-shadow: 0 1px 0 var(--color-border);
+          background: rgba(255,255,255,0.97);
+          border-bottom: 1px solid var(--border);
         }
         .header-inner {
-          max-width: 1400px;
+          max-width: 1100px;
           margin: 0 auto;
-          padding: 20px 0;
+          padding: 12px 16px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          transition: padding 0.5s var(--ease-out-expo);
-        }
-        .header.scrolled .header-inner {
-          padding: 14px 0;
         }
         .logo {
           display: flex;
           align-items: center;
-          gap: 14px;
-          text-decoration: none;
+          gap: 10px;
         }
         .logo-mark {
-          width: 44px;
-          height: 44px;
-          background: linear-gradient(145deg, var(--color-primary), var(--color-primary-dark));
-          border-radius: 12px;
+          width: 36px;
+          height: 36px;
+          background: var(--primary);
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-family: var(--font-display);
-          font-size: 22px;
-          font-weight: 600;
-          color: var(--color-white);
-          box-shadow: 0 4px 20px rgba(26, 95, 74, 0.25);
+          font-size: 18px;
+          font-weight: 700;
+          color: var(--white);
         }
         .logo-text {
-          font-family: var(--font-display);
-          font-size: 26px;
-          font-weight: 600;
-          color: var(--color-text);
-          letter-spacing: 0.02em;
+          font-size: 20px;
+          font-weight: 700;
+          color: var(--text);
         }
         .header-cta {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: var(--color-primary);
-          color: var(--color-white);
-          padding: 14px 28px;
-          border-radius: 100px;
-          font-weight: 500;
-          font-size: 14px;
+          background: var(--primary);
+          color: var(--white);
+          padding: 10px 20px;
+          border-radius: 8px;
+          font-size: 13px;
+          font-weight: 600;
           text-decoration: none;
-          letter-spacing: 0.02em;
-          transition: all 0.4s var(--ease-out-expo);
-          box-shadow: 0 4px 20px rgba(26, 95, 74, 0.2);
+          transition: background 0.3s;
         }
         .header-cta:hover {
-          background: var(--color-primary-light);
-          transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(26, 95, 74, 0.3);
-        }
-        .header-cta svg {
-          width: 16px;
-          height: 16px;
-          transition: transform 0.3s var(--ease-out-expo);
-        }
-        .header-cta:hover svg {
-          transform: translateX(3px);
+          background: var(--primary-light);
         }
 
-        /* ========== Campaign Banner ========== */
-        .campaign-banner {
-          position: fixed;
-          top: 84px;
-          left: 0;
-          right: 0;
-          z-index: 999;
-          background: linear-gradient(135deg, var(--color-accent), #b8944a);
-          color: var(--color-white);
-          text-align: center;
-          padding: 12px 24px;
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.03em;
-          transition: top 0.5s var(--ease-out-expo);
-        }
-        .header.scrolled ~ .campaign-banner {
-          top: 68px;
-        }
-        .campaign-banner-highlight {
-          font-weight: 700;
-        }
-
-        /* ========== Hero Section ========== */
+        /* ===== Hero ===== */
         .hero {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          position: relative;
-          padding: 180px clamp(20px, 5vw, 60px) 100px;
-          overflow: hidden;
-        }
-        .hero-bg {
-          position: absolute;
-          inset: 0;
-          background: 
-            linear-gradient(180deg, rgba(250, 250, 248, 0) 0%, var(--color-bg) 100%),
-            radial-gradient(ellipse 80% 50% at 70% 20%, rgba(26, 95, 74, 0.06) 0%, transparent 70%),
-            radial-gradient(ellipse 60% 40% at 30% 80%, rgba(196, 160, 82, 0.04) 0%, transparent 70%);
-        }
-        .hero-pattern {
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 50%;
-          height: 100%;
-          opacity: 0.03;
-          background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='%231a5f4a' fill-opacity='1'/%3E%3C/svg%3E");
-          background-size: 60px 60px;
-        }
-        .hero-content {
-          position: relative;
-          max-width: 1400px;
-          margin: 0 auto;
-          width: 100%;
+          padding: 80px 16px 40px;
+          background: linear-gradient(180deg, #e8f5f0 0%, var(--bg) 100%);
         }
         .hero-inner {
           max-width: 800px;
-          text-align: left;
+          margin: 0 auto;
         }
-        .hero-campaign-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          background: linear-gradient(135deg, var(--color-accent), #b8944a);
-          color: var(--color-white);
-          padding: 10px 22px;
-          border-radius: 100px;
-          font-size: 13px;
-          font-weight: 600;
-          letter-spacing: 0.04em;
-          margin-bottom: 32px;
-          animation: fadeInUp 0.8s var(--ease-out-expo) both;
-          box-shadow: 0 4px 20px rgba(196, 160, 82, 0.3);
-        }
-        .hero-label {
+        .hero-badge {
           display: inline-block;
-          font-size: 13px;
-          font-weight: 500;
-          color: var(--color-primary);
-          letter-spacing: 0.15em;
-          margin-bottom: 24px;
-          padding: 8px 0;
-          border-bottom: 1px solid var(--color-primary);
-          animation: fadeInUp 0.8s var(--ease-out-expo) 0.1s both;
+          background: var(--accent);
+          color: var(--white);
+          padding: 6px 14px;
+          border-radius: 100px;
+          font-size: 12px;
+          font-weight: 600;
+          margin-bottom: 16px;
         }
         .hero-title {
-          font-family: var(--font-display);
-          font-size: clamp(36px, 6vw, 64px);
+          font-size: clamp(24px, 6vw, 40px);
           font-weight: 700;
-          line-height: 1.25;
-          color: var(--color-text);
-          margin-bottom: 28px;
-          animation: fadeInUp 0.8s var(--ease-out-expo) 0.2s both;
+          line-height: 1.4;
+          margin-bottom: 16px;
+          color: var(--text);
         }
         .hero-title-accent {
-          color: var(--color-primary);
-          position: relative;
-        }
-        .hero-title-accent::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          bottom: 4px;
-          width: 100%;
-          height: 8px;
-          background: rgba(26, 95, 74, 0.15);
-          z-index: -1;
-        }
-        .hero-description {
-          font-size: clamp(16px, 2vw, 19px);
-          color: var(--color-text-light);
-          line-height: 1.9;
-          margin-bottom: 48px;
-          max-width: 600px;
-          animation: fadeInUp 0.8s var(--ease-out-expo) 0.3s both;
-        }
-        .hero-cta-group {
-          display: flex;
-          gap: 16px;
-          flex-wrap: wrap;
-          animation: fadeInUp 0.8s var(--ease-out-expo) 0.4s both;
-        }
-        .hero-cta-primary {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          background: var(--color-primary);
-          color: var(--color-white);
-          padding: 18px 36px;
-          border-radius: 100px;
-          font-weight: 600;
-          font-size: 15px;
-          text-decoration: none;
-          letter-spacing: 0.02em;
-          transition: all 0.4s var(--ease-out-expo);
-          box-shadow: 0 4px 25px rgba(26, 95, 74, 0.25);
-        }
-        .hero-cta-primary:hover {
-          background: var(--color-primary-light);
-          transform: translateY(-3px);
-          box-shadow: 0 12px 40px rgba(26, 95, 74, 0.35);
-        }
-        .hero-cta-primary svg {
-          width: 18px;
-          height: 18px;
-          transition: transform 0.3s var(--ease-out-expo);
-        }
-        .hero-cta-primary:hover svg {
-          transform: translateX(4px);
-        }
-        .hero-cta-secondary {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          background: transparent;
-          color: var(--color-text);
-          padding: 18px 36px;
-          border-radius: 100px;
-          font-weight: 500;
-          font-size: 15px;
-          text-decoration: none;
-          letter-spacing: 0.02em;
-          border: 1px solid var(--color-border);
-          transition: all 0.4s var(--ease-out-expo);
-        }
-        .hero-cta-secondary:hover {
-          border-color: var(--color-primary);
-          color: var(--color-primary);
-        }
-        
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          color: var(--primary);
         }
 
-        /* ========== Section Base ========== */
-        .section {
-          padding: clamp(80px, 12vw, 140px) clamp(20px, 5vw, 60px);
-          position: relative;
-        }
-        .section-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-        .section-header {
-          text-align: center;
-          margin-bottom: clamp(48px, 8vw, 80px);
-        }
-        .section-label {
-          display: inline-block;
-          font-size: 12px;
-          font-weight: 600;
-          color: var(--color-primary);
-          letter-spacing: 0.2em;
-          margin-bottom: 20px;
-          text-transform: uppercase;
-        }
-        .section-title {
-          font-family: var(--font-display);
-          font-size: clamp(26px, 3.5vw, 38px);
-          font-weight: 700;
-          color: var(--color-text);
-          line-height: 1.5;
-          margin-bottom: 20px;
-        }
-        .section-subtitle {
-          font-size: clamp(15px, 1.8vw, 17px);
-          color: var(--color-text-light);
-          max-width: 600px;
-          margin: 0 auto;
-          line-height: 1.8;
-        }
-
-        /* ========== Campaign Section ========== */
-        .campaign-section {
-          background: linear-gradient(160deg, var(--color-primary-dark), var(--color-primary));
-          color: var(--color-white);
-          position: relative;
-          overflow: hidden;
-        }
-        .campaign-section::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='1' fill='%23ffffff' fill-opacity='0.1'/%3E%3C/svg%3E");
-          background-size: 30px 30px;
-        }
-        .campaign-section .section-inner {
-          position: relative;
-        }
-        .campaign-section .section-label {
-          color: var(--color-accent-light);
-        }
-        .campaign-section .section-title {
-          color: var(--color-white);
-          line-height: 1.6;
-        }
-        .campaign-highlight {
-          color: var(--color-accent-light);
-        }
-        .campaign-section .section-subtitle {
-          color: rgba(255, 255, 255, 0.85);
-        }
-        .campaign-card {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: 24px;
-          padding: clamp(32px, 5vw, 48px);
-          max-width: 800px;
-          margin: 0 auto 40px;
-          text-align: left;
-        }
-        .campaign-card-title {
-          font-family: var(--font-display);
-          font-size: 18px;
-          font-weight: 600;
-          color: var(--color-accent-light);
-          margin-bottom: 16px;
-        }
-        .campaign-card-text {
-          font-size: 16px;
-          line-height: 1.9;
-          color: rgba(255, 255, 255, 0.9);
-          margin-bottom: 32px;
-        }
-        .campaign-metrics {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 20px;
-        }
-        @media (max-width: 500px) {
-          .campaign-metrics {
-            grid-template-columns: 1fr;
-          }
-        }
-        .campaign-metric {
-          background: rgba(255, 255, 255, 0.08);
-          border-radius: 16px;
-          padding: 28px 24px;
-          text-align: center;
-        }
-        .campaign-metric-label {
-          font-size: 13px;
-          color: rgba(255, 255, 255, 0.7);
-          margin-bottom: 8px;
-        }
-        .campaign-metric-value {
-          font-family: var(--font-display);
-          font-size: 32px;
-          font-weight: 700;
-          color: var(--color-accent-light);
-        }
-        .campaign-metric-note {
-          font-size: 12px;
-          color: rgba(255, 255, 255, 0.6);
-          margin-top: 4px;
-        }
-        .campaign-note {
-          text-align: center;
-          font-size: 13px;
-          color: rgba(255, 255, 255, 0.6);
-          margin-bottom: 40px;
-        }
-        .campaign-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          background: var(--color-white);
-          color: var(--color-primary);
-          padding: 18px 40px;
-          border-radius: 100px;
-          font-weight: 600;
-          font-size: 15px;
-          text-decoration: none;
-          letter-spacing: 0.02em;
-          transition: all 0.4s var(--ease-out-expo);
-          box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
-        }
-        .campaign-cta:hover {
-          transform: translateY(-3px) scale(1.02);
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        /* ========== Problem Section ========== */
-        .problem-section {
-          background: var(--color-bg-warm);
-        }
-        .problem-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-        }
-        @media (max-width: 900px) {
-          .problem-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-        .problem-card {
-          background: var(--color-white);
-          border-radius: 20px;
-          padding: clamp(32px, 4vw, 44px);
-          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
-          border: 1px solid var(--color-border);
-          transition: all 0.5s var(--ease-out-expo);
-          text-align: left;
-        }
-        .problem-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-        }
-        .problem-card-icon {
-          width: 56px;
-          height: 56px;
-          background: linear-gradient(135deg, rgba(26, 95, 74, 0.1), rgba(26, 95, 74, 0.05));
-          border-radius: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 26px;
+        /* ===== What is Rei（結論先出し）===== */
+        .what-box {
+          background: var(--white);
+          border: 2px solid var(--primary);
+          border-radius: var(--radius-lg);
+          padding: 24px 20px;
           margin-bottom: 24px;
         }
-        .problem-card-title {
-          font-family: var(--font-display);
-          font-size: 20px;
-          font-weight: 600;
-          color: var(--color-text);
-          margin-bottom: 14px;
+        .what-label {
+          font-size: 12px;
+          font-weight: 700;
+          color: var(--primary);
+          margin-bottom: 12px;
+          letter-spacing: 0.1em;
         }
-        .problem-card-text {
-          font-size: 15px;
-          color: var(--color-text-light);
-          line-height: 1.8;
-        }
-
-        /* ========== Solution Section ========== */
-        .solution-intro {
-          background: linear-gradient(135deg, rgba(26, 95, 74, 0.06), rgba(196, 160, 82, 0.04));
-          border: 1px solid rgba(26, 95, 74, 0.1);
-          border-radius: 24px;
-          padding: clamp(40px, 6vw, 64px);
-          text-align: center;
-          margin-bottom: clamp(48px, 8vw, 72px);
-        }
-        .solution-intro-title {
-          font-family: var(--font-display);
-          font-size: clamp(20px, 2.5vw, 26px);
-          font-weight: 600;
-          color: var(--color-text);
+        .what-title {
+          font-size: 18px;
+          font-weight: 700;
           margin-bottom: 16px;
           line-height: 1.5;
         }
-        .solution-intro-text {
-          font-size: clamp(16px, 2vw, 19px);
-          color: var(--color-text-light);
+        .what-points {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
         }
-        .solution-intro-text strong {
-          color: var(--color-primary);
-          font-weight: 600;
-        }
-        .flow-container {
-          max-width: 720px;
-          margin: 0 auto;
-        }
-        .flow-step {
+        .what-point {
           display: flex;
           align-items: flex-start;
-          gap: 24px;
-          padding: 28px 0;
-          border-bottom: 1px solid var(--color-border);
-          transition: all 0.4s var(--ease-out-expo);
+          gap: 10px;
+          font-size: 14px;
+          line-height: 1.6;
         }
-        .flow-step:last-child {
-          border-bottom: none;
-        }
-        .flow-step:hover {
-          transform: translateX(8px);
-        }
-        .flow-step-num {
-          width: 48px;
-          height: 48px;
-          background: var(--color-primary);
+        .what-point-icon {
+          width: 22px;
+          height: 22px;
+          background: var(--primary);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-family: var(--font-display);
-          font-size: 18px;
-          font-weight: 700;
-          color: var(--color-white);
+          color: var(--white);
+          font-size: 12px;
           flex-shrink: 0;
-        }
-        .flow-step-content {
-          flex: 1;
-          padding-top: 6px;
-        }
-        .flow-step-text {
-          font-size: 16px;
-          color: var(--color-text);
-          line-height: 1.7;
-          text-align: left;
-        }
-        .flow-step-text strong {
-          color: var(--color-primary);
-          font-weight: 600;
-        }
-        .flow-step-highlight {
-          background: linear-gradient(135deg, rgba(26, 95, 74, 0.08), rgba(26, 95, 74, 0.03));
-          border-radius: 16px;
-          padding: 20px 24px;
-          border-bottom: none;
-          margin-top: 8px;
-        }
-        .flow-step-highlight .flow-step-num {
-          background: linear-gradient(135deg, var(--color-accent), #b8944a);
+          margin-top: 2px;
         }
 
-        /* ========== Features Section ========== */
-        .features-section {
-          background: var(--color-bg-warm);
-        }
-        .features-grid {
+        /* ===== Quick Stats ===== */
+        .quick-stats {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 28px;
+          gap: 12px;
+          margin-bottom: 24px;
         }
-        @media (max-width: 900px) {
-          .features-grid {
-            grid-template-columns: 1fr;
-          }
+        .quick-stat {
+          background: var(--white);
+          border-radius: var(--radius);
+          padding: 16px 12px;
+          text-align: center;
+          border: 1px solid var(--border);
         }
-        .feature-card {
-          background: var(--color-white);
-          border-radius: 24px;
-          padding: clamp(36px, 5vw, 48px) clamp(28px, 4vw, 36px);
-          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
-          border: 1px solid var(--color-border);
-          position: relative;
-          overflow: hidden;
-          transition: all 0.5s var(--ease-out-expo);
-          text-align: left;
-        }
-        .feature-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 4px;
-          background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
-        }
-        .feature-card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
-        }
-        .feature-num {
-          font-family: var(--font-display);
-          font-size: 13px;
-          font-weight: 600;
-          color: var(--color-primary);
-          letter-spacing: 0.1em;
-          margin-bottom: 20px;
-        }
-        .feature-title {
-          font-family: var(--font-display);
-          font-size: 22px;
+        .quick-stat-value {
+          font-size: 20px;
           font-weight: 700;
-          color: var(--color-text);
-          margin-bottom: 16px;
-          line-height: 1.4;
+          color: var(--primary);
+          line-height: 1.2;
         }
-        .feature-text {
-          font-size: 15px;
-          color: var(--color-text-light);
-          line-height: 1.85;
+        .quick-stat-label {
+          font-size: 11px;
+          color: var(--text-light);
+          margin-top: 4px;
         }
 
-        /* ========== Pricing Section ========== */
-        .pricing-grid {
+        /* ===== CTA Group ===== */
+        .cta-group {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-bottom: 32px;
+        }
+        .cta-primary {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: var(--primary);
+          color: var(--white);
+          padding: 16px 24px;
+          border-radius: var(--radius);
+          font-size: 15px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: all 0.3s;
+        }
+        .cta-primary:hover {
+          background: var(--primary-light);
+          transform: translateY(-2px);
+        }
+        .cta-secondary {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: var(--white);
+          color: var(--text);
+          padding: 14px 24px;
+          border-radius: var(--radius);
+          font-size: 14px;
+          font-weight: 600;
+          text-decoration: none;
+          border: 1px solid var(--border);
+          transition: all 0.3s;
+        }
+        .cta-secondary:hover {
+          border-color: var(--primary);
+          color: var(--primary);
+        }
+
+        /* ===== Detail Links ===== */
+        .detail-links {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 28px;
-          margin-bottom: 48px;
+          gap: 10px;
         }
-        @media (max-width: 700px) {
-          .pricing-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-        .pricing-card {
-          background: var(--color-white);
-          border-radius: 24px;
-          padding: clamp(36px, 5vw, 52px);
+        .detail-link {
+          background: var(--white);
+          border: 1px solid var(--border);
+          border-radius: var(--radius);
+          padding: 14px 12px;
           text-align: center;
-          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
-          border: 1px solid var(--color-border);
-          transition: all 0.5s var(--ease-out-expo);
+          text-decoration: none;
+          color: var(--text);
+          font-size: 13px;
+          font-weight: 600;
+          transition: all 0.3s;
+          cursor: pointer;
         }
-        .pricing-card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        .detail-link:hover {
+          border-color: var(--primary);
+          color: var(--primary);
+          background: #f0faf6;
         }
-        .pricing-card-highlight {
-          background: linear-gradient(160deg, var(--color-primary-dark), var(--color-primary));
-          border: none;
-          color: var(--color-white);
+        .detail-link-icon {
+          display: block;
+          font-size: 20px;
+          margin-bottom: 6px;
         }
-        .pricing-label {
-          font-size: 14px;
-          color: var(--color-text-light);
-          margin-bottom: 16px;
-          letter-spacing: 0.05em;
+
+        /* ===== Campaign Banner ===== */
+        .campaign-banner {
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+          padding: 24px 16px;
+          text-align: center;
+          color: var(--white);
         }
-        .pricing-card-highlight .pricing-label {
-          color: rgba(255, 255, 255, 0.8);
+        .campaign-banner-inner {
+          max-width: 600px;
+          margin: 0 auto;
         }
-        .pricing-value {
-          font-family: var(--font-display);
-          font-size: clamp(40px, 5.5vw, 52px);
+        .campaign-banner-badge {
+          display: inline-block;
+          background: var(--accent);
+          padding: 4px 12px;
+          border-radius: 100px;
+          font-size: 11px;
           font-weight: 700;
-          color: var(--color-text);
-          line-height: 1;
           margin-bottom: 12px;
         }
-        .pricing-card-highlight .pricing-value {
-          color: var(--color-white);
+        .campaign-banner-title {
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 8px;
+          line-height: 1.5;
+        }
+        .campaign-banner-text {
+          font-size: 13px;
+          opacity: 0.9;
+          margin-bottom: 16px;
+        }
+        .campaign-banner-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: var(--white);
+          color: var(--primary);
+          padding: 12px 24px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 700;
+          text-decoration: none;
+          transition: transform 0.3s;
+        }
+        .campaign-banner-cta:hover {
+          transform: scale(1.02);
+        }
+
+        /* ===== Section Base ===== */
+        .section {
+          padding: 56px 16px;
+        }
+        .section-alt {
+          background: var(--bg-alt);
+        }
+        .section-inner {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+        .section-header {
+          text-align: center;
+          margin-bottom: 32px;
+        }
+        .section-label {
+          font-size: 11px;
+          font-weight: 700;
+          color: var(--primary);
+          letter-spacing: 0.15em;
+          margin-bottom: 8px;
+        }
+        .section-title {
+          font-size: clamp(20px, 5vw, 28px);
+          font-weight: 700;
+          line-height: 1.5;
+        }
+
+        /* ===== Flow Section ===== */
+        .flow-list {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .flow-item {
+          display: flex;
+          gap: 14px;
+          background: var(--white);
+          border-radius: var(--radius);
+          padding: 16px;
+          border: 1px solid var(--border);
+        }
+        .flow-num {
+          width: 32px;
+          height: 32px;
+          background: var(--primary);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 700;
+          color: var(--white);
+          flex-shrink: 0;
+        }
+        .flow-text {
+          font-size: 14px;
+          line-height: 1.6;
+          padding-top: 4px;
+        }
+        .flow-text strong {
+          color: var(--primary);
+        }
+        .flow-highlight {
+          background: linear-gradient(135deg, #e8f5f0, #d4eddf);
+          border-color: var(--primary);
+        }
+        .flow-highlight .flow-num {
+          background: var(--accent);
+        }
+
+        /* ===== Features Section ===== */
+        .features-list {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .feature-card {
+          background: var(--white);
+          border-radius: var(--radius);
+          padding: 20px;
+          border: 1px solid var(--border);
+        }
+        .feature-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+        .feature-num {
+          font-size: 12px;
+          font-weight: 700;
+          color: var(--primary);
+        }
+        .feature-title {
+          font-size: 16px;
+          font-weight: 700;
+        }
+        .feature-text {
+          font-size: 14px;
+          color: var(--text-light);
+          line-height: 1.7;
+        }
+
+        /* ===== Pricing Section ===== */
+        .pricing-cards {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+        .pricing-card {
+          background: var(--white);
+          border-radius: var(--radius);
+          padding: 24px 20px;
+          text-align: center;
+          border: 1px solid var(--border);
+        }
+        .pricing-card-highlight {
+          background: var(--primary);
+          color: var(--white);
+          border: none;
+        }
+        .pricing-label {
+          font-size: 13px;
+          margin-bottom: 8px;
+        }
+        .pricing-card-highlight .pricing-label {
+          opacity: 0.85;
+        }
+        .pricing-value {
+          font-size: 36px;
+          font-weight: 700;
+          line-height: 1.2;
         }
         .pricing-unit {
-          font-size: 24px;
+          font-size: 18px;
         }
         .pricing-note {
-          font-size: 13px;
-          color: var(--color-text-light);
+          font-size: 12px;
+          margin-top: 4px;
+          opacity: 0.7;
         }
-        .pricing-card-highlight .pricing-note {
-          color: rgba(255, 255, 255, 0.65);
-        }
-        .subsidy-card {
-          background: var(--color-white);
-          border-radius: 24px;
-          padding: clamp(36px, 5vw, 48px);
-          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
-          border: 1px solid var(--color-border);
+        .subsidy-box {
+          background: var(--white);
+          border-radius: var(--radius);
+          padding: 20px;
+          border: 1px solid var(--border);
         }
         .subsidy-title {
-          font-family: var(--font-display);
-          font-size: 20px;
-          font-weight: 600;
-          color: var(--color-text);
-          margin-bottom: 28px;
+          font-size: 15px;
+          font-weight: 700;
+          margin-bottom: 16px;
           text-align: center;
         }
         .subsidy-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 20px;
-          margin-bottom: 24px;
-        }
-        @media (max-width: 500px) {
-          .subsidy-grid {
-            grid-template-columns: 1fr;
-          }
+          gap: 12px;
+          margin-bottom: 12px;
         }
         .subsidy-item {
-          background: linear-gradient(135deg, rgba(26, 95, 74, 0.06), rgba(26, 95, 74, 0.02));
-          border-radius: 16px;
-          padding: 28px 24px;
+          background: var(--bg-alt);
+          border-radius: 8px;
+          padding: 16px 12px;
           text-align: center;
         }
         .subsidy-item-label {
-          font-size: 13px;
-          color: var(--color-text-light);
-          margin-bottom: 12px;
-          letter-spacing: 0.02em;
+          font-size: 11px;
+          color: var(--text-light);
+          margin-bottom: 4px;
         }
         .subsidy-item-value {
-          font-family: var(--font-display);
-          font-size: 30px;
+          font-size: 22px;
           font-weight: 700;
-          color: var(--color-primary);
+          color: var(--primary);
         }
         .subsidy-note {
+          font-size: 11px;
+          color: var(--text-light);
           text-align: center;
-          font-size: 13px;
-          color: var(--color-text-light);
         }
 
-        /* ========== Fee Section ========== */
-        .fee-section {
-          background: var(--color-bg-warm);
-        }
-        .fee-highlight-box {
-          background: linear-gradient(160deg, var(--color-primary-dark), var(--color-primary));
-          border-radius: 24px;
-          padding: clamp(36px, 5vw, 52px);
+        /* ===== Fee Section ===== */
+        .fee-box {
+          background: var(--primary);
+          color: var(--white);
+          border-radius: var(--radius);
+          padding: 24px 20px;
           text-align: center;
-          color: var(--color-white);
-          margin-bottom: 40px;
+          margin-bottom: 20px;
         }
-        .fee-highlight-title {
-          font-family: var(--font-display);
-          font-size: clamp(24px, 3.5vw, 32px);
+        .fee-title {
+          font-size: 18px;
           font-weight: 700;
-          margin-bottom: 8px;
+          margin-bottom: 4px;
         }
-        .fee-highlight-subtitle {
-          font-size: 16px;
+        .fee-subtitle {
+          font-size: 13px;
           opacity: 0.85;
         }
-        .fee-examples {
+        .fee-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 16px;
-          margin-bottom: 32px;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+          margin-bottom: 16px;
         }
-        @media (max-width: 900px) {
-          .fee-examples {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-        @media (max-width: 500px) {
-          .fee-examples {
-            grid-template-columns: 1fr;
-          }
-        }
-        .fee-example {
-          background: var(--color-white);
-          border-radius: 16px;
-          padding: 28px 20px;
+        .fee-item {
+          background: var(--white);
+          border-radius: 8px;
+          padding: 16px 12px;
           text-align: center;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-          border: 1px solid var(--color-border);
+          border: 1px solid var(--border);
         }
-        .fee-example-label {
-          font-size: 13px;
-          color: var(--color-text-light);
-          margin-bottom: 8px;
+        .fee-item-label {
+          font-size: 12px;
+          color: var(--text-light);
+          margin-bottom: 4px;
         }
-        .fee-example-value {
-          font-family: var(--font-display);
-          font-size: 24px;
+        .fee-item-value {
+          font-size: 18px;
           font-weight: 700;
-          color: var(--color-primary);
+          color: var(--primary);
         }
         .fee-breakdown {
-          background: var(--color-white);
-          border-radius: 16px;
-          padding: 28px 32px;
+          background: var(--white);
+          border-radius: 8px;
+          padding: 16px;
           display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 32px;
           flex-wrap: wrap;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-          border: 1px solid var(--color-border);
+          justify-content: center;
+          gap: 16px;
+          font-size: 13px;
+          border: 1px solid var(--border);
         }
         .fee-breakdown-item {
           display: flex;
           align-items: center;
-          gap: 10px;
-          font-size: 14px;
-          color: var(--color-text);
-          white-space: nowrap;
+          gap: 6px;
         }
         .fee-breakdown-dot {
-          width: 10px;
-          height: 10px;
-          background: var(--color-primary);
+          width: 8px;
+          height: 8px;
+          background: var(--primary);
           border-radius: 50%;
         }
-        .fee-breakdown-highlight {
-          color: var(--color-primary);
-          font-weight: 600;
-        }
 
-        /* ========== Comparison Section ========== */
-        .comparison-card {
-          background: var(--color-white);
-          border-radius: 24px;
-          padding: clamp(40px, 6vw, 64px);
-          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
-          border: 1px solid var(--color-border);
+        /* ===== Comparison ===== */
+        .compare-box {
+          background: var(--white);
+          border-radius: var(--radius);
+          padding: 24px 20px;
           text-align: center;
+          border: 1px solid var(--border);
         }
-        .comparison-title {
-          font-size: 17px;
-          color: var(--color-text-light);
-          margin-bottom: 32px;
+        .compare-title {
+          font-size: 14px;
+          color: var(--text-light);
+          margin-bottom: 20px;
         }
-        .comparison-row {
+        .compare-row {
           display: flex;
           justify-content: center;
           align-items: center;
-          gap: clamp(24px, 5vw, 56px);
-          flex-wrap: wrap;
-          margin-bottom: 32px;
+          gap: 16px;
+          margin-bottom: 20px;
         }
-        .comparison-item {
-          text-align: center;
+        .compare-item {
+          flex: 1;
+          max-width: 120px;
         }
-        .comparison-item-label {
-          font-size: 14px;
-          color: var(--color-text-light);
-          margin-bottom: 12px;
+        .compare-label {
+          font-size: 12px;
+          color: var(--text-light);
+          margin-bottom: 6px;
         }
-        .comparison-item-value {
-          font-family: var(--font-display);
-          font-size: clamp(36px, 5vw, 48px);
+        .compare-value {
+          font-size: 28px;
           font-weight: 700;
-          letter-spacing: -0.02em;
         }
-        .comparison-item-value-red {
+        .compare-value-red {
           color: #dc3545;
         }
-        .comparison-item-value-green {
-          color: var(--color-primary);
+        .compare-value-green {
+          color: var(--primary);
         }
-        .comparison-vs {
-          font-size: 24px;
-          color: var(--color-border);
-          font-weight: 300;
+        .compare-vs {
+          font-size: 16px;
+          color: var(--border);
         }
-        .comparison-message {
-          font-size: 17px;
-          color: var(--color-text);
+        .compare-message {
+          font-size: 14px;
           line-height: 1.6;
         }
-        .comparison-message strong {
-          color: var(--color-primary);
-          font-weight: 600;
+        .compare-message strong {
+          color: var(--primary);
         }
 
-        /* ========== CTA Section ========== */
+        /* ===== CTA Section ===== */
         .cta-section {
-          background: linear-gradient(180deg, var(--color-bg-warm), var(--color-bg));
-          border-top: 1px solid var(--color-border);
-        }
-        .cta-content {
+          background: linear-gradient(180deg, var(--bg-alt), var(--bg));
           text-align: center;
-          max-width: 700px;
-          margin: 0 auto;
         }
-        .cta-title {
-          font-family: var(--font-display);
-          font-size: clamp(24px, 3.5vw, 34px);
+        .cta-section-title {
+          font-size: clamp(18px, 4.5vw, 24px);
           font-weight: 700;
-          color: var(--color-text);
-          margin-bottom: 20px;
+          margin-bottom: 12px;
           line-height: 1.6;
         }
-        .cta-title-highlight {
-          color: var(--color-primary);
+        .cta-section-title-accent {
+          color: var(--primary);
         }
-        .cta-text {
-          font-size: 17px;
-          color: var(--color-text-light);
-          margin-bottom: 40px;
+        .cta-section-text {
+          font-size: 14px;
+          color: var(--text-light);
+          margin-bottom: 24px;
         }
 
-        /* ========== Form Section ========== */
-        .form-section {
-          background: var(--color-bg-warm);
-        }
+        /* ===== Form Section ===== */
         .form-container {
-          max-width: 600px;
-          margin: 0 auto;
-          background: var(--color-white);
-          border-radius: 28px;
-          padding: clamp(36px, 6vw, 56px);
-          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
-          border: 1px solid var(--color-border);
+          background: var(--white);
+          border-radius: var(--radius-lg);
+          padding: 24px 20px;
+          border: 1px solid var(--border);
         }
         .form-campaign-note {
-          background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-          border-radius: 14px;
-          padding: 16px 20px;
-          margin-bottom: 32px;
+          background: var(--primary);
+          border-radius: 8px;
+          padding: 12px 16px;
+          margin-bottom: 24px;
           text-align: center;
-          font-size: 14px;
-          color: var(--color-white);
+          font-size: 13px;
+          color: var(--white);
         }
         .form-campaign-highlight {
-          color: var(--color-accent-light);
-          font-weight: 600;
+          color: var(--accent);
+          font-weight: 700;
         }
         .form-group {
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
         .form-label {
           display: block;
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--color-text);
-          margin-bottom: 10px;
+          font-size: 13px;
+          font-weight: 600;
+          margin-bottom: 8px;
         }
         .form-required {
           color: #dc3545;
@@ -996,45 +709,43 @@ export default function LPPage() {
         }
         .form-input {
           width: 100%;
-          padding: 16px 18px;
-          background: var(--color-bg);
-          border: 1px solid var(--color-border);
-          border-radius: 12px;
-          color: var(--color-text);
-          font-family: var(--font-body);
+          padding: 14px 16px;
+          background: var(--bg);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          font-family: inherit;
           font-size: 16px;
-          transition: all 0.3s var(--ease-out-expo);
+          color: var(--text);
+          transition: all 0.3s;
+          -webkit-appearance: none;
         }
         .form-input:focus {
           outline: none;
-          border-color: var(--color-primary);
-          box-shadow: 0 0 0 4px rgba(26, 95, 74, 0.08);
-          background: var(--color-white);
+          border-color: var(--primary);
+          background: var(--white);
         }
         .form-input::placeholder {
-          color: #a0a0a0;
+          color: #999;
         }
         .form-textarea {
-          min-height: 130px;
+          min-height: 100px;
           resize: vertical;
         }
         .form-submit {
           width: 100%;
-          padding: 18px;
-          background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-          color: var(--color-white);
+          padding: 16px;
+          background: var(--primary);
+          color: var(--white);
           border: none;
-          border-radius: 14px;
-          font-family: var(--font-body);
+          border-radius: 8px;
+          font-family: inherit;
           font-size: 16px;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
-          transition: all 0.4s var(--ease-out-expo);
-          box-shadow: 0 4px 20px rgba(26, 95, 74, 0.25);
+          transition: all 0.3s;
         }
         .form-submit:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(26, 95, 74, 0.35);
+          background: var(--primary-light);
         }
         .form-submit:disabled {
           opacity: 0.6;
@@ -1042,300 +753,313 @@ export default function LPPage() {
         }
         .form-success {
           text-align: center;
-          padding: 48px 20px;
+          padding: 32px 16px;
         }
         .form-success-icon {
-          width: 72px;
-          height: 72px;
-          background: rgba(26, 95, 74, 0.1);
+          width: 56px;
+          height: 56px;
+          background: #e8f5f0;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 24px;
-          font-size: 32px;
-          color: var(--color-primary);
+          margin: 0 auto 16px;
+          font-size: 24px;
+          color: var(--primary);
         }
         .form-success-title {
-          font-family: var(--font-display);
-          font-size: 22px;
+          font-size: 18px;
           font-weight: 700;
-          color: var(--color-text);
-          margin-bottom: 16px;
+          margin-bottom: 8px;
         }
         .form-success-text {
-          color: var(--color-text-light);
-          line-height: 1.9;
-          font-size: 15px;
+          font-size: 14px;
+          color: var(--text-light);
+          line-height: 1.7;
         }
 
-        /* ========== Footer ========== */
+        /* ===== Footer ===== */
         .footer {
-          background: var(--color-white);
-          padding: 60px clamp(20px, 5vw, 60px) 40px;
-          border-top: 1px solid var(--color-border);
+          background: var(--white);
+          padding: 32px 16px;
+          border-top: 1px solid var(--border);
         }
         .footer-inner {
-          max-width: 1200px;
+          max-width: 800px;
           margin: 0 auto;
+          text-align: center;
         }
-        .footer-top {
+        .footer-logo {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          flex-wrap: wrap;
-          gap: 40px;
-          margin-bottom: 40px;
-          padding-bottom: 40px;
-          border-bottom: 1px solid var(--color-border);
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 16px;
         }
         .footer-company {
-          text-align: right;
-        }
-        .footer-company-name {
-          font-family: var(--font-display);
-          font-size: 15px;
-          font-weight: 600;
-          color: var(--color-text);
-          margin-bottom: 6px;
-        }
-        .footer-company-rep {
           font-size: 13px;
-          color: var(--color-text-light);
+          color: var(--text-light);
+          margin-bottom: 8px;
         }
-        .footer-bottom {
-          text-align: center;
-          font-size: 12px;
-          color: var(--color-text-light);
-          letter-spacing: 0.02em;
+        .footer-copyright {
+          font-size: 11px;
+          color: #999;
         }
 
-        /* ========== Responsive ========== */
-        @media (max-width: 768px) {
-          .header-cta {
-            display: none;
-          }
-          .campaign-banner {
-            font-size: 11px;
-            padding: 10px 16px;
+        /* ===== Desktop ===== */
+        @media (min-width: 768px) {
+          .header-inner {
+            padding: 16px 32px;
           }
           .hero {
-            padding-top: 160px;
+            padding: 120px 32px 60px;
+            text-align: center;
+          }
+          .hero-inner {
+            max-width: 900px;
+          }
+          .what-box {
+            padding: 32px;
+          }
+          .what-points {
+            flex-direction: row;
+            justify-content: center;
+            gap: 32px;
+          }
+          .what-point {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 200px;
+          }
+          .what-point-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 8px;
+          }
+          .quick-stats {
+            max-width: 500px;
+            margin: 0 auto 32px;
+          }
+          .quick-stat-value {
+            font-size: 28px;
+          }
+          .cta-group {
+            flex-direction: row;
+            justify-content: center;
+          }
+          .cta-primary, .cta-secondary {
+            width: auto;
+            min-width: 200px;
+          }
+          .detail-links {
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          .section {
+            padding: 80px 32px;
+          }
+          .section-inner {
+            max-width: 900px;
+          }
+          .flow-list {
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          .features-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+          }
+          .pricing-cards {
+            flex-direction: row;
+          }
+          .pricing-card {
+            flex: 1;
+          }
+          .fee-grid {
+            grid-template-columns: repeat(4, 1fr);
+          }
+          .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px;
           }
         }
       `}</style>
 
       {/* Header */}
-      <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+      <header className="header">
         <div className="header-inner">
           <div className="logo">
             <div className="logo-mark">礼</div>
             <span className="logo-text">Rei</span>
           </div>
-          <a href="#contact" className="header-cta">
-            お問い合わせ
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
+          <a href="#contact" className="header-cta">お問い合わせ</a>
         </div>
       </header>
 
-      {/* Campaign Banner */}
-      <div className="campaign-banner">
-        🎉 <span className="campaign-banner-highlight">先着10社限定</span>：システム利用料8%を<span className="campaign-banner-highlight">半年間 貴社に還元</span>キャンペーン実施中
-      </div>
-
-      {/* Hero */}
+      {/* Hero - 結論先出し */}
       <section className="hero">
-        <div className="hero-bg" />
-        <div className="hero-pattern" />
-        <div className="hero-content">
-          <div className="hero-inner">
-            <div className="hero-campaign-badge">
-              🎁 先着10社限定：半年間 手数料8%が貴社の収益に
-            </div>
-            <p className="hero-label">葬儀社様向け 遠隔献杯システム</p>
-            <h1 className="hero-title">
-              競合他社の相見積もりに<br />
-              <span className="hero-title-accent">負けない</span>ための新提案
-            </h1>
-            <p className="hero-description">
-              遠方の方から献杯（支援金）を集め、ご遺族の負担を軽減。<br />
-              見積もりの印象を変え、成約率を高める仕組みです。
-            </p>
-            <div className="hero-cta-group">
-              <a href="#contact" className="hero-cta-primary">
-                資料請求・お問い合わせ
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </a>
-              <a href="#pricing" className="hero-cta-secondary">
-                料金を見る
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+        <div className="hero-inner">
+          <span className="hero-badge">🎁 先着10社限定キャンペーン中</span>
+          <h1 className="hero-title">
+            遠方からの<span className="hero-title-accent">献杯</span>を集めて<br />
+            <span className="hero-title-accent">葬儀費用の負担</span>を軽減
+          </h1>
 
-      {/* Campaign Section */}
-      <section className="section campaign-section">
-        <div className="section-inner">
-          <div className="section-header">
-            <p className="section-label">CAMPAIGN</p>
-            <h2 className="section-title">
-              先着<span className="campaign-highlight">10社</span>限定<br />
-              システム利用料8%を<span className="campaign-highlight">半年間 貴社に還元</span>
-            </h2>
-            <p className="section-subtitle">
-              献杯が集まるほど、葬儀社様の収益もアップします
-            </p>
-          </div>
-          <div className="campaign-card">
-            <p className="campaign-card-title">キャンペーン内容</p>
-            <p className="campaign-card-text">
-              導入から<strong>6ヶ月間</strong>、システム利用料<strong>8%を貴社に還元</strong>いたします。<br />
-              献杯金額の8%が葬儀社様の収益になります。
-            </p>
-            <div className="campaign-metrics">
-              <div className="campaign-metric">
-                <p className="campaign-metric-label">10万円の献杯で</p>
-                <p className="campaign-metric-value">8,000円</p>
-                <p className="campaign-metric-note">貴社の収益に</p>
+          {/* What is Rei - 結論ボックス */}
+          <div className="what-box">
+            <p className="what-label">Reiとは？</p>
+            <p className="what-title">参列できない方からオンラインで献杯（支援金）を集めるシステムです</p>
+            <div className="what-points">
+              <div className="what-point">
+                <div className="what-point-icon">✓</div>
+                <span>遺族がLINEでリンクを共有するだけ</span>
               </div>
-              <div className="campaign-metric">
-                <p className="campaign-metric-label">50万円の献杯で</p>
-                <p className="campaign-metric-value">40,000円</p>
-                <p className="campaign-metric-note">貴社の収益に</p>
+              <div className="what-point">
+                <div className="what-point-icon">✓</div>
+                <span>集まったお金は葬儀費用に充当</span>
+              </div>
+              <div className="what-point">
+                <div className="what-point-icon">✓</div>
+                <span>現場の負担ゼロ</span>
               </div>
             </div>
           </div>
-          <p className="campaign-note">※先着10社に達し次第、キャンペーンは終了となります</p>
-          <div style={{ textAlign: 'center' }}>
-            <a href="#contact" className="campaign-cta">
-              今すぐキャンペーンに申し込む
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
+
+          {/* Quick Stats */}
+          <div className="quick-stats">
+            <div className="quick-stat">
+              <div className="quick-stat-value">約9割</div>
+              <div className="quick-stat-label">遺族に届く</div>
+            </div>
+            <div className="quick-stat">
+              <div className="quick-stat-value">0円</div>
+              <div className="quick-stat-label">月額費用</div>
+            </div>
+            <div className="quick-stat">
+              <div className="quick-stat-value">3分</div>
+              <div className="quick-stat-label">ページ作成</div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="cta-group">
+            <a href="#contact" className="cta-primary">
+              資料請求・お問い合わせ →
+            </a>
+            <a href="#pricing" className="cta-secondary">
+              料金を見る
             </a>
           </div>
-        </div>
-      </section>
 
-      {/* Problem Section */}
-      <section className="section problem-section">
-        <div className="section-inner">
-          <div className="section-header">
-            <p className="section-label">PROBLEM</p>
-            <h2 className="section-title">葬儀業界の課題</h2>
-            <p className="section-subtitle">
-              値上げが難しい業界で、どう差別化するか
-            </p>
-          </div>
-          <div className="problem-grid">
-            <div className="problem-card">
-              <div className="problem-card-icon">📊</div>
-              <h3 className="problem-card-title">価格競争の激化</h3>
-              <p className="problem-card-text">
-                他社より高く見えたら選ばれない。内容ではなく金額の見え方で決まる時代。
-              </p>
-            </div>
-            <div className="problem-card">
-              <div className="problem-card-icon">💰</div>
-              <h3 className="problem-card-title">遺族の経済的負担</h3>
-              <p className="problem-card-text">
-                葬儀費用の全国平均は約150万円。「もっと安くできませんか」という相談が増加。
-              </p>
-            </div>
-            <div className="problem-card">
-              <div className="problem-card-icon">🌏</div>
-              <h3 className="problem-card-title">参列できない方の増加</h3>
-              <p className="problem-card-text">
-                遠方・高齢・仕事の都合で参列できない方が、お気持ちを届ける手段がない。
-              </p>
-            </div>
+          {/* 詳細へのリンク */}
+          <div className="detail-links">
+            <button className="detail-link" onClick={() => scrollToSection('flow')}>
+              <span className="detail-link-icon">📋</span>
+              使い方
+            </button>
+            <button className="detail-link" onClick={() => scrollToSection('features')}>
+              <span className="detail-link-icon">✨</span>
+              特徴
+            </button>
+            <button className="detail-link" onClick={() => scrollToSection('pricing')}>
+              <span className="detail-link-icon">💰</span>
+              料金
+            </button>
+            <button className="detail-link" onClick={() => scrollToSection('fee')}>
+              <span className="detail-link-icon">📊</span>
+              手数料
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Solution Section */}
-      <section className="section">
+      {/* Campaign Banner */}
+      <section className="campaign-banner">
+        <div className="campaign-banner-inner">
+          <span className="campaign-banner-badge">期間限定</span>
+          <h2 className="campaign-banner-title">
+            先着10社限定<br />手数料8%を半年間 貴社に還元
+          </h2>
+          <p className="campaign-banner-text">
+            10万円の献杯で8,000円、50万円で40,000円が貴社の収益に
+          </p>
+          <a href="#contact" className="campaign-banner-cta">
+            キャンペーンに申し込む →
+          </a>
+        </div>
+      </section>
+
+      {/* Flow Section */}
+      <section className="section section-alt" id="flow">
         <div className="section-inner">
           <div className="section-header">
-            <p className="section-label">SOLUTION</p>
-            <h2 className="section-title">Reiとは</h2>
+            <p className="section-label">HOW IT WORKS</p>
+            <h2 className="section-title">使い方はシンプル</h2>
           </div>
-          <div className="solution-intro">
-            <h3 className="solution-intro-title">
-              香典をデジタル化するシステムではありません
-            </h3>
-            <p className="solution-intro-text">
-              <strong>成約率</strong>と<strong>見積の印象</strong>を変える仕組みです
-            </p>
-          </div>
-          <div className="flow-container">
-            <div className="flow-step">
-              <div className="flow-step-num">1</div>
-              <div className="flow-step-content">
-                <p className="flow-step-text">葬儀社様が献杯ページを作成<strong>（3分で完了）</strong></p>
-              </div>
+          <div className="flow-list">
+            <div className="flow-item">
+              <div className="flow-num">1</div>
+              <p className="flow-text">葬儀社様が献杯ページを作成<strong>（3分）</strong></p>
             </div>
-            <div className="flow-step">
-              <div className="flow-step-num">2</div>
-              <div className="flow-step-content">
-                <p className="flow-step-text">専用リンクを遺族にお伝え</p>
-              </div>
+            <div className="flow-item">
+              <div className="flow-num">2</div>
+              <p className="flow-text">専用リンクを遺族にお伝え</p>
             </div>
-            <div className="flow-step">
-              <div className="flow-step-num">3</div>
-              <div className="flow-step-content">
-                <p className="flow-step-text"><strong>遺族がリンクをLINEで共有</strong>（遠方の親族・知人へ）</p>
-              </div>
+            <div className="flow-item">
+              <div className="flow-num">3</div>
+              <p className="flow-text"><strong>遺族がLINEで共有</strong>（遠方の方へ）</p>
             </div>
-            <div className="flow-step">
-              <div className="flow-step-num">4</div>
-              <div className="flow-step-content">
-                <p className="flow-step-text">遠方の方がスマホから献杯（支援金）を送金</p>
-              </div>
+            <div className="flow-item">
+              <div className="flow-num">4</div>
+              <p className="flow-text">遠方の方がスマホから献杯を送金</p>
             </div>
-            <div className="flow-step flow-step-highlight">
-              <div className="flow-step-num">5</div>
-              <div className="flow-step-content">
-                <p className="flow-step-text"><strong>集まったお金は葬儀費用に充当可能</strong></p>
-              </div>
+            <div className="flow-item flow-highlight">
+              <div className="flow-num">5</div>
+              <p className="flow-text"><strong>集まったお金は葬儀費用に充当可能</strong></p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="section features-section">
+      <section className="section" id="features">
         <div className="section-inner">
           <div className="section-header">
             <p className="section-label">FEATURES</p>
-            <h2 className="section-title">Reiが選ばれる理由</h2>
+            <h2 className="section-title">選ばれる3つの理由</h2>
           </div>
-          <div className="features-grid">
+          <div className="features-list">
             <div className="feature-card">
-              <p className="feature-num">01</p>
-              <h3 className="feature-title">現場の負担ゼロ</h3>
+              <div className="feature-header">
+                <span className="feature-num">01</span>
+                <h3 className="feature-title">現場の負担ゼロ</h3>
+              </div>
               <p className="feature-text">
-                リンクを1つ伝えるだけ。遺族がそれを遠方の方にLINEで送る。それだけで献杯が集まります。映像配信も、複雑な操作も不要です。
+                リンクを1つ伝えるだけ。映像配信も複雑な操作も不要です。
               </p>
             </div>
             <div className="feature-card">
-              <p className="feature-num">02</p>
-              <h3 className="feature-title">「物」ではなく「お金」が集まる</h3>
+              <div className="feature-header">
+                <span className="feature-num">02</span>
+                <h3 className="feature-title">お金が直接集まる</h3>
+              </div>
               <p className="feature-text">
-                物販型サービスと違い、集まったお金はそのまま葬儀費用に充当可能。「実質▲10万円」の提案ができるようになります。
+                物販ではなく現金。そのまま葬儀費用に充当できます。
               </p>
             </div>
             <div className="feature-card">
-              <p className="feature-num">03</p>
-              <h3 className="feature-title">安心・安全なお金の管理</h3>
+              <div className="feature-header">
+                <span className="feature-num">03</span>
+                <h3 className="feature-title">安心の直接入金</h3>
+              </div>
               <p className="feature-text">
-                貴社の口座へ直接入金。弊社はお金を預かりません。運営会社の倒産リスクや入金遅延の心配がありません。
+                貴社口座に直接入金。弊社はお金を預かりません。
               </p>
             </div>
           </div>
@@ -1343,13 +1067,13 @@ export default function LPPage() {
       </section>
 
       {/* Pricing Section */}
-      <section className="section" id="pricing">
+      <section className="section section-alt" id="pricing">
         <div className="section-inner">
           <div className="section-header">
             <p className="section-label">PRICING</p>
             <h2 className="section-title">料金体系</h2>
           </div>
-          <div className="pricing-grid">
+          <div className="pricing-cards">
             <div className="pricing-card">
               <p className="pricing-label">初期導入費用</p>
               <p className="pricing-value">500<span className="pricing-unit">万円</span></p>
@@ -1361,90 +1085,90 @@ export default function LPPage() {
               <p className="pricing-note">完全無料</p>
             </div>
           </div>
-          <div className="subsidy-card">
+          <div className="subsidy-box">
             <h3 className="subsidy-title">🎉 IT導入補助金で最大75%OFF</h3>
             <div className="subsidy-grid">
               <div className="subsidy-item">
-                <p className="subsidy-item-label">補助率 50%の場合</p>
+                <p className="subsidy-item-label">補助率 50%</p>
                 <p className="subsidy-item-value">250万円</p>
               </div>
               <div className="subsidy-item">
-                <p className="subsidy-item-label">補助率 75%の場合</p>
+                <p className="subsidy-item-label">補助率 75%</p>
                 <p className="subsidy-item-value">125万円</p>
               </div>
             </div>
-            <p className="subsidy-note">※採択率 約70〜80%　※申請サポートも弊社で対応可能</p>
+            <p className="subsidy-note">※採択率 約70〜80% ※申請サポート対応可</p>
           </div>
         </div>
       </section>
 
       {/* Fee Section */}
-      <section className="section fee-section">
+      <section className="section" id="fee">
         <div className="section-inner">
           <div className="section-header">
             <p className="section-label">FEE</p>
             <h2 className="section-title">献杯手数料</h2>
           </div>
-          <div className="fee-highlight-box">
-            <p className="fee-highlight-title">献杯金額の約9割がご遺族に届きます</p>
-            <p className="fee-highlight-subtitle">月額0円の成果報酬型</p>
+          <div className="fee-box">
+            <p className="fee-title">献杯金額の約9割がご遺族に届きます</p>
+            <p className="fee-subtitle">月額0円の成果報酬型</p>
           </div>
-          <div className="fee-examples">
-            <div className="fee-example">
-              <p className="fee-example-label">献杯 5万円</p>
-              <p className="fee-example-value">約44,200円</p>
+          <div className="fee-grid">
+            <div className="fee-item">
+              <p className="fee-item-label">5万円</p>
+              <p className="fee-item-value">約44,200円</p>
             </div>
-            <div className="fee-example">
-              <p className="fee-example-label">献杯 10万円</p>
-              <p className="fee-example-value">約88,400円</p>
+            <div className="fee-item">
+              <p className="fee-item-label">10万円</p>
+              <p className="fee-item-value">約88,400円</p>
             </div>
-            <div className="fee-example">
-              <p className="fee-example-label">献杯 30万円</p>
-              <p className="fee-example-value">約265,200円</p>
+            <div className="fee-item">
+              <p className="fee-item-label">30万円</p>
+              <p className="fee-item-value">約265,200円</p>
             </div>
-            <div className="fee-example">
-              <p className="fee-example-label">献杯 50万円</p>
-              <p className="fee-example-value">約442,000円</p>
+            <div className="fee-item">
+              <p className="fee-item-label">50万円</p>
+              <p className="fee-item-value">約442,000円</p>
             </div>
           </div>
           <div className="fee-breakdown">
             <div className="fee-breakdown-item">
               <div className="fee-breakdown-dot" />
-              <span>決済手数料（Stripe）：<span className="fee-breakdown-highlight">3.6%</span></span>
+              <span>決済手数料 3.6%</span>
             </div>
             <div className="fee-breakdown-item">
               <div className="fee-breakdown-dot" />
-              <span>システム利用料：<span className="fee-breakdown-highlight">8%</span></span>
+              <span>システム利用料 8%</span>
             </div>
             <div className="fee-breakdown-item">
-              <span style={{ color: '#888' }}>合計：<strong style={{ color: '#333' }}>11.6%</strong></span>
+              <span style={{ color: '#666' }}>合計 11.6%</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Comparison Section */}
-      <section className="section">
+      {/* Comparison */}
+      <section className="section section-alt">
         <div className="section-inner">
           <div className="section-header">
             <p className="section-label">COMPARISON</p>
-            <h2 className="section-title">Reiを使わなければ、<br />遠方からの献杯は0円です</h2>
+            <h2 className="section-title">Reiがなければ0円です</h2>
           </div>
-          <div className="comparison-card">
-            <p className="comparison-title">10万円の献杯があった場合</p>
-            <div className="comparison-row">
-              <div className="comparison-item">
-                <p className="comparison-item-label">Reiなし</p>
-                <p className="comparison-item-value comparison-item-value-red">0円</p>
+          <div className="compare-box">
+            <p className="compare-title">10万円の献杯があった場合</p>
+            <div className="compare-row">
+              <div className="compare-item">
+                <p className="compare-label">Reiなし</p>
+                <p className="compare-value compare-value-red">0円</p>
               </div>
-              <span className="comparison-vs">vs</span>
-              <div className="comparison-item">
-                <p className="comparison-item-label">Reiあり</p>
-                <p className="comparison-item-value comparison-item-value-green">88,400円</p>
+              <span className="compare-vs">vs</span>
+              <div className="compare-item">
+                <p className="compare-label">Reiあり</p>
+                <p className="compare-value compare-value-green">88,400円</p>
               </div>
             </div>
-            <p className="comparison-message">
-              <strong>0円</strong>と<strong>88,400円</strong>。どちらがご遺族のためになりますか？
+            <p className="compare-message">
+              <strong>0円</strong>と<strong>88,400円</strong>。<br />どちらがご遺族のためになりますか？
             </p>
           </div>
         </div>
@@ -1453,35 +1177,27 @@ export default function LPPage() {
       {/* CTA Section */}
       <section className="section cta-section">
         <div className="section-inner">
-          <div className="cta-content">
-            <h2 className="cta-title">
-              「他社より安くできます」ではなく、<br />
-              <span className="cta-title-highlight">「お客様の負担を減らせます」</span>という提案を
-            </h2>
-            <p className="cta-text">Reiで、価格競争から価値競争へ</p>
-            <a href="#contact" className="hero-cta-primary">
-              資料請求・お問い合わせ
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-          </div>
+          <h2 className="cta-section-title">
+            「他社より安くできます」ではなく<br />
+            <span className="cta-section-title-accent">「お客様の負担を減らせます」</span>
+          </h2>
+          <p className="cta-section-text">価格競争から価値競争へ</p>
+          <a href="#contact" className="cta-primary" style={{ display: 'inline-flex' }}>
+            資料請求・お問い合わせ →
+          </a>
         </div>
       </section>
 
       {/* Form Section */}
-      <section className="section form-section" id="contact">
+      <section className="section section-alt" id="contact">
         <div className="section-inner">
           <div className="section-header">
             <p className="section-label">CONTACT</p>
             <h2 className="section-title">お問い合わせ</h2>
-            <p className="section-subtitle">
-              資料請求、デモのご依頼、ご質問など、お気軽にお問い合わせください
-            </p>
           </div>
           <div className="form-container">
             <div className="form-campaign-note">
-              🎁 今なら<span className="form-campaign-highlight">先着10社限定</span>で、システム利用料8%が<span className="form-campaign-highlight">半年間 貴社の収益に</span>
+              🎁 今なら<span className="form-campaign-highlight">先着10社限定</span>で手数料8%が<span className="form-campaign-highlight">半年間 貴社の収益に</span>
             </div>
             {submitted ? (
               <div className="form-success">
@@ -1564,17 +1280,12 @@ export default function LPPage() {
       {/* Footer */}
       <footer className="footer">
         <div className="footer-inner">
-          <div className="footer-top">
-            <div className="logo">
-              <div className="logo-mark">礼</div>
-              <span className="logo-text">Rei</span>
-            </div>
-            <div className="footer-company">
-              <p className="footer-company-name">株式会社SHIKAKERU</p>
-              <p className="footer-company-rep">代表取締役 中川 航輝</p>
-            </div>
+          <div className="footer-logo">
+            <div className="logo-mark">礼</div>
+            <span className="logo-text">Rei</span>
           </div>
-          <p className="footer-bottom">© 2025 SHIKAKERU Inc. All rights reserved.</p>
+          <p className="footer-company">株式会社SHIKAKERU　代表取締役 中川 航輝</p>
+          <p className="footer-copyright">© 2025 SHIKAKERU Inc.</p>
         </div>
       </footer>
     </div>
