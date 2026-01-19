@@ -328,13 +328,14 @@ export default function LPPage() {
         }
         .hero-cta-note {
           margin-top: 16px;
-          font-size: 13px;
-          color: rgba(255,255,255,0.9);
-          background: rgba(232, 168, 48, 0.25);
-          padding: 10px 20px;
-          border-radius: 8px;
-          border: 1px solid rgba(232, 168, 48, 0.4);
+          font-size: 14px;
+          color: var(--white);
+          background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(180, 40, 50, 0.9));
+          padding: 12px 24px;
+          border-radius: 10px;
+          font-weight: 600;
           text-align: center;
+          animation: pulse 2s ease-in-out infinite;
         }
 
         .hero-scroll {
@@ -356,9 +357,9 @@ export default function LPPage() {
 
         /* Campaign */
         .campaign {
-          background: linear-gradient(135deg, var(--primary), #0d4a38);
+          background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
           color: var(--white);
-          padding: 48px 20px;
+          padding: 60px 20px;
           text-align: center;
           position: relative;
           overflow: hidden;
@@ -370,7 +371,9 @@ export default function LPPage() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+          background: 
+            radial-gradient(circle at 20% 50%, rgba(232, 168, 48, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 50%, rgba(232, 168, 48, 0.1) 0%, transparent 50%);
           pointer-events: none;
         }
         .campaign-inner {
@@ -379,45 +382,126 @@ export default function LPPage() {
           position: relative;
           z-index: 1;
         }
+        .campaign-badge-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+        }
         .campaign-badge {
-          display: inline-block;
-          background: var(--accent);
-          padding: 6px 18px;
+          background: linear-gradient(135deg, var(--accent), #d4922a);
+          padding: 8px 20px;
+          border-radius: 100px;
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+        }
+        .campaign-badge-sub {
+          background: rgba(220, 53, 69, 0.9);
+          padding: 6px 14px;
           border-radius: 100px;
           font-size: 12px;
           font-weight: 700;
-          margin-bottom: 20px;
-          letter-spacing: 0.05em;
+          animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.05); }
         }
         .campaign-title {
-          font-size: clamp(18px, 4vw, 24px);
-          font-weight: 700;
-          line-height: 1.6;
-          margin-bottom: 12px;
+          margin-bottom: 24px;
         }
-        .campaign-text {
-          font-size: 14px;
+        .campaign-title-small {
+          display: block;
+          font-size: 16px;
+          font-weight: 500;
+          opacity: 0.8;
+          margin-bottom: 8px;
+        }
+        .campaign-title-big {
+          display: block;
+          font-size: clamp(28px, 7vw, 42px);
+          font-weight: 800;
+          line-height: 1.3;
+        }
+        .campaign-highlight {
+          color: var(--accent);
+          font-size: 1.2em;
+        }
+        .campaign-benefit {
+          background: rgba(255,255,255,0.1);
+          border: 1px solid rgba(255,255,255,0.15);
+          border-radius: 16px;
+          padding: 24px;
+          margin-bottom: 24px;
+        }
+        .campaign-benefit-label {
+          font-size: 16px;
           opacity: 0.9;
+          margin-bottom: 8px;
+        }
+        .campaign-benefit-value {
+          font-size: clamp(22px, 5vw, 30px);
+          font-weight: 700;
+        }
+        .campaign-example {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+          margin-bottom: 20px;
+        }
+        .campaign-example-item {
+          background: rgba(232, 168, 48, 0.15);
+          border: 1px solid rgba(232, 168, 48, 0.3);
+          border-radius: 12px;
+          padding: 16px;
+          text-align: center;
+        }
+        .campaign-example-label {
+          display: block;
+          font-size: 12px;
+          opacity: 0.8;
+          margin-bottom: 6px;
+        }
+        .campaign-example-value {
+          display: block;
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--accent);
+        }
+        .campaign-note {
+          font-size: 12px;
+          opacity: 0.7;
           margin-bottom: 24px;
           line-height: 1.7;
         }
         .campaign-btn {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          background: var(--white);
-          color: var(--primary);
-          padding: 16px 32px;
-          border-radius: 10px;
-          font-size: 15px;
+          justify-content: center;
+          gap: 10px;
+          background: linear-gradient(135deg, var(--accent), #d4922a);
+          color: #1a1a1a;
+          padding: 18px 40px;
+          border-radius: 14px;
+          font-size: 17px;
           font-weight: 700;
           text-decoration: none;
           transition: all 0.3s;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+          box-shadow: 0 4px 20px rgba(232, 168, 48, 0.4);
         }
         .campaign-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 30px rgba(232, 168, 48, 0.5);
+        }
+        .campaign-btn-arrow {
+          font-size: 20px;
+          transition: transform 0.3s;
+        }
+        .campaign-btn:hover .campaign-btn-arrow {
+          transform: translateX(4px);
         }
 
         /* Section */
@@ -525,16 +609,19 @@ export default function LPPage() {
           display: flex;
           flex-direction: column;
           gap: 20px;
+          max-width: 900px;
+          margin: 0 auto;
         }
         .feature {
           background: var(--white);
           border: 1px solid var(--border);
           border-radius: 20px;
-          padding: 28px;
+          padding: 32px 28px;
           box-shadow: 0 2px 12px rgba(0,0,0,0.04);
           transition: all 0.3s;
           display: flex;
           flex-direction: column;
+          text-align: center;
         }
         .feature:hover {
           box-shadow: 0 8px 24px rgba(0,0,0,0.08);
@@ -543,57 +630,54 @@ export default function LPPage() {
         .feature-head {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 14px;
-          margin-bottom: 14px;
+          margin-bottom: 16px;
         }
         .feature-num {
           font-size: 12px;
           font-weight: 700;
           color: var(--white);
           background: var(--primary);
-          width: 32px;
-          height: 32px;
-          border-radius: 8px;
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
         }
         .feature-title {
-          font-size: 18px;
+          font-size: 20px;
           font-weight: 700;
-          word-break: keep-all;
-          overflow-wrap: break-word;
         }
         .feature-text {
           font-size: 14px;
           color: var(--text-sub);
           line-height: 1.8;
-          word-break: keep-all;
-          overflow-wrap: break-word;
-          flex: 1;
+          margin-bottom: 20px;
         }
         .feature-list {
-          margin-top: 16px;
-          padding-left: 0;
+          margin-top: auto;
+          padding: 0;
           list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
         }
         .feature-list li {
-          position: relative;
-          padding-left: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
           font-size: 14px;
-          color: var(--text-sub);
-          line-height: 1.8;
-          margin-bottom: 8px;
-          word-break: keep-all;
-          overflow-wrap: break-word;
+          color: var(--text);
         }
         .feature-list li::before {
           content: '✓';
-          position: absolute;
-          left: 0;
           color: var(--primary);
           font-weight: 700;
+          font-size: 16px;
         }
 
         /* Pricing */
@@ -854,14 +938,29 @@ export default function LPPage() {
           box-shadow: 0 4px 24px rgba(0,0,0,0.06);
         }
         .form-campaign {
-          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+          background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
           border-radius: 12px;
-          padding: 16px 20px;
+          padding: 20px;
           text-align: center;
           color: var(--white);
           font-size: 14px;
           margin-bottom: 32px;
-          line-height: 1.7;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .form-campaign-badge {
+          display: inline-block;
+          background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(180, 40, 50, 0.9));
+          padding: 4px 12px;
+          border-radius: 100px;
+          font-size: 12px;
+          font-weight: 700;
+          animation: pulse 2s ease-in-out infinite;
+        }
+        .form-campaign-text {
+          font-size: 14px;
+          line-height: 1.6;
         }
         .form-campaign-em {
           color: var(--accent);
@@ -1058,10 +1157,9 @@ export default function LPPage() {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            align-items: stretch;
           }
           .feature {
-            height: 100%;
+            min-height: 320px;
           }
           .pricing-cards {
             grid-template-columns: repeat(2, 1fr);
@@ -1136,7 +1234,7 @@ export default function LPPage() {
               <span>無料で資料請求</span>
               <span className="hero-cta-arrow">→</span>
             </a>
-            <p className="hero-cta-note">🎁 先着10社限定：手数料8%を半年間還元</p>
+            <p className="hero-cta-note">🔥 先着10社限定：手数料8%が半年間貴社の収益に → 残り枠わずか</p>
           </div>
 
           <div className="hero-scroll">
@@ -1149,14 +1247,33 @@ export default function LPPage() {
       {/* Campaign */}
       <section className="campaign">
         <div className="campaign-inner">
-          <span className="campaign-badge">期間限定</span>
+          <div className="campaign-badge-wrap">
+            <span className="campaign-badge">🎁 期間限定キャンペーン</span>
+            <span className="campaign-badge-sub">残り枠わずか</span>
+          </div>
           <h2 className="campaign-title">
-            先着10社限定で手数料8%を半年間貴社に還元
+            <span className="campaign-title-small">今だけ</span>
+            <span className="campaign-title-big">先着<span className="campaign-highlight">10</span>社限定</span>
           </h2>
-          <p className="campaign-text">
-            10万円の献杯で8,000円、50万円なら40,000円が葬儀社様の収益に
-          </p>
-          <a href="#contact" className="campaign-btn">キャンペーンに申し込む →</a>
+          <div className="campaign-benefit">
+            <p className="campaign-benefit-label">手数料8%が</p>
+            <p className="campaign-benefit-value">半年間<span className="campaign-highlight">貴社の収益</span>に</p>
+          </div>
+          <div className="campaign-example">
+            <div className="campaign-example-item">
+              <span className="campaign-example-label">献杯10万円の場合</span>
+              <span className="campaign-example-value">+8,000円</span>
+            </div>
+            <div className="campaign-example-item">
+              <span className="campaign-example-label">献杯50万円の場合</span>
+              <span className="campaign-example-value">+40,000円</span>
+            </div>
+          </div>
+          <p className="campaign-note">※通常は弊社へのシステム利用料となる8%が、キャンペーン期間中は全額貴社の収益になります</p>
+          <a href="#contact" className="campaign-btn">
+            <span>今すぐ枠を確保する</span>
+            <span className="campaign-btn-arrow">→</span>
+          </a>
         </div>
       </section>
 
@@ -1426,7 +1543,8 @@ export default function LPPage() {
           </div>
           <div className="form-wrap">
             <div className="form-campaign">
-              🎁 今なら<span className="form-campaign-em">先着10社限定</span>で手数料8%が<span className="form-campaign-em">半年間貴社の収益に</span>
+              <span className="form-campaign-badge">🔥 残り枠わずか</span>
+              <span className="form-campaign-text">先着<span className="form-campaign-em">10社限定</span>で手数料8%が<span className="form-campaign-em">半年間貴社の収益</span>に</span>
             </div>
             {submitted ? (
               <div className="form-success">
