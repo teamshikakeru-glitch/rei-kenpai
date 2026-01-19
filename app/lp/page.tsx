@@ -899,7 +899,7 @@ export default function LPPage() {
         .footer {
           background: var(--white);
           border-top: 1px solid var(--border);
-          padding: 48px 20px;
+          padding: 48px 20px 100px;
           text-align: center;
         }
         .footer-logo {
@@ -917,6 +917,63 @@ export default function LPPage() {
         .footer-copy {
           font-size: 12px;
           color: #999;
+        }
+
+        /* Fixed Navigation */
+        .fixed-nav {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 99;
+          background: rgba(255,255,255,0.98);
+          backdrop-filter: blur(10px);
+          border-top: 1px solid rgba(0,0,0,0.08);
+          padding: 8px 12px;
+          padding-bottom: calc(8px + env(safe-area-inset-bottom));
+          box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        }
+        .fixed-nav-inner {
+          max-width: 500px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 4px;
+        }
+        .fixed-nav-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 8px 4px;
+          border-radius: 10px;
+          font-size: 10px;
+          font-weight: 600;
+          color: var(--text-sub);
+          text-decoration: none;
+          transition: all 0.2s;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit;
+        }
+        .fixed-nav-item:hover,
+        .fixed-nav-item:active {
+          background: var(--bg-alt);
+          color: var(--primary);
+        }
+        .fixed-nav-icon {
+          font-size: 18px;
+          margin-bottom: 2px;
+        }
+        .fixed-nav-item-cta {
+          background: var(--primary);
+          color: var(--white);
+        }
+        .fixed-nav-item-cta:hover,
+        .fixed-nav-item-cta:active {
+          background: var(--primary-dark);
+          color: var(--white);
         }
 
         /* Desktop */
@@ -1403,6 +1460,32 @@ export default function LPPage() {
         <p className="footer-info">株式会社SHIKAKERU　代表取締役 中川 航輝</p>
         <p className="footer-copy">© 2025 SHIKAKERU Inc.</p>
       </footer>
+
+      {/* Fixed Navigation */}
+      <nav className="fixed-nav">
+        <div className="fixed-nav-inner">
+          <button className="fixed-nav-item" onClick={() => scrollTo('flow')}>
+            <span className="fixed-nav-icon">📋</span>
+            <span>使い方</span>
+          </button>
+          <button className="fixed-nav-item" onClick={() => scrollTo('features')}>
+            <span className="fixed-nav-icon">✨</span>
+            <span>特徴</span>
+          </button>
+          <button className="fixed-nav-item" onClick={() => scrollTo('pricing')}>
+            <span className="fixed-nav-icon">💰</span>
+            <span>料金</span>
+          </button>
+          <button className="fixed-nav-item" onClick={() => scrollTo('fee')}>
+            <span className="fixed-nav-icon">📊</span>
+            <span>手数料</span>
+          </button>
+          <button className="fixed-nav-item fixed-nav-item-cta" onClick={() => scrollTo('contact')}>
+            <span className="fixed-nav-icon">✉️</span>
+            <span>問合せ</span>
+          </button>
+        </div>
+      </nav>
     </div>
   );
 }
