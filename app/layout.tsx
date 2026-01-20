@@ -34,14 +34,41 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
+    <html lang="ja" style={{ background: '#0a0a0a' }}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            html, body {
+              background: #0a0a0a !important;
+            }
+            body {
+              visibility: hidden;
+            }
+            body.loaded {
+              visibility: visible;
+            }
+          `
+        }} />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            if (document.fonts) {
+              document.fonts.ready.then(function() {
+                document.body.classList.add('loaded');
+              });
+            } else {
+              document.body.classList.add('loaded');
+            }
+            setTimeout(function() {
+              document.body.classList.add('loaded');
+            }, 100);
+          `
+        }} />
       </head>
-      <body>{children}</body>
+      <body style={{ background: '#0a0a0a', margin: 0 }}>{children}</body>
     </html>
   );
 }
