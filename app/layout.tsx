@@ -34,10 +34,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" style={{ opacity: 0, background: '#0a0a0a' }}>
+    <html lang="ja" style={{ visibility: 'hidden' }}>
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>

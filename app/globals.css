@@ -1,6 +1,6 @@
 /* FOUC対策 - CSSが読み込まれたら表示 */
 html {
-  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap');

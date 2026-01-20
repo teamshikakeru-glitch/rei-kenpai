@@ -56,6 +56,7 @@ export default function LPPage() {
     <div className="page">
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+        html { visibility: visible !important; }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { overflow-x: hidden; }
       `}</style>
