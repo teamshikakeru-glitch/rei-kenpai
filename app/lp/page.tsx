@@ -12,6 +12,7 @@ export default function LPPage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // ページ読み込み時に一番上にスクロール（レンダリング前に実行）
   useLayoutEffect(() => {
@@ -37,6 +38,9 @@ export default function LPPage() {
       setTimeout(() => window.scrollTo(0, 0), 200),
     ];
 
+    // ページ読み込み完了を通知
+    setIsLoaded(true);
+
     return () => timers.forEach(clearTimeout);
   }, []);
 
@@ -54,11 +58,26 @@ export default function LPPage() {
 
   return (
     <div className="page">
+      {/* FOUC対策: Reactレベルのローディングオーバーレイ */}
+      {!isLoaded && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: '#0d3d2d',
+            zIndex: 999998,
+          }}
+          aria-hidden="true"
+        />
+      )}
+
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
-        html { visibility: visible !important; }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { overflow-x: hidden; }
+        body { overflow-x: hidden; background: #0d3d2d; }
       `}</style>
       
       <style jsx>{`
