@@ -4,6 +4,28 @@ import './globals.css';
 export const metadata: Metadata = {
   title: '礼 Rei - Admin',
   description: '献杯管理システム',
+  openGraph: {
+    title: '礼 Rei - 遠隔献杯システム',
+    description: '遠方からでもお気持ちを届けられる、新しい献杯のかたち。葬儀社様向け献杯管理システム。',
+    type: 'website',
+    url: 'https://smartkenpai.com',
+    siteName: 'Rei - 遠隔献杯システム',
+    locale: 'ja_JP',
+    images: [
+      {
+        url: 'https://smartkenpai.com/og-default.jpg',
+        width: 1200,
+        height: 630,
+        alt: '礼 Rei - 遠隔献杯システム',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '礼 Rei - 遠隔献杯システム',
+    description: '遠方からでもお気持ちを届けられる、新しい献杯のかたち。',
+    images: ['https://smartkenpai.com/og-default.jpg'],
+  },
 };
 
 export default function RootLayout({
