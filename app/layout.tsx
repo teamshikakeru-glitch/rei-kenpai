@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" style={{ background: '#0a0a0a' }}>
+    <html lang="ja">
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap"
@@ -42,33 +42,46 @@ export default function RootLayout({
         />
         <style dangerouslySetInnerHTML={{
           __html: `
-            html, body {
-              background: #0a0a0a !important;
+            #page-loader {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: #0a0a0a;
+              z-index: 99999;
+              transition: opacity 0.3s ease;
             }
-            body {
-              visibility: hidden;
+            #page-loader.hide {
+              opacity: 0;
+              pointer-events: none;
             }
-            body.loaded {
-              visibility: visible;
-            }
-          `
-        }} />
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            if (document.fonts) {
-              document.fonts.ready.then(function() {
-                document.body.classList.add('loaded');
-              });
-            } else {
-              document.body.classList.add('loaded');
-            }
-            setTimeout(function() {
-              document.body.classList.add('loaded');
-            }, 100);
           `
         }} />
       </head>
-      <body style={{ background: '#0a0a0a', margin: 0 }}>{children}</body>
+      <body style={{ margin: 0 }}>
+        <div id="page-loader" />
+        {children}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              var loader = document.getElementById('page-loader');
+              function hideLoader() {
+                if (loader) {
+                  loader.classList.add('hide');
+                  setTimeout(function() {
+                    loader.style.display = 'none';
+                  }, 300);
+                }
+              }
+              if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(hideLoader);
+              }
+              setTimeout(hideLoader, 150);
+            })();
+          `
+        }} />
+      </body>
     </html>
   );
 }
