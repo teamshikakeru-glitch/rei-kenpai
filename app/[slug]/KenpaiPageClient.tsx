@@ -110,11 +110,12 @@ export default function KenpaiPageClient() {
   const totalAmount = kenpaiList.reduce((sum, k) => sum + (k.amount || 0), 0);
   const currentAmount = showCustomInput ? parseInt(customAmount) || 0 : selectedAmount || 0;
 
+  // 金額選択肢（「人気」表示を削除）
   const amounts = [
-    { value: 3000, label: '3,000円', popular: false },
-    { value: 5000, label: '5,000円', popular: true },
-    { value: 10000, label: '10,000円', popular: false },
-    { value: 30000, label: '30,000円', popular: false },
+    { value: 3000, label: '3,000円' },
+    { value: 5000, label: '5,000円' },
+    { value: 10000, label: '10,000円' },
+    { value: 30000, label: '30,000円' },
   ];
 
   // ローディング画面
@@ -443,21 +444,6 @@ export default function KenpaiPageClient() {
                         boxShadow: selectedAmount === amount.value && !showCustomInput ? '0 8px 24px rgba(201,162,39,0.15)' : '0 2px 8px rgba(0,0,0,0.04)',
                       }}
                     >
-                      {amount.popular && (
-                        <span style={{
-                          position: 'absolute',
-                          top: '-10px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          background: 'linear-gradient(135deg, #c9a227 0%, #d4af37 100%)',
-                          color: 'white',
-                          fontSize: '10px',
-                          padding: '4px 14px',
-                          borderRadius: '100px',
-                          letterSpacing: '0.05em',
-                          fontWeight: '500',
-                        }}>人気</span>
-                      )}
                       <span style={{
                         fontSize: '24px',
                         fontWeight: '600',

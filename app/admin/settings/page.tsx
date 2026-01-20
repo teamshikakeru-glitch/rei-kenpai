@@ -3,11 +3,14 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
+import { useSession } from '@/lib/supabase/hooks/useSession';
+import SessionWarning from '@/components/SessionWarning';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 function SettingsContent() {
+  const { isAuthenticated, isLoading: sessionLoading, showWarning, remainingTime, logout, extendSession } = useSession();
   const [funeralHomeId, setFuneralHomeId] = useState<string | null>(null);
   const [funeralHomeName, setFuneralHomeName] = useState('');
   const [currentEmail, setCurrentEmail] = useState('');
@@ -27,10 +30,19 @@ function SettingsContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    if (sessionLoading) return;
+    if (!isAuthenticated) {
+      router.replace('/');
+      return;
+    }
+
     const fetchData = async () => {
       const storedId = sessionStorage.getItem('funeral_home_id');
       const storedName = sessionStorage.getItem('funeral_home_name');
-      if (!storedId || !storedName) { router.replace('/'); return; }
+      if (!storedId || !storedName) {
+        router.replace('/');
+        return;
+      }
       setFuneralHomeId(storedId);
       setFuneralHomeName(storedName);
       const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -40,7 +52,7 @@ function SettingsContent() {
       setLoading(false);
     };
     fetchData();
-  }, [router]);
+  }, [router, isAuthenticated, sessionLoading]);
 
   useEffect(() => {
     const stripeParam = searchParams.get('stripe');
@@ -95,9 +107,20 @@ function SettingsContent() {
     setEmailLoading(false);
   };
 
-  const handleLogout = () => { sessionStorage.clear(); router.replace('/'); };
+  const handleLogout = () => { logout(); };
 
-  if (loading) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0f1a', color: 'white' }}>読み込み中...</div>;
+  if (sessionLoading || loading) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%)' }}>
+        <div style={{ width: '48px', height: '48px', border: '3px solid #e8e4dc', borderTopColor: '#c9a227', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+        <style jsx>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f5f0' }}>
@@ -109,7 +132,7 @@ function SettingsContent() {
           left: 0;
           right: 0;
           height: 56px;
-          background: #0a0f1a;
+          background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
           z-index: 1000;
           align-items: center;
           justify-content: space-between;
@@ -134,7 +157,7 @@ function SettingsContent() {
         .mobile-logo-icon {
           width: 32px;
           height: 32px;
-          background: linear-gradient(135deg, #c9a227, #a08020);
+          background: linear-gradient(135deg, #c9a227, #d4af37);
           border-radius: 8px;
           display: flex;
           align-items: center;
@@ -149,7 +172,7 @@ function SettingsContent() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: #0a0f1a;
+          background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
           z-index: 999;
           flex-direction: column;
           padding: 1rem;
@@ -166,7 +189,7 @@ function SettingsContent() {
         }
         .mobile-nav-link:hover,
         .mobile-nav-link.active {
-          color: white;
+          color: #c9a227;
           background: rgba(255,255,255,0.05);
         }
         .mobile-nav-logout {
@@ -181,7 +204,7 @@ function SettingsContent() {
         }
         .desktop-sidebar {
           width: 240px;
-          background: #0a0f1a;
+          background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
           padding: 24px 16px;
           position: fixed;
           top: 0;
@@ -210,6 +233,10 @@ function SettingsContent() {
         }
       `}</style>
 
+      {showWarning && (
+        <SessionWarning remainingTime={remainingTime} onExtend={extendSession} onLogout={handleLogout} />
+      )}
+
       {/* モバイルヘッダー */}
       <div className="mobile-header">
         <a href="/admin" className="mobile-logo">
@@ -226,13 +253,16 @@ function SettingsContent() {
         <a href="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ホーム</a>
         <a href="/admin/payments" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>ご入金管理</a>
         <a href="/admin/settings" className="mobile-nav-link active" onClick={() => setMobileMenuOpen(false)}>入金口座連携</a>
-        <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
+        <div style={{ marginTop: 'auto', padding: '16px 0', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', marginBottom: '8px' }}>ログイン中: {funeralHomeName}</p>
+          <button className="mobile-nav-logout" onClick={handleLogout}>ログアウト</button>
+        </div>
       </div>
 
       {/* デスクトップサイドバー */}
       <aside className="desktop-sidebar">
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingBottom: 24, borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: 24 }}>
-          <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #c9a227, #a08020)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 20, fontWeight: 600 }}>礼</div>
+          <div style={{ width: 44, height: 44, background: 'linear-gradient(135deg, #c9a227, #d4af37)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 20, fontWeight: 600 }}>礼</div>
           <div>
             <div style={{ color: 'white', fontSize: 20, fontWeight: 600 }}>Rei</div>
             <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>献杯管理システム</div>
@@ -244,20 +274,21 @@ function SettingsContent() {
           <a href="/admin/payments" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', padding: 12, borderRadius: 8, fontSize: 14 }}>ご入金管理</a>
           <a href="/admin/settings" style={{ color: '#c9a227', textDecoration: 'none', padding: 12, borderRadius: 8, fontSize: 14, background: 'rgba(201,162,39,0.15)' }}>入金口座連携</a>
         </nav>
-        <button onClick={handleLogout} style={{ marginTop: 'auto', width: '100%', padding: 12, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: 13 }}>ログアウト</button>
+        <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ padding: '12px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '10px' }}>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', marginBottom: '2px' }}>ログイン中</p>
+            <p style={{ color: 'white', fontSize: '13px', fontWeight: '500' }}>{funeralHomeName}</p>
+          </div>
+          <button onClick={handleLogout} style={{ width: '100%', padding: 12, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: 13 }}>ログアウト</button>
+        </div>
       </aside>
 
       <main className="main-content">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white', padding: '12px 16px', borderRadius: 10, marginBottom: 24, flexWrap: 'wrap', gap: '12px' }}>
-          <span><strong>{funeralHomeName}</strong> 様</span>
-          <button onClick={handleLogout} style={{ background: 'none', border: '1px solid #e5e5e5', padding: '8px 16px', borderRadius: 6, fontSize: 12, color: '#666', cursor: 'pointer' }}>ログアウト</button>
-        </div>
-
         <h1 style={{ fontSize: 24, fontWeight: 600, color: '#1a1a1a', marginBottom: 8 }}>入金口座連携</h1>
         <p style={{ fontSize: 14, color: '#666', marginBottom: 32 }}>献杯金を受け取るための設定</p>
 
         {/* Stripe Connect */}
-        <div style={{ background: 'white', borderRadius: 16, padding: 32, marginBottom: 24 }}>
+        <div style={{ background: 'white', borderRadius: 16, padding: 32, marginBottom: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
           <h2 style={{ fontSize: 18, fontWeight: 600, color: '#1a1a1a', marginBottom: 8 }}>🏦 銀行口座の連携（Stripe Connect）</h2>
           <p style={{ fontSize: 13, color: '#666', marginBottom: 24, lineHeight: 1.7 }}>
             献杯金を直接受け取るために、Stripeアカウントを連携してください。<br />
@@ -317,7 +348,7 @@ function SettingsContent() {
         </div>
 
         {/* Email */}
-        <div style={{ background: 'white', borderRadius: 16, padding: 32 }}>
+        <div style={{ background: 'white', borderRadius: 16, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
           <h2 style={{ fontSize: 18, fontWeight: 600, color: '#1a1a1a', marginBottom: 24 }}>✉️ メールアドレス</h2>
           
           {emailError && <div style={{ background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.3)', color: '#dc2626', padding: '12px 16px', borderRadius: 10, marginBottom: 16, fontSize: 13 }}>{emailError}</div>}
@@ -349,7 +380,7 @@ function SettingsContent() {
                 ※ 半角英数字と記号（@._-）のみ使用できます
               </p>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <button onClick={handleSendEmailCode} disabled={emailLoading} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #c9a227, #a08020)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', opacity: emailLoading ? 0.6 : 1 }}>
+                <button onClick={handleSendEmailCode} disabled={emailLoading} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #c9a227, #d4af37)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', opacity: emailLoading ? 0.6 : 1 }}>
                   {emailLoading ? '送信中...' : '認証コードを送信'}
                 </button>
                 <button onClick={() => { setEmailStep('view'); setNewEmail(''); setEmailError(''); }} style={{ padding: '12px 24px', background: 'white', border: '1px solid #e0e0e0', borderRadius: 10, fontSize: 14, color: '#666', cursor: 'pointer' }}>
@@ -377,7 +408,7 @@ function SettingsContent() {
                 ※ 認証コードは10分間有効です
               </p>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <button onClick={handleVerifyEmailCode} disabled={emailLoading || emailCode.length !== 6} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #c9a227, #a08020)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', opacity: (emailLoading || emailCode.length !== 6) ? 0.6 : 1 }}>
+                <button onClick={handleVerifyEmailCode} disabled={emailLoading || emailCode.length !== 6} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #c9a227, #d4af37)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', opacity: (emailLoading || emailCode.length !== 6) ? 0.6 : 1 }}>
                   {emailLoading ? '確認中...' : 'メールアドレスを変更'}
                 </button>
                 <button onClick={() => { setEmailStep('form'); setEmailCode(''); setEmailError(''); }} style={{ padding: '12px 24px', background: 'white', border: '1px solid #e0e0e0', borderRadius: 10, fontSize: 14, color: '#666', cursor: 'pointer' }}>
@@ -394,7 +425,12 @@ function SettingsContent() {
 
 export default function SettingsPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0f1a', color: 'white' }}>読み込み中...</div>}>
+    <Suspense fallback={
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg, #faf8f5 0%, #f5f0e8 100%)' }}>
+        <div style={{ width: '48px', height: '48px', border: '3px solid #e8e4dc', borderTopColor: '#c9a227', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+        <style jsx>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    }>
       <SettingsContent />
     </Suspense>
   );
