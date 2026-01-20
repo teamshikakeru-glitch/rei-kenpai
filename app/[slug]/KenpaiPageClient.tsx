@@ -890,7 +890,7 @@ export default function KenpaiPageClient() {
 
         {/* フッター */}
         <footer style={{ textAlign: 'center', padding: '32px 16px' }}>
-          <a href="/admin/payments" style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>
+          <a href={`/family/${slug}`} style={{ fontSize: '13px', color: '#888', textDecoration: 'none' }}>
             ご遺族様専用ページ →
           </a>
           <p style={{ marginTop: '16px', fontSize: '12px', color: '#aaa' }}>
