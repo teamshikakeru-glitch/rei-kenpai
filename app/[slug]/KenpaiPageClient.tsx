@@ -229,8 +229,8 @@ export default function KenpaiPageClient() {
           boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
           textAlign: 'center',
         }}>
-          {/* 遺影 */}
-          {project.photo_url ? (
+          {/* 遺影（写真がある場合のみ表示） */}
+          {project.photo_url && (
             <div style={{
               width: '160px',
               height: '200px',
@@ -255,21 +255,6 @@ export default function KenpaiPageClient() {
               }}>
                 <img src={project.photo_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-            </div>
-          ) : (
-            <div style={{
-              width: '160px',
-              height: '200px',
-              background: 'linear-gradient(180deg, #f0ebe3 0%, #e0d9cc 100%)',
-              borderRadius: '14px',
-              margin: '0 auto 24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '4px solid #c9a227',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-            }}>
-              <span style={{ fontSize: '14px', color: '#999' }}>お写真</span>
             </div>
           )}
           
