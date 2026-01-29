@@ -111,6 +111,21 @@
     .loading-spinner { width: 50px; height: 50px; border: 4px solid var(--color-border); border-top-color: var(--color-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .error-message { background: #fee; border: 1px solid var(--color-error); color: var(--color-error); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center; }
+    
+    /* Feedback Section */
+    .section-divider.feedback-divider { background: linear-gradient(135deg, var(--color-accent) 0%, #d4b56a 100%); }
+    .feedback-hints { background: var(--color-primary-pale); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .feedback-hints p { font-weight: 600; color: var(--color-primary); margin-bottom: 0.75rem; font-size: 0.9rem; }
+    .feedback-hints ul { list-style: none; font-size: 0.85rem; color: var(--color-text-light); }
+    .feedback-hints li { padding: 0.3rem 0; padding-left: 1.25rem; position: relative; }
+    .feedback-hints li::before { content: "•"; position: absolute; left: 0; color: var(--color-accent); font-weight: bold; }
+    .feedback-input { min-height: 180px; }
+    .feedback-note { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.75rem; text-align: center; font-style: italic; }
+    .feedback-thanks { background: linear-gradient(135deg, var(--color-accent-light) 0%, #fff 100%); border: 2px solid var(--color-accent); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
+    .feedback-thanks-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .feedback-thanks h3 { color: var(--color-accent); font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .feedback-thanks p { color: var(--color-text-light); font-size: 0.9rem; }
+    
     @media (max-width: 768px) {
       .container { padding: 1rem; }
       .header { padding: 1rem; }
@@ -205,7 +220,8 @@
       { id: 22, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「高齢の方が多いので、スマホ操作ができるか心配です」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "送金する側は比較的若い世代が多い点、操作の簡単さ、ご遺族は閲覧のみで簡単、という趣旨が含まれていれば高評価", points: 12 },
       { id: 23, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「初期費用500万円は高いと感じます。なぜこの金額なのですか？」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "初期費用後は月額無料の説明、長期的なコストメリット、システムの価値・品質、という趣旨が含まれていれば高評価", points: 12 },
       { id: 24, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「うちは従来のやり方で十分です。わざわざ新しいシステムを入れる必要はないのでは？」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "従来のやり方を否定しない姿勢、参列できない方への新しい選択肢、顧客満足度向上、という趣旨が含まれていれば高評価", points: 12 },
-      { id: 25, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「セキュリティは本当に大丈夫ですか？個人情報の漏洩が心配です」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "葬儀社間のデータ分離、パスワード保護、Stripeのセキュリティ、という具体的な対策が含まれていれば高評価", points: 12 }
+      { id: 25, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「セキュリティは本当に大丈夫ですか？個人情報の漏洩が心配です」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "葬儀社間のデータ分離、パスワード保護、Stripeのセキュリティ、という具体的な対策が含まれていれば高評価", points: 12 },
+      { id: 26, section: 3, category: "フィードバック", type: "feedback", question: "最後に、Reiシステムについてのご意見をお聞かせください。\n\n実際に触ってみた感想、使いやすさ、追加してほしい機能、改善点など、どんなことでも構いません。\n\nいただいたご意見は、システム改善の重要な参考にさせていただきます。", maxLength: 500, points: 0 }
     ];
 
     // 状態管理
@@ -249,14 +265,23 @@
       const container = document.getElementById('questionContainer');
       container.classList.remove('hidden');
 
-      document.getElementById('progressText').textContent = `問題 ${index + 1} / ${questions.length}`;
-      document.getElementById('progressFill').style.width = `${((index + 1) / questions.length) * 100}%`;
+      // フィードバック問題は別表示
+      const totalQuestions = 25; // 採点対象の問題数
+      if (index < totalQuestions) {
+        document.getElementById('progressText').textContent = `問題 ${index + 1} / ${totalQuestions}`;
+        document.getElementById('progressFill').style.width = `${((index + 1) / totalQuestions) * 100}%`;
+      } else {
+        document.getElementById('progressText').textContent = `最後のステップ`;
+        document.getElementById('progressFill').style.width = `100%`;
+      }
 
       let sectionDivider = '';
       if (index === 0) {
         sectionDivider = `<div class="section-divider"><h2>第1部：システム理解テスト</h2><p>選択式・記述式 全20問</p></div>`;
       } else if (index === 20) {
         sectionDivider = `<div class="section-divider"><h2>第2部：想定質問対応テスト</h2><p>記述式 全5問（AI採点）</p></div>`;
+      } else if (index === 25) {
+        sectionDivider = `<div class="section-divider feedback-divider"><h2>📝 ご意見をお聞かせください</h2><p>あなたの声がシステム改善の鍵になります</p></div>`;
       }
 
       let questionHTML = sectionDivider + `
@@ -317,6 +342,21 @@
       } else if (q.type === 'essay') {
         return `<textarea class="text-input large" id="textAnswer${q.id}" placeholder="回答を入力してください（${q.maxLength}文字以内）" maxlength="${q.maxLength + 50}"></textarea>
           <div class="char-count" id="charCount${q.id}">0 / ${q.maxLength}文字</div>`;
+      } else if (q.type === 'feedback') {
+        return `
+          <div class="feedback-hints">
+            <p>💡 例えばこんなことを教えてください：</p>
+            <ul>
+              <li>管理画面の使いやすさはどうでしたか？</li>
+              <li>献杯ページのデザインや操作感は？</li>
+              <li>「こんな機能があったらいいな」と思ったこと</li>
+              <li>分かりにくかった点や改善してほしい点</li>
+              <li>営業する上で不安に感じること</li>
+            </ul>
+          </div>
+          <textarea class="text-input feedback-input" id="textAnswer${q.id}" placeholder="ご自由にお書きください。どんな小さなことでも大歓迎です。" maxlength="${q.maxLength + 100}"></textarea>
+          <div class="char-count" id="charCount${q.id}">0 / ${q.maxLength}文字</div>
+          <p class="feedback-note">※ この項目は採点対象外です。率直なご意見をお待ちしております。</p>`;
       }
     }
 
@@ -339,7 +379,7 @@
             toggleMultiOption(q.id, idx);
           });
         });
-      } else if (q.type === 'text' || q.type === 'essay') {
+      } else if (q.type === 'text' || q.type === 'essay' || q.type === 'feedback') {
         const textarea = document.getElementById(`textAnswer${q.id}`);
         if (textarea) {
           textarea.addEventListener('input', function() {
@@ -384,7 +424,7 @@
       } else if (q.type === 'multi') {
         const options = document.querySelectorAll(`[data-qid="${q.id}"]`);
         answers[q.id].forEach(i => { if (options[i]) options[i].classList.add('selected'); });
-      } else if (q.type === 'text' || q.type === 'essay') {
+      } else if (q.type === 'text' || q.type === 'essay' || q.type === 'feedback') {
         const textarea = document.getElementById(`textAnswer${q.id}`);
         if (textarea) {
           textarea.value = answers[q.id];
@@ -473,6 +513,11 @@
           isCorrect = score >= q.points * 0.7;
           section2Total += q.points;
           section2Score += score;
+        } else if (q.type === 'feedback') {
+          // フィードバックは採点対象外
+          score = 0;
+          isCorrect = true;
+          feedback = '';
         }
 
         return { question: q, userAnswer: answers[q.id], isCorrect, score, feedback };
@@ -516,6 +561,10 @@
       try {
         if (!supabaseClient) throw new Error('Supabase未初期化');
         
+        // フィードバックを取得
+        const feedbackQuestion = data.results.find(r => r.question.type === 'feedback');
+        const feedbackText = feedbackQuestion ? (feedbackQuestion.userAnswer || '') : '';
+        
         const { data: attempt, error: attemptError } = await supabaseClient
           .from('sales_test_attempts')
           .insert({
@@ -526,24 +575,28 @@
             section2_score: data.section2Score,
             max_score: data.maxScore,
             passed: data.passed,
-            duration_minutes: data.duration
+            duration_minutes: data.duration,
+            feedback: feedbackText
           })
           .select()
           .single();
 
         if (attemptError) throw attemptError;
 
-        const answersToInsert = data.results.map(r => ({
-          attempt_id: attempt.id,
-          question_id: r.question.id,
-          question_category: r.question.category,
-          question_type: r.question.type,
-          answer: formatAnswerForDB(r.question, r.userAnswer),
-          score: r.score,
-          max_score: r.question.points,
-          is_correct: r.isCorrect,
-          ai_feedback: r.feedback || null
-        }));
+        // フィードバック以外の回答を保存
+        const answersToInsert = data.results
+          .filter(r => r.question.type !== 'feedback')
+          .map(r => ({
+            attempt_id: attempt.id,
+            question_id: r.question.id,
+            question_category: r.question.category,
+            question_type: r.question.type,
+            answer: formatAnswerForDB(r.question, r.userAnswer),
+            score: r.score,
+            max_score: r.question.points,
+            is_correct: r.isCorrect,
+            ai_feedback: r.feedback || null
+          }));
 
         await supabaseClient.from('sales_test_answers').insert(answersToInsert);
         showResults(data);
@@ -582,9 +635,18 @@
             <div class="score-item"><div class="score-item-label">第2部</div><div class="score-item-value">${data.section2Score} / ${data.section2Total}</div></div>
           </div>
         </div>
+        
+        ${data.results.find(r => r.question.type === 'feedback' && r.userAnswer) ? `
+        <div class="feedback-thanks">
+          <div class="feedback-thanks-icon">💝</div>
+          <h3>ご意見ありがとうございます</h3>
+          <p>いただいたフィードバックは、システム改善の参考にさせていただきます。</p>
+        </div>
+        ` : ''}
+        
         <div class="review-section">
           <h3>📝 回答の振り返り</h3>
-          ${data.results.map((r, i) => `
+          ${data.results.filter(r => r.question.type !== 'feedback').map((r, i) => `
             <div class="review-item ${r.isCorrect ? 'correct' : 'incorrect'}">
               <div class="review-question">問${i + 1}. ${r.question.question.split('\n')[0]}</div>
               <div class="review-answer">
