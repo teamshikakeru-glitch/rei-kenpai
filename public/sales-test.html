@@ -300,18 +300,16 @@
     function renderAnswerInput(q) {
       if (q.type === 'single') {
         return `<div class="options">${q.options.map((opt, i) => `
-          <label class="option" data-qid="${q.id}" data-idx="${i}">
-            <input type="radio" name="q${q.id}" value="${i}">
+          <div class="option" data-qid="${q.id}" data-idx="${i}">
             <span class="option-marker">${String.fromCharCode(65 + i)}</span>
             <span class="option-text">${opt}</span>
-          </label>`).join('')}</div>`;
+          </div>`).join('')}</div>`;
       } else if (q.type === 'multi') {
         return `<div class="options">${q.options.map((opt, i) => `
-          <label class="option multi" data-qid="${q.id}" data-idx="${i}">
-            <input type="checkbox" name="q${q.id}" value="${i}">
+          <div class="option multi" data-qid="${q.id}" data-idx="${i}">
             <span class="option-marker">${String.fromCharCode(65 + i)}</span>
             <span class="option-text">${opt}</span>
-          </label>`).join('')}</div>
+          </div>`).join('')}</div>
           <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.75rem;">※複数選択可</p>`;
       } else if (q.type === 'text') {
         return `<textarea class="text-input" id="textAnswer${q.id}" placeholder="回答を入力してください" maxlength="${(q.maxLength || 100) + 20}"></textarea>
@@ -325,14 +323,18 @@
     function setupOptionEvents(q) {
       if (q.type === 'single') {
         document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(option => {
-          option.addEventListener('click', function() {
+          option.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             const idx = parseInt(this.dataset.idx);
             selectOption(q.id, idx);
           });
         });
       } else if (q.type === 'multi') {
         document.querySelectorAll(`[data-qid="${q.id}"]`).forEach(option => {
-          option.addEventListener('click', function() {
+          option.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             const idx = parseInt(this.dataset.idx);
             toggleMultiOption(q.id, idx);
           });
