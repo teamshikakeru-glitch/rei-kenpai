@@ -646,24 +646,25 @@
       border-radius: 12px;
       padding: 1.5rem;
       margin: 1.25rem 0;
-      color: white;
+      color: #ffffff;
     }
     .try-box-title {
       font-size: 1.1rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      color: #ffffff;
     }
     .try-box-desc {
       font-size: 0.9rem;
-      opacity: 0.9;
+      opacity: 0.95;
       margin-bottom: 1.25rem;
-      color: white;
+      color: #ffffff;
     }
     .try-step {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.25rem;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.15);
       border-radius: 10px;
       padding: 1rem;
     }
@@ -674,7 +675,7 @@
       width: 28px;
       height: 28px;
       background: var(--color-accent);
-      color: white;
+      color: #ffffff;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -685,22 +686,24 @@
     }
     .try-step-content {
       flex: 1;
+      color: #ffffff;
     }
     .try-step-content strong {
       display: block;
       font-size: 0.95rem;
       margin-bottom: 0.25rem;
+      color: #ffffff;
     }
     .try-step-content p {
       font-size: 0.85rem;
-      opacity: 0.9;
+      opacity: 0.95;
       margin-bottom: 0.75rem;
-      color: white;
+      color: #ffffff;
     }
     .try-btn {
       display: inline-block;
       background: var(--color-accent);
-      color: white;
+      color: #ffffff;
       padding: 0.6rem 1.25rem;
       border-radius: 100px;
       text-decoration: none;
@@ -712,14 +715,16 @@
       opacity: 0.8;
     }
     .try-example {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.2);
       border-radius: 8px;
       padding: 0.75rem;
       font-size: 0.8rem;
+      color: #ffffff;
     }
     .try-example span {
       display: block;
       margin-bottom: 0.25rem;
+      color: #ffffff;
     }
     .try-example span:last-child {
       margin-bottom: 0;
@@ -730,6 +735,16 @@
       padding: 1rem;
       font-size: 0.85rem;
       color: var(--color-text);
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
+    .try-warning {
+      background: #fff5f5;
+      border: 2px solid #dc3545;
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: #dc3545;
       margin-top: 1rem;
       line-height: 1.6;
     }
@@ -952,7 +967,7 @@
       
       <div class="try-box">
         <div class="try-box-title">📱 デモ体験のご案内</div>
-        <p class="try-box-desc">実際の画面を操作して、Reiの使いやすさを体感してください。</p>
+        <p class="try-box-desc">実際の画面を操作して、Reiの使いやすさを体感してください。<br>ぜひ献杯ページの作成まで試してみてください。</p>
         
         <div class="try-step">
           <div class="try-step-num">1</div>
@@ -978,15 +993,30 @@
         <div class="try-step">
           <div class="try-step-num">3</div>
           <div class="try-step-content">
+            <strong>献杯ページを作成</strong>
+            <p>故人名やURLを入力して、実際に献杯ページを作成してみてください</p>
+          </div>
+        </div>
+
+        <div class="try-step">
+          <div class="try-step-num">4</div>
+          <div class="try-step-content">
             <strong>献杯ページを確認</strong>
             <p>作成された献杯ページのURLをコピーして、ブラウザで開いてみてください</p>
           </div>
         </div>
       </div>
 
+      <div class="try-warning">
+        <strong>⚠️ ご注意ください</strong><br>
+        献杯ページの確認までで止めてください。<br>
+        <strong>「献杯を完了する」ボタンは押さないでください。</strong><br>
+        実際に決済が発生する可能性があります。
+      </div>
+
       <div class="try-note">
-        <strong>💡 ヒント</strong><br>
-        実際の献杯（決済）はテストモードのため、本物のお金は動きません。安心してお試しください。
+        <strong>💡 ポイント</strong><br>
+        献杯ページの作成がいかに簡単か、ぜひ体感してください。葬儀社様への説明にも役立ちます。
       </div>
     </section>
 
