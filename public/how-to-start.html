@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rei 営業パートナーのご案内</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #fefdfb;
+      --color-white: #ffffff;
+      --color-primary: #2d5a47;
+      --color-primary-light: #3d7a5f;
+      --color-primary-pale: #e8f0ec;
+      --color-accent: #c9a962;
+      --color-accent-light: #f5f0e0;
+      --color-text: #2c2c2c;
+      --color-text-light: #5a5a5a;
+      --color-text-muted: #8a8a8a;
+      --color-border: #e5e2dd;
+      --color-success: #28a745;
+      --shadow-soft: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.8;
+      -webkit-text-size-adjust: 100%;
+    }
+    .header {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 1rem;
+      text-align: center;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .logo-symbol { font-size: 1.3rem; font-weight: 700; }
+    .logo-text { font-size: 0.9rem; }
+    .hero {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      color: var(--color-white);
+      padding: 2.5rem 1.25rem;
+      text-align: center;
+    }
+    .hero-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+    .hero h1 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .hero p { font-size: 0.9rem; opacity: 0.9; }
+    .container { padding: 1.5rem 1rem; max-width: 500px; margin: 0 auto; }
+    .intro {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+    }
+    .intro p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.8; }
+    .intro strong { color: var(--color-primary); }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
+      border-radius: 2px;
+    }
+    .step { position: relative; margin-bottom: 1.5rem; }
+    .step:last-child { margin-bottom: 0; }
+    .step-marker {
+      position: absolute;
+      left: -2rem;
+      top: 0;
+      width: 24px;
+      height: 24px;
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.75rem;
+      z-index: 1;
+    }
+    .step:last-child .step-marker { background: var(--color-accent); }
+    .step-card {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .step:last-child .step-card {
+      background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-white) 100%);
+      border: 2px solid var(--color-accent);
+    }
+    .step-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .step-icon { font-size: 1.5rem; }
+    .step-title { font-size: 1.05rem; font-weight: 600; color: var(--color-text); }
+    .step-content { font-size: 0.9rem; color: var(--color-text-light); margin-bottom: 1rem; line-height: 1.7; }
+    .step-info {
+      background: var(--color-bg);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+    }
+    .step-info strong { color: var(--color-text); }
+    .step-btn {
+      display: block;
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--color-primary);
+      color: var(--color-white);
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+    .step-btn:active { opacity: 0.8; }
+    .step:last-child .step-btn { background: var(--color-accent); }
+    .tips {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .tips-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tips-list { list-style: none; }
+    .tips-list li {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .tips-list li:last-child { border-bottom: none; }
+    .tips-check { color: var(--color-success); font-weight: bold; }
+    .faq { margin-top: 1.5rem; }
+    .faq-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .faq-item {
+      background: var(--color-white);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .faq-q {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .faq-q-icon { color: var(--color-primary); font-weight: 700; }
+    .faq-a { font-size: 0.85rem; color: var(--color-text-light); padding-left: 1.25rem; line-height: 1.7; }
+    .message-box {
+      background: var(--color-primary-pale);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .message-box p { font-size: 0.9rem; color: var(--color-primary); line-height: 1.8; }
+    .footer-cta {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 2rem 1.25rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .footer-cta h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .footer-cta p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 1rem; }
+    .footer-cta-btn {
+      display: inline-block;
+      padding: 0.9rem 2rem;
+      background: var(--color-accent);
+      color: var(--color-white);
+      text-decoration: none;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .footer-cta-btn:active { opacity: 0.9; }
+    .footer { padding: 1.5rem; text-align: center; color: var(--color-text-muted); font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <span class="logo-symbol">礼</span>
+      <span class="logo-text">Rei 営業パートナーのご案内</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-icon">🤝</div>
+    <h1>営業パートナーとして<br>ご一緒しませんか？</h1>
+    <p>ご興味をお持ちいただきありがとうございます</p>
+  </section>
+
+  <div class="container">
+    <div class="intro">
+      <p>このページでは、Reiの営業パートナーとしてご活動いただくまでの流れをご案内いたします。<br><br>お忙しい中恐れ入りますが、<strong>2つのステップ</strong>をお願いしております。</p>
+    </div>
+
+    <div class="timeline">
+      <div class="step">
+        <div class="step-marker">1</div>
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-icon">📖</span>
+            <span class="step-title">システム・理念のご説明</span>
+          </div>
+          <div class="step-content">
+            Reiの仕組みや私たちの想いをまとめたページです。営業の際にお役立ていただける内容となっております。
+          </div>
+          <div class="step-info">
+            <strong>⏱ 目安時間：</strong>15〜20分ほど<br>
+            <strong>📱 形式：</strong>スマホでお読みいただけます
+          </div>
+          <a href="system-guide.html" class="step-btn">解説ページを見る →</a>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-marker">2</div>
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-icon">📝</span>
+            <span class="step-title">確認テストのお願い</span>
+          </div>
+          <div class="step-content">
+            ご理解いただいた内容の確認として、簡単なテストをご用意しております。お手数ですが、ご協力をお願いいたします。
+          </div>
+          <div class="step-info">
+            <strong>⏱ 目安時間：</strong>30〜45分ほど<br>
+            <strong>📊 問題数：</strong>25問（選択式・記述式）<br>
+            <strong>🎯 合格ライン：</strong>80点以上
+          </div>
+          <a href="sales-test.html" class="step-btn">テストを受ける →</a>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-marker">🎉</div>
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-icon">✨</span>
+            <span class="step-title">パートナーとしてご活動開始</span>
+          </div>
+          <div class="step-content">
+            テストに合格されましたら、正式にReiの営業パートナーとしてご活動いただけます。私たちと一緒に、葬儀業界に新しい価値を届けていきましょう。
+          </div>
+          <a href="system-guide.html" class="step-btn">まずはSTEP 1から →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips">
+      <div class="tips-title">💡 テスト合格のポイント</div>
+      <ul class="tips-list">
+        <li><span class="tips-check">✓</span>解説ページは最後までお読みください</li>
+        <li><span class="tips-check">✓</span>「他社見積もりに勝てる理由」が特に重要です</li>
+        <li><span class="tips-check">✓</span>料金の内訳（88.4%還元）をご確認ください</li>
+        <li><span class="tips-check">✓</span>営業トーク集も参考になります</li>
+        <li><span class="tips-check">✓</span>テストは何度でも受けていただけます</li>
+      </ul>
+    </div>
+
+    <div class="faq">
+      <div class="faq-title">❓ よくあるご質問</div>
+      
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-icon">Q</span>不合格だった場合はどうなりますか？</div>
+        <div class="faq-a">何度でも再挑戦いただけますので、ご安心ください。解説ページを読み直してから、再度チャレンジしていただければと思います。</div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-icon">Q</span>テスト中にページを閉じてしまったら？</div>
+        <div class="faq-a">申し訳ございませんが、最初からのやり直しとなります。お時間に余裕のある時にお受けいただければ幸いです。</div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-icon">Q</span>スマホで受けられますか？</div>
+        <div class="faq-a">はい、スマホで最後までお受けいただけます。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-icon">Q</span>合格後の流れを教えてください</div>
+        <div class="faq-a">担当者よりご連絡させていただき、営業資料などをお渡しいたします。</div>
+      </div>
+    </div>
+
+    <div class="message-box">
+      <p>Reiにご興味をお持ちいただき、<br>心より感謝申し上げます。<br><br>ご不明な点がございましたら、<br>お気軽にお問い合わせください。</p>
+    </div>
+  </div>
+
+  <div class="footer-cta">
+    <h2>お時間のある時にどうぞ</h2>
+    <p>まずは解説ページからご覧ください</p>
+    <a href="system-guide.html" class="footer-cta-btn">STEP 1 を見る →</a>
+  </div>
+
+  <footer class="footer">
+    © 2024 Rei 営業パートナーご案内
+  </footer>
+</body>
+</html>

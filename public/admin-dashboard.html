@@ -18,6 +18,8 @@
       --color-success: #4ade80;
       --color-info: #60a5fa;
       --color-warning: #fbbf24;
+      --color-purple: #a78bfa;
+      --color-pink: #f472b6;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -229,6 +231,7 @@
     .menu-icon.blue { background: rgba(96, 165, 250, 0.15); }
     .menu-icon.yellow { background: rgba(251, 191, 36, 0.15); }
     .menu-icon.purple { background: rgba(167, 139, 250, 0.15); }
+    .menu-icon.pink { background: rgba(244, 114, 182, 0.15); }
     
     .menu-content {
       flex: 1;
@@ -246,6 +249,66 @@
     .menu-arrow {
       color: var(--color-text-muted);
       font-size: 1.2rem;
+    }
+
+    /* URL Copy Section */
+    .url-section {
+      background: var(--color-card);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      border: 1px solid var(--color-border);
+    }
+    .url-section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .url-item {
+      margin-bottom: 1rem;
+    }
+    .url-item:last-child {
+      margin-bottom: 0;
+    }
+    .url-label {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .url-copy-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .url-input {
+      flex: 1;
+      padding: 0.6rem 0.75rem;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      color: var(--color-text);
+      font-size: 0.75rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .url-copy-btn {
+      padding: 0.6rem 1rem;
+      background: var(--color-primary);
+      color: var(--color-bg);
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .url-copy-btn:active {
+      opacity: 0.8;
+    }
+    .url-copy-btn.copied {
+      background: var(--color-success);
     }
 
     .info-box {
@@ -318,13 +381,22 @@
         <p class="welcome-sub">Rei営業支援ツールの管理メニューです</p>
       </div>
 
-      <p class="section-title">📚 学習・テスト</p>
+      <p class="section-title">👤 営業パートナー向け</p>
+
+      <a href="how-to-start.html" class="menu-card">
+        <div class="menu-icon pink">🚀</div>
+        <div class="menu-content">
+          <div class="menu-title">営業パートナーのご案内</div>
+          <div class="menu-desc">パートナーになるまでの流れを説明</div>
+        </div>
+        <span class="menu-arrow">→</span>
+      </a>
 
       <a href="system-guide.html" class="menu-card">
         <div class="menu-icon green">📖</div>
         <div class="menu-content">
           <div class="menu-title">システム・理念解説</div>
-          <div class="menu-desc">Reiの仕組みと理念を学習する</div>
+          <div class="menu-desc">Reiの仕組みと理念を学習</div>
         </div>
         <span class="menu-arrow">→</span>
       </a>
@@ -338,7 +410,7 @@
         <span class="menu-arrow">→</span>
       </a>
 
-      <p class="section-title">📊 管理</p>
+      <p class="section-title">📊 管理機能</p>
 
       <a href="sales-test-admin.html" class="menu-card">
         <div class="menu-icon yellow">📊</div>
@@ -358,11 +430,40 @@
         <span class="menu-arrow">→</span>
       </a>
 
+      <!-- URL Copy Section -->
+      <div class="url-section">
+        <div class="url-section-title">🔗 パートナー候補者に共有するURL</div>
+        
+        <div class="url-item">
+          <div class="url-label">営業パートナーのご案内ページ（推奨）</div>
+          <div class="url-copy-row">
+            <input type="text" class="url-input" value="https://rei-kenpai-b3z8.vercel.app/how-to-start.html" readonly id="url1">
+            <button class="url-copy-btn" onclick="copyUrl('url1', this)">コピー</button>
+          </div>
+        </div>
+
+        <div class="url-item">
+          <div class="url-label">システム・理念解説ページ</div>
+          <div class="url-copy-row">
+            <input type="text" class="url-input" value="https://rei-kenpai-b3z8.vercel.app/system-guide.html" readonly id="url2">
+            <button class="url-copy-btn" onclick="copyUrl('url2', this)">コピー</button>
+          </div>
+        </div>
+
+        <div class="url-item">
+          <div class="url-label">営業テストページ</div>
+          <div class="url-copy-row">
+            <input type="text" class="url-input" value="https://rei-kenpai-b3z8.vercel.app/sales-test.html" readonly id="url3">
+            <button class="url-copy-btn" onclick="copyUrl('url3', this)">コピー</button>
+          </div>
+        </div>
+      </div>
+
       <div class="info-box">
-        <div class="info-box-title">💡 URLについて</div>
+        <div class="info-box-title">💡 共有について</div>
         <div class="info-box-content">
-          このページのURLは管理者のみに共有してください。<br><br>
-          営業マンには「システム・理念解説」と「営業テスト」のURLのみを共有してください。
+          営業パートナー候補者には「営業パートナーのご案内」ページのURLを共有してください。<br><br>
+          このダッシュボードのURLは管理者のみに共有してください。
         </div>
       </div>
     </div>
@@ -373,14 +474,9 @@
   </div>
 
   <script>
-    // =============================================
-    // パスワード設定（変更してください）
-    // =============================================
+    // パスワード設定
     const ADMIN_PASSWORD = '1123';
 
-    // =============================================
-    // ログイン処理
-    // =============================================
     function tryLogin() {
       const input = document.getElementById('passwordInput');
       const error = document.getElementById('loginError');
@@ -404,6 +500,18 @@
     function showDashboard() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('dashboard').classList.add('show');
+    }
+
+    function copyUrl(inputId, btn) {
+      const input = document.getElementById(inputId);
+      navigator.clipboard.writeText(input.value).then(() => {
+        btn.textContent = 'コピー済';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'コピー';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
     }
 
     // Enter key でログイン
