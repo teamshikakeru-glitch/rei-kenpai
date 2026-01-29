@@ -639,6 +639,100 @@
       color: var(--color-text-muted);
       font-size: 0.8rem;
     }
+
+    /* Try Box - 体験セクション */
+    .try-box {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.25rem 0;
+      color: white;
+    }
+    .try-box-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .try-box-desc {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 1.25rem;
+      color: white;
+    }
+    .try-step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .try-step:last-child {
+      margin-bottom: 0;
+    }
+    .try-step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--color-accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .try-step-content {
+      flex: 1;
+    }
+    .try-step-content strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .try-step-content p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-bottom: 0.75rem;
+      color: white;
+    }
+    .try-btn {
+      display: inline-block;
+      background: var(--color-accent);
+      color: white;
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+    .try-btn:active {
+      opacity: 0.8;
+    }
+    .try-example {
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+    }
+    .try-example span {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .try-example span:last-child {
+      margin-bottom: 0;
+    }
+    .try-note {
+      background: var(--color-accent-light);
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: var(--color-text);
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
   </style>
 </head>
 <body>
@@ -852,6 +946,47 @@
           <strong>できること：</strong>献杯一覧・メッセージ閲覧
           <span><strong>アクセス：</strong>専用URL＋パスワード</span>
         </div>
+      </div>
+
+      <h3>🎯 実際に触ってみましょう</h3>
+      
+      <div class="try-box">
+        <div class="try-box-title">📱 デモ体験のご案内</div>
+        <p class="try-box-desc">実際の画面を操作して、Reiの使いやすさを体感してください。</p>
+        
+        <div class="try-step">
+          <div class="try-step-num">1</div>
+          <div class="try-step-content">
+            <strong>管理画面にアクセス</strong>
+            <p>下のボタンから管理画面を開いてください</p>
+            <a href="https://rei-kenpai-b3z8.vercel.app/admin" class="try-btn" target="_blank">管理画面を開く →</a>
+          </div>
+        </div>
+
+        <div class="try-step">
+          <div class="try-step-num">2</div>
+          <div class="try-step-content">
+            <strong>新規葬儀を登録</strong>
+            <p>ご自身のお名前と、お好きなパスワードで登録してみてください</p>
+            <div class="try-example">
+              <span>例）葬儀社名：<strong>山田テスト葬儀社</strong></span>
+              <span>例）パスワード：<strong>test1234</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="try-step">
+          <div class="try-step-num">3</div>
+          <div class="try-step-content">
+            <strong>献杯ページを確認</strong>
+            <p>作成された献杯ページのURLをコピーして、ブラウザで開いてみてください</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="try-note">
+        <strong>💡 ヒント</strong><br>
+        実際の献杯（決済）はテストモードのため、本物のお金は動きません。安心してお試しください。
       </div>
     </section>
 
