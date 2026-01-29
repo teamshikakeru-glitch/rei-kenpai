@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rei システム・理念解説</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #fefdfb;
+      --color-white: #ffffff;
+      --color-primary: #2d5a47;
+      --color-primary-light: #3d7a5f;
+      --color-primary-pale: #e8f0ec;
+      --color-accent: #c9a962;
+      --color-accent-light: #f5f0e0;
+      --color-text: #2c2c2c;
+      --color-text-light: #5a5a5a;
+      --color-text-muted: #8a8a8a;
+      --color-border: #e5e2dd;
+      --color-success: #28a745;
+      --color-error: #dc3545;
+      --shadow-soft: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { 
+      font-family: 'Noto Sans JP', sans-serif; 
+      background: var(--color-bg); 
+      color: var(--color-text); 
+      line-height: 1.8; 
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* Header - Mobile First */
+    .header {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-soft);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-symbol {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .logo-text {
+      font-size: 0.9rem;
+    }
+
+    /* Hero - Mobile First */
+    .hero {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      color: var(--color-white);
+      padding: 2.5rem 1.25rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+    .hero p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      line-height: 1.7;
+    }
+
+    /* Container */
+    .container {
+      padding: 1.5rem 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-primary);
+    }
+    .toc-list {
+      list-style: none;
+    }
+    .toc-list li {
+      margin-bottom: 0.5rem;
+    }
+    .toc-list a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: var(--color-bg);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--color-text);
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .toc-list a:active {
+      background: var(--color-primary-pale);
+    }
+    .toc-number {
+      width: 28px;
+      height: 28px;
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    /* Chapter */
+    .chapter {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 1.5rem 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .chapter-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--color-primary);
+    }
+    .chapter-number {
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .chapter-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+    .chapter h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin: 1.5rem 0 0.75rem;
+      padding-left: 0.75rem;
+      border-left: 3px solid var(--color-accent);
+    }
+    .chapter p {
+      margin-bottom: 0.75rem;
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+    }
+
+    /* Quote Box */
+    .quote-box {
+      background: linear-gradient(135deg, var(--color-primary-pale) 0%, var(--color-accent-light) 100%);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+      text-align: center;
+    }
+    .quote-box p {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--color-primary);
+      line-height: 1.9;
+      margin: 0;
+    }
+    .quote-box .highlight {
+      background: linear-gradient(transparent 60%, rgba(201, 169, 98, 0.3) 60%);
+    }
+
+    /* Point Box */
+    .point-box {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .point-box-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .point-box p {
+      color: var(--color-white);
+      opacity: 0.95;
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    /* Accent Box */
+    .accent-box {
+      background: linear-gradient(135deg, var(--color-accent) 0%, #d4b56a 100%);
+      color: var(--color-white);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .accent-box-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .accent-box p {
+      color: var(--color-white);
+      margin: 0;
+      line-height: 1.7;
+      font-size: 0.9rem;
+    }
+
+    /* Flow - Vertical for mobile */
+    .flow {
+      margin: 1.25rem 0;
+    }
+    .flow-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .flow-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 36px;
+      bottom: -8px;
+      width: 2px;
+      background: var(--color-border);
+    }
+    .flow-number {
+      width: 32px;
+      height: 32px;
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .flow-content {
+      background: var(--color-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      flex: 1;
+    }
+    .flow-content h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+    .flow-content p {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      margin: 0;
+    }
+
+    /* Business Flow - Vertical for mobile */
+    .business-flow {
+      margin: 1.25rem 0;
+    }
+    .business-flow-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--color-bg);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    .business-flow-item:not(:last-child)::after {
+      content: '↓';
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      color: var(--color-accent);
+      font-weight: bold;
+      z-index: 1;
+    }
+    .business-flow-icon {
+      font-size: 1.5rem;
+    }
+    .business-flow-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+    .business-flow-sub {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Info List */
+    .info-list {
+      list-style: none;
+      margin: 0.75rem 0;
+    }
+    .info-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 0.9rem;
+    }
+    .info-list li:last-child {
+      border-bottom: none;
+    }
+    .info-icon {
+      color: var(--color-primary);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* Price Table - Mobile optimized */
+    .price-section {
+      background: var(--color-bg);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .price-item {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .price-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .price-item:first-child {
+      padding-top: 0;
+    }
+    .price-label {
+      font-weight: 600;
+      color: var(--color-text);
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .price-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.25rem;
+    }
+    .price-note {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Fee Breakdown */
+    .fee-breakdown {
+      background: var(--color-white);
+      border: 2px solid var(--color-primary);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+    }
+    .fee-breakdown-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .fee-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px dashed var(--color-border);
+      font-size: 0.9rem;
+    }
+    .fee-row:last-child {
+      border-bottom: none;
+    }
+    .fee-row.total {
+      border-top: 2px solid var(--color-primary);
+      border-bottom: none;
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      font-weight: 700;
+    }
+    .fee-row.total .fee-percent {
+      color: var(--color-primary);
+      font-size: 1.1rem;
+    }
+    .fee-row.highlight {
+      background: var(--color-accent-light);
+      margin: 0 -1.25rem;
+      padding: 0.75rem 1.25rem;
+      border-bottom: none;
+    }
+    .fee-row.highlight .fee-percent {
+      color: var(--color-accent);
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .fee-label {
+      color: var(--color-text-light);
+    }
+    .fee-percent {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    /* Comparison Table - Mobile Card Style */
+    .compare-card {
+      background: var(--color-bg);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .compare-card-title {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .compare-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .compare-item {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .compare-item.rei {
+      background: var(--color-primary-pale);
+    }
+    .compare-item.other {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+    }
+    .compare-item-label {
+      font-size: 0.7rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .compare-item-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .compare-item.rei .compare-item-value {
+      color: var(--color-primary);
+    }
+    .compare-item.other .compare-item-value {
+      color: var(--color-text-muted);
+    }
+    .win-badge {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-white);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      margin-left: 0.25rem;
+    }
+
+    /* Talk Script */
+    .talk-script {
+      background: var(--color-bg);
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    .talk-question {
+      background: var(--color-white);
+      border-left: 3px solid var(--color-error);
+      padding: 0.75rem 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 0.75rem;
+    }
+    .talk-question-label {
+      font-size: 0.7rem;
+      color: var(--color-error);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .talk-question p {
+      color: var(--color-text);
+      margin: 0;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .talk-answer {
+      background: var(--color-white);
+      border-left: 3px solid var(--color-success);
+      padding: 0.75rem 1rem;
+      border-radius: 0 8px 8px 0;
+    }
+    .talk-answer-label {
+      font-size: 0.7rem;
+      color: var(--color-success);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .talk-answer p {
+      color: var(--color-text-light);
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* User Types */
+    .user-card {
+      background: var(--color-bg);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .user-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .user-card-icon {
+      font-size: 1.2rem;
+    }
+    .user-card-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+    .user-card-content {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+    .user-card-content span {
+      display: block;
+      margin-top: 0.25rem;
+    }
+
+    /* CTA */
+    .cta {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .cta h2 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+    }
+    .cta p {
+      opacity: 0.9;
+      margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+    }
+    .cta-btn {
+      display: block;
+      background: var(--color-accent);
+      color: var(--color-white);
+      padding: 1rem 2rem;
+      border-radius: 100px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    .cta-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Footer */
+    .footer {
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-symbol">礼</span>
+        <span class="logo-text">システム・理念解説</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>礼 Rei<br>システム・理念解説</h1>
+    <p>Reiの理念、仕組み、葬儀社様のメリットを解説します。</p>
+  </section>
+
+  <div class="container">
+    <div class="toc">
+      <h2>📖 目次</h2>
+      <ul class="toc-list">
+        <li><a href="#chapter1"><span class="toc-number">1</span>Reiとは？</a></li>
+        <li><a href="#chapter2"><span class="toc-number">2</span>他社見積もりに勝てる理由</a></li>
+        <li><a href="#chapter3"><span class="toc-number">3</span>システムの仕組み</a></li>
+        <li><a href="#chapter4"><span class="toc-number">4</span>料金について</a></li>
+        <li><a href="#chapter5"><span class="toc-number">5</span>営業トーク集</a></li>
+      </ul>
+    </div>
+
+    <!-- Chapter 1 -->
+    <section class="chapter" id="chapter1">
+      <div class="chapter-header">
+        <div class="chapter-number">1</div>
+        <h2 class="chapter-title">Reiとは？</h2>
+      </div>
+      
+      <div class="quote-box">
+        <p>葬儀の価値は<br>「<span class="highlight">そこにいたかどうか</span>」<br>ではなく<br>「<span class="highlight">どれだけ想われているか</span>」<br>で決まる</p>
+      </div>
+
+      <p>距離や仕事の都合で葬儀に参列できないことは、誰にでも起こりうることです。</p>
+      
+      <p><strong>「参列できなかった人の想いが、なかったことになるのはおかしい」</strong></p>
+      
+      <p>この問題意識から、Reiは生まれました。</p>
+
+      <div class="point-box">
+        <div class="point-box-title">💡 ポイント</div>
+        <p>Reiは「オンライン香典」ではありません。<br>「参列できない人の想いを届ける」ためのシステムです。</p>
+      </div>
+
+      <h3>Reiが解決する課題</h3>
+      <ul class="info-list">
+        <li><span class="info-icon">✓</span><div><strong>遠方で参列できない</strong><br>転勤、海外在住など</div></li>
+        <li><span class="info-icon">✓</span><div><strong>仕事で駆けつけられない</strong><br>急な訃報、休暇が取れない</div></li>
+        <li><span class="info-icon">✓</span><div><strong>体調の問題</strong><br>高齢、療養中、妊娠中など</div></li>
+        <li><span class="info-icon">✓</span><div><strong>届ける手段がない</strong><br>郵送は手間、届くか不安</div></li>
+      </ul>
+    </section>
+
+    <!-- Chapter 2 -->
+    <section class="chapter" id="chapter2">
+      <div class="chapter-header">
+        <div class="chapter-number">2</div>
+        <h2 class="chapter-title">他社見積もりに勝てる理由</h2>
+      </div>
+
+      <div class="accent-box">
+        <div class="accent-box-title">💰 最大の強み</div>
+        <p><strong>ご遺族に還元されるシステムはReiだけ。</strong><br><br>献杯金額の88.4%がご遺族に届きます。</p>
+      </div>
+
+      <h3>🎯 受注率アップの仕組み</h3>
+
+      <div class="business-flow">
+        <div class="business-flow-item">
+          <div class="business-flow-icon">🏢</div>
+          <div><div class="business-flow-text">葬儀社様がRei導入</div></div>
+        </div>
+        <div class="business-flow-item">
+          <div class="business-flow-icon">💬</div>
+          <div><div class="business-flow-text">お客様に提案</div><div class="business-flow-sub">「遠方からも献杯を受けられます」</div></div>
+        </div>
+        <div class="business-flow-item">
+          <div class="business-flow-icon">💴</div>
+          <div><div class="business-flow-text">献杯金がご遺族へ</div><div class="business-flow-sub">88.4%還元</div></div>
+        </div>
+        <div class="business-flow-item">
+          <div class="business-flow-icon">😊</div>
+          <div><div class="business-flow-text">実質負担が軽減</div><div class="business-flow-sub">他社より「お得」に見える</div></div>
+        </div>
+      </div>
+
+      <div class="point-box">
+        <div class="point-box-title">📈 受注率アップの理由</div>
+        <p>① 他社にない「ご遺族還元」という付加価値<br>② 実質的な葬儀費用負担が軽くなる<br>③ 同プランでも「Reiがある葬儀社」が選ばれる</p>
+      </div>
+
+      <h3>従来との比較</h3>
+
+      <div class="compare-card">
+        <div class="compare-card-title">ご遺族への還元</div>
+        <div class="compare-row">
+          <div class="compare-item rei">
+            <div class="compare-item-label">Rei</div>
+            <div class="compare-item-value">88.4%還元 <span class="win-badge">勝</span></div>
+          </div>
+          <div class="compare-item other">
+            <div class="compare-item-label">従来</div>
+            <div class="compare-item-value">還元なし</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-card">
+        <div class="compare-card-title">遠方からの参加</div>
+        <div class="compare-row">
+          <div class="compare-item rei">
+            <div class="compare-item-label">Rei</div>
+            <div class="compare-item-value">スマホで簡単 <span class="win-badge">勝</span></div>
+          </div>
+          <div class="compare-item other">
+            <div class="compare-item-label">従来</div>
+            <div class="compare-item-value">郵送のみ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-card">
+        <div class="compare-card-title">メッセージ</div>
+        <div class="compare-row">
+          <div class="compare-item rei">
+            <div class="compare-item-label">Rei</div>
+            <div class="compare-item-value">文章で届く <span class="win-badge">勝</span></div>
+          </div>
+          <div class="compare-item other">
+            <div class="compare-item-label">従来</div>
+            <div class="compare-item-value">名前のみ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-card">
+        <div class="compare-card-title">葬儀社の手間</div>
+        <div class="compare-row">
+          <div class="compare-item rei">
+            <div class="compare-item-label">Rei</div>
+            <div class="compare-item-value">ほぼゼロ <span class="win-badge">勝</span></div>
+          </div>
+          <div class="compare-item other">
+            <div class="compare-item-label">従来</div>
+            <div class="compare-item-value">集計・管理必要</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>葬儀社様の3つのメリット</h3>
+      <ul class="info-list">
+        <li><span class="info-icon">1</span><div><strong>他社見積もりに勝てる</strong><br>還元という付加価値で受注率アップ</div></li>
+        <li><span class="info-icon">2</span><div><strong>工数が増えない</strong><br>献杯ページは数分で作成完了</div></li>
+        <li><span class="info-icon">3</span><div><strong>セキュリティ万全</strong><br>葬儀社ごとにデータ完全分離</div></li>
+      </ul>
+    </section>
+
+    <!-- Chapter 3 -->
+    <section class="chapter" id="chapter3">
+      <div class="chapter-header">
+        <div class="chapter-number">3</div>
+        <h2 class="chapter-title">システムの仕組み</h2>
+      </div>
+
+      <h3>全体の流れ</h3>
+      <div class="flow">
+        <div class="flow-item"><div class="flow-number">1</div><div class="flow-content"><h4>葬儀社がログイン</h4><p>管理画面にアクセス</p></div></div>
+        <div class="flow-item"><div class="flow-number">2</div><div class="flow-content"><h4>献杯ページ作成</h4><p>故人名・URL・パスワードを入力</p></div></div>
+        <div class="flow-item"><div class="flow-number">3</div><div class="flow-content"><h4>URLを共有</h4><p>LINE・メールで参列できない方へ</p></div></div>
+        <div class="flow-item"><div class="flow-number">4</div><div class="flow-content"><h4>献杯を受付</h4><p>金額選択＋メッセージ入力</p></div></div>
+        <div class="flow-item"><div class="flow-number">5</div><div class="flow-content"><h4>ご遺族が確認</h4><p>専用ポータルで一覧表示</p></div></div>
+      </div>
+
+      <h3>3種類のユーザー</h3>
+
+      <div class="user-card">
+        <div class="user-card-header">
+          <span class="user-card-icon">🏢</span>
+          <span class="user-card-title">葬儀社様</span>
+        </div>
+        <div class="user-card-content">
+          <strong>できること：</strong>献杯ページ作成・管理、入金確認
+          <span><strong>アクセス：</strong>葬儀社名＋パスワード</span>
+        </div>
+      </div>
+
+      <div class="user-card">
+        <div class="user-card-header">
+          <span class="user-card-icon">👤</span>
+          <span class="user-card-title">送金者</span>
+        </div>
+        <div class="user-card-content">
+          <strong>できること：</strong>献杯（送金）、メッセージ送信
+          <span><strong>アクセス：</strong>共有されたURL</span>
+        </div>
+      </div>
+
+      <div class="user-card">
+        <div class="user-card-header">
+          <span class="user-card-icon">👨‍👩‍👧</span>
+          <span class="user-card-title">ご遺族</span>
+        </div>
+        <div class="user-card-content">
+          <strong>できること：</strong>献杯一覧・メッセージ閲覧
+          <span><strong>アクセス：</strong>専用URL＋パスワード</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 4 -->
+    <section class="chapter" id="chapter4">
+      <div class="chapter-header">
+        <div class="chapter-number">4</div>
+        <h2 class="chapter-title">料金について</h2>
+      </div>
+
+      <h3>葬儀社様の費用</h3>
+
+      <div class="price-section">
+        <div class="price-item">
+          <div class="price-label">初期導入費用</div>
+          <div class="price-value">500万円</div>
+          <div class="price-note">システム利用開始時に1回のみ</div>
+        </div>
+        <div class="price-item">
+          <div class="price-label">月額費用</div>
+          <div class="price-value">無料</div>
+          <div class="price-note">毎月の固定費用は一切なし</div>
+        </div>
+      </div>
+
+      <h3>献杯1件あたりの手数料内訳</h3>
+
+      <div class="fee-breakdown">
+        <div class="fee-breakdown-title">💰 手数料の内訳（合計11.6%）</div>
+        
+        <div class="fee-row">
+          <span class="fee-label">Stripe決済手数料</span>
+          <span class="fee-percent">3.6%</span>
+        </div>
+        <div class="fee-row">
+          <span class="fee-label">Reiシステム利用料</span>
+          <span class="fee-percent">8.0%</span>
+        </div>
+        <div class="fee-row total">
+          <span class="fee-label">手数料合計</span>
+          <span class="fee-percent">11.6%</span>
+        </div>
+        <div class="fee-row highlight">
+          <span class="fee-label">👨‍👩‍👧 ご遺族への還元</span>
+          <span class="fee-percent">88.4%</span>
+        </div>
+      </div>
+
+      <div class="point-box">
+        <div class="point-box-title">💡 計算例</div>
+        <p>献杯金額 10,000円 の場合<br><br>
+        ・Stripe手数料：360円（3.6%）<br>
+        ・Rei利用料：800円（8.0%）<br>
+        ・<strong>ご遺族へ：8,840円（88.4%）</strong></p>
+      </div>
+
+      <h3>導入の流れ</h3>
+      <div class="flow">
+        <div class="flow-item"><div class="flow-number">1</div><div class="flow-content"><h4>お問い合わせ</h4><p>システムのご説明</p></div></div>
+        <div class="flow-item"><div class="flow-number">2</div><div class="flow-content"><h4>ご契約・お支払い</h4><p>契約書締結、初期費用お支払い</p></div></div>
+        <div class="flow-item"><div class="flow-number">3</div><div class="flow-content"><h4>利用開始</h4><p><strong>入金確認後、即日利用可能</strong></p></div></div>
+      </div>
+
+      <h3>よくある質問</h3>
+      <ul class="info-list">
+        <li><span class="info-icon">Q</span><div><strong>献杯0件でも費用は？</strong><br>月額無料なので追加費用なし</div></li>
+        <li><span class="info-icon">Q</span><div><strong>ページ数の制限は？</strong><br>無制限。追加料金なし</div></li>
+        <li><span class="info-icon">Q</span><div><strong>複数店舗で使える？</strong><br>1契約で複数店舗OK</div></li>
+      </ul>
+    </section>
+
+    <!-- Chapter 5 -->
+    <section class="chapter" id="chapter5">
+      <div class="chapter-header">
+        <div class="chapter-number">5</div>
+        <h2 class="chapter-title">営業トーク集</h2>
+      </div>
+      <p>よくある質問と回答例です。</p>
+
+      <h3>①「不謹慎では？」</h3>
+      <div class="talk-script">
+        <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「オンラインでお金を集めるのは不謹慎では…」</p></div>
+        <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p>おっしゃる通りです。私たちも同じことを考えました。<br><br>ただReiは「お金を集める」ではなく<strong>「参列できない方の想いを届ける」</strong>システムです。<br><br>遠方でも故人を想う気持ちは同じ。その想いを形にする手段としてご検討ください。</p></div>
+      </div>
+
+      <h3>②「高齢者が多いので心配」</h3>
+      <div class="talk-script">
+        <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「お客様は高齢者が多く、操作できるか…」</p></div>
+        <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p><strong>献杯するのは「参列できない方」</strong>です。遠方の方、仕事で忙しい方が中心。比較的若い世代が多いです。<br><br>ご遺族は「見るだけ」なので複雑な操作は不要です。</p></div>
+      </div>
+
+      <h3>③「500万円は高い」</h3>
+      <div class="talk-script">
+        <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「初期費用500万円は高いです…」</p></div>
+        <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p>ポイントは<strong>「月額費用が無料」</strong>という点です。<br><br>多くのシステムは月額費用がかかり、総コストが増えます。Reiは初期費用のみなので、長く使うほどメリットが出ます。<br><br>88.4%還元を実現するため、利益を最小限に抑えています。</p></div>
+      </div>
+
+      <h3>④「従来のやり方で十分」</h3>
+      <div class="talk-script">
+        <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「今のやり方で十分です…」</p></div>
+        <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p>Reiは従来を<strong>「置き換える」のではなく「選択肢を増やす」</strong>ものです。<br><br>参列できる方は従来通り。できない方にはReiという選択肢を。<br><br><strong>何より「他社見積もりに勝ちやすくなる」</strong>メリットがあります。</p></div>
+      </div>
+
+      <h3>⑤「セキュリティが心配」</h3>
+      <div class="talk-script">
+        <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「個人情報の漏洩が心配です…」</p></div>
+        <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p><strong>①葬儀社ごとの完全データ分離</strong><br>他社データは一切見えません。<br><br><strong>②ご遺族ポータルのパスワード保護</strong><br>設定したパスワードで保護。<br><br><strong>③決済はStripe</strong><br>カード情報はReiに保存されません。</p></div>
+      </div>
+    </section>
+
+    <div class="cta">
+      <h2>📝 理解できましたか？</h2>
+      <p>営業テストに挑戦しましょう。<br>80点以上で合格です。</p>
+      <a href="sales-test.html" class="cta-btn">営業テストを受ける →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2024 Rei システム・理念解説</p>
+  </footer>
+</body>
+</html>
