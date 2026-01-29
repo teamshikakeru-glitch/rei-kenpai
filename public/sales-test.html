@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rei 営業テスト</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --color-bg: #f8f9fa;
+      --color-white: #ffffff;
+      --color-primary: #2d5a47;
+      --color-primary-light: #3d7a5f;
+      --color-primary-pale: #e8f0ec;
+      --color-accent: #c9a962;
+      --color-text: #2c2c2c;
+      --color-text-light: #5a5a5a;
+      --color-text-muted: #8a8a8a;
+      --color-border: #e5e2dd;
+      --color-error: #dc3545;
+      --color-success: #28a745;
+      --shadow-soft: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-medium: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-symbol {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .logo-text {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+
+    .progress-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    .progress-bar {
+      width: 200px;
+      height: 8px;
+      background: var(--color-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .start-screen {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .start-screen h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+    }
+
+    .start-screen p {
+      color: var(--color-text-light);
+      margin-bottom: 2rem;
+    }
+
+    .test-info {
+      background: var(--color-primary-pale);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .test-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-primary);
+    }
+
+    .test-info ul {
+      list-style: none;
+      font-size: 0.9rem;
+    }
+
+    .test-info li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(45, 90, 71, 0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .test-info li:last-child {
+      border-bottom: none;
+    }
+
+    .name-input-section {
+      margin-bottom: 2rem;
+    }
+
+    .name-input-section label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+
+    .name-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border: 2px solid var(--color-border);
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+
+    .name-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2.5rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .btn-primary:disabled {
+      background: var(--color-text-muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--color-white);
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-primary-pale);
+    }
+
+    .question-card {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 1.5rem;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-number {
+      background: var(--color-primary);
+      color: var(--color-white);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .question-category {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      background: var(--color-bg);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--color-bg);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .option:hover {
+      background: var(--color-primary-pale);
+    }
+
+    .option.selected {
+      background: var(--color-primary-pale);
+      border-color: var(--color-primary);
+    }
+
+    .option input {
+      display: none;
+    }
+
+    .option-marker {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--color-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .option.selected .option-marker {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .option-text {
+      flex: 1;
+      font-size: 0.95rem;
+    }
+
+    .option.multi .option-marker {
+      border-radius: 4px;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 1rem;
+      font-family: inherit;
+      font-size: 1rem;
+      border: 2px solid var(--color-border);
+      border-radius: 12px;
+      resize: vertical;
+      min-height: 60px;
+      transition: border-color 0.3s;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    .text-input.large {
+      min-height: 150px;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .char-count.over {
+      color: var(--color-error);
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .nav-info {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .section-divider {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-divider h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-divider p {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    .result-screen {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 3rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .result-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-title.pass {
+      color: var(--color-success);
+    }
+
+    .result-title.fail {
+      color: var(--color-error);
+    }
+
+    .result-subtitle {
+      color: var(--color-text-light);
+    }
+
+    .score-card {
+      background: var(--color-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .score-total {
+      text-align: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 1.5rem;
+    }
+
+    .score-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .score-max {
+      font-size: 1.2rem;
+      color: var(--color-text-muted);
+    }
+
+    .score-breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .score-item {
+      text-align: center;
+    }
+
+    .score-item-label {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .score-item-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .review-section {
+      margin-top: 2rem;
+    }
+
+    .review-section h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-primary);
+    }
+
+    .review-item {
+      background: var(--color-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .review-item.correct {
+      border-left: 4px solid var(--color-success);
+    }
+
+    .review-item.incorrect {
+      border-left: 4px solid var(--color-error);
+    }
+
+    .review-question {
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+
+    .review-answer {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+
+    .review-answer span {
+      display: block;
+      margin-top: 0.25rem;
+    }
+
+    .your-answer {
+      color: var(--color-text);
+    }
+
+    .correct-answer {
+      color: var(--color-success);
+      font-weight: 500;
+    }
+
+    .ai-feedback {
+      background: var(--color-primary-pale);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .ai-feedback-label {
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: #fee;
+      border: 1px solid var(--color-error);
+      color: var(--color-error);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .header {
+        padding: 1rem;
+      }
+
+      .progress-bar {
+        width: 100px;
+      }
+
+      .question-card {
+        padding: 1.5rem;
+      }
+
+      .score-breakdown {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .nav-buttons .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-symbol">礼</span>
+        <span class="logo-text">営業テスト</span>
+      </div>
+      <div class="progress-info hidden" id="progressInfo">
+        <span id="progressText">問題 0 / 25</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="startScreen" class="start-screen">
+      <h1>📝 Rei 営業テスト</h1>
+      <p>このテストに合格すると、弊社営業マンとして活動できます。</p>
+      
+      <div class="test-info">
+        <h3>📋 テスト概要</h3>
+        <ul>
+          <li><span>第1部</span><span>システム理解テスト（20問）</span></li>
+          <li><span>第2部</span><span>想定質問対応テスト（5問）</span></li>
+          <li><span>合格ライン</span><span>80点以上 / 100点</span></li>
+          <li><span>目安時間</span><span>約30〜45分</span></li>
+        </ul>
+      </div>
+
+      <div class="name-input-section">
+        <label for="userName">お名前を入力してください</label>
+        <input type="text" id="userName" class="name-input" placeholder="山田 太郎">
+      </div>
+
+      <button class="btn btn-primary" id="startBtn" onclick="startTest()">
+        テストを開始する →
+      </button>
+    </div>
+
+    <div id="questionContainer" class="hidden"></div>
+    <div id="resultScreen" class="hidden"></div>
+  </div>
+
+  <script>
+    // =============================================
+    // Supabase設定
+    // =============================================
+    // ⚠️ 以下のURLとキーを実際の値に置き換えてください
+    const SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // =============================================
+    // テストデータ
+    // =============================================
+    const questions = [
+      // 第1部：理念・コンセプト（問1-5）
+      {
+        id: 1,
+        section: 1,
+        category: "理念・コンセプト",
+        type: "single",
+        question: "Reiが解決しようとしている課題として、最も適切なものはどれですか？",
+        options: [
+          "香典の電子決済化による業務効率化",
+          "距離や仕事で参列できない人の想いが届かない問題",
+          "葬儀費用の削減",
+          "オンライン葬儀の普及"
+        ],
+        correct: 1,
+        points: 2
+      },
+      {
+        id: 2,
+        section: 1,
+        category: "理念・コンセプト",
+        type: "single",
+        question: "Reiの開発理念として正しいものはどれですか？",
+        options: [
+          "葬儀の価値は参列者数で決まる",
+          "葬儀の価値は費用の大きさで決まる",
+          "葬儀の価値は「どれだけ想われているか」で決まる",
+          "葬儀の価値は形式の豪華さで決まる"
+        ],
+        correct: 2,
+        points: 2
+      },
+      {
+        id: 3,
+        section: 1,
+        category: "理念・コンセプト",
+        type: "single",
+        question: "Reiが「献杯」という形を選んだ理由として、最も適切なものはどれですか？",
+        options: [
+          "決済手数料が安いから",
+          "想いが一番まっすぐ届く形だから",
+          "他社がやっていないから",
+          "葬儀社の要望が多かったから"
+        ],
+        correct: 1,
+        points: 2
+      },
+      {
+        id: 4,
+        section: 1,
+        category: "理念・コンセプト",
+        type: "text",
+        question: "以下の文章の空欄に入る言葉を記述してください。\n\n「葬儀の価値は『そこにいたかどうか』ではなく『＿＿＿＿＿＿＿＿』で決まる」",
+        correctKeywords: ["どれだけ想われているか", "想われているか", "どれだけ想われている"],
+        points: 2
+      },
+      {
+        id: 5,
+        section: 1,
+        category: "理念・コンセプト",
+        type: "text",
+        question: "Reiが大切にしている考え方について、30文字以内で説明してください。",
+        maxLength: 30,
+        rubric: "参列できない人の想いも大切にする、距離があっても想いは届けられる、という趣旨が含まれていれば正解",
+        points: 2
+      },
+      // 第1部：機能・仕組み（問6-12）
+      {
+        id: 6,
+        section: 1,
+        category: "機能・仕組み",
+        type: "single",
+        question: "献杯の流れとして正しい順番はどれですか？",
+        options: [
+          "URL共有 → ページ作成 → 送金 → 遺族確認",
+          "ページ作成 → URL共有 → 送金 → 遺族確認",
+          "送金 → ページ作成 → URL共有 → 遺族確認",
+          "ページ作成 → 送金 → URL共有 → 遺族確認"
+        ],
+        correct: 1,
+        points: 2
+      },
+      {
+        id: 7,
+        section: 1,
+        category: "機能・仕組み",
+        type: "multi",
+        question: "葬儀社管理画面でできることとして、正しいものをすべて選んでください。",
+        options: [
+          "献杯プロジェクトの作成",
+          "献杯金額の総額確認",
+          "ご遺族ポータルのパスワード設定",
+          "他社の献杯データの閲覧"
+        ],
+        correct: [0, 1, 2],
+        points: 2
+      },
+      {
+        id: 8,
+        section: 1,
+        category: "機能・仕組み",
+        type: "multi",
+        question: "ご遺族がポータルで確認できる情報として、正しいものをすべて選んでください。",
+        options: [
+          "献杯の総額",
+          "献杯者のお名前",
+          "献杯者からのメッセージ",
+          "他の葬儀の献杯情報"
+        ],
+        correct: [0, 1, 2],
+        points: 2
+      },
+      {
+        id: 9,
+        section: 1,
+        category: "機能・仕組み",
+        type: "single",
+        question: "セキュリティ対策として、Reiが実装している仕組みはどれですか？",
+        options: [
+          "葬儀社ごとの完全なデータ分離",
+          "ご遺族ポータルのパスワード保護",
+          "AとBの両方",
+          "特別な対策はしていない"
+        ],
+        correct: 2,
+        points: 2
+      },
+      {
+        id: 10,
+        section: 1,
+        category: "機能・仕組み",
+        type: "single",
+        question: "ご遺族ポータルへのアクセス方法として正しいものはどれですか？",
+        options: [
+          "誰でも自由にアクセスできる",
+          "葬儀社が設定したパスワードで保護されている",
+          "ご遺族の顔認証が必要",
+          "葬儀社経由でのみ閲覧可能"
+        ],
+        correct: 1,
+        points: 2
+      },
+      {
+        id: 11,
+        section: 1,
+        category: "機能・仕組み",
+        type: "multi",
+        question: "献杯ページで送金者が入力する情報として、正しいものをすべて選んでください。",
+        options: [
+          "お名前",
+          "金額",
+          "メッセージ",
+          "銀行口座番号"
+        ],
+        correct: [0, 1, 2],
+        points: 2
+      },
+      {
+        id: 12,
+        section: 1,
+        category: "機能・仕組み",
+        type: "text",
+        question: "Reiのデータ管理について、50文字以内で説明してください。（葬儀社間のデータ分離について触れること）",
+        maxLength: 50,
+        rubric: "葬儀社ごとにデータが完全に分離されている、他社のデータにはアクセスできない、という趣旨が含まれていれば正解",
+        points: 2
+      },
+      // 第1部：料金・導入（問13-17）
+      {
+        id: 13,
+        section: 1,
+        category: "料金・導入",
+        type: "single",
+        question: "ご遺族への還元率として正しいものはどれですか？",
+        options: [
+          "70.0%",
+          "80.0%",
+          "88.4%",
+          "95.0%"
+        ],
+        correct: 2,
+        points: 2
+      },
+      {
+        id: 14,
+        section: 1,
+        category: "料金・導入",
+        type: "single",
+        question: "葬儀社様の初期導入費用として正しいものはどれですか？",
+        options: [
+          "無料",
+          "100万円",
+          "500万円",
+          "月額制のみ"
+        ],
+        correct: 2,
+        points: 2
+      },
+      {
+        id: 15,
+        section: 1,
+        category: "料金・導入",
+        type: "single",
+        question: "初期導入後の月額費用として正しいものはどれですか？",
+        options: [
+          "月額5万円",
+          "月額10万円",
+          "無料",
+          "献杯件数に応じて変動"
+        ],
+        correct: 2,
+        points: 2
+      },
+      {
+        id: 16,
+        section: 1,
+        category: "料金・導入",
+        type: "single",
+        question: "1件の献杯あたりの手数料率として正しいものはどれですか？",
+        options: [
+          "5.0%",
+          "8.0%",
+          "11.6%",
+          "15.0%"
+        ],
+        correct: 2,
+        points: 2
+      },
+      {
+        id: 17,
+        section: 1,
+        category: "料金・導入",
+        type: "single",
+        question: "導入までの期間として正しいものはどれですか？",
+        options: [
+          "申し込みから1ヶ月後",
+          "申し込みから2週間後",
+          "入金確認後、即日利用可能",
+          "研修完了後（約1週間）"
+        ],
+        correct: 2,
+        points: 2
+      },
+      // 第1部：営業上の強み（問18-20）
+      {
+        id: 18,
+        section: 1,
+        category: "営業上の強み",
+        type: "single",
+        question: "Reiの導入における葬儀社様側のメリットとして、最も重要なものはどれですか？",
+        options: [
+          "スタッフの工数が増えない（簡単に運用できる）",
+          "広告宣伝ができる",
+          "葬儀費用を値上げできる",
+          "スタッフを削減できる"
+        ],
+        correct: 0,
+        points: 2
+      },
+      {
+        id: 19,
+        section: 1,
+        category: "営業上の強み",
+        type: "text",
+        question: "「スタッフの工数が増えない」とは具体的にどういうことか、50文字以内で説明してください。",
+        maxLength: 50,
+        rubric: "操作が簡単、複雑な作業が不要、既存業務の負担にならない、という趣旨が含まれていれば正解",
+        points: 2
+      },
+      {
+        id: 20,
+        section: 1,
+        category: "営業上の強み",
+        type: "text",
+        question: "Reiを導入することで葬儀社様が顧客に提供できる新しい価値について、50文字以内で説明してください。",
+        maxLength: 50,
+        rubric: "遠方の人の想いを届けられる、参列できない人も弔意を示せる、という趣旨が含まれていれば正解",
+        points: 2
+      },
+      // 第2部：想定質問対応（問21-25）
+      {
+        id: 21,
+        section: 2,
+        category: "想定質問対応",
+        type: "essay",
+        question: "葬儀社様からの質問：\n\n「オンラインでお金を集めるのは、なんだか不謹慎な気がするのですが…」\n\nこの質問に対して、どのように回答しますか？",
+        maxLength: 200,
+        rubric: "お気持ちへの共感、Reiの理念（想いを届ける手段）の説明、従来の香典との類似性、遠方の方の想いを大切にする趣旨が含まれていれば高評価",
+        points: 12
+      },
+      {
+        id: 22,
+        section: 2,
+        category: "想定質問対応",
+        type: "essay",
+        question: "葬儀社様からの質問：\n\n「高齢の方が多いので、スマホ操作ができるか心配です」\n\nこの質問に対して、どのように回答しますか？",
+        maxLength: 200,
+        rubric: "送金する側は比較的若い世代が多い点、操作の簡単さ、ご遺族は閲覧のみで簡単、という趣旨が含まれていれば高評価",
+        points: 12
+      },
+      {
+        id: 23,
+        section: 2,
+        category: "想定質問対応",
+        type: "essay",
+        question: "葬儀社様からの質問：\n\n「初期費用500万円は高いと感じます。なぜこの金額なのですか？」\n\nこの質問に対して、どのように回答しますか？",
+        maxLength: 200,
+        rubric: "初期費用後は月額無料の説明、長期的なコストメリット、システムの価値・品質、という趣旨が含まれていれば高評価",
+        points: 12
+      },
+      {
+        id: 24,
+        section: 2,
+        category: "想定質問対応",
+        type: "essay",
+        question: "葬儀社様からの質問：\n\n「うちは従来のやり方で十分です。わざわざ新しいシステムを入れる必要はないのでは？」\n\nこの質問に対して、どのように回答しますか？",
+        maxLength: 200,
+        rubric: "従来のやり方を否定しない姿勢、参列できない方への新しい選択肢、顧客満足度向上、という趣旨が含まれていれば高評価",
+        points: 12
+      },
+      {
+        id: 25,
+        section: 2,
+        category: "想定質問対応",
+        type: "essay",
+        question: "葬儀社様からの質問：\n\n「セキュリティは本当に大丈夫ですか？個人情報の漏洩が心配です」\n\nこの質問に対して、どのように回答しますか？",
+        maxLength: 200,
+        rubric: "葬儀社間のデータ分離、パスワード保護、Stripeのセキュリティ、という具体的な対策が含まれていれば高評価",
+        points: 12
+      }
+    ];
+
+    // =============================================
+    // 状態管理
+    // =============================================
+    let currentQuestion = 0;
+    let answers = {};
+    let userName = "";
+    let testStartTime = null;
+
+    // =============================================
+    // テスト開始
+    // =============================================
+    function startTest() {
+      userName = document.getElementById('userName').value.trim();
+      if (!userName) {
+        alert('お名前を入力してください');
+        return;
+      }
+      
+      testStartTime = new Date();
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('progressInfo').classList.remove('hidden');
+      showQuestion(0);
+    }
+
+    // =============================================
+    // 問題表示
+    // =============================================
+    function showQuestion(index) {
+      currentQuestion = index;
+      const q = questions[index];
+      const container = document.getElementById('questionContainer');
+      container.classList.remove('hidden');
+
+      document.getElementById('progressText').textContent = `問題 ${index + 1} / ${questions.length}`;
+      document.getElementById('progressFill').style.width = `${((index + 1) / questions.length) * 100}%`;
+
+      let sectionDivider = '';
+      if (index === 0) {
+        sectionDivider = `
+          <div class="section-divider">
+            <h2>第1部：システム理解テスト</h2>
+            <p>選択式・記述式 全20問</p>
+          </div>
+        `;
+      } else if (index === 20) {
+        sectionDivider = `
+          <div class="section-divider">
+            <h2>第2部：想定質問対応テスト</h2>
+            <p>記述式 全5問（AI採点）</p>
+          </div>
+        `;
+      }
+
+      let questionHTML = sectionDivider + `
+        <div class="question-card">
+          <div class="question-header">
+            <div class="question-number">${index + 1}</div>
+            <span class="question-category">${q.category}</span>
+          </div>
+          <div class="question-text">${q.question.replace(/\n/g, '<br>')}</div>
+          ${renderAnswerInput(q)}
+        </div>
+        <div class="navigation">
+          <div class="nav-info">
+            ${index + 1} / ${questions.length} 問
+          </div>
+          <div class="nav-buttons">
+            ${index > 0 ? '<button class="btn btn-secondary" onclick="prevQuestion()">← 前へ</button>' : ''}
+            ${index < questions.length - 1 
+              ? '<button class="btn btn-primary" onclick="nextQuestion()">次へ →</button>'
+              : '<button class="btn btn-primary" onclick="submitTest()">採点する →</button>'
+            }
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = questionHTML;
+      restoreAnswer(q);
+    }
+
+    function renderAnswerInput(q) {
+      if (q.type === 'single') {
+        return `
+          <div class="options">
+            ${q.options.map((opt, i) => `
+              <label class="option" onclick="selectOption(${q.id}, ${i})">
+                <input type="radio" name="q${q.id}" value="${i}">
+                <span class="option-marker">${String.fromCharCode(65 + i)}</span>
+                <span class="option-text">${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        `;
+      } else if (q.type === 'multi') {
+        return `
+          <div class="options">
+            ${q.options.map((opt, i) => `
+              <label class="option multi" onclick="toggleMultiOption(${q.id}, ${i})">
+                <input type="checkbox" name="q${q.id}" value="${i}">
+                <span class="option-marker">${String.fromCharCode(65 + i)}</span>
+                <span class="option-text">${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+          <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.75rem;">※複数選択可</p>
+        `;
+      } else if (q.type === 'text') {
+        return `
+          <textarea class="text-input" id="textAnswer${q.id}" 
+            placeholder="回答を入力してください"
+            oninput="saveTextAnswer(${q.id}, this.value, ${q.maxLength || 100})"
+            maxlength="${(q.maxLength || 100) + 20}"></textarea>
+          <div class="char-count" id="charCount${q.id}">0 / ${q.maxLength || 100}文字</div>
+        `;
+      } else if (q.type === 'essay') {
+        return `
+          <textarea class="text-input large" id="textAnswer${q.id}"
+            placeholder="回答を入力してください（${q.maxLength}文字以内）"
+            oninput="saveTextAnswer(${q.id}, this.value, ${q.maxLength})"
+            maxlength="${q.maxLength + 50}"></textarea>
+          <div class="char-count" id="charCount${q.id}">0 / ${q.maxLength}文字</div>
+        `;
+      }
+    }
+
+    function selectOption(qId, optionIndex) {
+      answers[qId] = optionIndex;
+      document.querySelectorAll(`[name="q${qId}"]`).forEach((input, i) => {
+        input.closest('.option').classList.toggle('selected', i === optionIndex);
+      });
+    }
+
+    function toggleMultiOption(qId, optionIndex) {
+      if (!answers[qId]) answers[qId] = [];
+      const idx = answers[qId].indexOf(optionIndex);
+      if (idx > -1) {
+        answers[qId].splice(idx, 1);
+      } else {
+        answers[qId].push(optionIndex);
+      }
+      
+      const option = document.querySelectorAll(`[name="q${qId}"]`)[optionIndex].closest('.option');
+      option.classList.toggle('selected');
+    }
+
+    function saveTextAnswer(qId, value, maxLength) {
+      answers[qId] = value;
+      const charCount = document.getElementById(`charCount${qId}`);
+      const len = value.length;
+      charCount.textContent = `${len} / ${maxLength}文字`;
+      charCount.classList.toggle('over', len > maxLength);
+    }
+
+    function restoreAnswer(q) {
+      if (answers[q.id] === undefined) return;
+
+      if (q.type === 'single') {
+        const options = document.querySelectorAll(`[name="q${q.id}"]`);
+        options[answers[q.id]].closest('.option').classList.add('selected');
+      } else if (q.type === 'multi') {
+        const options = document.querySelectorAll(`[name="q${q.id}"]`);
+        answers[q.id].forEach(i => {
+          options[i].closest('.option').classList.add('selected');
+        });
+      } else if (q.type === 'text' || q.type === 'essay') {
+        const textarea = document.getElementById(`textAnswer${q.id}`);
+        textarea.value = answers[q.id];
+        saveTextAnswer(q.id, answers[q.id], q.maxLength || 100);
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < questions.length - 1) {
+        showQuestion(currentQuestion + 1);
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        showQuestion(currentQuestion - 1);
+        window.scrollTo(0, 0);
+      }
+    }
+
+    // =============================================
+    // テスト提出
+    // =============================================
+    function submitTest() {
+      let unanswered = [];
+      questions.forEach((q, i) => {
+        if (answers[q.id] === undefined || 
+            (Array.isArray(answers[q.id]) && answers[q.id].length === 0) ||
+            (typeof answers[q.id] === 'string' && answers[q.id].trim() === '')) {
+          unanswered.push(i + 1);
+        }
+      });
+
+      if (unanswered.length > 0) {
+        if (!confirm(`問${unanswered.join(', ')}が未回答です。このまま採点しますか？`)) {
+          return;
+        }
+      }
+
+      showLoading();
+      setTimeout(() => calculateResults(), 1500);
+    }
+
+    function showLoading() {
+      document.getElementById('questionContainer').innerHTML = `
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <p>採点中です...</p>
+        </div>
+      `;
+    }
+
+    // =============================================
+    // 採点処理
+    // =============================================
+    function calculateResults() {
+      let section1SelectScore = 0;
+      let section1SelectTotal = 0;
+      let section1TextScore = 0;
+      let section1TextTotal = 0;
+      let section2Score = 0;
+      let section2Total = 0;
+
+      const results = questions.map(q => {
+        let isCorrect = false;
+        let score = 0;
+        let feedback = '';
+
+        if (q.type === 'single') {
+          isCorrect = answers[q.id] === q.correct;
+          score = isCorrect ? q.points : 0;
+          section1SelectTotal += q.points;
+          section1SelectScore += score;
+        } else if (q.type === 'multi') {
+          const userAnswer = answers[q.id] || [];
+          const correctSet = new Set(q.correct);
+          const userSet = new Set(userAnswer);
+          isCorrect = correctSet.size === userSet.size && 
+                      [...correctSet].every(x => userSet.has(x));
+          score = isCorrect ? q.points : 0;
+          section1SelectTotal += q.points;
+          section1SelectScore += score;
+        } else if (q.type === 'text') {
+          const userAnswer = (answers[q.id] || '').trim();
+          if (q.correctKeywords) {
+            isCorrect = q.correctKeywords.some(kw => userAnswer.includes(kw));
+            score = isCorrect ? q.points : 0;
+          } else {
+            score = userAnswer.length > 5 ? q.points : 0;
+            isCorrect = score > 0;
+          }
+          section1TextTotal += q.points;
+          section1TextScore += score;
+        } else if (q.type === 'essay') {
+          const userAnswer = (answers[q.id] || '').trim();
+          const result = scoreEssay(q.id, userAnswer, q.rubric);
+          score = result.score;
+          feedback = result.feedback;
+          isCorrect = score >= q.points * 0.7;
+          section2Total += q.points;
+          section2Score += score;
+        }
+
+        return {
+          question: q,
+          userAnswer: answers[q.id],
+          isCorrect,
+          score,
+          feedback
+        };
+      });
+
+      const totalScore = section1SelectScore + section1TextScore + section2Score;
+      const maxScore = section1SelectTotal + section1TextTotal + section2Total;
+      const passed = totalScore >= 80;
+      const duration = Math.round((new Date() - testStartTime) / 60000);
+
+      const testData = {
+        userName,
+        totalScore,
+        maxScore,
+        section1SelectScore,
+        section1SelectTotal,
+        section1TextScore,
+        section1TextTotal,
+        section2Score,
+        section2Total,
+        passed,
+        results,
+        duration
+      };
+
+      // Supabaseに保存
+      saveToSupabase(testData);
+    }
+
+    function scoreEssay(qId, answer, rubric) {
+      if (!answer || answer.length < 20) {
+        return { score: 0, feedback: '回答が短すぎます。より具体的に説明してください。' };
+      }
+
+      const keywords = {
+        21: ['想い', '届', '不謹慎', '香典', '遠方', '参列', '気持ち', '大切'],
+        22: ['簡単', '若い', '送金', '閲覧', '操作', 'シンプル', '世代'],
+        23: ['月額', '無料', '長期', 'コスト', '初期', 'メリット', '品質'],
+        24: ['選択肢', '否定', '従来', '参列できない', '新しい', '価値', '満足'],
+        25: ['分離', 'パスワード', 'セキュリティ', 'Stripe', '保護', 'データ', '他社']
+      };
+
+      const qKeywords = keywords[qId] || keywords[21];
+      
+      let matchCount = 0;
+      qKeywords.forEach(kw => {
+        if (answer.includes(kw)) matchCount++;
+      });
+
+      const ratio = matchCount / qKeywords.length;
+      let score, feedback;
+
+      if (ratio >= 0.5 && answer.length >= 80) {
+        score = 12;
+        feedback = '素晴らしい回答です。重要なポイントが網羅されています。';
+      } else if (ratio >= 0.3 && answer.length >= 50) {
+        score = 9;
+        feedback = '良い回答ですが、もう少し具体的な説明があるとより良くなります。';
+      } else if (ratio >= 0.2 || answer.length >= 40) {
+        score = 6;
+        feedback = '基本的な内容は含まれていますが、重要なポイントが不足しています。';
+      } else {
+        score = 3;
+        feedback = '回答内容が不十分です。Reiの理念や特徴を踏まえた説明が必要です。';
+      }
+
+      return { score, feedback };
+    }
+
+    // =============================================
+    // Supabase保存
+    // =============================================
+    async function saveToSupabase(data) {
+      try {
+        // 受験記録を保存
+        const { data: attempt, error: attemptError } = await supabase
+          .from('sales_test_attempts')
+          .insert({
+            user_name: data.userName,
+            total_score: data.totalScore,
+            section1_select_score: data.section1SelectScore,
+            section1_text_score: data.section1TextScore,
+            section2_score: data.section2Score,
+            max_score: data.maxScore,
+            passed: data.passed,
+            duration_minutes: data.duration
+          })
+          .select()
+          .single();
+
+        if (attemptError) throw attemptError;
+
+        // 回答詳細を保存
+        const answersToInsert = data.results.map(r => ({
+          attempt_id: attempt.id,
+          question_id: r.question.id,
+          question_category: r.question.category,
+          question_type: r.question.type,
+          answer: formatAnswerForDB(r.question, r.userAnswer),
+          score: r.score,
+          max_score: r.question.points,
+          is_correct: r.isCorrect,
+          ai_feedback: r.feedback || null
+        }));
+
+        const { error: answersError } = await supabase
+          .from('sales_test_answers')
+          .insert(answersToInsert);
+
+        if (answersError) throw answersError;
+
+        showResults(data);
+      } catch (error) {
+        console.error('保存エラー:', error);
+        // エラーがあっても結果は表示
+        showResults(data, '結果の保存中にエラーが発生しましたが、テスト結果は表示されます。');
+      }
+    }
+
+    function formatAnswerForDB(q, answer) {
+      if (answer === undefined || answer === null) return '';
+      if (q.type === 'single') return String(answer);
+      if (q.type === 'multi') return JSON.stringify(answer);
+      return String(answer);
+    }
+
+    // =============================================
+    // 結果表示
+    // =============================================
+    function showResults(data, errorMessage = null) {
+      document.getElementById('questionContainer').classList.add('hidden');
+      const resultScreen = document.getElementById('resultScreen');
+      resultScreen.classList.remove('hidden');
+
+      resultScreen.innerHTML = `
+        ${errorMessage ? `<div class="error-message">${errorMessage}</div>` : ''}
+        <div class="result-header">
+          <div class="result-icon">${data.passed ? '🎉' : '📚'}</div>
+          <h1 class="result-title ${data.passed ? 'pass' : 'fail'}">
+            ${data.passed ? '合格おめでとうございます！' : '残念、不合格です'}
+          </h1>
+          <p class="result-subtitle">
+            ${data.userName}さんの結果（所要時間：約${data.duration}分）
+          </p>
+          ${data.passed ? '<p style="color: var(--color-success); margin-top: 0.5rem;">弊社営業マンとして活動できます</p>' : '<p style="color: var(--color-text-muted); margin-top: 0.5rem;">再度学習して挑戦してください</p>'}
+        </div>
+
+        <div class="score-card">
+          <div class="score-total">
+            <span class="score-number">${data.totalScore}</span>
+            <span class="score-max"> / ${data.maxScore}点</span>
+          </div>
+          <div class="score-breakdown">
+            <div class="score-item">
+              <div class="score-item-label">第1部 選択式</div>
+              <div class="score-item-value">${data.section1SelectScore} / ${data.section1SelectTotal}</div>
+            </div>
+            <div class="score-item">
+              <div class="score-item-label">第1部 記述式</div>
+              <div class="score-item-value">${data.section1TextScore} / ${data.section1TextTotal}</div>
+            </div>
+            <div class="score-item">
+              <div class="score-item-label">第2部</div>
+              <div class="score-item-value">${data.section2Score} / ${data.section2Total}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-section">
+          <h3>📝 回答の振り返り</h3>
+          ${data.results.map((r, i) => `
+            <div class="review-item ${r.isCorrect ? 'correct' : 'incorrect'}">
+              <div class="review-question">問${i + 1}. ${r.question.question.split('\n')[0]}</div>
+              <div class="review-answer">
+                <span class="your-answer">あなたの回答: ${formatAnswer(r.question, r.userAnswer)}</span>
+                ${r.question.type === 'single' || r.question.type === 'multi' 
+                  ? `<span class="correct-answer">正解: ${formatCorrectAnswer(r.question)}</span>`
+                  : ''
+                }
+                <span>得点: ${r.score} / ${r.question.points}点</span>
+              </div>
+              ${r.feedback ? `
+                <div class="ai-feedback">
+                  <div class="ai-feedback-label">💬 フィードバック</div>
+                  ${r.feedback}
+                </div>
+              ` : ''}
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+          <button class="btn btn-primary" onclick="location.reload()">もう一度受験する</button>
+        </div>
+      `;
+
+      window.scrollTo(0, 0);
+    }
+
+    function formatAnswer(q, answer) {
+      if (answer === undefined || answer === null || answer === '') return '未回答';
+      
+      if (q.type === 'single') {
+        return `${String.fromCharCode(65 + answer)}. ${q.options[answer]}`;
+      } else if (q.type === 'multi') {
+        if (!answer.length) return '未回答';
+        return answer.map(i => `${String.fromCharCode(65 + i)}`).join(', ');
+      } else {
+        return answer.length > 50 ? answer.substring(0, 50) + '...' : answer;
+      }
+    }
+
+    function formatCorrectAnswer(q) {
+      if (q.type === 'single') {
+        return `${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}`;
+      } else if (q.type === 'multi') {
+        return q.correct.map(i => `${String.fromCharCode(65 + i)}`).join(', ');
+      }
+      return '';
+    }
+  </script>
+</body>
+</html>

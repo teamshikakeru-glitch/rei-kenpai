@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rei 営業テスト管理画面</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --color-bg: #f8f9fa;
+      --color-white: #ffffff;
+      --color-primary: #2d5a47;
+      --color-primary-light: #3d7a5f;
+      --color-primary-pale: #e8f0ec;
+      --color-accent: #c9a962;
+      --color-text: #2c2c2c;
+      --color-text-light: #5a5a5a;
+      --color-text-muted: #8a8a8a;
+      --color-border: #e5e2dd;
+      --color-error: #dc3545;
+      --color-success: #28a745;
+      --color-warning: #ffc107;
+      --shadow-soft: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-medium: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-symbol {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .logo-text {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn-header {
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.15);
+      color: var(--color-white);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-header:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .stat-value.success {
+      color: var(--color-success);
+    }
+
+    .stat-value.error {
+      color: var(--color-error);
+    }
+
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Filters */
+    .filters {
+      background: var(--color-white);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .filter-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-text-light);
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--color-border);
+      background: var(--color-white);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--color-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-color: var(--color-primary);
+    }
+
+    /* Table */
+    .table-container {
+      background: var(--color-white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    th {
+      background: var(--color-bg);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    td {
+      font-size: 0.9rem;
+    }
+
+    tr:hover td {
+      background: var(--color-bg);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-pass {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge-fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .btn-detail {
+      padding: 0.4rem 0.8rem;
+      background: var(--color-primary-pale);
+      color: var(--color-primary);
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-detail:hover {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--color-white);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--color-bg);
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--color-border);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      max-height: calc(90vh - 140px);
+      overflow-y: auto;
+    }
+
+    .detail-section {
+      margin-bottom: 2rem;
+    }
+
+    .detail-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-primary);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .detail-item {
+      background: var(--color-bg);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .detail-item-label {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-item-value {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .answer-item {
+      background: var(--color-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .answer-item.correct {
+      border-left: 3px solid var(--color-success);
+    }
+
+    .answer-item.incorrect {
+      border-left: 3px solid var(--color-error);
+    }
+
+    .answer-question {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .answer-content {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    .answer-content span {
+      display: block;
+      margin-top: 0.25rem;
+    }
+
+    .answer-feedback {
+      background: var(--color-primary-pale);
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--color-text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        flex-wrap: wrap;
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 600px;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-symbol">礼</span>
+        <span class="logo-text">営業テスト管理画面</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-header" onclick="loadData()">🔄 更新</button>
+        <button class="btn-header" onclick="exportCSV()">📥 CSV出力</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-label">総受験者数</div>
+        <div class="stat-value" id="totalAttempts">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">合格者数</div>
+        <div class="stat-value success" id="passedCount">-</div>
+        <div class="stat-sub" id="passRate">合格率: -%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">不合格者数</div>
+        <div class="stat-value error" id="failedCount">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">平均点</div>
+        <div class="stat-value" id="avgScore">-</div>
+        <div class="stat-sub">/ 100点</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <span class="filter-label">絞り込み:</span>
+      <button class="filter-btn active" onclick="filterAttempts('all')">すべて</button>
+      <button class="filter-btn" onclick="filterAttempts('passed')">合格のみ</button>
+      <button class="filter-btn" onclick="filterAttempts('failed')">不合格のみ</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+      <div class="table-header">
+        <h2 class="table-title">受験者一覧</h2>
+        <span id="tableCount">0件</span>
+      </div>
+      <div id="tableBody">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <p>読み込み中...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">詳細</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =============================================
+    // Supabase設定
+    // =============================================
+    // ⚠️ 以下のURLとキーを実際の値に置き換えてください
+  const SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // =============================================
+    // 状態
+    // =============================================
+    let allAttempts = [];
+    let currentFilter = 'all';
+
+    // =============================================
+    // データ読み込み
+    // =============================================
+    async function loadData() {
+      try {
+        const { data, error } = await supabase
+          .from('sales_test_attempts')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        allAttempts = data || [];
+        updateStats();
+        renderTable();
+      } catch (error) {
+        console.error('データ読み込みエラー:', error);
+        document.getElementById('tableBody').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⚠️</div>
+            <p>データの読み込みに失敗しました</p>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem;">Supabaseの設定を確認してください</p>
+          </div>
+        `;
+      }
+    }
+
+    // =============================================
+    // 統計更新
+    // =============================================
+    function updateStats() {
+      const total = allAttempts.length;
+      const passed = allAttempts.filter(a => a.passed).length;
+      const failed = total - passed;
+      const avgScore = total > 0 
+        ? Math.round(allAttempts.reduce((sum, a) => sum + a.total_score, 0) / total)
+        : 0;
+      const passRate = total > 0 ? Math.round((passed / total) * 100) : 0;
+
+      document.getElementById('totalAttempts').textContent = total;
+      document.getElementById('passedCount').textContent = passed;
+      document.getElementById('failedCount').textContent = failed;
+      document.getElementById('avgScore').textContent = avgScore;
+      document.getElementById('passRate').textContent = `合格率: ${passRate}%`;
+    }
+
+    // =============================================
+    // テーブル描画
+    // =============================================
+    function renderTable() {
+      let filtered = allAttempts;
+      
+      if (currentFilter === 'passed') {
+        filtered = allAttempts.filter(a => a.passed);
+      } else if (currentFilter === 'failed') {
+        filtered = allAttempts.filter(a => !a.passed);
+      }
+
+      document.getElementById('tableCount').textContent = `${filtered.length}件`;
+
+      if (filtered.length === 0) {
+        document.getElementById('tableBody').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <p>データがありません</p>
+          </div>
+        `;
+        return;
+      }
+
+      document.getElementById('tableBody').innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>受験日時</th>
+              <th>名前</th>
+              <th>合計点</th>
+              <th>第1部（選択）</th>
+              <th>第1部（記述）</th>
+              <th>第2部</th>
+              <th>所要時間</th>
+              <th>結果</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(attempt => `
+              <tr>
+                <td>${formatDate(attempt.created_at)}</td>
+                <td><strong>${escapeHtml(attempt.user_name)}</strong></td>
+                <td><strong>${attempt.total_score}</strong> / ${attempt.max_score}</td>
+                <td>${attempt.section1_select_score} / 30</td>
+                <td>${attempt.section1_text_score} / 10</td>
+                <td>${attempt.section2_score} / 60</td>
+                <td>${attempt.duration_minutes || '-'}分</td>
+                <td>
+                  <span class="badge ${attempt.passed ? 'badge-pass' : 'badge-fail'}">
+                    ${attempt.passed ? '合格' : '不合格'}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-detail" onclick="showDetail('${attempt.id}')">
+                    詳細
+                  </button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    // =============================================
+    // フィルター
+    // =============================================
+    function filterAttempts(filter) {
+      currentFilter = filter;
+      
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      renderTable();
+    }
+
+    // =============================================
+    // 詳細表示
+    // =============================================
+    async function showDetail(attemptId) {
+      const attempt = allAttempts.find(a => a.id === attemptId);
+      if (!attempt) return;
+
+      document.getElementById('modalTitle').textContent = `${attempt.user_name}さんの詳細`;
+      document.getElementById('modalBody').innerHTML = `
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <p>読み込み中...</p>
+        </div>
+      `;
+      document.getElementById('modalOverlay').classList.add('active');
+
+      try {
+        const { data: answers, error } = await supabase
+          .from('sales_test_answers')
+          .select('*')
+          .eq('attempt_id', attemptId)
+          .order('question_id', { ascending: true });
+
+        if (error) throw error;
+
+        renderDetail(attempt, answers || []);
+      } catch (error) {
+        console.error('詳細読み込みエラー:', error);
+        document.getElementById('modalBody').innerHTML = `
+          <div class="empty-state">
+            <p>詳細の読み込みに失敗しました</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderDetail(attempt, answers) {
+      document.getElementById('modalBody').innerHTML = `
+        <div class="detail-section">
+          <h4 class="detail-section-title">📊 スコア概要</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="detail-item-label">受験日時</div>
+              <div class="detail-item-value">${formatDate(attempt.created_at)}</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-item-label">所要時間</div>
+              <div class="detail-item-value">${attempt.duration_minutes || '-'}分</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-item-label">合計点</div>
+              <div class="detail-item-value">${attempt.total_score} / ${attempt.max_score}点</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-item-label">結果</div>
+              <div class="detail-item-value">
+                <span class="badge ${attempt.passed ? 'badge-pass' : 'badge-fail'}">
+                  ${attempt.passed ? '合格' : '不合格'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4 class="detail-section-title">📝 回答詳細</h4>
+          ${answers.map(a => `
+            <div class="answer-item ${a.is_correct ? 'correct' : 'incorrect'}">
+              <div class="answer-question">
+                問${a.question_id}. [${a.question_category}] 
+                <span style="color: ${a.is_correct ? 'var(--color-success)' : 'var(--color-error)'}">
+                  ${a.score} / ${a.max_score}点
+                </span>
+              </div>
+              <div class="answer-content">
+                <span><strong>回答:</strong> ${escapeHtml(a.answer) || '未回答'}</span>
+              </div>
+              ${a.ai_feedback ? `
+                <div class="answer-feedback">
+                  <strong>💬 フィードバック:</strong> ${escapeHtml(a.ai_feedback)}
+                </div>
+              ` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function closeModal(event) {
+      if (event && event.target !== event.currentTarget) return;
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    // =============================================
+    // CSV出力
+    // =============================================
+    function exportCSV() {
+      if (allAttempts.length === 0) {
+        alert('出力するデータがありません');
+        return;
+      }
+
+      const headers = ['受験日時', '名前', '合計点', '第1部選択', '第1部記述', '第2部', '所要時間', '結果'];
+      const rows = allAttempts.map(a => [
+        formatDate(a.created_at),
+        a.user_name,
+        a.total_score,
+        a.section1_select_score,
+        a.section1_text_score,
+        a.section2_score,
+        a.duration_minutes || '',
+        a.passed ? '合格' : '不合格'
+      ]);
+
+      const csv = [headers, ...rows]
+        .map(row => row.map(cell => `"${cell}"`).join(','))
+        .join('\n');
+
+      const bom = '\uFEFF';
+      const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `rei_sales_test_${formatDateForFile(new Date())}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // =============================================
+    // ユーティリティ
+    // =============================================
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    }
+
+    function formatDateForFile(d) {
+      return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // =============================================
+    // 初期化
+    // =============================================
+    loadData();
+  </script>
+</body>
+</html>
