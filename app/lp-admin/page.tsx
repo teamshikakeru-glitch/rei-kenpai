@@ -204,6 +204,33 @@ export default function LPAdminPage() {
       font-weight: 600;
     }
     
+    .lp-admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    
+    .lp-admin-form-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(102, 126, 234, 0.2);
+      border: 1px solid rgba(102, 126, 234, 0.4);
+      border-radius: 10px;
+      color: #a5b4fc;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .lp-admin-form-link:hover {
+      background: rgba(102, 126, 234, 0.3);
+      border-color: rgba(102, 126, 234, 0.6);
+      color: #c7d2fe;
+    }
+    
     .lp-admin-stats {
       display: flex;
       gap: 24px;
@@ -596,10 +623,25 @@ export default function LPAdminPage() {
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <div className="lp-admin">
         <header className="lp-admin-header">
-          <h1 className="lp-admin-title">
-            LP制作管理
-            <span className="lp-admin-title-badge">Admin</span>
-          </h1>
+          <div className="lp-admin-header-left">
+            <h1 className="lp-admin-title">
+              LP制作管理
+              <span className="lp-admin-title-badge">Admin</span>
+            </h1>
+            <a 
+              href="/lp-order" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="lp-admin-form-link"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              申込フォームを開く
+            </a>
+          </div>
           <div className="lp-admin-stats">
             <div className="lp-admin-stat">
               <div className="lp-admin-stat-value">{activeProjects.length}</div>
