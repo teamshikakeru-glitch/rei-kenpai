@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rei 管理者ダッシュボード</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #1a1a2e;
+      --color-card: #16213e;
+      --color-primary: #c9a962;
+      --color-text: #ffffff;
+      --color-text-muted: #8a8a9a;
+      --color-border: #2a2a4a;
+      --color-success: #4ade80;
+      --color-info: #60a5fa;
+      --color-warning: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Login Screen */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-box {
+      background: var(--color-card);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .login-logo {
+      width: 60px;
+      height: 60px;
+      background: var(--color-primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--color-bg);
+    }
+    .login-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .login-subtitle {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .login-input {
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      color: var(--color-text);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      letter-spacing: 0.2em;
+    }
+    .login-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    .login-input::placeholder {
+      letter-spacing: normal;
+      color: var(--color-text-muted);
+    }
+    .login-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-primary);
+      color: var(--color-bg);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .login-btn:active {
+      opacity: 0.8;
+    }
+    .login-error {
+      color: #f87171;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      display: none;
+    }
+    .login-error.show {
+      display: block;
+    }
+
+    /* Dashboard */
+    .dashboard {
+      display: none;
+      min-height: 100vh;
+    }
+    .dashboard.show {
+      display: block;
+    }
+
+    .header {
+      background: var(--color-card);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .header-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--color-primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--color-bg);
+      font-size: 1rem;
+    }
+    .header-logo-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .logout-btn {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .logout-btn:active {
+      background: var(--color-border);
+    }
+
+    .container {
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .welcome {
+      margin-bottom: 1.5rem;
+    }
+    .welcome-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .welcome-sub {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .section-title:first-of-type {
+      margin-top: 0;
+    }
+
+    .menu-card {
+      background: var(--color-card);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--color-text);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--color-border);
+    }
+    .menu-card:active {
+      transform: scale(0.98);
+    }
+    .menu-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .menu-icon.green { background: rgba(74, 222, 128, 0.15); }
+    .menu-icon.blue { background: rgba(96, 165, 250, 0.15); }
+    .menu-icon.yellow { background: rgba(251, 191, 36, 0.15); }
+    .menu-icon.purple { background: rgba(167, 139, 250, 0.15); }
+    
+    .menu-content {
+      flex: 1;
+    }
+    .menu-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .menu-desc {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+    .menu-arrow {
+      color: var(--color-text-muted);
+      font-size: 1.2rem;
+    }
+
+    .info-box {
+      background: var(--color-card);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      border: 1px solid var(--color-border);
+    }
+    .info-box-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .info-box-content {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+    .info-box-content a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--color-text-muted);
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <div class="login-logo">礼</div>
+      <h1 class="login-title">管理者ダッシュボード</h1>
+      <p class="login-subtitle">パスワードを入力してください</p>
+      <input 
+        type="password" 
+        class="login-input" 
+        id="passwordInput" 
+        placeholder="パスワード"
+        autocomplete="off"
+      >
+      <button class="login-btn" onclick="tryLogin()">ログイン</button>
+      <p class="login-error" id="loginError">パスワードが違います</p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-logo">
+          <div class="header-logo-icon">礼</div>
+          <span class="header-logo-text">管理者メニュー</span>
+        </div>
+        <button class="logout-btn" onclick="logout()">ログアウト</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="welcome">
+        <h2 class="welcome-title">ようこそ 👋</h2>
+        <p class="welcome-sub">Rei営業支援ツールの管理メニューです</p>
+      </div>
+
+      <p class="section-title">📚 学習・テスト</p>
+
+      <a href="system-guide.html" class="menu-card">
+        <div class="menu-icon green">📖</div>
+        <div class="menu-content">
+          <div class="menu-title">システム・理念解説</div>
+          <div class="menu-desc">Reiの仕組みと理念を学習する</div>
+        </div>
+        <span class="menu-arrow">→</span>
+      </a>
+
+      <a href="sales-test.html" class="menu-card">
+        <div class="menu-icon blue">📝</div>
+        <div class="menu-content">
+          <div class="menu-title">営業テスト</div>
+          <div class="menu-desc">理解度をテストで確認（80点で合格）</div>
+        </div>
+        <span class="menu-arrow">→</span>
+      </a>
+
+      <p class="section-title">📊 管理</p>
+
+      <a href="sales-test-admin.html" class="menu-card">
+        <div class="menu-icon yellow">📊</div>
+        <div class="menu-content">
+          <div class="menu-title">テスト結果管理</div>
+          <div class="menu-desc">受験者一覧と合格者の確認</div>
+        </div>
+        <span class="menu-arrow">→</span>
+      </a>
+
+      <a href="admin" class="menu-card">
+        <div class="menu-icon purple">🏢</div>
+        <div class="menu-content">
+          <div class="menu-title">献杯管理システム</div>
+          <div class="menu-desc">葬儀社向け管理画面を開く</div>
+        </div>
+        <span class="menu-arrow">→</span>
+      </a>
+
+      <div class="info-box">
+        <div class="info-box-title">💡 URLについて</div>
+        <div class="info-box-content">
+          このページのURLは管理者のみに共有してください。<br><br>
+          営業マンには「システム・理念解説」と「営業テスト」のURLのみを共有してください。
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2024 Rei 管理者ダッシュボード
+    </div>
+  </div>
+
+  <script>
+    // =============================================
+    // パスワード設定（変更してください）
+    // =============================================
+    const ADMIN_PASSWORD = '1123';
+
+    // =============================================
+    // ログイン処理
+    // =============================================
+    function tryLogin() {
+      const input = document.getElementById('passwordInput');
+      const error = document.getElementById('loginError');
+      
+      if (input.value === ADMIN_PASSWORD) {
+        sessionStorage.setItem('rei_admin_logged_in', 'true');
+        showDashboard();
+      } else {
+        error.classList.add('show');
+        input.value = '';
+        input.focus();
+        setTimeout(() => error.classList.remove('show'), 2000);
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('rei_admin_logged_in');
+      location.reload();
+    }
+
+    function showDashboard() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').classList.add('show');
+    }
+
+    // Enter key でログイン
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        tryLogin();
+      }
+    });
+
+    // ページ読み込み時にログイン状態を確認
+    if (sessionStorage.getItem('rei_admin_logged_in') === 'true') {
+      showDashboard();
+    }
+  </script>
+</body>
+</html>
