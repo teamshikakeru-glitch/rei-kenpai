@@ -4,1101 +4,1100 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rei 営業ポータル</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root {
-      --color-bg: #f5f6fa;
-      --color-white: #ffffff;
-      --color-primary: #2d5a47;
-      --color-primary-light: #3d7a5f;
-      --color-primary-pale: #e8f0ec;
-      --color-accent: #c9a962;
-      --color-accent-light: #f5f0e0;
-      --color-text: #2c2c2c;
-      --color-text-light: #5a5a5a;
-      --color-text-muted: #8a8a8a;
-      --color-border: #e5e2dd;
-      --color-error: #dc3545;
-      --color-success: #28a745;
-      --color-warning: #ffc107;
-      --color-info: #17a2b8;
-      --shadow-soft: 0 2px 8px rgba(0,0,0,0.08);
-      --shadow-medium: 0 4px 16px rgba(0,0,0,0.12);
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Noto Sans JP', sans-serif; background: var(--color-bg); color: var(--color-text); line-height: 1.6; min-height: 100vh; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f6fa; color: #2c2c2c; line-height: 1.6; }
     
-    /* Login Screen */
-    .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%); }
-    .login-card { background: var(--color-white); border-radius: 16px; padding: 2.5rem; width: 90%; max-width: 400px; box-shadow: var(--shadow-medium); }
-    .login-logo { text-align: center; margin-bottom: 2rem; }
-    .login-logo-symbol { font-size: 3rem; color: var(--color-primary); }
-    .login-logo-text { font-size: 1.2rem; color: var(--color-text-light); margin-top: 0.5rem; }
-    .login-title { font-size: 1.3rem; font-weight: 600; text-align: center; margin-bottom: 1.5rem; }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--color-text-light); }
-    .form-input { width: 100%; padding: 0.75rem 1rem; font-size: 1rem; border: 2px solid var(--color-border); border-radius: 8px; transition: border-color 0.2s; }
-    .form-input:focus { outline: none; border-color: var(--color-primary); }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 1rem; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-    .btn-primary { background: var(--color-primary); color: white; width: 100%; }
-    .btn-primary:hover { background: var(--color-primary-light); }
-    .btn-secondary { background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); }
-    .btn-secondary:hover { background: var(--color-border); }
-    .btn-accent { background: var(--color-accent); color: white; }
-    .btn-accent:hover { opacity: 0.9; }
-    .btn-sm { padding: 0.5rem 1rem; font-size: 0.85rem; }
-    .login-footer { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--color-text-muted); }
-    .login-footer a { color: var(--color-primary); text-decoration: none; }
-    .error-msg { background: #fee; color: var(--color-error); padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem; display: none; }
+    /* ログイン画面 */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #2d5a47 0%, #3d7a5f 100%);
+    }
+    .login-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-logo-symbol {
+      font-size: 3rem;
+      color: #2d5a47;
+    }
+    .login-logo-text {
+      font-size: 1.2rem;
+      color: #5a5a5a;
+      margin-top: 0.5rem;
+    }
+    .login-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #5a5a5a;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 2px solid #e5e2dd;
+      border-radius: 8px;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #2d5a47;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #2d5a47;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #3d7a5f;
+    }
+    .btn-secondary {
+      background: #f5f6fa;
+      color: #2c2c2c;
+      border: 1px solid #e5e2dd;
+    }
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #8a8a8a;
+    }
+    .login-footer a {
+      color: #2d5a47;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .error-box {
+      background: #fee;
+      color: #dc3545;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+    }
+    .hidden { display: none !important; }
+
+    /* メインアプリ */
+    #mainApp { display: none; }
+    .header {
+      background: #2d5a47;
+      color: white;
+      padding: 1rem 1.5rem;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .header-logout {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
     
-    /* Main Layout */
-    .app { display: none; }
-    .header { background: var(--color-primary); color: white; padding: 1rem 1.5rem; position: sticky; top: 0; z-index: 100; }
-    .header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-    .header-logo { display: flex; align-items: center; gap: 0.75rem; }
-    .header-logo-symbol { font-size: 1.5rem; font-weight: 700; }
-    .header-logo-text { font-size: 0.9rem; opacity: 0.9; }
-    .header-user { display: flex; align-items: center; gap: 1rem; }
-    .header-user-name { font-size: 0.9rem; }
-    .header-logout { background: rgba(255,255,255,0.15); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; cursor: pointer; }
-    .header-logout:hover { background: rgba(255,255,255,0.25); }
+    /* ナビゲーション */
+    .nav {
+      background: white;
+      border-bottom: 1px solid #e5e2dd;
+      padding: 0.5rem 1.5rem;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+    .nav-btn {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #5a5a5a;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      background: #f5f6fa;
+    }
+    .nav-btn.active {
+      background: #e8f0ec;
+      color: #2d5a47;
+    }
     
-    /* Navigation */
-    .nav { background: var(--color-white); border-bottom: 1px solid var(--color-border); overflow-x: auto; }
-    .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; gap: 0.5rem; padding: 0.5rem 1.5rem; }
-    .nav-item { padding: 0.75rem 1.25rem; font-size: 0.9rem; font-weight: 500; color: var(--color-text-light); background: none; border: none; border-radius: 8px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
-    .nav-item:hover { background: var(--color-bg); color: var(--color-text); }
-    .nav-item.active { background: var(--color-primary-pale); color: var(--color-primary); }
-    
-    /* Main Content */
-    .main { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+    /* コンテンツ */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
     .page { display: none; }
     .page.active { display: block; }
     
-    /* Cards */
-    .card { background: var(--color-white); border-radius: 12px; box-shadow: var(--shadow-soft); overflow: hidden; }
-    .card-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
-    .card-title { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
-    .card-body { padding: 1.25rem; }
+    /* カード */
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+    .card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #e5e2dd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .card-body {
+      padding: 1.25rem;
+    }
     
-    /* Dashboard Grid */
-    .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-    .stat-card { background: var(--color-white); border-radius: 12px; padding: 1.25rem; box-shadow: var(--shadow-soft); }
-    .stat-label { font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.5rem; }
-    .stat-value { font-size: 2rem; font-weight: 700; color: var(--color-primary); }
-    .stat-value.success { color: var(--color-success); }
-    .stat-value.warning { color: var(--color-warning); }
-    .stat-sub { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+    /* 統計グリッド */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: #8a8a8a;
+      margin-bottom: 0.5rem;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2d5a47;
+    }
     
-    /* Announcements */
-    .announcement-item { padding: 1rem; border-bottom: 1px solid var(--color-border); display: flex; gap: 1rem; align-items: flex-start; }
-    .announcement-item:last-child { border-bottom: none; }
-    .announcement-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-    .announcement-icon.important { background: #fee; color: var(--color-error); }
-    .announcement-icon.info { background: #e8f4fd; color: var(--color-info); }
-    .announcement-icon.normal { background: var(--color-bg); color: var(--color-text-muted); }
-    .announcement-content { flex: 1; }
-    .announcement-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
-    .announcement-date { font-size: 0.75rem; color: var(--color-text-muted); }
-    
-    /* Prospects Table */
-    .table-container { overflow-x: auto; }
+    /* テーブル */
+    .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
-    th { background: var(--color-bg); font-weight: 600; font-size: 0.8rem; color: var(--color-text-light); }
-    tr:hover td { background: var(--color-bg); }
-    
-    /* Status Badges */
-    .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
-    .badge-pending { background: #fff3cd; color: #856404; }
-    .badge-visiting { background: #cce5ff; color: #004085; }
-    .badge-negotiating { background: #d4edda; color: #155724; }
-    .badge-closed { background: var(--color-primary); color: white; }
-    .badge-rejected { background: #f8d7da; color: #721c24; }
-    .badge-unvisited { background: var(--color-bg); color: var(--color-text-muted); }
-    
-    /* Knowledge Cards */
-    .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
-    .knowledge-card { background: var(--color-white); border-radius: 12px; padding: 1.25rem; box-shadow: var(--shadow-soft); border-left: 4px solid var(--color-primary); }
-    .knowledge-card.success { border-left-color: var(--color-success); }
-    .knowledge-card.failure { border-left-color: var(--color-error); }
-    .knowledge-card.faq { border-left-color: var(--color-info); }
-    .knowledge-category { font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 0.5rem; }
-    .knowledge-title { font-weight: 600; margin-bottom: 0.5rem; }
-    .knowledge-content { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.7; }
-    .knowledge-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--color-border); font-size: 0.8rem; color: var(--color-text-muted); }
-    
-    /* Ranking */
-    .ranking-list { }
-    .ranking-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; border-bottom: 1px solid var(--color-border); }
-    .ranking-item:last-child { border-bottom: none; }
-    .ranking-rank { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
-    .ranking-rank.gold { background: linear-gradient(135deg, #ffd700, #ffec8b); color: #8b6914; }
-    .ranking-rank.silver { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #666; }
-    .ranking-rank.bronze { background: linear-gradient(135deg, #cd7f32, #daa06d); color: #5c3d1e; }
-    .ranking-rank.normal { background: var(--color-bg); color: var(--color-text-muted); }
-    .ranking-info { flex: 1; }
-    .ranking-name { font-weight: 600; }
-    .ranking-stats { font-size: 0.85rem; color: var(--color-text-muted); }
-    .ranking-value { font-weight: 700; color: var(--color-primary); }
-    
-    /* Documents */
-    .doc-list { }
-    .doc-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; border-bottom: 1px solid var(--color-border); }
-    .doc-item:last-child { border-bottom: none; }
-    .doc-icon { width: 44px; height: 44px; background: var(--color-error); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; }
-    .doc-icon.pdf { background: #dc3545; }
-    .doc-icon.ppt { background: #fd7e14; }
-    .doc-icon.doc { background: #007bff; }
-    .doc-info { flex: 1; }
-    .doc-title { font-weight: 600; font-size: 0.95rem; }
-    .doc-desc { font-size: 0.8rem; color: var(--color-text-muted); }
-    .doc-download { padding: 0.5rem 1rem; background: var(--color-primary-pale); color: var(--color-primary); border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; }
-    .doc-download:hover { background: var(--color-primary); color: white; }
-    
-    /* Modal */
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal { background: var(--color-white); border-radius: 16px; width: 90%; max-width: 500px; max-height: 90vh; overflow: hidden; transform: translateY(20px); transition: transform 0.3s; }
-    .modal-overlay.active .modal { transform: translateY(0); }
-    .modal-header { padding: 1.25rem; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
-    .modal-title { font-size: 1.1rem; font-weight: 600; }
-    .modal-close { width: 32px; height: 32px; border: none; background: var(--color-bg); border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
-    .modal-body { padding: 1.25rem; max-height: calc(90vh - 140px); overflow-y: auto; }
-    .modal-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--color-border); display: flex; gap: 0.75rem; justify-content: flex-end; }
-    
-    /* Filter Bar */
-    .filter-bar { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
-    .filter-bar select, .filter-bar input { padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.9rem; }
-    
-    /* Empty State */
-    .empty-state { text-align: center; padding: 3rem; color: var(--color-text-muted); }
-    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
-    
-    /* Grid Layout */
-    .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
-    
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-      .grid-2 { grid-template-columns: 1fr; }
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e2dd;
+      font-size: 0.9rem;
     }
-    @media (max-width: 768px) {
-      .dashboard-grid { grid-template-columns: 1fr; }
-      .nav-inner { padding: 0.5rem 1rem; }
-      .main { padding: 1rem; }
-      .header-user-name { display: none; }
+    th {
+      background: #f5f6fa;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #5a5a5a;
     }
     
-    .hidden { display: none !important; }
+    /* バッジ */
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-gray { background: #f5f6fa; color: #8a8a8a; }
+    .badge-blue { background: #cce5ff; color: #004085; }
+    .badge-yellow { background: #fff3cd; color: #856404; }
+    .badge-green { background: #d4edda; color: #155724; }
+    .badge-red { background: #f8d7da; color: #721c24; }
+    
+    /* モーダル */
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-bg.show { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow: hidden;
+    }
+    .modal-head {
+      padding: 1.25rem;
+      border-bottom: 1px solid #e5e2dd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-head h3 { font-size: 1.1rem; }
+    .modal-close {
+      width: 32px; height: 32px;
+      border: none;
+      background: #f5f6fa;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .modal-content {
+      padding: 1.25rem;
+      max-height: calc(90vh - 140px);
+      overflow-y: auto;
+    }
+    .modal-foot {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid #e5e2dd;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+    .modal-foot .btn { width: auto; }
+    
+    /* ナレッジカード */
+    .knowledge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .knowledge-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-left: 4px solid #2d5a47;
+    }
+    .knowledge-card.success { border-left-color: #28a745; }
+    .knowledge-card.failure { border-left-color: #dc3545; }
+    .knowledge-card.faq { border-left-color: #17a2b8; }
+    .knowledge-cat {
+      font-size: 0.75rem;
+      color: #8a8a8a;
+      margin-bottom: 0.5rem;
+    }
+    .knowledge-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .knowledge-text {
+      font-size: 0.9rem;
+      color: #5a5a5a;
+      line-height: 1.7;
+    }
+    .knowledge-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #e5e2dd;
+      font-size: 0.8rem;
+      color: #8a8a8a;
+    }
+    
+    /* ランキング */
+    .rank-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid #e5e2dd;
+    }
+    .rank-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: #f5f6fa;
+      color: #8a8a8a;
+    }
+    .rank-num.gold { background: linear-gradient(135deg, #ffd700, #ffec8b); color: #8b6914; }
+    .rank-num.silver { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #666; }
+    .rank-num.bronze { background: linear-gradient(135deg, #cd7f32, #daa06d); color: #5c3d1e; }
+    .rank-name { flex: 1; font-weight: 600; }
+    .rank-val { font-weight: 700; color: #2d5a47; }
+    
+    /* フィルター */
+    .filter-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .filter-row select, .filter-row input {
+      padding: 0.5rem 1rem;
+      border: 1px solid #e5e2dd;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    
+    /* 空の状態 */
+    .empty {
+      text-align: center;
+      padding: 3rem;
+      color: #8a8a8a;
+    }
+    
+    /* ボタン小 */
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      width: auto;
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
-  <!-- Login Screen -->
-  <div class="login-screen" id="loginScreen">
-    <div class="login-card">
-      <div class="login-logo">
-        <div class="login-logo-symbol">礼</div>
-        <div class="login-logo-text">営業ポータル</div>
-      </div>
-      <h2 class="login-title">ログイン</h2>
-      <div class="error-msg" id="loginError"></div>
+
+<!-- ログイン画面 -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-symbol">礼</div>
+      <div class="login-logo-text">営業ポータル</div>
+    </div>
+    <h2 class="login-title">ログイン</h2>
+    <div id="loginError" class="error-box hidden"></div>
+    <div class="form-group">
+      <label class="form-label">お名前</label>
+      <input type="text" class="form-input" id="loginName" placeholder="山田太郎">
+    </div>
+    <div class="form-group">
+      <label class="form-label">パスワード</label>
+      <input type="password" class="form-input" id="loginPass" placeholder="パスワード">
+    </div>
+    <button class="btn btn-primary" id="loginBtn">ログイン</button>
+    <div class="login-footer">
+      初めての方は <a href="javascript:void(0)" id="showRegisterLink">新規登録</a>
+    </div>
+  </div>
+</div>
+
+<!-- 新規登録モーダル -->
+<div class="modal-bg" id="registerModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>新規登録</h3>
+      <button class="modal-close" id="closeRegisterBtn">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div id="registerError" class="error-box hidden"></div>
       <div class="form-group">
-        <label class="form-label">お名前</label>
-        <input type="text" class="form-input" id="loginName" placeholder="山田太郎">
+        <label class="form-label">お名前 *</label>
+        <input type="text" class="form-input" id="registerName" placeholder="山田太郎">
       </div>
       <div class="form-group">
-        <label class="form-label">パスワード</label>
-        <input type="password" class="form-input" id="loginPassword" placeholder="パスワード">
-      </div>
-      <button class="btn btn-primary" id="loginBtn">ログイン</button>
-      <div class="login-footer">
-        初めての方は <a href="#" id="showRegister">新規登録</a>
+        <label class="form-label">パスワード *</label>
+        <input type="password" class="form-input" id="registerPass" placeholder="4文字以上">
       </div>
     </div>
-  </div>
-
-  <!-- Register Modal -->
-  <div class="modal-overlay" id="registerModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">新規登録</h3>
-        <button class="modal-close" id="closeRegister">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="error-msg" id="registerError"></div>
-        <div class="form-group">
-          <label class="form-label">お名前</label>
-          <input type="text" class="form-input" id="registerName" placeholder="山田太郎">
-        </div>
-        <div class="form-group">
-          <label class="form-label">メールアドレス（任意）</label>
-          <input type="email" class="form-input" id="registerEmail" placeholder="example@email.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">パスワード</label>
-          <input type="password" class="form-input" id="registerPassword" placeholder="4文字以上">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelRegister">キャンセル</button>
-        <button class="btn btn-primary" id="registerBtn">登録</button>
-      </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary btn-sm" id="cancelRegisterBtn">キャンセル</button>
+      <button class="btn btn-primary btn-sm" id="registerBtn">登録</button>
     </div>
   </div>
+</div>
 
-  <!-- Main App -->
-  <div class="app" id="app">
-    <header class="header">
-      <div class="header-inner">
-        <div class="header-logo">
-          <span class="header-logo-symbol">礼</span>
-          <span class="header-logo-text">営業ポータル</span>
-        </div>
-        <div class="header-user">
-          <span class="header-user-name" id="currentUserName"></span>
-          <button class="header-logout" id="logoutBtn">ログアウト</button>
-        </div>
-      </div>
-    </header>
-
-    <nav class="nav">
-      <div class="nav-inner">
-        <button class="nav-item active" data-page="dashboard">📊 ダッシュボード</button>
-        <button class="nav-item" data-page="prospects">🏢 訪問先管理</button>
-        <button class="nav-item" data-page="knowledge">💬 ナレッジ共有</button>
-        <button class="nav-item" data-page="documents">📁 資料</button>
-        <button class="nav-item" data-page="ranking">🏆 ランキング</button>
-      </div>
-    </nav>
-
-    <main class="main">
-      <!-- Dashboard Page -->
-      <div class="page active" id="page-dashboard">
-        <div class="dashboard-grid">
-          <div class="stat-card">
-            <div class="stat-label">今月の訪問数（チーム）</div>
-            <div class="stat-value" id="statVisits">0</div>
-            <div class="stat-sub">件</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">商談中</div>
-            <div class="stat-value warning" id="statNegotiating">0</div>
-            <div class="stat-sub">件</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">成約数</div>
-            <div class="stat-value success" id="statClosed">0</div>
-            <div class="stat-sub">件</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">あなたの訪問数</div>
-            <div class="stat-value" id="statMyVisits">0</div>
-            <div class="stat-sub">件</div>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">📢 お知らせ</h3>
-            </div>
-            <div class="card-body" id="announcementsList" style="padding: 0;">
-              <div class="empty-state">
-                <p>お知らせはありません</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">🏆 今月のトップ</h3>
-            </div>
-            <div class="card-body" id="topRanking" style="padding: 0;">
-              <div class="empty-state">
-                <p>データがありません</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Prospects Page -->
-      <div class="page" id="page-prospects">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">🏢 訪問先一覧</h3>
-            <button class="btn btn-primary btn-sm" id="addProspectBtn">+ 新規追加</button>
-          </div>
-          <div class="card-body">
-            <div class="filter-bar">
-              <select id="filterStatus">
-                <option value="">すべてのステータス</option>
-                <option value="未訪問">未訪問</option>
-                <option value="訪問済み">訪問済み</option>
-                <option value="商談中">商談中</option>
-                <option value="成約">成約</option>
-                <option value="見送り">見送り</option>
-              </select>
-              <select id="filterArea">
-                <option value="">すべてのエリア</option>
-              </select>
-              <input type="text" id="searchProspect" placeholder="🔍 葬儀社名で検索">
-            </div>
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>葬儀社名</th>
-                    <th>エリア</th>
-                    <th>ステータス</th>
-                    <th>担当</th>
-                    <th>最終訪問</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody id="prospectsTable">
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Knowledge Page -->
-      <div class="page" id="page-knowledge">
-        <div class="card" style="margin-bottom: 1.5rem;">
-          <div class="card-header">
-            <h3 class="card-title">💬 ナレッジ共有</h3>
-            <button class="btn btn-primary btn-sm" id="addKnowledgeBtn">+ 投稿する</button>
-          </div>
-          <div class="card-body">
-            <div class="filter-bar">
-              <select id="filterKnowledgeCategory">
-                <option value="">すべてのカテゴリ</option>
-                <option value="成功事例">📈 成功事例</option>
-                <option value="失敗事例">📉 失敗事例</option>
-                <option value="FAQ">❓ よくある質問</option>
-                <option value="Tips">💡 Tips</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="knowledge-grid" id="knowledgeGrid">
-        </div>
-      </div>
-
-      <!-- Documents Page -->
-      <div class="page" id="page-documents">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">📁 営業資料</h3>
-          </div>
-          <div class="card-body" style="padding: 0;">
-            <div class="doc-list" id="documentsList">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ranking Page -->
-      <div class="page" id="page-ranking">
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">🏆 訪問数ランキング（今月）</h3>
-            </div>
-            <div class="card-body" style="padding: 0;">
-              <div class="ranking-list" id="visitRanking">
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">🎯 成約ランキング（累計）</h3>
-            </div>
-            <div class="card-body" style="padding: 0;">
-              <div class="ranking-list" id="closedRanking">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- Add Prospect Modal -->
-  <div class="modal-overlay" id="prospectModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title" id="prospectModalTitle">訪問先を追加</h3>
-        <button class="modal-close" id="closeProspectModal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="prospectId">
-        <div class="form-group">
-          <label class="form-label">葬儀社名 *</label>
-          <input type="text" class="form-input" id="prospectName" placeholder="○○葬儀社">
-        </div>
-        <div class="form-group">
-          <label class="form-label">エリア</label>
-          <input type="text" class="form-input" id="prospectArea" placeholder="大阪市北区">
-        </div>
-        <div class="form-group">
-          <label class="form-label">住所</label>
-          <input type="text" class="form-input" id="prospectAddress" placeholder="大阪市北区○○1-2-3">
-        </div>
-        <div class="form-group">
-          <label class="form-label">電話番号</label>
-          <input type="text" class="form-input" id="prospectPhone" placeholder="06-1234-5678">
-        </div>
-        <div class="form-group">
-          <label class="form-label">担当者名</label>
-          <input type="text" class="form-input" id="prospectContact" placeholder="田中様">
-        </div>
-        <div class="form-group">
-          <label class="form-label">ステータス</label>
-          <select class="form-input" id="prospectStatus">
-            <option value="未訪問">未訪問</option>
-            <option value="訪問済み">訪問済み</option>
-            <option value="商談中">商談中</option>
-            <option value="成約">成約</option>
-            <option value="見送り">見送り</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">メモ</label>
-          <textarea class="form-input" id="prospectNotes" rows="3" placeholder="備考やメモ"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelProspect">キャンセル</button>
-        <button class="btn btn-primary" id="saveProspect">保存</button>
+<!-- メインアプリ -->
+<div id="mainApp">
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">礼 営業ポータル</div>
+      <div class="header-user">
+        <span id="userName"></span>
+        <button class="header-logout" id="logoutBtn">ログアウト</button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Add Knowledge Modal -->
-  <div class="modal-overlay" id="knowledgeModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">ナレッジを投稿</h3>
-        <button class="modal-close" id="closeKnowledgeModal">&times;</button>
+  <nav class="nav">
+    <div class="nav-inner">
+      <button class="nav-btn active" data-page="dashboard">📊 ダッシュボード</button>
+      <button class="nav-btn" data-page="prospects">🏢 訪問先管理</button>
+      <button class="nav-btn" data-page="knowledge">💬 ナレッジ</button>
+      <button class="nav-btn" data-page="ranking">🏆 ランキング</button>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- ダッシュボード -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">チーム訪問数</div>
+          <div class="stat-value" id="statTeamVisits">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">商談中</div>
+          <div class="stat-value" id="statNegotiating">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">成約</div>
+          <div class="stat-value" id="statClosed">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">あなたの訪問</div>
+          <div class="stat-value" id="statMyVisits">0</div>
+        </div>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">カテゴリ *</label>
-          <select class="form-input" id="knowledgeCategory">
-            <option value="成功事例">📈 成功事例</option>
-            <option value="失敗事例">📉 失敗事例</option>
-            <option value="FAQ">❓ よくある質問</option>
-            <option value="Tips">💡 Tips</option>
-          </select>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📢 最近の活動</h3>
         </div>
-        <div class="form-group">
-          <label class="form-label">タイトル *</label>
-          <input type="text" class="form-input" id="knowledgeTitle" placeholder="例：初期費用の説明で成約につながった">
+        <div class="card-body" id="recentActivity">
+          <div class="empty">まだ活動がありません</div>
         </div>
-        <div class="form-group">
-          <label class="form-label">内容 *</label>
-          <textarea class="form-input" id="knowledgeContent" rows="6" placeholder="具体的な内容を記載してください"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelKnowledge">キャンセル</button>
-        <button class="btn btn-primary" id="saveKnowledge">投稿</button>
       </div>
     </div>
+
+    <!-- 訪問先管理 -->
+    <div class="page" id="page-prospects">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🏢 訪問先一覧</h3>
+          <button class="btn btn-primary btn-sm" id="addProspectBtn">+ 新規追加</button>
+        </div>
+        <div class="card-body">
+          <div class="filter-row">
+            <select id="filterStatus">
+              <option value="">すべて</option>
+              <option value="未訪問">未訪問</option>
+              <option value="訪問済み">訪問済み</option>
+              <option value="商談中">商談中</option>
+              <option value="成約">成約</option>
+              <option value="見送り">見送り</option>
+            </select>
+            <input type="text" id="searchText" placeholder="検索...">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>葬儀社名</th>
+                  <th>エリア</th>
+                  <th>ステータス</th>
+                  <th>担当</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="prospectsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ナレッジ -->
+    <div class="page" id="page-knowledge">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">💬 ナレッジ共有</h3>
+          <button class="btn btn-primary btn-sm" id="addKnowledgeBtn">+ 投稿</button>
+        </div>
+        <div class="card-body">
+          <div class="filter-row">
+            <select id="filterCategory">
+              <option value="">すべて</option>
+              <option value="成功事例">📈 成功事例</option>
+              <option value="失敗事例">📉 失敗事例</option>
+              <option value="FAQ">❓ FAQ</option>
+              <option value="Tips">💡 Tips</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="knowledge-grid" id="knowledgeList"></div>
+    </div>
+
+    <!-- ランキング -->
+    <div class="page" id="page-ranking">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🏆 訪問数ランキング</h3>
+        </div>
+        <div class="card-body" id="rankingList" style="padding:0;">
+          <div class="empty">データがありません</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 訪問先追加モーダル -->
+<div class="modal-bg" id="prospectModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="prospectModalTitle">訪問先を追加</h3>
+      <button class="modal-close" id="closeProspectBtn">&times;</button>
+    </div>
+    <div class="modal-content">
+      <input type="hidden" id="prospectId">
+      <div class="form-group">
+        <label class="form-label">葬儀社名 *</label>
+        <input type="text" class="form-input" id="pName">
+      </div>
+      <div class="form-group">
+        <label class="form-label">エリア</label>
+        <input type="text" class="form-input" id="pArea">
+      </div>
+      <div class="form-group">
+        <label class="form-label">電話番号</label>
+        <input type="text" class="form-input" id="pPhone">
+      </div>
+      <div class="form-group">
+        <label class="form-label">ステータス</label>
+        <select class="form-input" id="pStatus">
+          <option value="未訪問">未訪問</option>
+          <option value="訪問済み">訪問済み</option>
+          <option value="商談中">商談中</option>
+          <option value="成約">成約</option>
+          <option value="見送り">見送り</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">メモ</label>
+        <textarea class="form-input" id="pNotes" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary btn-sm" id="cancelProspectBtn">キャンセル</button>
+      <button class="btn btn-primary btn-sm" id="saveProspectBtn">保存</button>
+    </div>
   </div>
+</div>
 
-  <script>
-    // Supabase設定
-    const SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
-    
-    let supabase = null;
-    let currentUser = null;
-    let allProspects = [];
-    let allMembers = [];
-    let allKnowledge = [];
+<!-- ナレッジ追加モーダル -->
+<div class="modal-bg" id="knowledgeModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>ナレッジを投稿</h3>
+      <button class="modal-close" id="closeKnowledgeBtn">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div class="form-group">
+        <label class="form-label">カテゴリ *</label>
+        <select class="form-input" id="kCategory">
+          <option value="成功事例">📈 成功事例</option>
+          <option value="失敗事例">📉 失敗事例</option>
+          <option value="FAQ">❓ FAQ</option>
+          <option value="Tips">💡 Tips</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">タイトル *</label>
+        <input type="text" class="form-input" id="kTitle">
+      </div>
+      <div class="form-group">
+        <label class="form-label">内容 *</label>
+        <textarea class="form-input" id="kContent" rows="5"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary btn-sm" id="cancelKnowledgeBtn">キャンセル</button>
+      <button class="btn btn-primary btn-sm" id="saveKnowledgeBtn">投稿</button>
+    </div>
+  </div>
+</div>
 
-    // 初期化
-    window.onload = function() {
-      console.log('Page loaded');
-      
-      try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('Supabase initialized');
-      } catch(e) {
-        console.error('Supabase init error:', e);
-        alert('システムの初期化に失敗しました');
-        return;
-      }
+<script>
+// グローバル変数
+var supabase;
+var currentUser = null;
+var prospects = [];
+var members = [];
+var knowledge = [];
 
-      // Check saved session
-      try {
-        const savedUser = localStorage.getItem('salesPortalUser');
-        if (savedUser) {
-          currentUser = JSON.parse(savedUser);
-          showApp();
-        }
-      } catch(e) {
-        console.error('Session restore error:', e);
-      }
+// Supabase設定
+var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
 
-      // Login events
-      document.getElementById('loginBtn').onclick = handleLogin;
-      document.getElementById('loginPassword').onkeypress = function(e) { 
-        if (e.key === 'Enter') handleLogin(); 
-      };
-      document.getElementById('showRegister').onclick = function(e) { 
-        e.preventDefault(); 
-        document.getElementById('registerModal').classList.add('active');
-      };
-      document.getElementById('closeRegister').onclick = function() {
-        document.getElementById('registerModal').classList.remove('active');
-      };
-      document.getElementById('cancelRegister').onclick = function() {
-        document.getElementById('registerModal').classList.remove('active');
-      };
-      document.getElementById('registerBtn').onclick = handleRegister;
-      document.getElementById('logoutBtn').onclick = handleLogout;
+// ページ読み込み完了時
+window.onload = function() {
+  // Supabase初期化
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  
+  // セッション復元
+  var saved = localStorage.getItem('salesUser');
+  if (saved) {
+    currentUser = JSON.parse(saved);
+    showMainApp();
+  }
+  
+  // イベント登録
+  setupEvents();
+};
 
-      // Navigation
-      var navItems = document.querySelectorAll('.nav-item');
-      for (var i = 0; i < navItems.length; i++) {
-        navItems[i].onclick = function() {
-          var pages = document.querySelectorAll('.page');
-          var navs = document.querySelectorAll('.nav-item');
-          for (var j = 0; j < navs.length; j++) navs[j].classList.remove('active');
-          for (var j = 0; j < pages.length; j++) pages[j].classList.remove('active');
-          this.classList.add('active');
-          document.getElementById('page-' + this.dataset.page).classList.add('active');
-        };
-      }
-
-      // Prospect Modal
-      document.getElementById('addProspectBtn').onclick = function() {
-        document.getElementById('prospectModalTitle').textContent = '訪問先を追加';
-        document.getElementById('prospectId').value = '';
-        document.getElementById('prospectName').value = '';
-        document.getElementById('prospectArea').value = '';
-        document.getElementById('prospectAddress').value = '';
-        document.getElementById('prospectPhone').value = '';
-        document.getElementById('prospectContact').value = '';
-        document.getElementById('prospectStatus').value = '未訪問';
-        document.getElementById('prospectNotes').value = '';
-        document.getElementById('prospectModal').classList.add('active');
-      };
-      document.getElementById('closeProspectModal').onclick = function() {
-        document.getElementById('prospectModal').classList.remove('active');
-      };
-      document.getElementById('cancelProspect').onclick = function() {
-        document.getElementById('prospectModal').classList.remove('active');
-      };
-      document.getElementById('saveProspect').onclick = saveProspect;
-
-      // Knowledge Modal
-      document.getElementById('addKnowledgeBtn').onclick = function() {
-        document.getElementById('knowledgeModal').classList.add('active');
-      };
-      document.getElementById('closeKnowledgeModal').onclick = function() {
-        document.getElementById('knowledgeModal').classList.remove('active');
-      };
-      document.getElementById('cancelKnowledge').onclick = function() {
-        document.getElementById('knowledgeModal').classList.remove('active');
-      };
-      document.getElementById('saveKnowledge').onclick = saveKnowledge;
-
-      // Filters
-      document.getElementById('filterStatus').onchange = renderProspects;
-      document.getElementById('filterArea').onchange = renderProspects;
-      document.getElementById('searchProspect').oninput = renderProspects;
-      document.getElementById('filterKnowledgeCategory').onchange = renderKnowledge;
-      
-      console.log('All event listeners attached');
+function setupEvents() {
+  // ログイン
+  document.getElementById('loginBtn').onclick = doLogin;
+  document.getElementById('showRegisterLink').onclick = function() {
+    document.getElementById('registerModal').classList.add('show');
+  };
+  
+  // 新規登録モーダル
+  document.getElementById('closeRegisterBtn').onclick = closeRegisterModal;
+  document.getElementById('cancelRegisterBtn').onclick = closeRegisterModal;
+  document.getElementById('registerBtn').onclick = doRegister;
+  
+  // ログアウト
+  document.getElementById('logoutBtn').onclick = doLogout;
+  
+  // ナビゲーション
+  var navBtns = document.querySelectorAll('.nav-btn');
+  for (var i = 0; i < navBtns.length; i++) {
+    navBtns[i].onclick = function() {
+      var page = this.getAttribute('data-page');
+      switchPage(page);
     };
+  }
+  
+  // 訪問先モーダル
+  document.getElementById('addProspectBtn').onclick = openAddProspect;
+  document.getElementById('closeProspectBtn').onclick = closeProspectModal;
+  document.getElementById('cancelProspectBtn').onclick = closeProspectModal;
+  document.getElementById('saveProspectBtn').onclick = saveProspect;
+  
+  // ナレッジモーダル
+  document.getElementById('addKnowledgeBtn').onclick = function() {
+    document.getElementById('knowledgeModal').classList.add('show');
+  };
+  document.getElementById('closeKnowledgeBtn').onclick = closeKnowledgeModal;
+  document.getElementById('cancelKnowledgeBtn').onclick = closeKnowledgeModal;
+  document.getElementById('saveKnowledgeBtn').onclick = saveKnowledge;
+  
+  // フィルター
+  document.getElementById('filterStatus').onchange = renderProspects;
+  document.getElementById('searchText').oninput = renderProspects;
+  document.getElementById('filterCategory').onchange = renderKnowledge;
+}
 
-    // Auth Functions
-    async function handleLogin() {
-      const name = document.getElementById('loginName').value.trim();
-      const password = document.getElementById('loginPassword').value;
+function closeRegisterModal() {
+  document.getElementById('registerModal').classList.remove('show');
+}
 
-      if (!name || !password) {
-        showError('loginError', 'お名前とパスワードを入力してください');
+function closeProspectModal() {
+  document.getElementById('prospectModal').classList.remove('show');
+}
+
+function closeKnowledgeModal() {
+  document.getElementById('knowledgeModal').classList.remove('show');
+}
+
+// ログイン処理
+function doLogin() {
+  var name = document.getElementById('loginName').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  
+  if (!name || !pass) {
+    showLoginError('名前とパスワードを入力してください');
+    return;
+  }
+  
+  supabase
+    .from('sales_members')
+    .select('*')
+    .eq('name', name)
+    .eq('password_hash', pass)
+    .single()
+    .then(function(result) {
+      if (result.error || !result.data) {
+        showLoginError('名前またはパスワードが違います');
         return;
       }
+      currentUser = result.data;
+      localStorage.setItem('salesUser', JSON.stringify(currentUser));
+      showMainApp();
+    });
+}
 
-      try {
-        const { data, error } = await supabase
-          .from('sales_members')
-          .select('*')
-          .eq('name', name)
-          .eq('password_hash', password)
-          .single();
+function showLoginError(msg) {
+  var el = document.getElementById('loginError');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
 
-        if (error || !data) {
-          showError('loginError', 'お名前またはパスワードが正しくありません');
-          return;
-        }
-
-        currentUser = data;
-        localStorage.setItem('salesPortalUser', JSON.stringify(data));
-        showApp();
-      } catch (e) {
-        showError('loginError', 'ログインに失敗しました');
-      }
-    }
-
-    async function handleRegister() {
-      const name = document.getElementById('registerName').value.trim();
-      const email = document.getElementById('registerEmail').value.trim();
-      const password = document.getElementById('registerPassword').value;
-
-      if (!name || !password) {
-        showError('registerError', 'お名前とパスワードは必須です');
+// 新規登録処理
+function doRegister() {
+  var name = document.getElementById('registerName').value.trim();
+  var pass = document.getElementById('registerPass').value;
+  
+  if (!name || !pass) {
+    showRegisterError('名前とパスワードを入力してください');
+    return;
+  }
+  if (pass.length < 4) {
+    showRegisterError('パスワードは4文字以上');
+    return;
+  }
+  
+  supabase
+    .from('sales_members')
+    .insert({ name: name, password_hash: pass })
+    .select()
+    .single()
+    .then(function(result) {
+      if (result.error) {
+        showRegisterError('登録に失敗しました');
         return;
       }
-      if (password.length < 4) {
-        showError('registerError', 'パスワードは4文字以上にしてください');
-        return;
-      }
+      currentUser = result.data;
+      localStorage.setItem('salesUser', JSON.stringify(currentUser));
+      closeRegisterModal();
+      showMainApp();
+    });
+}
 
-      try {
-        const { data, error } = await supabase
-          .from('sales_members')
-          .insert({ name, email: email || null, password_hash: password })
-          .select()
-          .single();
+function showRegisterError(msg) {
+  var el = document.getElementById('registerError');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
 
-        if (error) {
-          if (error.message.includes('duplicate')) {
-            showError('registerError', 'このお名前は既に登録されています');
-          } else {
-            showError('registerError', '登録に失敗しました');
-          }
-          return;
-        }
+// ログアウト
+function doLogout() {
+  currentUser = null;
+  localStorage.removeItem('salesUser');
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
 
-        currentUser = data;
-        localStorage.setItem('salesPortalUser', JSON.stringify(data));
-        hideModal('registerModal');
-        showApp();
-      } catch (e) {
-        showError('registerError', '登録に失敗しました');
-      }
+// メインアプリ表示
+function showMainApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('userName').textContent = currentUser.name + 'さん';
+  loadData();
+}
+
+// データ読み込み
+function loadData() {
+  // メンバー
+  supabase.from('sales_members').select('*').then(function(r) {
+    members = r.data || [];
+    updateStats();
+    renderRanking();
+  });
+  
+  // 訪問先
+  supabase.from('sales_prospects').select('*').order('created_at', { ascending: false }).then(function(r) {
+    prospects = r.data || [];
+    updateStats();
+    renderProspects();
+  });
+  
+  // ナレッジ
+  supabase.from('sales_knowledge').select('*').order('created_at', { ascending: false }).then(function(r) {
+    knowledge = r.data || [];
+    renderKnowledge();
+  });
+}
+
+// 統計更新
+function updateStats() {
+  var teamVisits = prospects.filter(function(p) { return p.status !== '未訪問'; }).length;
+  var negotiating = prospects.filter(function(p) { return p.status === '商談中'; }).length;
+  var closed = prospects.filter(function(p) { return p.status === '成約'; }).length;
+  var myVisits = prospects.filter(function(p) { 
+    return p.assigned_to === currentUser.id && p.status !== '未訪問'; 
+  }).length;
+  
+  document.getElementById('statTeamVisits').textContent = teamVisits;
+  document.getElementById('statNegotiating').textContent = negotiating;
+  document.getElementById('statClosed').textContent = closed;
+  document.getElementById('statMyVisits').textContent = myVisits;
+}
+
+// ページ切り替え
+function switchPage(page) {
+  var navBtns = document.querySelectorAll('.nav-btn');
+  var pages = document.querySelectorAll('.page');
+  
+  for (var i = 0; i < navBtns.length; i++) {
+    navBtns[i].classList.remove('active');
+    if (navBtns[i].getAttribute('data-page') === page) {
+      navBtns[i].classList.add('active');
     }
+  }
+  
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].classList.remove('active');
+  }
+  document.getElementById('page-' + page).classList.add('active');
+}
 
-    function handleLogout() {
-      currentUser = null;
-      localStorage.removeItem('salesPortalUser');
-      document.getElementById('loginScreen').style.display = 'flex';
-      document.getElementById('app').style.display = 'none';
-      document.getElementById('loginName').value = '';
-      document.getElementById('loginPassword').value = '';
+// 訪問先一覧表示
+function renderProspects() {
+  var status = document.getElementById('filterStatus').value;
+  var search = document.getElementById('searchText').value.toLowerCase();
+  
+  var filtered = prospects.filter(function(p) {
+    if (status && p.status !== status) return false;
+    if (search && p.company_name.toLowerCase().indexOf(search) === -1) return false;
+    return true;
+  });
+  
+  var tbody = document.getElementById('prospectsBody');
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">データがありません</td></tr>';
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var p = filtered[i];
+    var member = members.find(function(m) { return m.id === p.assigned_to; });
+    var badgeClass = getBadgeClass(p.status);
+    
+    html += '<tr>';
+    html += '<td><strong>' + esc(p.company_name) + '</strong></td>';
+    html += '<td>' + esc(p.area || '-') + '</td>';
+    html += '<td><span class="badge ' + badgeClass + '">' + p.status + '</span></td>';
+    html += '<td>' + (member ? esc(member.name) : '-') + '</td>';
+    html += '<td><button class="btn btn-secondary btn-sm" onclick="editProspect(\'' + p.id + '\')">編集</button></td>';
+    html += '</tr>';
+  }
+  tbody.innerHTML = html;
+}
+
+function getBadgeClass(status) {
+  var map = {
+    '未訪問': 'badge-gray',
+    '訪問済み': 'badge-blue',
+    '商談中': 'badge-yellow',
+    '成約': 'badge-green',
+    '見送り': 'badge-red'
+  };
+  return map[status] || 'badge-gray';
+}
+
+// 訪問先追加
+function openAddProspect() {
+  document.getElementById('prospectModalTitle').textContent = '訪問先を追加';
+  document.getElementById('prospectId').value = '';
+  document.getElementById('pName').value = '';
+  document.getElementById('pArea').value = '';
+  document.getElementById('pPhone').value = '';
+  document.getElementById('pStatus').value = '未訪問';
+  document.getElementById('pNotes').value = '';
+  document.getElementById('prospectModal').classList.add('show');
+}
+
+function editProspect(id) {
+  var p = prospects.find(function(x) { return x.id === id; });
+  if (!p) return;
+  
+  document.getElementById('prospectModalTitle').textContent = '訪問先を編集';
+  document.getElementById('prospectId').value = p.id;
+  document.getElementById('pName').value = p.company_name || '';
+  document.getElementById('pArea').value = p.area || '';
+  document.getElementById('pPhone').value = p.phone || '';
+  document.getElementById('pStatus').value = p.status || '未訪問';
+  document.getElementById('pNotes').value = p.notes || '';
+  document.getElementById('prospectModal').classList.add('show');
+}
+
+function saveProspect() {
+  var id = document.getElementById('prospectId').value;
+  var data = {
+    company_name: document.getElementById('pName').value.trim(),
+    area: document.getElementById('pArea').value.trim(),
+    phone: document.getElementById('pPhone').value.trim(),
+    status: document.getElementById('pStatus').value,
+    notes: document.getElementById('pNotes').value.trim(),
+    updated_at: new Date().toISOString()
+  };
+  
+  if (!data.company_name) {
+    alert('葬儀社名を入力してください');
+    return;
+  }
+  
+  if (id) {
+    supabase.from('sales_prospects').update(data).eq('id', id).then(function() {
+      closeProspectModal();
+      loadData();
+    });
+  } else {
+    data.assigned_to = currentUser.id;
+    supabase.from('sales_prospects').insert(data).then(function() {
+      closeProspectModal();
+      loadData();
+    });
+  }
+}
+
+// ナレッジ表示
+function renderKnowledge() {
+  var category = document.getElementById('filterCategory').value;
+  
+  var filtered = knowledge.filter(function(k) {
+    if (category && k.category !== category) return false;
+    return true;
+  });
+  
+  var container = document.getElementById('knowledgeList');
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty" style="grid-column:1/-1;">まだ投稿がありません</div>';
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var k = filtered[i];
+    var member = members.find(function(m) { return m.id === k.member_id; });
+    var cardClass = getKnowledgeClass(k.category);
+    var icon = getKnowledgeIcon(k.category);
+    
+    html += '<div class="knowledge-card ' + cardClass + '">';
+    html += '<div class="knowledge-cat">' + icon + ' ' + k.category + '</div>';
+    html += '<div class="knowledge-title">' + esc(k.title) + '</div>';
+    html += '<div class="knowledge-text">' + esc(k.content) + '</div>';
+    html += '<div class="knowledge-footer">';
+    html += '<span>' + (member ? esc(member.name) : '匿名') + '</span>';
+    html += '<span>' + formatDate(k.created_at) + '</span>';
+    html += '</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function getKnowledgeClass(cat) {
+  var map = { '成功事例': 'success', '失敗事例': 'failure', 'FAQ': 'faq' };
+  return map[cat] || '';
+}
+
+function getKnowledgeIcon(cat) {
+  var map = { '成功事例': '📈', '失敗事例': '📉', 'FAQ': '❓', 'Tips': '💡' };
+  return map[cat] || '📝';
+}
+
+function saveKnowledge() {
+  var data = {
+    member_id: currentUser.id,
+    category: document.getElementById('kCategory').value,
+    title: document.getElementById('kTitle').value.trim(),
+    content: document.getElementById('kContent').value.trim()
+  };
+  
+  if (!data.title || !data.content) {
+    alert('タイトルと内容を入力してください');
+    return;
+  }
+  
+  supabase.from('sales_knowledge').insert(data).then(function() {
+    closeKnowledgeModal();
+    document.getElementById('kTitle').value = '';
+    document.getElementById('kContent').value = '';
+    loadData();
+  });
+}
+
+// ランキング表示
+function renderRanking() {
+  var counts = {};
+  for (var i = 0; i < members.length; i++) {
+    counts[members[i].id] = { name: members[i].name, count: 0 };
+  }
+  for (var i = 0; i < prospects.length; i++) {
+    var p = prospects[i];
+    if (p.assigned_to && counts[p.assigned_to] && p.status !== '未訪問') {
+      counts[p.assigned_to].count++;
     }
+  }
+  
+  var arr = [];
+  for (var id in counts) {
+    arr.push(counts[id]);
+  }
+  arr.sort(function(a, b) { return b.count - a.count; });
+  
+  var container = document.getElementById('rankingList');
+  
+  if (arr.length === 0) {
+    container.innerHTML = '<div class="empty">データがありません</div>';
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < arr.length; i++) {
+    var rankClass = i === 0 ? 'gold' : (i === 1 ? 'silver' : (i === 2 ? 'bronze' : ''));
+    html += '<div class="rank-item">';
+    html += '<div class="rank-num ' + rankClass + '">' + (i + 1) + '</div>';
+    html += '<div class="rank-name">' + esc(arr[i].name) + '</div>';
+    html += '<div class="rank-val">' + arr[i].count + '件</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
 
-    function showApp() {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      document.getElementById('currentUserName').textContent = currentUser.name + 'さん';
-      loadAllData();
-    }
+// ユーティリティ
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
-    // Data Loading
-    async function loadAllData() {
-      await Promise.all([
-        loadMembers(),
-        loadProspects(),
-        loadKnowledge(),
-        loadAnnouncements(),
-        loadDocuments()
-      ]);
-      updateDashboard();
-      renderProspects();
-      renderKnowledge();
-      renderRankings();
-    }
+function formatDate(str) {
+  if (!str) return '-';
+  var d = new Date(str);
+  return (d.getMonth() + 1) + '/' + d.getDate();
+}
+</script>
 
-    async function loadMembers() {
-      const { data } = await supabase.from('sales_members').select('*');
-      allMembers = data || [];
-    }
-
-    async function loadProspects() {
-      const { data } = await supabase.from('sales_prospects').select('*').order('updated_at', { ascending: false });
-      allProspects = data || [];
-      
-      // Update area filter
-      const areas = [...new Set(allProspects.map(p => p.area).filter(Boolean))];
-      const areaSelect = document.getElementById('filterArea');
-      areaSelect.innerHTML = '<option value="">すべてのエリア</option>' + areas.map(a => `<option value="${a}">${a}</option>`).join('');
-    }
-
-    async function loadKnowledge() {
-      const { data } = await supabase.from('sales_knowledge').select('*').order('created_at', { ascending: false });
-      allKnowledge = data || [];
-    }
-
-    async function loadAnnouncements() {
-      const { data } = await supabase.from('sales_announcements').select('*').order('created_at', { ascending: false }).limit(5);
-      const container = document.getElementById('announcementsList');
-      
-      if (!data || data.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>お知らせはありません</p></div>';
-        return;
-      }
-
-      container.innerHTML = data.map(a => {
-        const iconClass = a.priority === 'important' ? 'important' : (a.priority === 'info' ? 'info' : 'normal');
-        const icon = a.priority === 'important' ? '🔔' : (a.priority === 'info' ? '📌' : '📢');
-        return `
-          <div class="announcement-item">
-            <div class="announcement-icon ${iconClass}">${icon}</div>
-            <div class="announcement-content">
-              <div class="announcement-title">${escapeHtml(a.title)}</div>
-              <div class="announcement-date">${formatDate(a.created_at)}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    async function loadDocuments() {
-      const { data } = await supabase.from('sales_documents').select('*').order('created_at', { ascending: false });
-      const container = document.getElementById('documentsList');
-      
-      if (!data || data.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>資料はまだありません</p></div>';
-        return;
-      }
-
-      container.innerHTML = data.map(d => {
-        const ext = (d.file_type || 'pdf').toLowerCase();
-        return `
-          <div class="doc-item">
-            <div class="doc-icon ${ext}">${ext.toUpperCase()}</div>
-            <div class="doc-info">
-              <div class="doc-title">${escapeHtml(d.title)}</div>
-              <div class="doc-desc">${escapeHtml(d.description || '')}</div>
-            </div>
-            <a href="${d.file_url}" target="_blank" class="doc-download">ダウンロード</a>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Dashboard
-    function updateDashboard() {
-      const now = new Date();
-      const thisMonth = now.getMonth();
-      const thisYear = now.getFullYear();
-
-      // Count visits this month (based on updated_at for simplicity)
-      const visitsThisMonth = allProspects.filter(p => {
-        const d = new Date(p.updated_at);
-        return d.getMonth() === thisMonth && d.getFullYear() === thisYear && p.status !== '未訪問';
-      }).length;
-
-      const negotiating = allProspects.filter(p => p.status === '商談中').length;
-      const closed = allProspects.filter(p => p.status === '成約').length;
-      const myVisits = allProspects.filter(p => p.assigned_to === currentUser.id && p.status !== '未訪問').length;
-
-      document.getElementById('statVisits').textContent = visitsThisMonth;
-      document.getElementById('statNegotiating').textContent = negotiating;
-      document.getElementById('statClosed').textContent = closed;
-      document.getElementById('statMyVisits').textContent = myVisits;
-
-      // Top ranking preview
-      renderTopRanking();
-    }
-
-    function renderTopRanking() {
-      const memberVisits = {};
-      allMembers.forEach(m => { memberVisits[m.id] = { name: m.name, count: 0 }; });
-      allProspects.forEach(p => {
-        if (p.assigned_to && memberVisits[p.assigned_to] && p.status !== '未訪問') {
-          memberVisits[p.assigned_to].count++;
-        }
-      });
-
-      const sorted = Object.values(memberVisits).sort((a, b) => b.count - a.count).slice(0, 3);
-      const container = document.getElementById('topRanking');
-
-      if (sorted.length === 0 || sorted[0].count === 0) {
-        container.innerHTML = '<div class="empty-state"><p>データがありません</p></div>';
-        return;
-      }
-
-      container.innerHTML = sorted.map((m, i) => {
-        const rankClass = i === 0 ? 'gold' : (i === 1 ? 'silver' : 'bronze');
-        return `
-          <div class="ranking-item">
-            <div class="ranking-rank ${rankClass}">${i + 1}</div>
-            <div class="ranking-info">
-              <div class="ranking-name">${escapeHtml(m.name)}</div>
-            </div>
-            <div class="ranking-value">${m.count}件</div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Prospects
-    function renderProspects() {
-      const status = document.getElementById('filterStatus').value;
-      const area = document.getElementById('filterArea').value;
-      const search = document.getElementById('searchProspect').value.toLowerCase();
-
-      let filtered = allProspects;
-      if (status) filtered = filtered.filter(p => p.status === status);
-      if (area) filtered = filtered.filter(p => p.area === area);
-      if (search) filtered = filtered.filter(p => p.company_name.toLowerCase().includes(search));
-
-      const tbody = document.getElementById('prospectsTable');
-      
-      if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--color-text-muted); padding: 2rem;">データがありません</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(p => {
-        const member = allMembers.find(m => m.id === p.assigned_to);
-        const statusClass = {
-          '未訪問': 'badge-unvisited',
-          '訪問済み': 'badge-visiting',
-          '商談中': 'badge-negotiating',
-          '成約': 'badge-closed',
-          '見送り': 'badge-rejected'
-        }[p.status] || 'badge-unvisited';
-
-        return `
-          <tr>
-            <td><strong>${escapeHtml(p.company_name)}</strong></td>
-            <td>${escapeHtml(p.area || '-')}</td>
-            <td><span class="badge ${statusClass}">${p.status}</span></td>
-            <td>${member ? escapeHtml(member.name) : '-'}</td>
-            <td>${formatDate(p.updated_at)}</td>
-            <td>
-              <button class="btn btn-secondary btn-sm" onclick="editProspect('${p.id}')">編集</button>
-              <button class="btn btn-accent btn-sm" onclick="assignToMe('${p.id}')">担当する</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    async function saveProspect() {
-      const id = document.getElementById('prospectId').value;
-      const data = {
-        company_name: document.getElementById('prospectName').value.trim(),
-        area: document.getElementById('prospectArea').value.trim(),
-        address: document.getElementById('prospectAddress').value.trim(),
-        phone: document.getElementById('prospectPhone').value.trim(),
-        contact_person: document.getElementById('prospectContact').value.trim(),
-        status: document.getElementById('prospectStatus').value,
-        notes: document.getElementById('prospectNotes').value.trim(),
-        updated_at: new Date().toISOString()
-      };
-
-      if (!data.company_name) {
-        alert('葬儀社名を入力してください');
-        return;
-      }
-
-      try {
-        if (id) {
-          await supabase.from('sales_prospects').update(data).eq('id', id);
-        } else {
-          data.assigned_to = currentUser.id;
-          await supabase.from('sales_prospects').insert(data);
-        }
-        hideModal('prospectModal');
-        await loadProspects();
-        renderProspects();
-        updateDashboard();
-      } catch (e) {
-        alert('保存に失敗しました');
-      }
-    }
-
-    function editProspect(id) {
-      const p = allProspects.find(x => x.id === id);
-      if (!p) return;
-
-      document.getElementById('prospectModalTitle').textContent = '訪問先を編集';
-      document.getElementById('prospectId').value = p.id;
-      document.getElementById('prospectName').value = p.company_name || '';
-      document.getElementById('prospectArea').value = p.area || '';
-      document.getElementById('prospectAddress').value = p.address || '';
-      document.getElementById('prospectPhone').value = p.phone || '';
-      document.getElementById('prospectContact').value = p.contact_person || '';
-      document.getElementById('prospectStatus').value = p.status || '未訪問';
-      document.getElementById('prospectNotes').value = p.notes || '';
-      showModal('prospectModal');
-    }
-
-    async function assignToMe(id) {
-      try {
-        await supabase.from('sales_prospects').update({ 
-          assigned_to: currentUser.id,
-          updated_at: new Date().toISOString()
-        }).eq('id', id);
-        await loadProspects();
-        renderProspects();
-        updateDashboard();
-      } catch (e) {
-        alert('担当設定に失敗しました');
-      }
-    }
-
-    // Knowledge
-    function renderKnowledge() {
-      const category = document.getElementById('filterKnowledgeCategory').value;
-      let filtered = allKnowledge;
-      if (category) filtered = filtered.filter(k => k.category === category);
-
-      const container = document.getElementById('knowledgeGrid');
-      
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">💬</div><p>まだ投稿がありません</p><p style="font-size: 0.85rem; margin-top: 0.5rem;">「+ 投稿する」ボタンから共有しましょう！</p></div>';
-        return;
-      }
-
-      container.innerHTML = filtered.map(k => {
-        const member = allMembers.find(m => m.id === k.member_id);
-        const cardClass = {
-          '成功事例': 'success',
-          '失敗事例': 'failure',
-          'FAQ': 'faq',
-          'Tips': ''
-        }[k.category] || '';
-        const icon = {
-          '成功事例': '📈',
-          '失敗事例': '📉',
-          'FAQ': '❓',
-          'Tips': '💡'
-        }[k.category] || '📝';
-
-        return `
-          <div class="knowledge-card ${cardClass}">
-            <div class="knowledge-category">${icon} ${k.category}</div>
-            <div class="knowledge-title">${escapeHtml(k.title)}</div>
-            <div class="knowledge-content">${escapeHtml(k.content)}</div>
-            <div class="knowledge-footer">
-              <span>${member ? escapeHtml(member.name) : '匿名'}</span>
-              <span>${formatDate(k.created_at)}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    async function saveKnowledge() {
-      const data = {
-        member_id: currentUser.id,
-        category: document.getElementById('knowledgeCategory').value,
-        title: document.getElementById('knowledgeTitle').value.trim(),
-        content: document.getElementById('knowledgeContent').value.trim()
-      };
-
-      if (!data.title || !data.content) {
-        alert('タイトルと内容を入力してください');
-        return;
-      }
-
-      try {
-        await supabase.from('sales_knowledge').insert(data);
-        hideModal('knowledgeModal');
-        document.getElementById('knowledgeTitle').value = '';
-        document.getElementById('knowledgeContent').value = '';
-        await loadKnowledge();
-        renderKnowledge();
-      } catch (e) {
-        alert('投稿に失敗しました');
-      }
-    }
-
-    // Rankings
-    function renderRankings() {
-      // Visit Ranking
-      const memberVisits = {};
-      allMembers.forEach(m => { memberVisits[m.id] = { name: m.name, count: 0 }; });
-      allProspects.forEach(p => {
-        if (p.assigned_to && memberVisits[p.assigned_to] && p.status !== '未訪問') {
-          memberVisits[p.assigned_to].count++;
-        }
-      });
-
-      const visitSorted = Object.values(memberVisits).sort((a, b) => b.count - a.count);
-      const visitContainer = document.getElementById('visitRanking');
-      visitContainer.innerHTML = visitSorted.map((m, i) => {
-        const rankClass = i === 0 ? 'gold' : (i === 1 ? 'silver' : (i === 2 ? 'bronze' : 'normal'));
-        return `
-          <div class="ranking-item">
-            <div class="ranking-rank ${rankClass}">${i + 1}</div>
-            <div class="ranking-info">
-              <div class="ranking-name">${escapeHtml(m.name)}</div>
-            </div>
-            <div class="ranking-value">${m.count}件</div>
-          </div>
-        `;
-      }).join('') || '<div class="empty-state"><p>データがありません</p></div>';
-
-      // Closed Ranking
-      const memberClosed = {};
-      allMembers.forEach(m => { memberClosed[m.id] = { name: m.name, count: 0 }; });
-      allProspects.forEach(p => {
-        if (p.assigned_to && memberClosed[p.assigned_to] && p.status === '成約') {
-          memberClosed[p.assigned_to].count++;
-        }
-      });
-
-      const closedSorted = Object.values(memberClosed).sort((a, b) => b.count - a.count);
-      const closedContainer = document.getElementById('closedRanking');
-      closedContainer.innerHTML = closedSorted.map((m, i) => {
-        const rankClass = i === 0 ? 'gold' : (i === 1 ? 'silver' : (i === 2 ? 'bronze' : 'normal'));
-        return `
-          <div class="ranking-item">
-            <div class="ranking-rank ${rankClass}">${i + 1}</div>
-            <div class="ranking-info">
-              <div class="ranking-name">${escapeHtml(m.name)}</div>
-            </div>
-            <div class="ranking-value">${m.count}件</div>
-          </div>
-        `;
-      }).join('') || '<div class="empty-state"><p>データがありません</p></div>';
-    }
-
-    // Utilities
-    function showModal(id) {
-      document.getElementById(id).classList.add('active');
-    }
-
-    function hideModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
-
-    function showError(id, message) {
-      const el = document.getElementById(id);
-      el.textContent = message;
-      el.style.display = 'block';
-      setTimeout(() => { el.style.display = 'none'; }, 5000);
-    }
-
-    function formatDate(dateStr) {
-      if (!dateStr) return '-';
-      const d = new Date(dateStr);
-      return `${d.getMonth() + 1}/${d.getDate()}`;
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-  </script>
 </body>
 </html>
