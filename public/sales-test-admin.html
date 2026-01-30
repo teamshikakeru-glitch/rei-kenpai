@@ -26,463 +26,80 @@
       --shadow-soft: 0 2px 8px rgba(0,0,0,0.08);
       --shadow-medium: 0 4px 16px rgba(0,0,0,0.12);
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: var(--color-bg);
-      color: var(--color-text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* Header */
-    .header {
-      background: var(--color-primary);
-      color: var(--color-white);
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .logo-symbol {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    .logo-text {
-      font-size: 1rem;
-      opacity: 0.9;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .btn-header {
-      padding: 0.5rem 1rem;
-      background: rgba(255,255,255,0.15);
-      color: var(--color-white);
-      border: none;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-header:hover {
-      background: rgba(255,255,255,0.25);
-    }
-
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    /* Stats Cards */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background: var(--color-white);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--color-text-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--color-primary);
-    }
-
-    .stat-value.success {
-      color: var(--color-success);
-    }
-
-    .stat-value.error {
-      color: var(--color-error);
-    }
-
-    .stat-sub {
-      font-size: 0.8rem;
-      color: var(--color-text-muted);
-      margin-top: 0.25rem;
-    }
-
-    /* Filters */
-    .filters {
-      background: var(--color-white);
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .filter-label {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--color-text-light);
-    }
-
-    .filter-btn {
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--color-border);
-      background: var(--color-white);
-      border-radius: 100px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .filter-btn:hover {
-      border-color: var(--color-primary);
-    }
-
-    .filter-btn.active {
-      background: var(--color-primary);
-      color: var(--color-white);
-      border-color: var(--color-primary);
-    }
-
-    /* Table */
-    .table-container {
-      background: var(--color-white);
-      border-radius: 12px;
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    .table-header {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .table-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 1rem 1.5rem;
-      text-align: left;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    th {
-      background: var(--color-bg);
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--color-text-light);
-    }
-
-    td {
-      font-size: 0.9rem;
-    }
-
-    tr:hover td {
-      background: var(--color-bg);
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .badge-pass {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .badge-fail {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .btn-detail {
-      padding: 0.4rem 0.8rem;
-      background: var(--color-primary-pale);
-      color: var(--color-primary);
-      border: none;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-detail:hover {
-      background: var(--color-primary);
-      color: var(--color-white);
-    }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal {
-      background: var(--color-white);
-      border-radius: 16px;
-      width: 90%;
-      max-width: 800px;
-      max-height: 90vh;
-      overflow: hidden;
-      transform: translateY(20px);
-      transition: transform 0.3s;
-    }
-
-    .modal-overlay.active .modal {
-      transform: translateY(0);
-    }
-
-    .modal-header {
-      padding: 1.5rem;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .modal-close {
-      width: 36px;
-      height: 36px;
-      border: none;
-      background: var(--color-bg);
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .modal-close:hover {
-      background: var(--color-border);
-    }
-
-    .modal-body {
-      padding: 1.5rem;
-      max-height: calc(90vh - 140px);
-      overflow-y: auto;
-    }
-
-    .detail-section {
-      margin-bottom: 2rem;
-    }
-
-    .detail-section:last-child {
-      margin-bottom: 0;
-    }
-
-    .detail-section-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--color-primary);
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .detail-item {
-      background: var(--color-bg);
-      padding: 1rem;
-      border-radius: 8px;
-    }
-
-    .detail-item-label {
-      font-size: 0.8rem;
-      color: var(--color-text-muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .detail-item-value {
-      font-size: 1rem;
-      font-weight: 500;
-    }
-
-    .answer-item {
-      background: var(--color-bg);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .answer-item.correct {
-      border-left: 3px solid var(--color-success);
-    }
-
-    .answer-item.incorrect {
-      border-left: 3px solid var(--color-error);
-    }
-
-    .answer-question {
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .answer-content {
-      font-size: 0.85rem;
-      color: var(--color-text-light);
-    }
-
-    .answer-content span {
-      display: block;
-      margin-top: 0.25rem;
-    }
-
-    .answer-feedback {
-      background: var(--color-primary-pale);
-      padding: 0.75rem;
-      border-radius: 6px;
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
-    }
-
-    /* Loading */
-    .loading {
-      text-align: center;
-      padding: 3rem;
-    }
-
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--color-border);
-      border-top-color: var(--color-primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 1rem;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 3rem;
-      color: var(--color-text-muted);
-    }
-
-    .empty-state-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .filters {
-        flex-wrap: wrap;
-      }
-
-      .table-container {
-        overflow-x: auto;
-      }
-
-      table {
-        min-width: 600px;
-      }
-
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: var(--color-bg); color: var(--color-text); line-height: 1.6; min-height: 100vh; }
+    .header { background: var(--color-primary); color: var(--color-white); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 0.75rem; }
+    .logo-symbol { font-size: 1.5rem; font-weight: 700; }
+    .logo-text { font-size: 1rem; opacity: 0.9; }
+    .header-actions { display: flex; gap: 1rem; }
+    .btn-header { padding: 0.5rem 1rem; background: rgba(255,255,255,0.15); color: var(--color-white); border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; }
+    .btn-header:hover { background: rgba(255,255,255,0.25); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--color-white); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow-soft); }
+    .stat-label { font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 0.5rem; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--color-primary); }
+    .stat-value.success { color: var(--color-success); }
+    .stat-value.error { color: var(--color-error); }
+    .stat-sub { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+    .filters { background: var(--color-white); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center; box-shadow: var(--shadow-soft); }
+    .filter-label { font-size: 0.9rem; font-weight: 500; color: var(--color-text-light); }
+    .filter-btn { padding: 0.5rem 1rem; border: 1px solid var(--color-border); background: var(--color-white); border-radius: 100px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .filter-btn:hover { border-color: var(--color-primary); }
+    .filter-btn.active { background: var(--color-primary); color: var(--color-white); border-color: var(--color-primary); }
+    .table-container { background: var(--color-white); border-radius: 12px; box-shadow: var(--shadow-soft); overflow: hidden; }
+    .table-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; }
+    .table-title { font-size: 1.1rem; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+    th { background: var(--color-bg); font-weight: 600; font-size: 0.85rem; color: var(--color-text-light); }
+    td { font-size: 0.9rem; }
+    tr:hover td { background: var(--color-bg); }
+    tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+    .badge-pass { background: #d4edda; color: #155724; }
+    .badge-fail { background: #f8d7da; color: #721c24; }
+    .btn-detail { padding: 0.4rem 0.8rem; background: var(--color-primary-pale); color: var(--color-primary); border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
+    .btn-detail:hover { background: var(--color-primary); color: var(--color-white); }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal { background: var(--color-white); border-radius: 16px; width: 90%; max-width: 800px; max-height: 90vh; overflow: hidden; transform: translateY(20px); transition: transform 0.3s; }
+    .modal-overlay.active .modal { transform: translateY(0); }
+    .modal-header { padding: 1.5rem; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 1.2rem; font-weight: 600; }
+    .modal-close { width: 36px; height: 36px; border: none; background: var(--color-bg); border-radius: 50%; font-size: 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .modal-close:hover { background: var(--color-border); }
+    .modal-body { padding: 1.5rem; max-height: calc(90vh - 140px); overflow-y: auto; }
+    .detail-section { margin-bottom: 2rem; }
+    .detail-section:last-child { margin-bottom: 0; }
+    .detail-section-title { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--color-primary); }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .detail-item { background: var(--color-bg); padding: 1rem; border-radius: 8px; }
+    .detail-item-label { font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.25rem; }
+    .detail-item-value { font-size: 1rem; font-weight: 500; }
+    .answer-item { background: var(--color-bg); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; }
+    .answer-item.correct { border-left: 3px solid var(--color-success); }
+    .answer-item.incorrect { border-left: 3px solid var(--color-error); }
+    .answer-question { font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .answer-content { font-size: 0.85rem; color: var(--color-text-light); }
+    .answer-content span { display: block; margin-top: 0.25rem; }
+    .answer-feedback { background: var(--color-primary-pale); padding: 0.75rem; border-radius: 6px; margin-top: 0.5rem; font-size: 0.85rem; }
+    .feedback-section { background: var(--color-accent); background: linear-gradient(135deg, #f5f0e0 0%, #fff 100%); border: 2px solid var(--color-accent); border-radius: 8px; padding: 1rem; margin-top: 1rem; }
+    .feedback-section-title { font-weight: 600; color: var(--color-accent); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .feedback-text { font-size: 0.9rem; color: var(--color-text); white-space: pre-wrap; }
+    .loading { text-align: center; padding: 3rem; }
+    .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--color-border); border-top-color: var(--color-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .empty-state { text-align: center; padding: 3rem; color: var(--color-text-muted); }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .error-box { background: #fee; border: 1px solid var(--color-error); color: var(--color-error); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+    @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .container { padding: 1rem; } .stats-grid { grid-template-columns: 1fr; } .filters { flex-wrap: wrap; } .table-container { overflow-x: auto; } table { min-width: 600px; } .detail-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="header-inner">
       <div class="logo">
@@ -490,44 +107,43 @@
         <span class="logo-text">営業テスト管理画面</span>
       </div>
       <div class="header-actions">
-        <button class="btn-header" onclick="loadData()">🔄 更新</button>
-        <button class="btn-header" onclick="exportCSV()">📥 CSV出力</button>
+        <button class="btn-header" id="refreshBtn">🔄 更新</button>
+        <button class="btn-header" id="exportBtn">📥 CSV出力</button>
       </div>
     </div>
   </header>
 
   <div class="container">
-    <!-- Stats -->
-    <div class="stats-grid" id="statsGrid">
+    <div id="errorBox" class="error-box" style="display: none;"></div>
+    
+    <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-label">総受験者数</div>
-        <div class="stat-value" id="totalAttempts">-</div>
+        <div class="stat-value" id="totalAttempts">0</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">合格者数</div>
-        <div class="stat-value success" id="passedCount">-</div>
-        <div class="stat-sub" id="passRate">合格率: -%</div>
+        <div class="stat-value success" id="passedCount">0</div>
+        <div class="stat-sub" id="passRate">合格率: 0%</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">不合格者数</div>
-        <div class="stat-value error" id="failedCount">-</div>
+        <div class="stat-value error" id="failedCount">0</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">平均点</div>
-        <div class="stat-value" id="avgScore">-</div>
+        <div class="stat-value" id="avgScore">0</div>
         <div class="stat-sub">/ 100点</div>
       </div>
     </div>
 
-    <!-- Filters -->
     <div class="filters">
       <span class="filter-label">絞り込み:</span>
-      <button class="filter-btn active" onclick="filterAttempts('all')">すべて</button>
-      <button class="filter-btn" onclick="filterAttempts('passed')">合格のみ</button>
-      <button class="filter-btn" onclick="filterAttempts('failed')">不合格のみ</button>
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="passed">合格のみ</button>
+      <button class="filter-btn" data-filter="failed">不合格のみ</button>
     </div>
 
-    <!-- Table -->
     <div class="table-container">
       <div class="table-header">
         <h2 class="table-title">受験者一覧</h2>
@@ -542,70 +158,126 @@
     </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-    <div class="modal" onclick="event.stopPropagation()">
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
       <div class="modal-header">
         <h3 class="modal-title" id="modalTitle">詳細</h3>
-        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <button class="modal-close" id="modalClose">&times;</button>
       </div>
-      <div class="modal-body" id="modalBody">
-      </div>
+      <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
   <script>
-    // =============================================
     // Supabase設定
-    // =============================================
-    // ⚠️ 以下のURLとキーを実際の値に置き換えてください
-  const SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
+    const SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
     
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // =============================================
-    // 状態
-    // =============================================
+    let supabaseClient = null;
     let allAttempts = [];
     let currentFilter = 'all';
 
-    // =============================================
-    // データ読み込み
-    // =============================================
-    async function loadData() {
+    // DOM読み込み完了後に初期化
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('ページ読み込み完了');
+      
+      // Supabase初期化
       try {
-        const { data, error } = await supabase
+        if (typeof window.supabase === 'undefined') {
+          throw new Error('Supabase ライブラリが読み込まれていません');
+        }
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase初期化成功');
+      } catch (e) {
+        console.error('Supabase初期化エラー:', e);
+        showError('Supabaseの初期化に失敗しました: ' + e.message);
+        return;
+      }
+
+      // イベント設定
+      document.getElementById('refreshBtn').addEventListener('click', loadData);
+      document.getElementById('exportBtn').addEventListener('click', exportCSV);
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+      });
+
+      // フィルターボタン
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentFilter = this.dataset.filter;
+          renderTable();
+        });
+      });
+
+      // データ読み込み
+      loadData();
+    });
+
+    // エラー表示
+    function showError(message) {
+      const errorBox = document.getElementById('errorBox');
+      errorBox.textContent = message;
+      errorBox.style.display = 'block';
+      
+      document.getElementById('tableBody').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">⚠️</div>
+          <p>データの読み込みに失敗しました</p>
+          <p style="font-size: 0.85rem; margin-top: 0.5rem;">${escapeHtml(message)}</p>
+        </div>
+      `;
+    }
+
+    // データ読み込み
+    async function loadData() {
+      console.log('データ読み込み開始');
+      document.getElementById('errorBox').style.display = 'none';
+      
+      document.getElementById('tableBody').innerHTML = `
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <p>読み込み中...</p>
+        </div>
+      `;
+
+      try {
+        if (!supabaseClient) {
+          throw new Error('Supabaseが初期化されていません');
+        }
+
+        console.log('Supabaseクエリ実行中...');
+        const { data, error } = await supabaseClient
           .from('sales_test_attempts')
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (error) throw error;
+        console.log('クエリ結果:', { data, error });
+
+        if (error) {
+          throw new Error(error.message || 'データベースエラー');
+        }
 
         allAttempts = data || [];
+        console.log('取得したデータ:', allAttempts.length, '件');
+        
         updateStats();
         renderTable();
       } catch (error) {
         console.error('データ読み込みエラー:', error);
-        document.getElementById('tableBody').innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">⚠️</div>
-            <p>データの読み込みに失敗しました</p>
-            <p style="font-size: 0.85rem; margin-top: 0.5rem;">Supabaseの設定を確認してください</p>
-          </div>
-        `;
+        showError(error.message || 'データの読み込みに失敗しました');
       }
     }
 
-    // =============================================
     // 統計更新
-    // =============================================
     function updateStats() {
       const total = allAttempts.length;
       const passed = allAttempts.filter(a => a.passed).length;
       const failed = total - passed;
       const avgScore = total > 0 
-        ? Math.round(allAttempts.reduce((sum, a) => sum + a.total_score, 0) / total)
+        ? Math.round(allAttempts.reduce((sum, a) => sum + (a.total_score || 0), 0) / total)
         : 0;
       const passRate = total > 0 ? Math.round((passed / total) * 100) : 0;
 
@@ -616,9 +288,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
       document.getElementById('passRate').textContent = `合格率: ${passRate}%`;
     }
 
-    // =============================================
     // テーブル描画
-    // =============================================
     function renderTable() {
       let filtered = allAttempts;
       
@@ -634,7 +304,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
         document.getElementById('tableBody').innerHTML = `
           <div class="empty-state">
             <div class="empty-state-icon">📋</div>
-            <p>データがありません</p>
+            <p>まだ受験者がいません</p>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--color-text-muted);">営業テストを受験すると、ここに結果が表示されます</p>
           </div>
         `;
         return;
@@ -655,50 +326,42 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            ${filtered.map(attempt => `
-              <tr>
-                <td>${formatDate(attempt.created_at)}</td>
-                <td><strong>${escapeHtml(attempt.user_name)}</strong></td>
-                <td><strong>${attempt.total_score}</strong> / ${attempt.max_score}</td>
-                <td>${attempt.section1_select_score} / 30</td>
-                <td>${attempt.section1_text_score} / 10</td>
-                <td>${attempt.section2_score} / 60</td>
-                <td>${attempt.duration_minutes || '-'}分</td>
-                <td>
-                  <span class="badge ${attempt.passed ? 'badge-pass' : 'badge-fail'}">
-                    ${attempt.passed ? '合格' : '不合格'}
-                  </span>
-                </td>
-                <td>
-                  <button class="btn-detail" onclick="showDetail('${attempt.id}')">
-                    詳細
-                  </button>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
+          <tbody id="tableRows"></tbody>
         </table>
       `;
-    }
 
-    // =============================================
-    // フィルター
-    // =============================================
-    function filterAttempts(filter) {
-      currentFilter = filter;
-      
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
+      const tbody = document.getElementById('tableRows');
+      filtered.forEach(attempt => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${formatDate(attempt.created_at)}</td>
+          <td><strong>${escapeHtml(attempt.user_name)}</strong></td>
+          <td><strong>${attempt.total_score || 0}</strong> / ${attempt.max_score || 100}</td>
+          <td>${attempt.section1_select_score || 0} / 30</td>
+          <td>${attempt.section1_text_score || 0} / 10</td>
+          <td>${attempt.section2_score || 0} / 60</td>
+          <td>${attempt.duration_minutes || '-'}分</td>
+          <td>
+            <span class="badge ${attempt.passed ? 'badge-pass' : 'badge-fail'}">
+              ${attempt.passed ? '合格' : '不合格'}
+            </span>
+          </td>
+          <td>
+            <button class="btn-detail" data-id="${attempt.id}">詳細</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
       });
-      event.target.classList.add('active');
-      
-      renderTable();
+
+      // 詳細ボタンのイベント
+      document.querySelectorAll('.btn-detail').forEach(btn => {
+        btn.addEventListener('click', function() {
+          showDetail(this.dataset.id);
+        });
+      });
     }
 
-    // =============================================
     // 詳細表示
-    // =============================================
     async function showDetail(attemptId) {
       const attempt = allAttempts.find(a => a.id === attemptId);
       if (!attempt) return;
@@ -713,7 +376,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
       document.getElementById('modalOverlay').classList.add('active');
 
       try {
-        const { data: answers, error } = await supabase
+        const { data: answers, error } = await supabaseClient
           .from('sales_test_answers')
           .select('*')
           .eq('attempt_id', attemptId)
@@ -733,6 +396,18 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     }
 
     function renderDetail(attempt, answers) {
+      let feedbackSection = '';
+      if (attempt.feedback && attempt.feedback.trim()) {
+        feedbackSection = `
+          <div class="detail-section">
+            <h4 class="detail-section-title">💬 システムへのフィードバック</h4>
+            <div class="feedback-section">
+              <div class="feedback-text">${escapeHtml(attempt.feedback)}</div>
+            </div>
+          </div>
+        `;
+      }
+
       document.getElementById('modalBody').innerHTML = `
         <div class="detail-section">
           <h4 class="detail-section-title">📊 スコア概要</h4>
@@ -747,7 +422,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             </div>
             <div class="detail-item">
               <div class="detail-item-label">合計点</div>
-              <div class="detail-item-value">${attempt.total_score} / ${attempt.max_score}点</div>
+              <div class="detail-item-value">${attempt.total_score || 0} / ${attempt.max_score || 100}点</div>
             </div>
             <div class="detail-item">
               <div class="detail-item-label">結果</div>
@@ -760,14 +435,16 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
           </div>
         </div>
 
+        ${feedbackSection}
+
         <div class="detail-section">
           <h4 class="detail-section-title">📝 回答詳細</h4>
-          ${answers.map(a => `
+          ${answers.length > 0 ? answers.map(a => `
             <div class="answer-item ${a.is_correct ? 'correct' : 'incorrect'}">
               <div class="answer-question">
-                問${a.question_id}. [${a.question_category}] 
+                問${a.question_id}. [${escapeHtml(a.question_category)}] 
                 <span style="color: ${a.is_correct ? 'var(--color-success)' : 'var(--color-error)'}">
-                  ${a.score} / ${a.max_score}点
+                  ${a.score || 0} / ${a.max_score || 0}点
                 </span>
               </div>
               <div class="answer-content">
@@ -779,35 +456,33 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 </div>
               ` : ''}
             </div>
-          `).join('')}
+          `).join('') : '<p style="color: var(--color-text-muted);">回答データがありません</p>'}
         </div>
       `;
     }
 
-    function closeModal(event) {
-      if (event && event.target !== event.currentTarget) return;
+    function closeModal() {
       document.getElementById('modalOverlay').classList.remove('active');
     }
 
-    // =============================================
     // CSV出力
-    // =============================================
     function exportCSV() {
       if (allAttempts.length === 0) {
         alert('出力するデータがありません');
         return;
       }
 
-      const headers = ['受験日時', '名前', '合計点', '第1部選択', '第1部記述', '第2部', '所要時間', '結果'];
+      const headers = ['受験日時', '名前', '合計点', '第1部選択', '第1部記述', '第2部', '所要時間', '結果', 'フィードバック'];
       const rows = allAttempts.map(a => [
         formatDate(a.created_at),
         a.user_name,
-        a.total_score,
-        a.section1_select_score,
-        a.section1_text_score,
-        a.section2_score,
+        a.total_score || 0,
+        a.section1_select_score || 0,
+        a.section1_text_score || 0,
+        a.section2_score || 0,
         a.duration_minutes || '',
-        a.passed ? '合格' : '不合格'
+        a.passed ? '合格' : '不合格',
+        (a.feedback || '').replace(/"/g, '""')
       ]);
 
       const csv = [headers, ...rows]
@@ -824,10 +499,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
       URL.revokeObjectURL(url);
     }
 
-    // =============================================
     // ユーティリティ
-    // =============================================
     function formatDate(dateStr) {
+      if (!dateStr) return '-';
       const d = new Date(dateStr);
       return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     }
@@ -838,18 +512,13 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
     function escapeHtml(str) {
       if (!str) return '';
-      return str
+      return String(str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     }
-
-    // =============================================
-    // 初期化
-    // =============================================
-    loadData();
   </script>
 </body>
 </html>
