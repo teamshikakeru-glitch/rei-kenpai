@@ -1234,6 +1234,41 @@
   </div>
 </div>
 
+<!-- TODO詳細モーダル -->
+<div class="modal-bg" id="todoDetailModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>📋 TODO詳細</h3>
+      <button class="modal-close" onclick="closeModal('todoDetailModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div id="todoDetailContent"></div>
+      <hr style="border:none; border-top:1px solid #e5e2dd; margin:1rem 0;">
+      <div class="form-group">
+        <label class="form-label">ステータス</label>
+        <select class="form-input" id="todoStatus">
+          <option value="未着手">未着手</option>
+          <option value="確認済み">確認済み</option>
+          <option value="取組中">取組中</option>
+          <option value="完了">完了</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">完了予定日</label>
+        <input type="date" class="form-input" id="todoEstimatedDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">返信・コメント</label>
+        <textarea class="form-input" id="todoReply" rows="3" placeholder="進捗や質問など..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('todoDetailModal')">閉じる</button>
+      <button class="btn btn-primary" onclick="updateTodoStatus()">更新</button>
+    </div>
+  </div>
+</div>
+
 <script>
 var supabase;
 var currentUser = null;
@@ -1246,6 +1281,7 @@ var posts = [];
 var myGoal = null;
 var notifications = [];
 var myTodos = [];
+var selectedTodoId = null;
 
 // カレンダー用
 var currentCalendarDate = new Date();
@@ -1944,7 +1980,8 @@ function markAllRead() {
 // TODOを表示
 function renderMyTodos() {
   var pendingCount = myTodos.filter(function(t) { return t.status !== '完了'; }).length;
-  document.getElementById('todoCount').textContent = pendingCount + '件の未完了';
+  var unreadCount = myTodos.filter(function(t) { return !t.is_read; }).length;
+  document.getElementById('todoCount').textContent = pendingCount + '件の未完了' + (unreadCount > 0 ? '（' + unreadCount + '件未読）' : '');
   
   var container = document.getElementById('myTodosList');
   if (myTodos.length === 0) {
@@ -1956,19 +1993,89 @@ function renderMyTodos() {
   for (var i = 0; i < myTodos.length; i++) {
     var t = myTodos[i];
     var isDone = t.status === '完了';
-    html += '<div class="my-todo-item">';
-    html += '<div class="my-todo-check ' + (isDone ? 'done' : '') + '" onclick="toggleTodo(\'' + t.id + '\', ' + !isDone + ')"></div>';
-    html += '<div class="my-todo-content">';
-    html += '<div class="my-todo-title" style="' + (isDone ? 'text-decoration:line-through; color:#8a8a8a;' : '') + '">' + esc(t.title) + '</div>';
-    html += '<div class="my-todo-meta">' + (t.due_date ? '期限: ' + formatDate(t.due_date) : '') + '</div>';
-    if (t.description) html += '<div style="font-size:0.8rem; color:#5a5a5a; margin-top:0.25rem;">' + esc(t.description) + '</div>';
+    var isUnread = !t.is_read;
+    var statusBadge = getTodoStatusBadge(t.status);
+    
+    html += '<div class="my-todo-item" style="' + (isUnread ? 'background:#fff8e1;' : '') + '" onclick="openTodoDetail(\'' + t.id + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">';
+    if (isUnread) html += '<span style="background:#dc3545; color:white; font-size:0.6rem; padding:0.1rem 0.4rem; border-radius:4px;">NEW</span>';
+    html += '<span class="badge ' + statusBadge + '">' + t.status + '</span>';
     html += '</div>';
+    html += '<div class="my-todo-title" style="' + (isDone ? 'text-decoration:line-through; color:#8a8a8a;' : '') + '">' + esc(t.title) + '</div>';
+    html += '<div class="my-todo-meta">';
+    if (t.due_date) html += '期限: ' + formatDate(t.due_date) + ' ';
+    if (t.estimated_date) html += '→ 完了予定: ' + formatDate(t.estimated_date);
+    html += '</div>';
+    if (t.description) html += '<div style="font-size:0.8rem; color:#5a5a5a; margin-top:0.25rem;">' + esc(t.description) + '</div>';
+    if (t.member_reply) html += '<div style="font-size:0.8rem; color:#2d5a47; margin-top:0.25rem; background:#e8f0ec; padding:0.4rem; border-radius:4px;">💬 ' + esc(t.member_reply) + '</div>';
+    html += '</div>';
+    html += '<div style="color:#8a8a8a;">→</div>';
     html += '</div>';
   }
   container.innerHTML = html;
   
   // ホームアラート更新
   updateHomeAlerts();
+}
+
+function getTodoStatusBadge(status) {
+  var map = {
+    '未着手': 'badge-gray',
+    '確認済み': 'badge-blue',
+    '取組中': 'badge-yellow',
+    '完了': 'badge-green'
+  };
+  return map[status] || 'badge-gray';
+}
+
+function openTodoDetail(id) {
+  selectedTodoId = id;
+  var t = myTodos.find(function(x) { return x.id === id; });
+  if (!t) return;
+  
+  // 未読なら既読にする
+  if (!t.is_read) {
+    supabase.from('sales_todos').update({ 
+      is_read: true, 
+      read_at: new Date().toISOString() 
+    }).eq('id', id).then(function() {
+      // ローカルデータも更新
+      t.is_read = true;
+      renderMyTodos();
+    });
+  }
+  
+  var html = '';
+  html += '<div style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">' + esc(t.title) + '</div>';
+  if (t.description) html += '<div style="color:#5a5a5a; margin-bottom:0.5rem;">' + esc(t.description) + '</div>';
+  html += '<div style="font-size:0.8rem; color:#8a8a8a;">';
+  if (t.due_date) html += '📅 期限: ' + formatDate(t.due_date) + '<br>';
+  html += '📆 作成日: ' + formatDateTime(t.created_at);
+  html += '</div>';
+  
+  document.getElementById('todoDetailContent').innerHTML = html;
+  document.getElementById('todoStatus').value = t.status || '未着手';
+  document.getElementById('todoEstimatedDate').value = t.estimated_date || '';
+  document.getElementById('todoReply').value = t.member_reply || '';
+  
+  openModal('todoDetailModal');
+}
+
+function updateTodoStatus() {
+  if (!selectedTodoId) return;
+  
+  var data = {
+    status: document.getElementById('todoStatus').value,
+    estimated_date: document.getElementById('todoEstimatedDate').value || null,
+    member_reply: document.getElementById('todoReply').value.trim(),
+    replied_at: new Date().toISOString()
+  };
+  
+  supabase.from('sales_todos').update(data).eq('id', selectedTodoId).then(function() {
+    closeModal('todoDetailModal');
+    loadData();
+  });
 }
 
 function toggleTodo(id, done) {

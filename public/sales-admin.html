@@ -961,17 +961,47 @@ function renderTodos() {
   for (var i = 0; i < todos.length; i++) {
     var t = todos[i];
     var member = members.find(function(m) { return m.id === t.member_id; });
-    var isDone = t.status === '完了';
-    html += '<div class="todo-item">';
-    html += '<div class="todo-status ' + (isDone ? 'done' : '') + '"></div>';
-    html += '<div class="todo-content">';
+    var statusBadge = getTodoStatusBadge(t.status);
+    
+    html += '<div class="todo-item" style="flex-direction:column; align-items:stretch;">';
+    html += '<div style="display:flex; align-items:flex-start; gap:1rem;">';
+    html += '<div class="todo-status ' + (t.status === '完了' ? 'done' : '') + '"></div>';
+    html += '<div class="todo-content" style="flex:1;">';
+    html += '<div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.25rem;">';
+    html += '<span class="badge ' + statusBadge + '">' + t.status + '</span>';
+    if (t.is_read) html += '<span style="font-size:0.7rem; color:#28a745;">✓既読</span>';
+    else html += '<span style="font-size:0.7rem; color:#dc3545;">●未読</span>';
+    html += '</div>';
     html += '<div class="todo-title">' + esc(t.title) + '</div>';
-    html += '<div class="todo-meta">' + (member ? member.name : '不明') + (t.due_date ? ' • 期限: ' + formatDate(t.due_date) : '') + ' • <span class="badge ' + (isDone ? 'badge-green' : 'badge-yellow') + '">' + t.status + '</span></div>';
+    html += '<div class="todo-meta">' + (member ? member.name : '不明');
+    if (t.due_date) html += ' • 期限: ' + formatDate(t.due_date);
+    if (t.estimated_date) html += ' • <span style="color:#c9a962;">完了予定: ' + formatDate(t.estimated_date) + '</span>';
+    html += '</div>';
     if (t.description) html += '<div style="font-size:0.85rem; color:#8a8a9a; margin-top:0.25rem;">' + esc(t.description) + '</div>';
     html += '</div>';
     html += '</div>';
+    
+    // 返信がある場合
+    if (t.member_reply) {
+      html += '<div style="margin-top:0.75rem; margin-left:1.75rem; padding:0.75rem; background:#2d3548; border-radius:8px; border-left:3px solid #c9a962;">';
+      html += '<div style="font-size:0.75rem; color:#8a8a9a; margin-bottom:0.25rem;">💬 ' + (member ? member.name : '') + 'からの返信（' + formatDateTime(t.replied_at) + '）</div>';
+      html += '<div style="font-size:0.9rem;">' + esc(t.member_reply) + '</div>';
+      html += '</div>';
+    }
+    
+    html += '</div>';
   }
   container.innerHTML = html;
+}
+
+function getTodoStatusBadge(status) {
+  var map = {
+    '未着手': 'badge-gray',
+    '確認済み': 'badge-blue',
+    '取組中': 'badge-yellow',
+    '完了': 'badge-green'
+  };
+  return map[status] || 'badge-gray';
 }
 
 function renderProspects() {
