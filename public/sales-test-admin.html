@@ -86,6 +86,34 @@
     .answer-content { font-size: 0.85rem; color: var(--color-text-light); }
     .answer-content span { display: block; margin-top: 0.25rem; }
     .answer-feedback { background: var(--color-primary-pale); padding: 0.75rem; border-radius: 6px; margin-top: 0.5rem; font-size: 0.85rem; }
+    
+    /* 回答詳細の新スタイル */
+    .answer-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .answer-number { background: var(--color-primary); color: white; padding: 0.2rem 0.6rem; border-radius: 100px; font-weight: 600; font-size: 0.8rem; }
+    .answer-category { background: var(--color-bg); color: var(--color-text-muted); padding: 0.2rem 0.6rem; border-radius: 100px; font-size: 0.75rem; }
+    .answer-score { margin-left: auto; font-weight: 600; font-size: 0.85rem; }
+    .answer-score.score-correct { color: var(--color-success); }
+    .answer-score.score-incorrect { color: var(--color-error); }
+    .question-text { font-size: 0.95rem; font-weight: 500; line-height: 1.6; margin-bottom: 0.75rem; padding: 0.75rem; background: #f8f9fa; border-radius: 6px; }
+    
+    /* 選択肢表示 */
+    .answer-options { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem; }
+    .answer-option { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; background: white; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.85rem; }
+    .answer-option.opt-correct { background: #d4edda; border-color: var(--color-success); }
+    .answer-option.opt-wrong { background: #f8d7da; border-color: var(--color-error); }
+    .opt-letter { width: 20px; height: 20px; background: var(--color-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; flex-shrink: 0; }
+    .answer-option.opt-correct .opt-letter { background: var(--color-success); color: white; }
+    .answer-option.opt-wrong .opt-letter { background: var(--color-error); color: white; }
+    .opt-text { flex: 1; }
+    .opt-badge { padding: 0.1rem 0.4rem; border-radius: 100px; font-size: 0.65rem; font-weight: 600; }
+    .user-badge { background: #6c757d; color: white; }
+    .correct-badge { background: var(--color-success); color: white; }
+    
+    /* 記述式回答 */
+    .text-answer-box { background: white; border: 1px solid var(--color-border); border-radius: 6px; padding: 0.75rem; margin-bottom: 0.75rem; }
+    .text-answer-label { font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 0.25rem; }
+    .text-answer-content { font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; }
+    
     .model-answer { background: #e8f4fd; border: 1px solid #b8daff; border-radius: 8px; padding: 1rem; margin-top: 0.75rem; }
     .model-answer-label { font-weight: 600; color: #004085; margin-bottom: 0.5rem; font-size: 0.85rem; }
     .model-answer-text { font-size: 0.9rem; color: #004085; line-height: 1.7; }
@@ -403,28 +431,33 @@
       }
     }
 
-    // 問題の模範回答データ
-    const questionData = {
-      21: {
-        modelAnswer: "そのお気持ちはよく分かります。ただ、Reiは「お金を集める」ためのシステムではなく、「参列できない方の想いを届ける」ためのシステムです。従来の香典と同じように、故人への弔意を形にする手段の一つとお考えください。",
-        answerPoints: ["まず相手の気持ちに共感する", "「お金を集める」ではなく「想いを届ける」という言い換え", "従来の香典との類似性を説明", "参列できない人のための手段であることを強調"]
-      },
-      22: {
-        modelAnswer: "ご心配はごもっともです。ただ、献杯を送る側は遠方にいるお孫さんやお仕事関係の方など、比較的スマホに慣れた世代が多いです。操作も3分程度で完了します。ご遺族は閲覧するだけなので、さらに簡単です。",
-        answerPoints: ["送金者は若い世代が多いことを説明", "操作が簡単（3分程度）であることを伝える", "ご遺族は閲覧のみでさらに簡単", "具体的な操作内容を説明"]
-      },
-      23: {
-        modelAnswer: "初期費用は確かに大きく感じられると思います。ただ、導入後の月額費用は無料です。多くのシステムは月額5〜10万円かかりますが、Reiは長く使うほどコストメリットが出ます。",
-        answerPoints: ["月額費用が無料であることを強調", "他システムとの比較（月額5〜10万円）", "長期的なコストメリットを説明", "セキュリティやサポートの価値を伝える"]
-      },
-      24: {
-        modelAnswer: "おっしゃる通り、従来のやり方は大切にすべきものです。Reiは従来のやり方を変えるものではなく、「参列できない方への新しい選択肢」を追加するものです。",
-        answerPoints: ["従来のやり方を否定しない", "「変える」ではなく「選択肢を追加」という表現", "参列できない方のための新しい手段", "ご遺族の満足度向上につながる"]
-      },
-      25: {
-        modelAnswer: "セキュリティは最も重視している点です。葬儀社様ごとにデータが完全に分離されており、他社のデータにはアクセスできません。決済は世界基準のセキュリティを持つStripeを使用しています。",
-        answerPoints: ["葬儀社ごとのデータ完全分離", "ご遺族ポータルのパスワード保護", "Stripeによる世界基準の決済セキュリティ", "カード情報を保存しない仕組み"]
-      }
+    // 問題データ（問題文、選択肢、正解、模範回答）
+    const allQuestions = {
+      1: { question: "Reiが解決しようとしている課題として、最も適切なものはどれですか？", type: "single", options: ["香典の電子決済化による業務効率化", "距離や仕事の都合で参列できない人の想いを届ける手段がないこと", "葬儀費用の削減", "オンライン葬儀の普及"], correct: 1 },
+      2: { question: "Reiの開発理念として正しいものはどれですか？", type: "single", options: ["葬儀の価値は参列者数で決まる", "葬儀の価値は費用の大きさで決まる", "葬儀の価値は「どれだけ想われているか」で決まる", "葬儀の価値は形式の豪華さで決まる"], correct: 2 },
+      3: { question: "Reiが「献杯」という形を選んだ理由として、最も適切なものはどれですか？", type: "single", options: ["決済手数料が安いから", "想いが一番まっすぐ届く形だから", "他社がやっていないから", "葬儀社の要望が多かったから"], correct: 1 },
+      4: { question: "「葬儀の価値は『そこにいたかどうか』ではなく『＿＿＿＿＿＿＿＿』で決まる」", type: "text" },
+      5: { question: "Reiが大切にしている考え方について、30文字以内で説明してください。", type: "text" },
+      6: { question: "献杯の流れとして正しい順番はどれですか？", type: "single", options: ["URL共有 → ページ作成 → 送金 → 遺族確認", "ページ作成 → URL共有 → 送金 → 遺族確認", "送金 → ページ作成 → URL共有 → 遺族確認", "ページ作成 → 送金 → URL共有 → 遺族確認"], correct: 1 },
+      7: { question: "葬儀社管理画面でできることとして、正しいものをすべて選んでください。", type: "multi", options: ["献杯プロジェクトの作成", "献杯金額の総額確認", "ご遺族ポータルのパスワード設定", "他社の献杯データの閲覧"], correct: [0, 1, 2] },
+      8: { question: "ご遺族がポータルで確認できる情報として、正しいものをすべて選んでください。", type: "multi", options: ["献杯の総額", "献杯者のお名前", "献杯者からのメッセージ", "他の葬儀の献杯情報"], correct: [0, 1, 2] },
+      9: { question: "セキュリティ対策として、Reiが実装している仕組みはどれですか？", type: "single", options: ["葬儀社ごとの完全なデータ分離", "ご遺族ポータルのパスワード保護", "AとBの両方", "特別な対策はしていない"], correct: 2 },
+      10: { question: "ご遺族ポータルへのアクセス方法として正しいものはどれですか？", type: "single", options: ["誰でも自由にアクセスできる", "葬儀社が設定したパスワードで保護されている", "ご遺族の顔認証が必要", "葬儀社経由でのみ閲覧可能"], correct: 1 },
+      11: { question: "献杯ページで送金者が入力する情報として、正しいものをすべて選んでください。", type: "multi", options: ["お名前", "金額", "メッセージ", "銀行口座番号"], correct: [0, 1, 2] },
+      12: { question: "Reiのデータ管理について、50文字以内で説明してください。", type: "text" },
+      13: { question: "ご遺族への還元率として正しいものはどれですか？", type: "single", options: ["70.0%", "80.0%", "88.4%", "95.0%"], correct: 2 },
+      14: { question: "葬儀社様の初期導入費用として正しいものはどれですか？", type: "single", options: ["無料", "100万円", "500万円", "月額制のみ"], correct: 2 },
+      15: { question: "初期導入後の月額費用として正しいものはどれですか？", type: "single", options: ["月額5万円", "月額10万円", "無料", "献杯件数に応じて変動"], correct: 2 },
+      16: { question: "1件の献杯あたりの手数料率として正しいものはどれですか？", type: "single", options: ["5.0%", "8.0%", "11.6%", "15.0%"], correct: 2 },
+      17: { question: "導入までの期間として正しいものはどれですか？", type: "single", options: ["申し込みから1ヶ月後", "申し込みから2週間後", "入金確認後、即日利用可能", "研修完了後（約1週間）"], correct: 2 },
+      18: { question: "Reiの導入における葬儀社様側のメリットとして、最も重要なものはどれですか？", type: "single", options: ["スタッフの工数が増えない（簡単に運用できる）", "広告宣伝ができる", "葬儀費用を値上げできる", "スタッフを削減できる"], correct: 0 },
+      19: { question: "「スタッフの工数が増えない」とは具体的にどういうことか、50文字以内で説明してください。", type: "text" },
+      20: { question: "Reiを導入することで葬儀社様が顧客に提供できる新しい価値について、50文字以内で説明してください。", type: "text" },
+      21: { question: "葬儀社様からの質問：「オンラインでお金を集めるのは、なんだか不謹慎な気がするのですが…」", type: "essay", modelAnswer: "そのお気持ちはよく分かります。ただ、Reiは「お金を集める」ためのシステムではなく、「参列できない方の想いを届ける」ためのシステムです。従来の香典と同じように、故人への弔意を形にする手段の一つとお考えください。", answerPoints: ["まず相手の気持ちに共感する", "「お金を集める」ではなく「想いを届ける」という言い換え", "従来の香典との類似性を説明", "参列できない人のための手段であることを強調"] },
+      22: { question: "葬儀社様からの質問：「高齢の方が多いので、スマホ操作ができるか心配です」", type: "essay", modelAnswer: "ご心配はごもっともです。ただ、献杯を送る側は遠方にいるお孫さんやお仕事関係の方など、比較的スマホに慣れた世代が多いです。操作も3分程度で完了します。ご遺族は閲覧するだけなので、さらに簡単です。", answerPoints: ["送金者は若い世代が多いことを説明", "操作が簡単（3分程度）であることを伝える", "ご遺族は閲覧のみでさらに簡単", "具体的な操作内容を説明"] },
+      23: { question: "葬儀社様からの質問：「初期費用500万円は高いと感じます。なぜこの金額なのですか？」", type: "essay", modelAnswer: "初期費用は確かに大きく感じられると思います。ただ、導入後の月額費用は無料です。多くのシステムは月額5〜10万円かかりますが、Reiは長く使うほどコストメリットが出ます。", answerPoints: ["月額費用が無料であることを強調", "他システムとの比較（月額5〜10万円）", "長期的なコストメリットを説明", "セキュリティやサポートの価値を伝える"] },
+      24: { question: "葬儀社様からの質問：「うちは従来のやり方で十分です。わざわざ新しいシステムを入れる必要はないのでは？」", type: "essay", modelAnswer: "おっしゃる通り、従来のやり方は大切にすべきものです。Reiは従来のやり方を変えるものではなく、「参列できない方への新しい選択肢」を追加するものです。", answerPoints: ["従来のやり方を否定しない", "「変える」ではなく「選択肢を追加」という表現", "参列できない方のための新しい手段", "ご遺族の満足度向上につながる"] },
+      25: { question: "葬儀社様からの質問：「セキュリティは本当に大丈夫ですか？個人情報の漏洩が心配です」", type: "essay", modelAnswer: "セキュリティは最も重視している点です。葬儀社様ごとにデータが完全に分離されており、他社のデータにはアクセスできません。決済は世界基準のセキュリティを持つStripeを使用しています。", answerPoints: ["葬儀社ごとのデータ完全分離", "ご遺族ポータルのパスワード保護", "Stripeによる世界基準の決済セキュリティ", "カード情報を保存しない仕組み"] }
     };
 
     function renderDetail(attempt, answers) {
@@ -471,40 +504,91 @@
 
         <div class="detail-section">
           <h4 class="detail-section-title">📝 回答詳細</h4>
-          ${answers.length > 0 ? answers.map(a => {
-            const qData = questionData[a.question_id];
-            return `
-            <div class="answer-item ${a.is_correct ? 'correct' : 'incorrect'}">
-              <div class="answer-question">
-                問${a.question_id}. [${escapeHtml(a.question_category)}] 
-                <span style="color: ${a.is_correct ? 'var(--color-success)' : 'var(--color-error)'}">
-                  ${a.score || 0} / ${a.max_score || 0}点
-                </span>
-              </div>
-              <div class="answer-content">
-                <span><strong>回答:</strong> ${escapeHtml(a.answer) || '未回答'}</span>
-              </div>
-              ${a.ai_feedback ? `
-                <div class="answer-feedback">
-                  <strong>💬 フィードバック:</strong> ${escapeHtml(a.ai_feedback)}
-                </div>
-              ` : ''}
-              ${qData ? `
-                <div class="model-answer">
-                  <div class="model-answer-label">📖 模範回答</div>
-                  <div class="model-answer-text">${qData.modelAnswer}</div>
-                </div>
-                <div class="answer-points">
-                  <div class="answer-points-label">✅ 押さえてほしいポイント</div>
-                  <ul class="answer-points-list">
-                    ${qData.answerPoints.map(p => `<li>${p}</li>`).join('')}
-                  </ul>
-                </div>
-              ` : ''}
-            </div>
-          `}).join('') : '<p style="color: var(--color-text-muted);">回答データがありません</p>'}
+          <div id="answerDetails"></div>
         </div>
       `;
+      
+      // 回答詳細を生成
+      const container = document.getElementById('answerDetails');
+      if (answers.length === 0) {
+        container.innerHTML = '<p style="color: var(--color-text-muted);">回答データがありません</p>';
+        return;
+      }
+      
+      answers.forEach(a => {
+        const qData = allQuestions[a.question_id];
+        const div = document.createElement('div');
+        div.className = 'answer-item ' + (a.is_correct ? 'correct' : 'incorrect');
+        
+        // ヘッダー
+        let html = '<div class="answer-header">';
+        html += '<span class="answer-number">問' + a.question_id + '</span>';
+        html += '<span class="answer-category">' + escapeHtml(a.question_category) + '</span>';
+        html += '<span class="answer-score ' + (a.is_correct ? 'score-correct' : 'score-incorrect') + '">' + (a.score || 0) + ' / ' + (a.max_score || 0) + '点</span>';
+        html += '</div>';
+        
+        // 問題文
+        if (qData) {
+          html += '<div class="question-text">' + qData.question + '</div>';
+        }
+        
+        // 選択肢の表示（選択式・複数選択式の場合）
+        if (qData && qData.options) {
+          html += '<div class="answer-options">';
+          const userAnswer = a.answer;
+          qData.options.forEach((opt, idx) => {
+            let isUserAnswer = false;
+            let isCorrectOption = false;
+            
+            if (qData.type === 'single') {
+              isUserAnswer = userAnswer === String(idx);
+              isCorrectOption = qData.correct === idx;
+            } else if (qData.type === 'multi') {
+              try {
+                const parsed = JSON.parse(userAnswer || '[]');
+                isUserAnswer = parsed.includes(idx);
+              } catch(e) { isUserAnswer = false; }
+              isCorrectOption = qData.correct.includes(idx);
+            }
+            
+            let optClass = '';
+            if (isCorrectOption) optClass = 'opt-correct';
+            else if (isUserAnswer && !isCorrectOption) optClass = 'opt-wrong';
+            
+            html += '<div class="answer-option ' + optClass + '">';
+            html += '<span class="opt-letter">' + String.fromCharCode(65 + idx) + '</span>';
+            html += '<span class="opt-text">' + opt + '</span>';
+            if (isUserAnswer) html += '<span class="opt-badge user-badge">回答</span>';
+            if (isCorrectOption) html += '<span class="opt-badge correct-badge">正解</span>';
+            html += '</div>';
+          });
+          html += '</div>';
+        } else {
+          // 記述式・論述式の場合
+          html += '<div class="text-answer-box">';
+          html += '<div class="text-answer-label">回答:</div>';
+          html += '<div class="text-answer-content">' + (escapeHtml(a.answer) || '（未回答）') + '</div>';
+          html += '</div>';
+        }
+        
+        // AIフィードバック
+        if (a.ai_feedback) {
+          html += '<div class="answer-feedback"><strong>💬 フィードバック:</strong> ' + escapeHtml(a.ai_feedback) + '</div>';
+        }
+        
+        // 模範回答とポイント（論述式の場合）
+        if (qData && qData.modelAnswer) {
+          html += '<div class="model-answer"><div class="model-answer-label">📖 模範回答</div><div class="model-answer-text">' + qData.modelAnswer + '</div></div>';
+        }
+        if (qData && qData.answerPoints) {
+          html += '<div class="answer-points"><div class="answer-points-label">✅ 押さえてほしいポイント</div><ul class="answer-points-list">';
+          qData.answerPoints.forEach(p => { html += '<li>' + p + '</li>'; });
+          html += '</ul></div>';
+        }
+        
+        div.innerHTML = html;
+        container.appendChild(div);
+      });
     }
 
     function closeModal() {
