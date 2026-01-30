@@ -73,6 +73,37 @@
       font-size: 1.1rem;
       color: #8a8a9a;
     }
+    
+    /* 受注数カード */
+    .stats-card {
+      background: linear-gradient(135deg, #c9a962 0%, #d4b978 100%);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #1a1f2e;
+    }
+    .stats-number {
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .stats-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .stats-sub {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-top: 0.5rem;
+    }
+    .stats-loading {
+      font-size: 1.5rem;
+      padding: 1rem 0;
+    }
+    
     .menu-section {
       margin-bottom: 1.5rem;
     }
@@ -210,8 +241,43 @@
 <!-- メインメニュー -->
 <div class="main-menu" id="mainMenu">
   <div class="menu-header">
-    <div class="menu-logo">👋🏻👋🏻</div>
     <div class="menu-title">Rei営業支援ツールの管理メニューです</div>
+  </div>
+
+  <!-- 受注数カード -->
+  <div class="stats-card" id="statsCard">
+    <div class="stats-loading">読み込み中...</div>
+  </div>
+
+  <!-- 管理機能 -->
+  <div class="menu-section">
+    <div class="menu-section-title">📊 管理機能</div>
+    <div class="menu-card">
+      <a class="menu-item" href="sales-test-admin.html">
+        <div class="menu-item-icon">📋</div>
+        <div class="menu-item-content">
+          <div class="menu-item-title">テスト結果管理</div>
+          <div class="menu-item-desc">受験者一覧と合格者の確認</div>
+        </div>
+        <div class="menu-item-arrow">→</div>
+      </a>
+      <a class="menu-item" href="admin">
+        <div class="menu-item-icon">🏛️</div>
+        <div class="menu-item-content">
+          <div class="menu-item-title">献杯管理システム</div>
+          <div class="menu-item-desc">葬儀社向け管理画面を開く</div>
+        </div>
+        <div class="menu-item-arrow">→</div>
+      </a>
+      <a class="menu-item" href="sales-admin.html">
+        <div class="menu-item-icon">👥</div>
+        <div class="menu-item-content">
+          <div class="menu-item-title">営業ポータル管理</div>
+          <div class="menu-item-desc">経費承認・TODO指示・メンバー管理</div>
+        </div>
+        <div class="menu-item-arrow">→</div>
+      </a>
+    </div>
   </div>
 
   <!-- 営業パートナー向け -->
@@ -247,37 +313,6 @@
         <div class="menu-item-content">
           <div class="menu-item-title">営業ポータル</div>
           <div class="menu-item-desc">訪問先管理・経費申請・掲示板など</div>
-        </div>
-        <div class="menu-item-arrow">→</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- 管理機能 -->
-  <div class="menu-section">
-    <div class="menu-section-title">📊 管理機能</div>
-    <div class="menu-card">
-      <a class="menu-item" href="sales-test-admin.html">
-        <div class="menu-item-icon">📋</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title">テスト結果管理</div>
-          <div class="menu-item-desc">受験者一覧と合格者の確認</div>
-        </div>
-        <div class="menu-item-arrow">→</div>
-      </a>
-      <a class="menu-item" href="admin">
-        <div class="menu-item-icon">🏛️</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title">献杯管理システム</div>
-          <div class="menu-item-desc">葬儀社向け管理画面を開く</div>
-        </div>
-        <div class="menu-item-arrow">→</div>
-      </a>
-      <a class="menu-item" href="sales-admin.html">
-        <div class="menu-item-icon">👥</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title">営業ポータル管理</div>
-          <div class="menu-item-desc">経費承認・TODO指示・メンバー管理</div>
         </div>
         <div class="menu-item-arrow">→</div>
       </a>
@@ -336,6 +371,17 @@
 <script>
 var ADMIN_PASS = '1123';
 
+// Supabase設定
+var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
+
+var supabase = null;
+try {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} catch(e) {
+  console.error('Supabase初期化エラー:', e);
+}
+
 // ページ読み込み時
 window.onload = function() {
   if (localStorage.getItem('reiAdminLoggedIn') === 'true') {
@@ -360,6 +406,38 @@ function doLogin() {
 function showMenu() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainMenu').style.display = 'block';
+  loadStats();
+}
+
+// 受注数を取得
+async function loadStats() {
+  var statsCard = document.getElementById('statsCard');
+  
+  try {
+    if (!supabase) throw new Error('Supabase未初期化');
+    
+    // funeral_companies テーブルから受注数をカウント
+    var { data, error, count } = await supabase
+      .from('funeral_companies')
+      .select('*', { count: 'exact', head: true });
+    
+    if (error) throw error;
+    
+    var orderCount = count || 0;
+    
+    statsCard.innerHTML = 
+      '<div class="stats-number">' + orderCount + '</div>' +
+      '<div class="stats-label">件の受注</div>' +
+      '<div class="stats-sub">導入済み葬儀社数</div>';
+    
+  } catch(e) {
+    console.error('統計取得エラー:', e);
+    // エラー時は0件表示
+    statsCard.innerHTML = 
+      '<div class="stats-number">-</div>' +
+      '<div class="stats-label">件の受注</div>' +
+      '<div class="stats-sub">データ取得エラー</div>';
+  }
 }
 
 function copyUrl(inputId) {
