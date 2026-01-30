@@ -244,7 +244,7 @@
     <div class="menu-title">Rei営業支援ツールの管理メニューです</div>
   </div>
 
-  <!-- 受注数カード -->
+  <!-- 成約数カード -->
   <div class="stats-card" id="statsCard">
     <div class="stats-loading">読み込み中...</div>
   </div>
@@ -409,17 +409,18 @@ function showMenu() {
   loadStats();
 }
 
-// 受注数を取得
+// 成約数を取得
 async function loadStats() {
   var statsCard = document.getElementById('statsCard');
   
   try {
     if (!supabase) throw new Error('Supabase未初期化');
     
-    // funeral_companies テーブルから受注数をカウント
+    // sales_prospects テーブルから成約数をカウント
     var { data, error, count } = await supabase
-      .from('funeral_companies')
-      .select('*', { count: 'exact', head: true });
+      .from('sales_prospects')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', '成約');
     
     if (error) throw error;
     
@@ -427,16 +428,16 @@ async function loadStats() {
     
     statsCard.innerHTML = 
       '<div class="stats-number">' + orderCount + '</div>' +
-      '<div class="stats-label">件の受注</div>' +
-      '<div class="stats-sub">導入済み葬儀社数</div>';
+      '<div class="stats-label">件の成約</div>' +
+      '<div class="stats-sub">営業先からの成約数</div>';
     
   } catch(e) {
     console.error('統計取得エラー:', e);
     // エラー時は0件表示
     statsCard.innerHTML = 
-      '<div class="stats-number">-</div>' +
-      '<div class="stats-label">件の受注</div>' +
-      '<div class="stats-sub">データ取得エラー</div>';
+      '<div class="stats-number">0</div>' +
+      '<div class="stats-label">件の成約</div>' +
+      '<div class="stats-sub">まだ成約がありません</div>';
   }
 }
 
