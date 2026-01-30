@@ -86,6 +86,14 @@
     .answer-content { font-size: 0.85rem; color: var(--color-text-light); }
     .answer-content span { display: block; margin-top: 0.25rem; }
     .answer-feedback { background: var(--color-primary-pale); padding: 0.75rem; border-radius: 6px; margin-top: 0.5rem; font-size: 0.85rem; }
+    .model-answer { background: #e8f4fd; border: 1px solid #b8daff; border-radius: 8px; padding: 1rem; margin-top: 0.75rem; }
+    .model-answer-label { font-weight: 600; color: #004085; margin-bottom: 0.5rem; font-size: 0.85rem; }
+    .model-answer-text { font-size: 0.9rem; color: #004085; line-height: 1.7; }
+    .answer-points { background: #fff8e6; border: 1px solid #ffd966; border-radius: 8px; padding: 1rem; margin-top: 0.75rem; }
+    .answer-points-label { font-weight: 600; color: #856404; margin-bottom: 0.5rem; font-size: 0.85rem; }
+    .answer-points-list { margin: 0; padding-left: 1.25rem; font-size: 0.85rem; color: #856404; }
+    .answer-points-list li { margin-bottom: 0.25rem; }
+    .answer-points-list li:last-child { margin-bottom: 0; }
     .feedback-section { background: var(--color-accent); background: linear-gradient(135deg, #f5f0e0 0%, #fff 100%); border: 2px solid var(--color-accent); border-radius: 8px; padding: 1rem; margin-top: 1rem; }
     .feedback-section-title { font-weight: 600; color: var(--color-accent); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
     .feedback-text { font-size: 0.9rem; color: var(--color-text); white-space: pre-wrap; }
@@ -395,6 +403,30 @@
       }
     }
 
+    // 問題の模範回答データ
+    const questionData = {
+      21: {
+        modelAnswer: "そのお気持ちはよく分かります。ただ、Reiは「お金を集める」ためのシステムではなく、「参列できない方の想いを届ける」ためのシステムです。従来の香典と同じように、故人への弔意を形にする手段の一つとお考えください。",
+        answerPoints: ["まず相手の気持ちに共感する", "「お金を集める」ではなく「想いを届ける」という言い換え", "従来の香典との類似性を説明", "参列できない人のための手段であることを強調"]
+      },
+      22: {
+        modelAnswer: "ご心配はごもっともです。ただ、献杯を送る側は遠方にいるお孫さんやお仕事関係の方など、比較的スマホに慣れた世代が多いです。操作も3分程度で完了します。ご遺族は閲覧するだけなので、さらに簡単です。",
+        answerPoints: ["送金者は若い世代が多いことを説明", "操作が簡単（3分程度）であることを伝える", "ご遺族は閲覧のみでさらに簡単", "具体的な操作内容を説明"]
+      },
+      23: {
+        modelAnswer: "初期費用は確かに大きく感じられると思います。ただ、導入後の月額費用は無料です。多くのシステムは月額5〜10万円かかりますが、Reiは長く使うほどコストメリットが出ます。",
+        answerPoints: ["月額費用が無料であることを強調", "他システムとの比較（月額5〜10万円）", "長期的なコストメリットを説明", "セキュリティやサポートの価値を伝える"]
+      },
+      24: {
+        modelAnswer: "おっしゃる通り、従来のやり方は大切にすべきものです。Reiは従来のやり方を変えるものではなく、「参列できない方への新しい選択肢」を追加するものです。",
+        answerPoints: ["従来のやり方を否定しない", "「変える」ではなく「選択肢を追加」という表現", "参列できない方のための新しい手段", "ご遺族の満足度向上につながる"]
+      },
+      25: {
+        modelAnswer: "セキュリティは最も重視している点です。葬儀社様ごとにデータが完全に分離されており、他社のデータにはアクセスできません。決済は世界基準のセキュリティを持つStripeを使用しています。",
+        answerPoints: ["葬儀社ごとのデータ完全分離", "ご遺族ポータルのパスワード保護", "Stripeによる世界基準の決済セキュリティ", "カード情報を保存しない仕組み"]
+      }
+    };
+
     function renderDetail(attempt, answers) {
       let feedbackSection = '';
       if (attempt.feedback && attempt.feedback.trim()) {
@@ -439,7 +471,9 @@
 
         <div class="detail-section">
           <h4 class="detail-section-title">📝 回答詳細</h4>
-          ${answers.length > 0 ? answers.map(a => `
+          ${answers.length > 0 ? answers.map(a => {
+            const qData = questionData[a.question_id];
+            return `
             <div class="answer-item ${a.is_correct ? 'correct' : 'incorrect'}">
               <div class="answer-question">
                 問${a.question_id}. [${escapeHtml(a.question_category)}] 
@@ -455,8 +489,20 @@
                   <strong>💬 フィードバック:</strong> ${escapeHtml(a.ai_feedback)}
                 </div>
               ` : ''}
+              ${qData ? `
+                <div class="model-answer">
+                  <div class="model-answer-label">📖 模範回答</div>
+                  <div class="model-answer-text">${qData.modelAnswer}</div>
+                </div>
+                <div class="answer-points">
+                  <div class="answer-points-label">✅ 押さえてほしいポイント</div>
+                  <ul class="answer-points-list">
+                    ${qData.answerPoints.map(p => `<li>${p}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
             </div>
-          `).join('') : '<p style="color: var(--color-text-muted);">回答データがありません</p>'}
+          `}).join('') : '<p style="color: var(--color-text-muted);">回答データがありません</p>'}
         </div>
       `;
     }

@@ -126,6 +126,18 @@
     .feedback-thanks h3 { color: var(--color-accent); font-size: 1.1rem; margin-bottom: 0.5rem; }
     .feedback-thanks p { color: var(--color-text-light); font-size: 0.9rem; }
     
+    /* 模範回答 */
+    .model-answer { background: #e8f4fd; border: 1px solid #b8daff; border-radius: 8px; padding: 1rem; margin-top: 0.75rem; }
+    .model-answer-label { font-weight: 600; color: #004085; margin-bottom: 0.5rem; font-size: 0.85rem; }
+    .model-answer-text { font-size: 0.9rem; color: #004085; line-height: 1.7; }
+    
+    /* 回答のポイント */
+    .answer-points { background: #fff8e6; border: 1px solid #ffd966; border-radius: 8px; padding: 1rem; margin-top: 0.75rem; }
+    .answer-points-label { font-weight: 600; color: #856404; margin-bottom: 0.5rem; font-size: 0.85rem; }
+    .answer-points-list { margin: 0; padding-left: 1.25rem; font-size: 0.85rem; color: #856404; }
+    .answer-points-list li { margin-bottom: 0.25rem; }
+    .answer-points-list li:last-child { margin-bottom: 0; }
+    
     @media (max-width: 768px) {
       .container { padding: 1rem; }
       .header { padding: 1rem; }
@@ -216,11 +228,26 @@
       { id: 18, section: 1, category: "営業上の強み", type: "single", question: "Reiの導入における葬儀社様側のメリットとして、最も重要なものはどれですか？", options: ["スタッフの工数が増えない（簡単に運用できる）", "広告宣伝ができる", "葬儀費用を値上げできる", "スタッフを削減できる"], correct: 0, points: 2 },
       { id: 19, section: 1, category: "営業上の強み", type: "text", question: "「スタッフの工数が増えない」とは具体的にどういうことか、50文字以内で説明してください。", maxLength: 50, rubric: "操作が簡単、複雑な作業が不要、既存業務の負担にならない、という趣旨が含まれていれば正解", points: 2 },
       { id: 20, section: 1, category: "営業上の強み", type: "text", question: "Reiを導入することで葬儀社様が顧客に提供できる新しい価値について、50文字以内で説明してください。", maxLength: 50, rubric: "遠方の人の想いを届けられる、参列できない人も弔意を示せる、という趣旨が含まれていれば正解", points: 2 },
-      { id: 21, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「オンラインでお金を集めるのは、なんだか不謹慎な気がするのですが…」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "お気持ちへの共感、Reiの理念（想いを届ける手段）の説明、従来の香典との類似性、遠方の方の想いを大切にする趣旨が含まれていれば高評価", points: 12 },
-      { id: 22, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「高齢の方が多いので、スマホ操作ができるか心配です」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "送金する側は比較的若い世代が多い点、操作の簡単さ、ご遺族は閲覧のみで簡単、という趣旨が含まれていれば高評価", points: 12 },
-      { id: 23, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「初期費用500万円は高いと感じます。なぜこの金額なのですか？」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "初期費用後は月額無料の説明、長期的なコストメリット、システムの価値・品質、という趣旨が含まれていれば高評価", points: 12 },
-      { id: 24, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「うちは従来のやり方で十分です。わざわざ新しいシステムを入れる必要はないのでは？」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "従来のやり方を否定しない姿勢、参列できない方への新しい選択肢、顧客満足度向上、という趣旨が含まれていれば高評価", points: 12 },
-      { id: 25, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「セキュリティは本当に大丈夫ですか？個人情報の漏洩が心配です」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "葬儀社間のデータ分離、パスワード保護、Stripeのセキュリティ、という具体的な対策が含まれていれば高評価", points: 12 },
+      { id: 21, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「オンラインでお金を集めるのは、なんだか不謹慎な気がするのですが…」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "お気持ちへの共感、Reiの理念（想いを届ける手段）の説明、従来の香典との類似性、遠方の方の想いを大切にする趣旨が含まれていれば高評価", points: 12,
+        modelAnswer: "そのお気持ちはよく分かります。ただ、Reiは「お金を集める」ためのシステムではなく、「参列できない方の想いを届ける」ためのシステムです。従来の香典と同じように、故人への弔意を形にする手段の一つとお考えください。遠方にいる方や仕事で参列できない方も、想いを届けることができます。",
+        answerPoints: ["まず相手の気持ちに共感する", "「お金を集める」ではなく「想いを届ける」という言い換え", "従来の香典との類似性を説明", "参列できない人のための手段であることを強調"]
+      },
+      { id: 22, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「高齢の方が多いので、スマホ操作ができるか心配です」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "送金する側は比較的若い世代が多い点、操作の簡単さ、ご遺族は閲覧のみで簡単、という趣旨が含まれていれば高評価", points: 12,
+        modelAnswer: "ご心配はごもっともです。ただ、献杯を送る側は遠方にいるお孫さんやお仕事関係の方など、比較的スマホに慣れた世代が多いです。操作も名前・金額・メッセージを入力するだけで、3分程度で完了します。ご遺族は閲覧するだけなので、さらに簡単です。",
+        answerPoints: ["送金者は若い世代が多いことを説明", "操作が簡単（3分程度）であることを伝える", "ご遺族は閲覧のみでさらに簡単", "具体的な操作内容を説明"]
+      },
+      { id: 23, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「初期費用500万円は高いと感じます。なぜこの金額なのですか？」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "初期費用後は月額無料の説明、長期的なコストメリット、システムの価値・品質、という趣旨が含まれていれば高評価", points: 12,
+        modelAnswer: "初期費用は確かに大きく感じられると思います。ただ、導入後の月額費用は無料です。多くのシステムは月額5〜10万円かかりますが、Reiは長く使うほどコストメリットが出ます。また、セキュリティ対策やサポート体制も含めた価格となっております。",
+        answerPoints: ["月額費用が無料であることを強調", "他システムとの比較（月額5〜10万円）", "長期的なコストメリットを説明", "セキュリティやサポートの価値を伝える"]
+      },
+      { id: 24, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「うちは従来のやり方で十分です。わざわざ新しいシステムを入れる必要はないのでは？」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "従来のやり方を否定しない姿勢、参列できない方への新しい選択肢、顧客満足度向上、という趣旨が含まれていれば高評価", points: 12,
+        modelAnswer: "おっしゃる通り、従来のやり方は大切にすべきものです。Reiは従来のやり方を変えるものではなく、「参列できない方への新しい選択肢」を追加するものです。遠方のご親族や仕事で来られない方にも弔意を示す機会を提供でき、ご遺族の満足度向上につながります。",
+        answerPoints: ["従来のやり方を否定しない", "「変える」ではなく「選択肢を追加」という表現", "参列できない方のための新しい手段", "ご遺族の満足度向上につながる"]
+      },
+      { id: 25, section: 2, category: "想定質問対応", type: "essay", question: "葬儀社様からの質問：\n\n「セキュリティは本当に大丈夫ですか？個人情報の漏洩が心配です」\n\nこの質問に対して、どのように回答しますか？", maxLength: 200, rubric: "葬儀社間のデータ分離、パスワード保護、Stripeのセキュリティ、という具体的な対策が含まれていれば高評価", points: 12,
+        modelAnswer: "セキュリティは最も重視している点です。まず、葬儀社様ごとにデータが完全に分離されており、他社のデータにはアクセスできません。ご遺族ポータルもパスワード保護されています。決済は世界基準のセキュリティを持つStripeを使用しており、カード情報は弊社に保存されません。",
+        answerPoints: ["葬儀社ごとのデータ完全分離", "ご遺族ポータルのパスワード保護", "Stripeによる世界基準の決済セキュリティ", "カード情報を保存しない仕組み"]
+      },
       { id: 26, section: 3, category: "フィードバック", type: "feedback", question: "最後に、Reiシステムについてのご意見をお聞かせください。\n\n実際に触ってみた感想、使いやすさ、追加してほしい機能、改善点など、どんなことでも構いません。\n\nいただいたご意見は、システム改善の重要な参考にさせていただきます。", maxLength: 500, points: 0 }
     ];
 
@@ -655,6 +682,20 @@
                 <span>得点: ${r.score} / ${r.question.points}点</span>
               </div>
               ${r.feedback ? `<div class="ai-feedback"><div class="ai-feedback-label">💬 フィードバック</div>${r.feedback}</div>` : ''}
+              ${r.question.modelAnswer ? `
+                <div class="model-answer">
+                  <div class="model-answer-label">📖 模範回答</div>
+                  <div class="model-answer-text">${r.question.modelAnswer}</div>
+                </div>
+              ` : ''}
+              ${r.question.answerPoints ? `
+                <div class="answer-points">
+                  <div class="answer-points-label">✅ 回答のポイント</div>
+                  <ul class="answer-points-list">
+                    ${r.question.answerPoints.map(p => `<li>${p}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
             </div>
           `).join('')}
         </div>
