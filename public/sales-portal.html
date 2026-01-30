@@ -87,6 +87,10 @@
       color: #2c2c2c;
       border: 1px solid #e5e2dd;
     }
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
     .login-footer {
       text-align: center;
       margin-top: 1.5rem;
@@ -145,13 +149,13 @@
       background: white;
       border-bottom: 1px solid #e5e2dd;
       padding: 0.5rem 1.5rem;
+      overflow-x: auto;
     }
     .nav-inner {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
       gap: 0.5rem;
-      overflow-x: auto;
     }
     .nav-btn {
       padding: 0.75rem 1.25rem;
@@ -206,7 +210,7 @@
     /* 統計グリッド */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
@@ -399,6 +403,56 @@
       width: auto;
       display: inline-block;
     }
+    
+    /* 経費関連 */
+    .expense-total {
+      background: linear-gradient(135deg, #2d5a47, #3d7a5f);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .expense-total-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+    .expense-total-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .expense-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid #e5e2dd;
+      gap: 1rem;
+    }
+    .expense-item:last-child {
+      border-bottom: none;
+    }
+    .expense-date {
+      font-size: 0.8rem;
+      color: #8a8a8a;
+      width: 60px;
+    }
+    .expense-info {
+      flex: 1;
+    }
+    .expense-cat {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .expense-desc {
+      font-size: 0.85rem;
+      color: #5a5a5a;
+    }
+    .expense-amount {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #2d5a47;
+    }
   </style>
 </head>
 <body>
@@ -469,6 +523,7 @@
       <button class="nav-btn active" data-page="dashboard">📊 ダッシュボード</button>
       <button class="nav-btn" data-page="prospects">🏢 訪問先管理</button>
       <button class="nav-btn" data-page="knowledge">💬 ナレッジ</button>
+      <button class="nav-btn" data-page="expenses">💰 経費申請</button>
       <button class="nav-btn" data-page="ranking">🏆 ランキング</button>
     </div>
   </nav>
@@ -492,6 +547,10 @@
         <div class="stat-card">
           <div class="stat-label">あなたの訪問</div>
           <div class="stat-value" id="statMyVisits">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">今月の経費</div>
+          <div class="stat-value" id="statMyExpense">¥0</div>
         </div>
       </div>
       <div class="card">
@@ -520,6 +579,9 @@
               <option value="商談中">商談中</option>
               <option value="成約">成約</option>
               <option value="見送り">見送り</option>
+            </select>
+            <select id="filterArea">
+              <option value="">すべてのエリア</option>
             </select>
             <input type="text" id="searchText" placeholder="検索...">
           </div>
@@ -563,6 +625,23 @@
       <div class="knowledge-grid" id="knowledgeList"></div>
     </div>
 
+    <!-- 経費申請 -->
+    <div class="page" id="page-expenses">
+      <div class="expense-total">
+        <div class="expense-total-label">今月の申請合計</div>
+        <div class="expense-total-value" id="expenseTotal">¥0</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">💰 経費申請一覧</h3>
+          <button class="btn btn-primary btn-sm" id="addExpenseBtn">+ 経費を申請</button>
+        </div>
+        <div class="card-body" style="padding: 0;">
+          <div id="expensesList"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ランキング -->
     <div class="page" id="page-ranking">
       <div class="card">
@@ -591,8 +670,36 @@
         <input type="text" class="form-input" id="pName">
       </div>
       <div class="form-group">
-        <label class="form-label">エリア</label>
-        <input type="text" class="form-input" id="pArea">
+        <label class="form-label">エリア *</label>
+        <select class="form-input" id="pArea">
+          <option value="">選択してください</option>
+          <option value="大阪市北区">大阪市北区</option>
+          <option value="大阪市中央区">大阪市中央区</option>
+          <option value="大阪市西区">大阪市西区</option>
+          <option value="大阪市天王寺区">大阪市天王寺区</option>
+          <option value="大阪市淀川区">大阪市淀川区</option>
+          <option value="大阪市東淀川区">大阪市東淀川区</option>
+          <option value="大阪市城東区">大阪市城東区</option>
+          <option value="大阪市鶴見区">大阪市鶴見区</option>
+          <option value="大阪市平野区">大阪市平野区</option>
+          <option value="大阪市住吉区">大阪市住吉区</option>
+          <option value="大阪市阿倍野区">大阪市阿倍野区</option>
+          <option value="堺市">堺市</option>
+          <option value="東大阪市">東大阪市</option>
+          <option value="枚方市">枚方市</option>
+          <option value="豊中市">豊中市</option>
+          <option value="吹田市">吹田市</option>
+          <option value="高槻市">高槻市</option>
+          <option value="茨木市">茨木市</option>
+          <option value="八尾市">八尾市</option>
+          <option value="寝屋川市">寝屋川市</option>
+          <option value="岸和田市">岸和田市</option>
+          <option value="和泉市">和泉市</option>
+          <option value="神戸市">神戸市</option>
+          <option value="京都市">京都市</option>
+          <option value="奈良市">奈良市</option>
+          <option value="その他">その他</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-label">電話番号</label>
@@ -653,6 +760,46 @@
   </div>
 </div>
 
+<!-- 経費申請モーダル -->
+<div class="modal-bg" id="expenseModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>経費を申請</h3>
+      <button class="modal-close" id="closeExpenseBtn">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div class="form-group">
+        <label class="form-label">日付 *</label>
+        <input type="date" class="form-input" id="eDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">カテゴリ *</label>
+        <select class="form-input" id="eCategory">
+          <option value="交通費">🚃 交通費</option>
+          <option value="ガソリン代">⛽ ガソリン代</option>
+          <option value="駐車場代">🅿️ 駐車場代</option>
+          <option value="接待費">🍽️ 接待費</option>
+          <option value="宿泊費">🏨 宿泊費</option>
+          <option value="消耗品">📦 消耗品</option>
+          <option value="その他">📝 その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">金額 *</label>
+        <input type="number" class="form-input" id="eAmount" placeholder="1000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">内容・メモ</label>
+        <input type="text" class="form-input" id="eDescription" placeholder="例：○○葬儀社への訪問">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary btn-sm" id="cancelExpenseBtn">キャンセル</button>
+      <button class="btn btn-primary btn-sm" id="saveExpenseBtn">申請</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // グローバル変数
 var supabase;
@@ -660,6 +807,15 @@ var currentUser = null;
 var prospects = [];
 var members = [];
 var knowledge = [];
+var expenses = [];
+
+// エリアリスト
+var areaList = [
+  '大阪市北区', '大阪市中央区', '大阪市西区', '大阪市天王寺区', '大阪市淀川区',
+  '大阪市東淀川区', '大阪市城東区', '大阪市鶴見区', '大阪市平野区', '大阪市住吉区',
+  '大阪市阿倍野区', '堺市', '東大阪市', '枚方市', '豊中市', '吹田市', '高槻市',
+  '茨木市', '八尾市', '寝屋川市', '岸和田市', '和泉市', '神戸市', '京都市', '奈良市', 'その他'
+];
 
 // Supabase設定
 var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
@@ -676,6 +832,18 @@ window.onload = function() {
     currentUser = JSON.parse(saved);
     showMainApp();
   }
+  
+  // エリアフィルター初期化
+  var filterArea = document.getElementById('filterArea');
+  for (var i = 0; i < areaList.length; i++) {
+    var opt = document.createElement('option');
+    opt.value = areaList[i];
+    opt.textContent = areaList[i];
+    filterArea.appendChild(opt);
+  }
+  
+  // 今日の日付をセット
+  document.getElementById('eDate').value = new Date().toISOString().split('T')[0];
   
   // イベント登録
   setupEvents();
@@ -719,8 +887,21 @@ function setupEvents() {
   document.getElementById('cancelKnowledgeBtn').onclick = closeKnowledgeModal;
   document.getElementById('saveKnowledgeBtn').onclick = saveKnowledge;
   
+  // 経費モーダル
+  document.getElementById('addExpenseBtn').onclick = function() {
+    document.getElementById('eDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('eCategory').value = '交通費';
+    document.getElementById('eAmount').value = '';
+    document.getElementById('eDescription').value = '';
+    document.getElementById('expenseModal').classList.add('show');
+  };
+  document.getElementById('closeExpenseBtn').onclick = closeExpenseModal;
+  document.getElementById('cancelExpenseBtn').onclick = closeExpenseModal;
+  document.getElementById('saveExpenseBtn').onclick = saveExpense;
+  
   // フィルター
   document.getElementById('filterStatus').onchange = renderProspects;
+  document.getElementById('filterArea').onchange = renderProspects;
   document.getElementById('searchText').oninput = renderProspects;
   document.getElementById('filterCategory').onchange = renderKnowledge;
 }
@@ -735,6 +916,10 @@ function closeProspectModal() {
 
 function closeKnowledgeModal() {
   document.getElementById('knowledgeModal').classList.remove('show');
+}
+
+function closeExpenseModal() {
+  document.getElementById('expenseModal').classList.remove('show');
 }
 
 // ログイン処理
@@ -844,6 +1029,13 @@ function loadData() {
     knowledge = r.data || [];
     renderKnowledge();
   });
+  
+  // 経費
+  supabase.from('sales_expenses').select('*').eq('member_id', currentUser.id).order('expense_date', { ascending: false }).then(function(r) {
+    expenses = r.data || [];
+    updateStats();
+    renderExpenses();
+  });
 }
 
 // 統計更新
@@ -855,10 +1047,23 @@ function updateStats() {
     return p.assigned_to === currentUser.id && p.status !== '未訪問'; 
   }).length;
   
+  // 今月の経費合計
+  var now = new Date();
+  var thisMonth = now.getMonth();
+  var thisYear = now.getFullYear();
+  var monthlyExpense = 0;
+  for (var i = 0; i < expenses.length; i++) {
+    var d = new Date(expenses[i].expense_date);
+    if (d.getMonth() === thisMonth && d.getFullYear() === thisYear) {
+      monthlyExpense += expenses[i].amount;
+    }
+  }
+  
   document.getElementById('statTeamVisits').textContent = teamVisits;
   document.getElementById('statNegotiating').textContent = negotiating;
   document.getElementById('statClosed').textContent = closed;
   document.getElementById('statMyVisits').textContent = myVisits;
+  document.getElementById('statMyExpense').textContent = '¥' + monthlyExpense.toLocaleString();
 }
 
 // ページ切り替え
@@ -882,10 +1087,12 @@ function switchPage(page) {
 // 訪問先一覧表示
 function renderProspects() {
   var status = document.getElementById('filterStatus').value;
+  var area = document.getElementById('filterArea').value;
   var search = document.getElementById('searchText').value.toLowerCase();
   
   var filtered = prospects.filter(function(p) {
     if (status && p.status !== status) return false;
+    if (area && p.area !== area) return false;
     if (search && p.company_name.toLowerCase().indexOf(search) === -1) return false;
     return true;
   });
@@ -955,7 +1162,7 @@ function saveProspect() {
   var id = document.getElementById('prospectId').value;
   var data = {
     company_name: document.getElementById('pName').value.trim(),
-    area: document.getElementById('pArea').value.trim(),
+    area: document.getElementById('pArea').value,
     phone: document.getElementById('pPhone').value.trim(),
     status: document.getElementById('pStatus').value,
     notes: document.getElementById('pNotes').value.trim(),
@@ -1044,6 +1251,92 @@ function saveKnowledge() {
     closeKnowledgeModal();
     document.getElementById('kTitle').value = '';
     document.getElementById('kContent').value = '';
+    loadData();
+  });
+}
+
+// 経費表示
+function renderExpenses() {
+  var container = document.getElementById('expensesList');
+  
+  // 今月の合計
+  var now = new Date();
+  var thisMonth = now.getMonth();
+  var thisYear = now.getFullYear();
+  var monthlyTotal = 0;
+  for (var i = 0; i < expenses.length; i++) {
+    var d = new Date(expenses[i].expense_date);
+    if (d.getMonth() === thisMonth && d.getFullYear() === thisYear) {
+      monthlyTotal += expenses[i].amount;
+    }
+  }
+  document.getElementById('expenseTotal').textContent = '¥' + monthlyTotal.toLocaleString();
+  
+  if (expenses.length === 0) {
+    container.innerHTML = '<div class="empty">経費申請がありません</div>';
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < expenses.length; i++) {
+    var e = expenses[i];
+    var icon = getExpenseIcon(e.category);
+    var badgeClass = getExpenseBadgeClass(e.status);
+    
+    html += '<div class="expense-item">';
+    html += '<div class="expense-date">' + formatDate(e.expense_date) + '</div>';
+    html += '<div class="expense-info">';
+    html += '<div class="expense-cat">' + icon + ' ' + e.category + '</div>';
+    if (e.description) {
+      html += '<div class="expense-desc">' + esc(e.description) + '</div>';
+    }
+    html += '</div>';
+    html += '<div class="expense-amount">¥' + e.amount.toLocaleString() + '</div>';
+    html += '<span class="badge ' + badgeClass + '">' + e.status + '</span>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function getExpenseIcon(cat) {
+  var map = {
+    '交通費': '🚃',
+    'ガソリン代': '⛽',
+    '駐車場代': '🅿️',
+    '接待費': '🍽️',
+    '宿泊費': '🏨',
+    '消耗品': '📦',
+    'その他': '📝'
+  };
+  return map[cat] || '📝';
+}
+
+function getExpenseBadgeClass(status) {
+  var map = {
+    '申請中': 'badge-yellow',
+    '承認': 'badge-green',
+    '却下': 'badge-red'
+  };
+  return map[status] || 'badge-gray';
+}
+
+function saveExpense() {
+  var data = {
+    member_id: currentUser.id,
+    expense_date: document.getElementById('eDate').value,
+    category: document.getElementById('eCategory').value,
+    amount: parseInt(document.getElementById('eAmount').value) || 0,
+    description: document.getElementById('eDescription').value.trim(),
+    status: '申請中'
+  };
+  
+  if (!data.expense_date || !data.amount) {
+    alert('日付と金額を入力してください');
+    return;
+  }
+  
+  supabase.from('sales_expenses').insert(data).then(function() {
+    closeExpenseModal();
     loadData();
   });
 }
