@@ -46,8 +46,10 @@
     .stat-card.warning { border-left-color: #ffc107; }
     .stat-card.success { border-left-color: #28a745; }
     .stat-card.alert { border-left-color: #dc3545; }
+    .stat-card.gold { border-left-color: #c9a962; }
     .stat-label { font-size: 0.8rem; color: #8a8a9a; }
     .stat-value { font-size: 1.75rem; font-weight: 700; }
+    .stat-value.small { font-size: 1.3rem; }
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #3d4559; font-size: 0.85rem; }
     th { color: #8a8a9a; font-size: 0.75rem; }
@@ -79,6 +81,13 @@
     .region-stats { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .region-stat { background: #3d4559; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem; }
     .region-stat strong { color: #c9a962; }
+    .expense-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .expense-summary-card { background: #1a1f2e; border-radius: 10px; padding: 1rem; text-align: center; }
+    .expense-summary-label { font-size: 0.75rem; color: #8a8a9a; margin-bottom: 0.25rem; }
+    .expense-summary-value { font-size: 1.4rem; font-weight: 700; color: #c9a962; }
+    .expense-summary-value.pending { color: #ffc107; }
+    .expense-summary-value.approved { color: #28a745; }
+    .expense-summary-value.rejected { color: #dc3545; }
     @media (max-width: 768px) { .sidebar { display: none; } }
   </style>
 </head>
@@ -115,6 +124,7 @@
           <div class="stat-card warning"><div class="stat-label">商談中</div><div class="stat-value" id="statNego">0</div></div>
           <div class="stat-card success"><div class="stat-label">成約</div><div class="stat-value" id="statClosed">0</div></div>
           <div class="stat-card alert"><div class="stat-label">経費（未処理）</div><div class="stat-value" id="statPending">0</div></div>
+          <div class="stat-card gold"><div class="stat-label">経費合計（承認済）</div><div class="stat-value small" id="statExpenseTotal">¥0</div></div>
         </div>
         <div class="card"><div class="card-header"><span class="card-title">📍 エリア別</span></div><div class="card-body"><div class="region-stats" id="regionStats"></div></div></div>
         <div class="card"><div class="card-header"><span class="card-title">📈 メンバー別</span></div><div class="card-body" style="padding:0;"><table><thead><tr><th>名前</th><th>担当</th><th>商談中</th><th>成約</th></tr></thead><tbody id="memberStatsTable"></tbody></table></div></div>
@@ -133,7 +143,65 @@
           <div style="overflow-x:auto;"><table><thead><tr><th>葬儀社名</th><th>エリア</th><th>都道府県</th><th>感度</th><th>担当</th><th>状態</th><th></th></tr></thead><tbody id="funeralTable"></tbody></table></div>
         </div>
       </div>
-      <div class="page" id="page-expenses"><h1 class="page-title">💰 経費申請</h1><div class="card"><div class="card-header"><span class="card-title">一覧</span><select class="form-input-dark" id="expenseFilter" style="width:auto;padding:0.4rem;"><option value="申請中">申請中</option><option value="">すべて</option></select></div><div id="expensesList"></div></div></div>
+      <div class="page" id="page-expenses">
+        <h1 class="page-title">💰 経費申請</h1>
+        
+        <!-- 経費サマリー -->
+        <div class="expense-summary" id="expenseSummary">
+          <div class="expense-summary-card">
+            <div class="expense-summary-label">申請中</div>
+            <div class="expense-summary-value pending" id="expPending">¥0</div>
+          </div>
+          <div class="expense-summary-card">
+            <div class="expense-summary-label">承認済</div>
+            <div class="expense-summary-value approved" id="expApproved">¥0</div>
+          </div>
+          <div class="expense-summary-card">
+            <div class="expense-summary-label">却下</div>
+            <div class="expense-summary-value rejected" id="expRejected">¥0</div>
+          </div>
+          <div class="expense-summary-card">
+            <div class="expense-summary-label">総申請額</div>
+            <div class="expense-summary-value" id="expTotal">¥0</div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">申請一覧</span>
+            <select class="form-input-dark" id="expenseFilter" style="width:auto;padding:0.4rem;">
+              <option value="申請中">申請中</option>
+              <option value="承認">承認済</option>
+              <option value="却下">却下</option>
+              <option value="">すべて</option>
+            </select>
+          </div>
+          <div id="expensesList"></div>
+        </div>
+        
+        <!-- 経費履歴テーブル -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📋 経費履歴（全件）</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>日付</th>
+                  <th>申請者</th>
+                  <th>カテゴリ</th>
+                  <th>内容</th>
+                  <th>金額</th>
+                  <th>状態</th>
+                  <th>申請日時</th>
+                </tr>
+              </thead>
+              <tbody id="expenseHistoryTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       <div class="page" id="page-members"><h1 class="page-title">👥 メンバー</h1><div class="card"><div id="membersList"></div></div></div>
       <div class="page" id="page-todos"><h1 class="page-title">📋 TODO指示</h1><div class="card"><div class="card-header"><span class="card-title">一覧</span><button class="btn btn-sm btn-gold" onclick="openTodoModal()">+ 新規</button></div><div id="todosList"></div></div></div>
       <div class="page" id="page-posts"><h1 class="page-title">💬 掲示板</h1><div class="card"><div class="card-header"><span class="card-title">投稿</span><button class="btn btn-sm btn-gold" onclick="openPostModal()">+ 投稿</button></div><div id="postsList"></div></div></div>
@@ -156,14 +224,16 @@ function updatePrefOptions(region,selectId,defaultText){var s=document.getElemen
 function doLogin(){if(document.getElementById('adminPass').value===ADMIN_PASS){localStorage.setItem('salesAdminLoggedIn','true');showMainApp();}else{document.getElementById('loginError').style.display='block';}}
 function doLogout(){localStorage.removeItem('salesAdminLoggedIn');document.getElementById('mainApp').style.display='none';document.getElementById('loginScreen').style.display='flex';}
 function showMainApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';loadData();}
-function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});}
+function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();renderExpenseHistory();updateExpenseSummary();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});}
 function switchPage(page){document.querySelectorAll('.nav-item').forEach(function(el){el.classList.toggle('active',el.dataset.page===page);});document.querySelectorAll('.page').forEach(function(el){el.classList.toggle('active',el.id==='page-'+page);});}
-function updateStats(){var pending=expenses.filter(function(e){return e.status==='申請中';}).length;var nego=prospects.filter(function(p){return p.status==='商談中';}).length;var closed=prospects.filter(function(p){return p.status==='成約';}).length;document.getElementById('statTotal').textContent=prospects.length;document.getElementById('statNego').textContent=nego;document.getElementById('statClosed').textContent=closed;document.getElementById('statPending').textContent=pending;document.getElementById('funeralCount').textContent=prospects.length;var badge=document.getElementById('expenseBadge');badge.textContent=pending;badge.style.display=pending>0?'inline':'none';var rc={};Object.keys(REGIONS).forEach(function(r){rc[r]=0;});prospects.forEach(function(p){if(p.region&&rc[p.region]!==undefined)rc[p.region]++;});var rh='';Object.keys(rc).forEach(function(r){if(rc[r]>0)rh+='<div class="region-stat"><strong>'+r+'</strong> '+rc[r]+'社</div>';});document.getElementById('regionStats').innerHTML=rh||'<span style="color:#8a8a9a;">なし</span>';var mh='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var mn=mp.filter(function(p){return p.status==='商談中';}).length;var mc=mp.filter(function(p){return p.status==='成約';}).length;mh+='<tr><td>'+esc(m.name)+'</td><td>'+mp.length+'</td><td>'+mn+'</td><td>'+mc+'</td></tr>';});document.getElementById('memberStatsTable').innerHTML=mh||'<tr><td colspan="4" class="empty">なし</td></tr>';}
+function updateStats(){var pending=expenses.filter(function(e){return e.status==='申請中';}).length;var nego=prospects.filter(function(p){return p.status==='商談中';}).length;var closed=prospects.filter(function(p){return p.status==='成約';}).length;var approvedTotal=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('statTotal').textContent=prospects.length;document.getElementById('statNego').textContent=nego;document.getElementById('statClosed').textContent=closed;document.getElementById('statPending').textContent=pending;document.getElementById('statExpenseTotal').textContent='¥'+approvedTotal.toLocaleString();document.getElementById('funeralCount').textContent=prospects.length;var badge=document.getElementById('expenseBadge');badge.textContent=pending;badge.style.display=pending>0?'inline':'none';var rc={};Object.keys(REGIONS).forEach(function(r){rc[r]=0;});prospects.forEach(function(p){if(p.region&&rc[p.region]!==undefined)rc[p.region]++;});var rh='';Object.keys(rc).forEach(function(r){if(rc[r]>0)rh+='<div class="region-stat"><strong>'+r+'</strong> '+rc[r]+'社</div>';});document.getElementById('regionStats').innerHTML=rh||'<span style="color:#8a8a9a;">なし</span>';var mh='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var mn=mp.filter(function(p){return p.status==='商談中';}).length;var mc=mp.filter(function(p){return p.status==='成約';}).length;mh+='<tr><td>'+esc(m.name)+'</td><td>'+mp.length+'</td><td>'+mn+'</td><td>'+mc+'</td></tr>';});document.getElementById('memberStatsTable').innerHTML=mh||'<tr><td colspan="4" class="empty">なし</td></tr>';}
+function updateExpenseSummary(){var pendingAmount=expenses.filter(function(e){return e.status==='申請中';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var approvedAmount=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var rejectedAmount=expenses.filter(function(e){return e.status==='却下';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var totalAmount=expenses.reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('expPending').textContent='¥'+pendingAmount.toLocaleString();document.getElementById('expApproved').textContent='¥'+approvedAmount.toLocaleString();document.getElementById('expRejected').textContent='¥'+rejectedAmount.toLocaleString();document.getElementById('expTotal').textContent='¥'+totalAmount.toLocaleString();}
 function renderFunerals(){var region=document.getElementById('filterRegion').value,pref=document.getElementById('filterPref').value,temp=document.getElementById('filterTemp').value;var filtered=prospects.filter(function(p){if(region&&p.region!==region)return false;if(pref&&p.area!==pref)return false;if(temp&&p.temperature!==temp)return false;return true;});var tbody=document.getElementById('funeralTable');if(filtered.length===0){tbody.innerHTML='<tr><td colspan="7" class="empty">データがありません</td></tr>';return;}var h='';filtered.forEach(function(p){var member=members.find(function(m){return m.id===p.assigned_to;});var tb={'熱い':'badge-red','温かい':'badge-orange','普通':'badge-gray','冷たい':'badge-blue'}[p.temperature]||'badge-gray';var sb={'未訪問':'badge-gray','訪問済み':'badge-blue','商談中':'badge-yellow','成約':'badge-green','見送り':'badge-red'}[p.status]||'badge-gray';h+='<tr><td><strong>'+esc(p.company_name)+'</strong></td><td>'+esc(p.region||'-')+'</td><td>'+esc(p.area||'-')+'</td><td><span class="badge '+tb+'">'+(p.temperature||'未設定')+'</span></td><td>'+(member?esc(member.name):'-')+'</td><td><span class="badge '+sb+'">'+(p.status||'未訪問')+'</span></td><td><button class="btn btn-sm btn-secondary" onclick="editFuneral(\''+p.id+'\')">編集</button></td></tr>';});tbody.innerHTML=h;}
 function openFuneralModal(){document.getElementById('funeralModalTitle').textContent='葬儀社を追加';document.getElementById('funeralId').value='';document.getElementById('fName').value='';document.getElementById('fRegion').value='';document.getElementById('fPref').innerHTML='<option value="">選択</option>';document.getElementById('fAddress').value='';document.getElementById('fPhone').value='';document.getElementById('fTemp').value='未設定';document.getElementById('fNotes').value='';openModal('funeralModal');}
 function editFuneral(id){var p=prospects.find(function(x){return x.id===id;});if(!p)return;document.getElementById('funeralModalTitle').textContent='葬儀社を編集';document.getElementById('funeralId').value=p.id;document.getElementById('fName').value=p.company_name||'';document.getElementById('fRegion').value=p.region||'';updatePrefOptions(p.region,'fPref','選択');document.getElementById('fPref').value=p.area||'';document.getElementById('fAddress').value=p.address||'';document.getElementById('fPhone').value=p.phone||'';document.getElementById('fTemp').value=p.temperature||'未設定';document.getElementById('fNotes').value=p.notes||'';openModal('funeralModal');}
 function saveFuneral(){var id=document.getElementById('funeralId').value;var data={company_name:document.getElementById('fName').value.trim(),region:document.getElementById('fRegion').value,area:document.getElementById('fPref').value,address:document.getElementById('fAddress').value.trim(),phone:document.getElementById('fPhone').value.trim(),temperature:document.getElementById('fTemp').value,notes:document.getElementById('fNotes').value.trim(),updated_at:new Date().toISOString()};if(!data.company_name||!data.region||!data.area){alert('葬儀社名、エリア、都道府県を入力');return;}if(id){supabase.from('sales_prospects').update(data).eq('id',id).then(function(){closeModal('funeralModal');loadData();});}else{data.status='未訪問';supabase.from('sales_prospects').insert(data).then(function(){closeModal('funeralModal');loadData();});}}
 function renderExpenses(){var filter=document.getElementById('expenseFilter').value;var filtered=filter?expenses.filter(function(e){return e.status===filter;}):expenses;var c=document.getElementById('expensesList');if(filtered.length===0){c.innerHTML='<div class="empty">なし</div>';return;}var h='';filtered.forEach(function(e){var member=members.find(function(m){return m.id===e.member_id;});var b=e.status==='承認'?'badge-green':(e.status==='却下'?'badge-red':'badge-yellow');h+='<div class="list-item"><div style="flex:1;"><div><strong>'+(member?member.name:'不明')+'</strong> • '+e.category+' <span class="badge '+b+'">'+e.status+'</span></div><div style="font-size:0.8rem;color:#8a8a9a;">'+formatDate(e.expense_date)+(e.description?' • '+esc(e.description):'')+'</div></div><div style="font-weight:700;color:#c9a962;">¥'+e.amount.toLocaleString()+'</div>';if(e.status==='申請中'){h+='<div style="display:flex;gap:0.25rem;margin-left:0.5rem;"><button class="btn btn-sm btn-success" onclick="approveExpense(\''+e.id+'\')">承認</button><button class="btn btn-sm btn-danger" onclick="rejectExpense(\''+e.id+'\')">却下</button></div>';}h+='</div>';});c.innerHTML=h;}
+function renderExpenseHistory(){var tbody=document.getElementById('expenseHistoryTable');if(expenses.length===0){tbody.innerHTML='<tr><td colspan="7" class="empty">経費履歴がありません</td></tr>';return;}var h='';expenses.forEach(function(e){var member=members.find(function(m){return m.id===e.member_id;});var b=e.status==='承認'?'badge-green':(e.status==='却下'?'badge-red':'badge-yellow');h+='<tr>';h+='<td>'+formatDate(e.expense_date)+'</td>';h+='<td>'+(member?esc(member.name):'不明')+'</td>';h+='<td>'+esc(e.category||'-')+'</td>';h+='<td>'+esc(e.description||'-')+'</td>';h+='<td style="font-weight:600;color:#c9a962;">¥'+e.amount.toLocaleString()+'</td>';h+='<td><span class="badge '+b+'">'+e.status+'</span></td>';h+='<td style="font-size:0.75rem;color:#8a8a9a;">'+formatDateTime(e.created_at)+'</td>';h+='</tr>';});tbody.innerHTML=h;}
 function approveExpense(id){var e=expenses.find(function(x){return x.id===id;});supabase.from('sales_expenses').update({status:'承認'}).eq('id',id).then(function(){supabase.from('sales_notifications').insert({member_id:e.member_id,title:'経費が承認されました',content:e.category+' ¥'+e.amount.toLocaleString(),type:'success'}).then(loadData);});}
 function rejectExpense(id){var reason=prompt('却下理由（任意）');var e=expenses.find(function(x){return x.id===id;});supabase.from('sales_expenses').update({status:'却下'}).eq('id',id).then(function(){supabase.from('sales_notifications').insert({member_id:e.member_id,title:'経費が却下されました',content:e.category+(reason?' 理由:'+reason:''),type:'error'}).then(loadData);});}
 function renderMembers(){var c=document.getElementById('membersList');if(members.length===0){c.innerHTML='<div class="empty">なし</div>';return;}var h='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});h+='<div class="list-item" onclick="openMemberModal(\''+m.id+'\')"><div style="width:40px;height:40px;border-radius:50%;background:#c9a962;color:#1a1f2e;display:flex;align-items:center;justify-content:center;font-weight:700;">'+m.name.charAt(0)+'</div><div style="flex:1;"><div style="font-weight:600;">'+esc(m.name)+'</div><div style="font-size:0.8rem;color:#8a8a9a;">担当 '+mp.length+'社</div></div><span style="color:#8a8a9a;">→</span></div>';});c.innerHTML=h;}
