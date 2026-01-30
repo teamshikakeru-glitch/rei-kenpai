@@ -599,6 +599,48 @@
     }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+    
+    /* カレンダー */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .calendar-header {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #8a8a8a;
+      padding: 0.5rem 0;
+    }
+    .calendar-header.sun { color: #dc3545; }
+    .calendar-header.sat { color: #17a2b8; }
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      background: #f5f6fa;
+    }
+    .calendar-day:hover { background: #e8f0ec; }
+    .calendar-day.other-month { color: #ccc; background: transparent; }
+    .calendar-day.today { background: #2d5a47; color: white; font-weight: 700; }
+    .calendar-day.selected { border: 2px solid #c9a962; }
+    .calendar-day.has-schedule::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #c9a962;
+    }
+    .calendar-day.today.has-schedule::after { background: white; }
   </style>
 </head>
 <body>
@@ -797,6 +839,27 @@
       <button class="fab" onclick="openScheduleModal()">+</button>
     </div>
 
+    <!-- カレンダー -->
+    <div class="page" id="page-calendar">
+      <div class="card">
+        <div class="card-header">
+          <button class="btn btn-sm btn-secondary" onclick="changeMonth(-1)">◀</button>
+          <span class="card-title" id="calendarTitle">2026年1月</span>
+          <button class="btn btn-sm btn-secondary" onclick="changeMonth(1)">▶</button>
+        </div>
+        <div class="card-body" style="padding:0.5rem;">
+          <div id="calendarGrid"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="selectedDateTitle">予定</span>
+          <button class="btn btn-sm btn-primary" onclick="openScheduleModal()">+ 追加</button>
+        </div>
+        <div id="selectedDateSchedules"></div>
+      </div>
+    </div>
+
     <!-- 掲示板 -->
     <div class="page" id="page-board">
       <div class="card" style="margin-bottom:60px;">
@@ -822,32 +885,38 @@
         <div class="list-item" onclick="switchPage('mytodos')">
           <div class="list-item-icon">📋</div>
           <div class="list-item-content">
-            <div class="list-item-title">TODO</div>
+            <div class="list-item-title">TODO（指示）</div>
             <div class="list-item-sub" id="todoCount">0件の未完了</div>
           </div>
           <div class="list-item-right">→</div>
         </div>
-        <div class="list-item" onclick="switchPage('expenses')">
-          <div class="list-item-icon">💰</div>
+        <div class="list-item" onclick="switchPage('board')">
+          <div class="list-item-icon">💬</div>
           <div class="list-item-content">
-            <div class="list-item-title">経費申請</div>
+            <div class="list-item-title">掲示板</div>
           </div>
           <div class="list-item-right">→</div>
         </div>
         <div class="list-item" onclick="switchPage('knowledge')">
-          <div class="list-item-icon">💬</div>
+          <div class="list-item-icon">📚</div>
           <div class="list-item-content">
             <div class="list-item-title">ナレッジ共有</div>
           </div>
           <div class="list-item-right">→</div>
         </div>
-        <div class="list-item" onclick="switchPage('ranking')">
-          <div class="list-item-icon">🏆</div>
+        <div class="list-item" onclick="switchPage('report')">
+          <div class="list-item-icon">📊</div>
           <div class="list-item-content">
-            <div class="list-item-title">ランキング</div>
+            <div class="list-item-title">週報・月報</div>
           </div>
           <div class="list-item-right">→</div>
         </div>
+      </div>
+    </div>
+
+    <!-- 通知 -->
+    <div class="page" id="page-notifications">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
         <div class="list-item" onclick="switchPage('report')">
           <div class="list-item-icon">📊</div>
           <div class="list-item-content">
@@ -883,7 +952,6 @@
 
     <!-- 経費 -->
     <div class="page" id="page-expenses">
-      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
       <div class="expense-total">
         <div class="expense-total-label">今月の申請合計</div>
         <div class="expense-total-value" id="expenseTotal">¥0</div>
@@ -911,7 +979,6 @@
 
     <!-- ランキング -->
     <div class="page" id="page-ranking">
-      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
       <div class="card">
         <div class="card-header">
           <span class="card-title">🏆 訪問数ランキング</span>
@@ -977,13 +1044,17 @@
       <span class="nav-btn-icon">🏢</span>
       <span>訪問先</span>
     </button>
-    <button class="nav-btn" data-page="schedule">
+    <button class="nav-btn" data-page="calendar">
       <span class="nav-btn-icon">📅</span>
       <span>予定</span>
     </button>
-    <button class="nav-btn" data-page="board">
-      <span class="nav-btn-icon">💬</span>
-      <span>掲示板</span>
+    <button class="nav-btn" data-page="ranking">
+      <span class="nav-btn-icon">🏆</span>
+      <span>ランキング</span>
+    </button>
+    <button class="nav-btn" data-page="expenses">
+      <span class="nav-btn-icon">💰</span>
+      <span>経費</span>
     </button>
     <button class="nav-btn" data-page="more">
       <span class="nav-btn-icon">≡</span>
@@ -1176,6 +1247,10 @@ var myGoal = null;
 var notifications = [];
 var myTodos = [];
 
+// カレンダー用
+var currentCalendarDate = new Date();
+var selectedDate = null;
+
 var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
 
@@ -1297,6 +1372,7 @@ function loadData() {
     schedules = r.data || []; 
     renderSchedules(); 
     renderTodaySchedule();
+    renderCalendar();
   });
   supabase.from('sales_expenses').select('*').eq('member_id', currentUser.id).order('expense_date', { ascending: false }).then(function(r) { 
     expenses = r.data || []; 
@@ -1927,6 +2003,120 @@ function updateHomeAlerts() {
   } else {
     todoCard.style.display = 'none';
   }
+}
+
+// カレンダー表示
+function renderCalendar() {
+  var year = currentCalendarDate.getFullYear();
+  var month = currentCalendarDate.getMonth();
+  
+  document.getElementById('calendarTitle').textContent = year + '年' + (month + 1) + '月';
+  
+  var firstDay = new Date(year, month, 1);
+  var lastDay = new Date(year, month + 1, 0);
+  var startDay = firstDay.getDay();
+  var daysInMonth = lastDay.getDate();
+  
+  var today = new Date();
+  var todayStr = today.toISOString().split('T')[0];
+  
+  // 予定がある日を取得
+  var scheduleDates = {};
+  for (var i = 0; i < schedules.length; i++) {
+    scheduleDates[schedules[i].scheduled_date] = true;
+  }
+  
+  var html = '<div class="calendar-grid">';
+  
+  // 曜日ヘッダー
+  var days = ['日', '月', '火', '水', '木', '金', '土'];
+  for (var d = 0; d < 7; d++) {
+    var cls = d === 0 ? 'sun' : (d === 6 ? 'sat' : '');
+    html += '<div class="calendar-header ' + cls + '">' + days[d] + '</div>';
+  }
+  
+  // 前月の日
+  var prevMonth = new Date(year, month, 0);
+  var prevDays = prevMonth.getDate();
+  for (var d = startDay - 1; d >= 0; d--) {
+    html += '<div class="calendar-day other-month">' + (prevDays - d) + '</div>';
+  }
+  
+  // 今月の日
+  for (var d = 1; d <= daysInMonth; d++) {
+    var dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    var isToday = dateStr === todayStr;
+    var isSelected = selectedDate === dateStr;
+    var hasSchedule = scheduleDates[dateStr];
+    
+    var cls = 'calendar-day';
+    if (isToday) cls += ' today';
+    if (isSelected) cls += ' selected';
+    if (hasSchedule) cls += ' has-schedule';
+    
+    html += '<div class="' + cls + '" onclick="selectDate(\'' + dateStr + '\')">' + d + '</div>';
+  }
+  
+  // 次月の日
+  var totalCells = startDay + daysInMonth;
+  var nextDays = 7 - (totalCells % 7);
+  if (nextDays < 7) {
+    for (var d = 1; d <= nextDays; d++) {
+      html += '<div class="calendar-day other-month">' + d + '</div>';
+    }
+  }
+  
+  html += '</div>';
+  document.getElementById('calendarGrid').innerHTML = html;
+  
+  // 今日を選択
+  if (!selectedDate) {
+    selectDate(todayStr);
+  } else {
+    renderSelectedDateSchedules();
+  }
+}
+
+function changeMonth(delta) {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+  renderCalendar();
+}
+
+function selectDate(dateStr) {
+  selectedDate = dateStr;
+  document.getElementById('sDate').value = dateStr;
+  renderCalendar();
+  renderSelectedDateSchedules();
+}
+
+function renderSelectedDateSchedules() {
+  var d = new Date(selectedDate);
+  document.getElementById('selectedDateTitle').textContent = (d.getMonth() + 1) + '/' + d.getDate() + 'の予定';
+  
+  var daySchedules = schedules.filter(function(s) {
+    return s.scheduled_date === selectedDate;
+  });
+  
+  var container = document.getElementById('selectedDateSchedules');
+  
+  if (daySchedules.length === 0) {
+    container.innerHTML = '<div class="empty">予定がありません</div>';
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < daySchedules.length; i++) {
+    var s = daySchedules[i];
+    var p = prospects.find(function(x) { return x.id === s.prospect_id; });
+    html += '<div class="list-item" onclick="toggleSchedule(\'' + s.id + '\', ' + !s.is_done + ')">';
+    html += '<div class="list-item-icon" style="background:' + (s.is_done ? '#d4edda' : '#fff3cd') + ';">' + (s.is_done ? '✓' : '📍') + '</div>';
+    html += '<div class="list-item-content">';
+    html += '<div class="list-item-title" style="' + (s.is_done ? 'text-decoration:line-through; color:#8a8a8a;' : '') + '">' + (p ? esc(p.company_name) : 'その他') + '</div>';
+    if (s.memo) html += '<div class="list-item-sub">' + esc(s.memo) + '</div>';
+    html += '</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
 }
 </script>
 
