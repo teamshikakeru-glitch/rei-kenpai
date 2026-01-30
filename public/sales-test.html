@@ -138,6 +138,33 @@
     .answer-points-list li { margin-bottom: 0.25rem; }
     .answer-points-list li:last-child { margin-bottom: 0; }
     
+    /* 結果画面の問題表示 */
+    .review-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .review-number { background: var(--color-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 100px; font-weight: 600; font-size: 0.85rem; }
+    .review-category { background: var(--color-bg); color: var(--color-text-muted); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.8rem; }
+    .review-score { margin-left: auto; font-weight: 600; font-size: 0.9rem; }
+    .review-score.score-correct { color: var(--color-success); }
+    .review-score.score-incorrect { color: var(--color-error); }
+    .review-question-text { font-size: 1rem; font-weight: 500; line-height: 1.7; margin-bottom: 1rem; padding: 1rem; background: var(--color-bg); border-radius: 8px; }
+    
+    /* 選択肢の表示 */
+    .review-options { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+    .review-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: white; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.9rem; }
+    .review-option.option-correct { background: #d4edda; border-color: var(--color-success); }
+    .review-option.option-wrong { background: #f8d7da; border-color: var(--color-error); }
+    .option-letter { width: 24px; height: 24px; background: var(--color-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; flex-shrink: 0; }
+    .review-option.option-correct .option-letter { background: var(--color-success); color: white; }
+    .review-option.option-wrong .option-letter { background: var(--color-error); color: white; }
+    .option-text { flex: 1; }
+    .option-badge { padding: 0.15rem 0.5rem; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+    .user-badge { background: #e2e3e5; color: #383d41; }
+    .correct-badge { background: var(--color-success); color: white; }
+    
+    /* 記述式回答の表示 */
+    .review-text-answer { background: white; border: 1px solid var(--color-border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .text-answer-label { font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.5rem; font-weight: 500; }
+    .text-answer-content { font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; }
+    
     @media (max-width: 768px) {
       .container { padding: 1rem; }
       .header { padding: 1rem; }
@@ -673,36 +700,68 @@
         
         <div class="review-section">
           <h3>📝 回答の振り返り</h3>
-          ${data.results.filter(r => r.question.type !== 'feedback').map((r, i) => `
-            <div class="review-item ${r.isCorrect ? 'correct' : 'incorrect'}">
-              <div class="review-question">問${i + 1}. ${r.question.question.split('\n')[0]}</div>
-              <div class="review-answer">
-                <span class="your-answer">あなたの回答: ${formatAnswer(r.question, r.userAnswer)}</span>
-                ${r.question.type === 'single' || r.question.type === 'multi' ? `<span class="correct-answer">正解: ${formatCorrectAnswer(r.question)}</span>` : ''}
-                <span>得点: ${r.score} / ${r.question.points}点</span>
-              </div>
-              ${r.feedback ? `<div class="ai-feedback"><div class="ai-feedback-label">💬 フィードバック</div>${r.feedback}</div>` : ''}
-              ${r.question.modelAnswer ? `
-                <div class="model-answer">
-                  <div class="model-answer-label">📖 模範回答</div>
-                  <div class="model-answer-text">${r.question.modelAnswer}</div>
-                </div>
-              ` : ''}
-              ${r.question.answerPoints ? `
-                <div class="answer-points">
-                  <div class="answer-points-label">✅ 回答のポイント</div>
-                  <ul class="answer-points-list">
-                    ${r.question.answerPoints.map(p => `<li>${p}</li>`).join('')}
-                  </ul>
-                </div>
-              ` : ''}
-            </div>
-          `).join('')}
+          <div id="reviewItems"></div>
         </div>
         <div style="text-align: center; margin-top: 2rem;">
           <button class="btn btn-primary" id="retryBtn">もう一度受験する</button>
         </div>
       `;
+
+      // 回答の振り返りを生成
+      const reviewContainer = document.getElementById('reviewItems');
+      data.results.filter(r => r.question.type !== 'feedback').forEach((r, i) => {
+        const div = document.createElement('div');
+        div.className = 'review-item ' + (r.isCorrect ? 'correct' : 'incorrect');
+        
+        let optionsHtml = '';
+        if (r.question.type === 'single' || r.question.type === 'multi') {
+          optionsHtml = '<div class="review-options">';
+          r.question.options.forEach((opt, idx) => {
+            const isUserAnswer = r.question.type === 'single' 
+              ? r.userAnswer === idx 
+              : (r.userAnswer || []).includes(idx);
+            const isCorrectOption = r.question.type === 'single'
+              ? r.question.correct === idx
+              : r.question.correct.includes(idx);
+            let optionClass = '';
+            if (isCorrectOption) optionClass = 'option-correct';
+            else if (isUserAnswer && !isCorrectOption) optionClass = 'option-wrong';
+            
+            optionsHtml += '<div class="review-option ' + optionClass + '">';
+            optionsHtml += '<span class="option-letter">' + String.fromCharCode(65 + idx) + '</span>';
+            optionsHtml += '<span class="option-text">' + opt + '</span>';
+            if (isUserAnswer) optionsHtml += '<span class="option-badge user-badge">あなたの回答</span>';
+            if (isCorrectOption) optionsHtml += '<span class="option-badge correct-badge">正解</span>';
+            optionsHtml += '</div>';
+          });
+          optionsHtml += '</div>';
+        } else {
+          optionsHtml = '<div class="review-text-answer"><div class="text-answer-label">あなたの回答:</div><div class="text-answer-content">' + (r.userAnswer || '（未回答）') + '</div></div>';
+        }
+        
+        let feedbackHtml = r.feedback ? '<div class="ai-feedback"><div class="ai-feedback-label">💬 フィードバック</div>' + r.feedback + '</div>' : '';
+        let modelAnswerHtml = r.question.modelAnswer ? '<div class="model-answer"><div class="model-answer-label">📖 模範回答</div><div class="model-answer-text">' + r.question.modelAnswer + '</div></div>' : '';
+        let answerPointsHtml = '';
+        if (r.question.answerPoints) {
+          answerPointsHtml = '<div class="answer-points"><div class="answer-points-label">✅ 回答のポイント</div><ul class="answer-points-list">';
+          r.question.answerPoints.forEach(p => { answerPointsHtml += '<li>' + p + '</li>'; });
+          answerPointsHtml += '</ul></div>';
+        }
+        
+        div.innerHTML = 
+          '<div class="review-header">' +
+            '<span class="review-number">問' + (i + 1) + '</span>' +
+            '<span class="review-category">' + r.question.category + '</span>' +
+            '<span class="review-score ' + (r.isCorrect ? 'score-correct' : 'score-incorrect') + '">' + r.score + ' / ' + r.question.points + '点</span>' +
+          '</div>' +
+          '<div class="review-question-text">' + r.question.question.replace(/\n/g, '<br>') + '</div>' +
+          optionsHtml +
+          feedbackHtml +
+          modelAnswerHtml +
+          answerPointsHtml;
+        
+        reviewContainer.appendChild(div);
+      });
 
       document.getElementById('retryBtn').addEventListener('click', () => location.reload());
       window.scrollTo(0, 0);
