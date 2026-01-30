@@ -482,6 +482,75 @@
       font-size: 0.85rem;
     }
     
+    /* 通知バッジ */
+    .notif-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #dc3545;
+      color: white;
+      font-size: 0.6rem;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .nav-btn { position: relative; }
+    
+    /* 通知リスト */
+    .notif-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .notif-item.unread { background: #e8f4fd; }
+    .notif-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .notif-icon.success { background: #d4edda; }
+    .notif-icon.error { background: #f8d7da; }
+    .notif-icon.info { background: #cce5ff; }
+    .notif-content { flex: 1; }
+    .notif-title { font-weight: 600; font-size: 0.85rem; }
+    .notif-text { font-size: 0.8rem; color: #5a5a5a; }
+    .notif-time { font-size: 0.7rem; color: #8a8a8a; }
+    
+    /* TODOリスト */
+    .my-todo-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .my-todo-check {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #e5e2dd;
+      border-radius: 50%;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .my-todo-check.done {
+      background: #2d5a47;
+      border-color: #2d5a47;
+    }
+    .my-todo-content { flex: 1; }
+    .my-todo-title { font-weight: 600; font-size: 0.9rem; }
+    .my-todo-meta { font-size: 0.75rem; color: #8a8a8a; }
+    
     /* ランキング */
     .rank-item {
       display: flex;
@@ -598,6 +667,34 @@
   <main class="main">
     <!-- ホーム -->
     <div class="page active" id="page-home">
+      <!-- 新着通知アラート -->
+      <div class="card" id="newNotifCard" style="display:none; background:linear-gradient(135deg, #ff6b6b, #ee5a5a); color:white;">
+        <div class="card-body" onclick="switchPage('notifications')" style="cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="font-size:1.5rem;">🔔</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;" id="newNotifTitle">新しい通知があります</div>
+              <div style="font-size:0.8rem; opacity:0.9;" id="newNotifPreview"></div>
+            </div>
+            <div style="font-size:1.2rem;">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 未完了TODO アラート -->
+      <div class="card" id="newTodoCard" style="display:none; background:linear-gradient(135deg, #ffc107, #e0a800); color:#1a1f2e;">
+        <div class="card-body" onclick="switchPage('mytodos')" style="cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="font-size:1.5rem;">📋</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;" id="newTodoTitle">未完了のTODOがあります</div>
+              <div style="font-size:0.8rem; opacity:0.9;" id="newTodoPreview"></div>
+            </div>
+            <div style="font-size:1.2rem;">→</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 目標進捗 -->
       <div class="card">
         <div class="card-header">
@@ -714,6 +811,22 @@
     <!-- その他 -->
     <div class="page" id="page-more">
       <div class="card">
+        <div class="list-item" onclick="switchPage('notifications')">
+          <div class="list-item-icon">🔔</div>
+          <div class="list-item-content">
+            <div class="list-item-title">通知</div>
+            <div class="list-item-sub" id="notifCount">0件の未読</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
+        <div class="list-item" onclick="switchPage('mytodos')">
+          <div class="list-item-icon">📋</div>
+          <div class="list-item-content">
+            <div class="list-item-title">TODO</div>
+            <div class="list-item-sub" id="todoCount">0件の未完了</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
         <div class="list-item" onclick="switchPage('expenses')">
           <div class="list-item-icon">💰</div>
           <div class="list-item-content">
@@ -742,6 +855,29 @@
           </div>
           <div class="list-item-right">→</div>
         </div>
+      </div>
+    </div>
+
+    <!-- 通知 -->
+    <div class="page" id="page-notifications">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🔔 通知</span>
+          <button class="btn btn-sm btn-secondary" onclick="markAllRead()">全て既読</button>
+        </div>
+        <div id="notificationsList"></div>
+      </div>
+    </div>
+
+    <!-- TODO -->
+    <div class="page" id="page-mytodos">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 TODO（指示）</span>
+        </div>
+        <div id="myTodosList"></div>
       </div>
     </div>
 
@@ -1037,6 +1173,8 @@ var expenses = [];
 var knowledge = [];
 var posts = [];
 var myGoal = null;
+var notifications = [];
+var myTodos = [];
 
 var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
@@ -1168,6 +1306,18 @@ function loadData() {
   });
   supabase.from('sales_knowledge').select('*').order('created_at', { ascending: false }).then(function(r) { knowledge = r.data || []; renderKnowledge(); });
   supabase.from('sales_posts').select('*').order('created_at', { ascending: false }).limit(50).then(function(r) { posts = r.data || []; renderPosts(); });
+  
+  // 通知を読み込み
+  supabase.from('sales_notifications').select('*').eq('member_id', currentUser.id).order('created_at', { ascending: false }).then(function(r) {
+    notifications = r.data || [];
+    renderNotifications();
+  });
+  
+  // TODOを読み込み
+  supabase.from('sales_todos').select('*').eq('member_id', currentUser.id).order('created_at', { ascending: false }).then(function(r) {
+    myTodos = r.data || [];
+    renderMyTodos();
+  });
   
   var month = new Date().toISOString().slice(0, 7);
   supabase.from('sales_goals').select('*').eq('member_id', currentUser.id).eq('month', month).single().then(function(r) {
@@ -1670,6 +1820,113 @@ function formatDateTime(str) {
   if (!str) return '-';
   var d = new Date(str);
   return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+
+// 通知を表示
+function renderNotifications() {
+  var unreadCount = notifications.filter(function(n) { return !n.is_read; }).length;
+  document.getElementById('notifCount').textContent = unreadCount + '件の未読';
+  
+  var container = document.getElementById('notificationsList');
+  if (notifications.length === 0) {
+    container.innerHTML = '<div class="empty">通知がありません</div>';
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < notifications.length; i++) {
+    var n = notifications[i];
+    var iconClass = n.type === 'success' ? 'success' : (n.type === 'error' ? 'error' : 'info');
+    var icon = n.type === 'success' ? '✓' : (n.type === 'error' ? '✕' : 'ℹ');
+    html += '<div class="notif-item ' + (n.is_read ? '' : 'unread') + '" onclick="markRead(\'' + n.id + '\')">';
+    html += '<div class="notif-icon ' + iconClass + '">' + icon + '</div>';
+    html += '<div class="notif-content">';
+    html += '<div class="notif-title">' + esc(n.title) + '</div>';
+    if (n.content) html += '<div class="notif-text">' + esc(n.content) + '</div>';
+    html += '<div class="notif-time">' + formatDateTime(n.created_at) + '</div>';
+    html += '</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+  
+  // ホームアラート更新
+  updateHomeAlerts();
+}
+
+function markRead(id) {
+  supabase.from('sales_notifications').update({ is_read: true }).eq('id', id).then(function() {
+    loadData();
+  });
+}
+
+function markAllRead() {
+  supabase.from('sales_notifications').update({ is_read: true }).eq('member_id', currentUser.id).then(function() {
+    loadData();
+  });
+}
+
+// TODOを表示
+function renderMyTodos() {
+  var pendingCount = myTodos.filter(function(t) { return t.status !== '完了'; }).length;
+  document.getElementById('todoCount').textContent = pendingCount + '件の未完了';
+  
+  var container = document.getElementById('myTodosList');
+  if (myTodos.length === 0) {
+    container.innerHTML = '<div class="empty">TODOがありません</div>';
+    return;
+  }
+  
+  var html = '';
+  for (var i = 0; i < myTodos.length; i++) {
+    var t = myTodos[i];
+    var isDone = t.status === '完了';
+    html += '<div class="my-todo-item">';
+    html += '<div class="my-todo-check ' + (isDone ? 'done' : '') + '" onclick="toggleTodo(\'' + t.id + '\', ' + !isDone + ')"></div>';
+    html += '<div class="my-todo-content">';
+    html += '<div class="my-todo-title" style="' + (isDone ? 'text-decoration:line-through; color:#8a8a8a;' : '') + '">' + esc(t.title) + '</div>';
+    html += '<div class="my-todo-meta">' + (t.due_date ? '期限: ' + formatDate(t.due_date) : '') + '</div>';
+    if (t.description) html += '<div style="font-size:0.8rem; color:#5a5a5a; margin-top:0.25rem;">' + esc(t.description) + '</div>';
+    html += '</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+  
+  // ホームアラート更新
+  updateHomeAlerts();
+}
+
+function toggleTodo(id, done) {
+  var status = done ? '完了' : '未着手';
+  supabase.from('sales_todos').update({ status: status }).eq('id', id).then(function() {
+    loadData();
+  });
+}
+
+// ホーム画面のアラート更新
+function updateHomeAlerts() {
+  // 未読通知のアラート
+  var unreadNotifs = notifications.filter(function(n) { return !n.is_read; });
+  var notifCard = document.getElementById('newNotifCard');
+  
+  if (unreadNotifs.length > 0) {
+    notifCard.style.display = 'block';
+    document.getElementById('newNotifTitle').textContent = unreadNotifs.length + '件の新しい通知';
+    document.getElementById('newNotifPreview').textContent = unreadNotifs[0].title;
+  } else {
+    notifCard.style.display = 'none';
+  }
+  
+  // 未完了TODOのアラート
+  var pendingTodos = myTodos.filter(function(t) { return t.status !== '完了'; });
+  var todoCard = document.getElementById('newTodoCard');
+  
+  if (pendingTodos.length > 0) {
+    todoCard.style.display = 'block';
+    document.getElementById('newTodoTitle').textContent = pendingTodos.length + '件の未完了TODO';
+    document.getElementById('newTodoPreview').textContent = pendingTodos[0].title;
+  } else {
+    todoCard.style.display = 'none';
+  }
 }
 </script>
 
