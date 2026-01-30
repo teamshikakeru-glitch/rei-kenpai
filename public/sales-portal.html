@@ -519,44 +519,69 @@
     const SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
     
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // State
+    let supabase = null;
     let currentUser = null;
     let allProspects = [];
     let allMembers = [];
     let allKnowledge = [];
 
-    // DOM Ready
-    document.addEventListener('DOMContentLoaded', function() {
+    // 初期化
+    window.onload = function() {
+      console.log('Page loaded');
+      
+      try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase initialized');
+      } catch(e) {
+        console.error('Supabase init error:', e);
+        alert('システムの初期化に失敗しました');
+        return;
+      }
+
       // Check saved session
-      const savedUser = localStorage.getItem('salesPortalUser');
-      if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        showApp();
+      try {
+        const savedUser = localStorage.getItem('salesPortalUser');
+        if (savedUser) {
+          currentUser = JSON.parse(savedUser);
+          showApp();
+        }
+      } catch(e) {
+        console.error('Session restore error:', e);
       }
 
       // Login events
-      document.getElementById('loginBtn').addEventListener('click', handleLogin);
-      document.getElementById('loginPassword').addEventListener('keypress', e => { if (e.key === 'Enter') handleLogin(); });
-      document.getElementById('showRegister').addEventListener('click', e => { e.preventDefault(); showModal('registerModal'); });
-      document.getElementById('closeRegister').addEventListener('click', () => hideModal('registerModal'));
-      document.getElementById('cancelRegister').addEventListener('click', () => hideModal('registerModal'));
-      document.getElementById('registerBtn').addEventListener('click', handleRegister);
-      document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      document.getElementById('loginBtn').onclick = handleLogin;
+      document.getElementById('loginPassword').onkeypress = function(e) { 
+        if (e.key === 'Enter') handleLogin(); 
+      };
+      document.getElementById('showRegister').onclick = function(e) { 
+        e.preventDefault(); 
+        document.getElementById('registerModal').classList.add('active');
+      };
+      document.getElementById('closeRegister').onclick = function() {
+        document.getElementById('registerModal').classList.remove('active');
+      };
+      document.getElementById('cancelRegister').onclick = function() {
+        document.getElementById('registerModal').classList.remove('active');
+      };
+      document.getElementById('registerBtn').onclick = handleRegister;
+      document.getElementById('logoutBtn').onclick = handleLogout;
 
       // Navigation
-      document.querySelectorAll('.nav-item').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-          btn.classList.add('active');
-          document.getElementById('page-' + btn.dataset.page).classList.add('active');
-        });
-      });
+      var navItems = document.querySelectorAll('.nav-item');
+      for (var i = 0; i < navItems.length; i++) {
+        navItems[i].onclick = function() {
+          var pages = document.querySelectorAll('.page');
+          var navs = document.querySelectorAll('.nav-item');
+          for (var j = 0; j < navs.length; j++) navs[j].classList.remove('active');
+          for (var j = 0; j < pages.length; j++) pages[j].classList.remove('active');
+          this.classList.add('active');
+          document.getElementById('page-' + this.dataset.page).classList.add('active');
+        };
+      }
 
       // Prospect Modal
-      document.getElementById('addProspectBtn').addEventListener('click', () => {
+      document.getElementById('addProspectBtn').onclick = function() {
         document.getElementById('prospectModalTitle').textContent = '訪問先を追加';
         document.getElementById('prospectId').value = '';
         document.getElementById('prospectName').value = '';
@@ -566,24 +591,36 @@
         document.getElementById('prospectContact').value = '';
         document.getElementById('prospectStatus').value = '未訪問';
         document.getElementById('prospectNotes').value = '';
-        showModal('prospectModal');
-      });
-      document.getElementById('closeProspectModal').addEventListener('click', () => hideModal('prospectModal'));
-      document.getElementById('cancelProspect').addEventListener('click', () => hideModal('prospectModal'));
-      document.getElementById('saveProspect').addEventListener('click', saveProspect);
+        document.getElementById('prospectModal').classList.add('active');
+      };
+      document.getElementById('closeProspectModal').onclick = function() {
+        document.getElementById('prospectModal').classList.remove('active');
+      };
+      document.getElementById('cancelProspect').onclick = function() {
+        document.getElementById('prospectModal').classList.remove('active');
+      };
+      document.getElementById('saveProspect').onclick = saveProspect;
 
       // Knowledge Modal
-      document.getElementById('addKnowledgeBtn').addEventListener('click', () => showModal('knowledgeModal'));
-      document.getElementById('closeKnowledgeModal').addEventListener('click', () => hideModal('knowledgeModal'));
-      document.getElementById('cancelKnowledge').addEventListener('click', () => hideModal('knowledgeModal'));
-      document.getElementById('saveKnowledge').addEventListener('click', saveKnowledge);
+      document.getElementById('addKnowledgeBtn').onclick = function() {
+        document.getElementById('knowledgeModal').classList.add('active');
+      };
+      document.getElementById('closeKnowledgeModal').onclick = function() {
+        document.getElementById('knowledgeModal').classList.remove('active');
+      };
+      document.getElementById('cancelKnowledge').onclick = function() {
+        document.getElementById('knowledgeModal').classList.remove('active');
+      };
+      document.getElementById('saveKnowledge').onclick = saveKnowledge;
 
       // Filters
-      document.getElementById('filterStatus').addEventListener('change', renderProspects);
-      document.getElementById('filterArea').addEventListener('change', renderProspects);
-      document.getElementById('searchProspect').addEventListener('input', renderProspects);
-      document.getElementById('filterKnowledgeCategory').addEventListener('change', renderKnowledge);
-    });
+      document.getElementById('filterStatus').onchange = renderProspects;
+      document.getElementById('filterArea').onchange = renderProspects;
+      document.getElementById('searchProspect').oninput = renderProspects;
+      document.getElementById('filterKnowledgeCategory').onchange = renderKnowledge;
+      
+      console.log('All event listeners attached');
+    };
 
     // Auth Functions
     async function handleLogin() {
