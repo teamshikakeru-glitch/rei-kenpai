@@ -801,6 +801,15 @@
         </div>
         <div id="todaySchedule"></div>
       </div>
+
+      <!-- TODO -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 TODO（指示）</span>
+          <button class="btn btn-sm btn-secondary" onclick="switchPage('mytodos')">すべて見る</button>
+        </div>
+        <div id="homeTodoList"></div>
+      </div>
     </div>
 
     <!-- 訪問先 -->
@@ -2017,6 +2026,47 @@ function renderMyTodos() {
   
   // ホームアラート更新
   updateHomeAlerts();
+  
+  // ホーム画面のTODOリスト更新
+  renderHomeTodos();
+}
+
+// ホーム画面用TODO表示（未完了のみ、最大3件）
+function renderHomeTodos() {
+  var container = document.getElementById('homeTodoList');
+  var pendingTodos = myTodos.filter(function(t) { return t.status !== '完了'; });
+  
+  if (pendingTodos.length === 0) {
+    container.innerHTML = '<div class="empty" style="padding:1rem;">未完了のTODOはありません 🎉</div>';
+    return;
+  }
+  
+  var html = '';
+  var showCount = Math.min(3, pendingTodos.length);
+  
+  for (var i = 0; i < showCount; i++) {
+    var t = pendingTodos[i];
+    var isUnread = !t.is_read;
+    var statusBadge = getTodoStatusBadge(t.status);
+    
+    html += '<div class="list-item" style="' + (isUnread ? 'background:#fff8e1;' : '') + '" onclick="openTodoDetail(\'' + t.id + '\')">';
+    html += '<div class="list-item-icon" style="background:' + (isUnread ? '#ffc107' : '#e8f0ec') + ';">' + (isUnread ? '🆕' : '📋') + '</div>';
+    html += '<div class="list-item-content">';
+    html += '<div style="display:flex; align-items:center; gap:0.5rem;">';
+    html += '<span class="badge ' + statusBadge + '" style="font-size:0.6rem;">' + t.status + '</span>';
+    html += '<span class="list-item-title" style="font-size:0.85rem;">' + esc(t.title) + '</span>';
+    html += '</div>';
+    if (t.due_date) html += '<div class="list-item-sub">期限: ' + formatDate(t.due_date) + '</div>';
+    html += '</div>';
+    html += '<div class="list-item-right">→</div>';
+    html += '</div>';
+  }
+  
+  if (pendingTodos.length > 3) {
+    html += '<div style="text-align:center; padding:0.5rem; font-size:0.8rem; color:#8a8a8a;">他 ' + (pendingTodos.length - 3) + '件</div>';
+  }
+  
+  container.innerHTML = html;
 }
 
 function getTodoStatusBadge(status) {
