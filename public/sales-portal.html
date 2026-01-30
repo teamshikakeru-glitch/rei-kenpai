@@ -814,23 +814,48 @@
 
     <!-- 訪問先 -->
     <div class="page" id="page-prospects">
+      <!-- 合計表示 -->
+      <div class="card" style="background: linear-gradient(135deg, #2d5a47, #3d7a5f); color: white;">
+        <div class="card-body" style="text-align:center;">
+          <div style="font-size:0.85rem; opacity:0.9;">登録葬儀社</div>
+          <div style="font-size:2rem; font-weight:700;" id="totalProspectsCount">0</div>
+          <div style="font-size:0.8rem; opacity:0.8;" id="myProspectsCount">あなたの担当: 0社</div>
+        </div>
+      </div>
+
+      <!-- エリア選択 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📍 エリアから選ぶ</span>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div id="regionList"></div>
+        </div>
+      </div>
+
+      <!-- フィルター -->
       <div class="card">
         <div class="card-body" style="padding: 0.75rem;">
           <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <select class="form-input" id="filterStatus" style="flex:1; min-width:100px; padding:0.5rem;">
-              <option value="">すべて</option>
+            <select class="form-input" id="filterRegion" style="flex:1; min-width:80px; padding:0.5rem;">
+              <option value="">全エリア</option>
+            </select>
+            <select class="form-input" id="filterPref" style="flex:1; min-width:80px; padding:0.5rem;">
+              <option value="">全都道府県</option>
+            </select>
+            <select class="form-input" id="filterStatus" style="flex:1; min-width:80px; padding:0.5rem;">
+              <option value="">全状態</option>
               <option value="未訪問">未訪問</option>
               <option value="訪問済み">訪問済み</option>
               <option value="商談中">商談中</option>
               <option value="成約">成約</option>
-              <option value="見送り">見送り</option>
             </select>
-            <input type="text" class="form-input" id="searchText" placeholder="検索..." style="flex:2; min-width:120px; padding:0.5rem;">
           </div>
         </div>
       </div>
+
+      <!-- 葬儀社リスト -->
       <div id="prospectsList"></div>
-      <button class="fab" onclick="openProspectModal()">+</button>
     </div>
 
     <!-- スケジュール -->
@@ -1072,6 +1097,26 @@
   </nav>
 </div>
 
+<!-- 葬儀社詳細モーダル -->
+<div class="modal-bg" id="prospectDetailModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>葬儀社詳細</h3>
+      <button class="modal-close" onclick="closeModal('prospectDetailModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <input type="hidden" id="selectedProspectId">
+      <div id="prospectDetailContent"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('prospectDetailModal')">閉じる</button>
+      <button class="btn btn-secondary" id="unassignBtn" onclick="unassignProspect()" style="display:none;">担当解除</button>
+      <button class="btn btn-primary" id="assignBtn" onclick="assignProspect()">担当する</button>
+      <button class="btn btn-primary" onclick="updateProspectStatus()">更新</button>
+    </div>
+  </div>
+</div>
+
 <!-- 訪問先モーダル -->
 <div class="modal-bg" id="prospectModal">
   <div class="modal-box">
@@ -1296,6 +1341,20 @@ var selectedTodoId = null;
 var currentCalendarDate = new Date();
 var selectedDate = null;
 
+// エリア定義
+var REGIONS = ['北海道', '東北', '関東', '北陸', '東海', '関西', '中国', '四国', '九州'];
+var PREFECTURES = {
+  '北海道': ['北海道'],
+  '東北': ['青森県','岩手県','宮城県','秋田県','山形県','福島県'],
+  '関東': ['東京都','神奈川県','埼玉県','千葉県','茨城県','栃木県','群馬県'],
+  '北陸': ['新潟県','富山県','石川県','福井県'],
+  '東海': ['山梨県','長野県','岐阜県','静岡県','愛知県','三重県'],
+  '関西': ['滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県'],
+  '中国': ['鳥取県','島根県','岡山県','広島県','山口県'],
+  '四国': ['徳島県','香川県','愛媛県','高知県'],
+  '九州': ['福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県']
+};
+
 var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
 
@@ -1330,7 +1389,11 @@ function setupEvents() {
   }
   
   document.getElementById('filterStatus').onchange = renderProspects;
-  document.getElementById('searchText').oninput = renderProspects;
+  document.getElementById('filterRegion').onchange = function() {
+    updatePrefectureFilter();
+    renderProspects();
+  };
+  document.getElementById('filterPref').onchange = renderProspects;
 }
 
 function closeModal(id) {
@@ -1548,41 +1611,220 @@ function updateFollowups() {
 }
 
 function renderProspects() {
+  var region = document.getElementById('filterRegion').value;
+  var pref = document.getElementById('filterPref').value;
   var status = document.getElementById('filterStatus').value;
-  var search = document.getElementById('searchText').value.toLowerCase();
   
   var filtered = prospects.filter(function(p) {
+    if (region && p.region !== region) return false;
+    if (pref && p.area !== pref) return false;
     if (status && p.status !== status) return false;
-    if (search && p.company_name.toLowerCase().indexOf(search) === -1) return false;
     return true;
   });
   
+  // 合計表示を更新
+  document.getElementById('totalProspectsCount').textContent = prospects.length;
+  var myCount = prospects.filter(function(p) { return p.assigned_to === currentUser.id; }).length;
+  document.getElementById('myProspectsCount').textContent = 'あなたの担当: ' + myCount + '社';
+  
+  // エリア一覧を更新
+  renderRegionList();
+  
+  // フィルター用エリアセレクトを更新
+  updateRegionFilter();
+  
   var container = document.getElementById('prospectsList');
   if (filtered.length === 0) {
-    container.innerHTML = '<div class="card"><div class="empty">データがありません</div></div>';
+    container.innerHTML = '<div class="card"><div class="empty">該当する葬儀社がありません</div></div>';
     return;
   }
   
   var html = '<div class="card">';
+  html += '<div class="card-header"><span class="card-title">葬儀社一覧（' + filtered.length + '社）</span></div>';
   for (var i = 0; i < filtered.length; i++) {
     var p = filtered[i];
     var member = members.find(function(m) { return m.id === p.assigned_to; });
     var badge = getBadge(p.status);
-    html += '<div class="list-item" onclick="editProspect(\'' + p.id + '\')">';
+    var isMyProspect = p.assigned_to === currentUser.id;
+    
+    html += '<div class="list-item" onclick="openProspectDetail(\'' + p.id + '\')" style="' + (isMyProspect ? 'background:#e8f0ec;' : '') + '">';
     html += '<div class="list-item-content">';
-    html += '<div class="list-item-title">' + esc(p.company_name) + '</div>';
-    html += '<div class="list-item-sub">' + esc(p.area || '') + ' • ' + (member ? member.name : '-') + '</div>';
+    html += '<div class="list-item-title">' + esc(p.company_name);
+    if (member) html += ' <span style="font-size:0.75rem; color:#2d5a47; font-weight:600;">【' + member.name.charAt(0) + '】</span>';
     html += '</div>';
-    html += '<span class="badge ' + badge + '">' + p.status + '</span>';
+    html += '<div class="list-item-sub">' + esc(p.area || '') + (p.temperature && p.temperature !== '未設定' ? ' • ' + getTempEmoji(p.temperature) : '') + '</div>';
+    html += '</div>';
+    html += '<span class="badge ' + badge + '">' + (p.status || '未訪問') + '</span>';
     html += '</div>';
   }
   html += '</div>';
   container.innerHTML = html;
 }
 
+function renderRegionList() {
+  var regionCounts = {};
+  for (var i = 0; i < REGIONS.length; i++) {
+    regionCounts[REGIONS[i]] = 0;
+  }
+  for (var i = 0; i < prospects.length; i++) {
+    var r = prospects[i].region;
+    if (r && regionCounts[r] !== undefined) regionCounts[r]++;
+  }
+  
+  var html = '';
+  for (var i = 0; i < REGIONS.length; i++) {
+    var r = REGIONS[i];
+    var count = regionCounts[r];
+    html += '<div class="list-item" onclick="filterByRegion(\'' + r + '\')" style="padding:0.75rem 1rem;">';
+    html += '<div class="list-item-content">';
+    html += '<div class="list-item-title" style="font-size:0.9rem;">' + r + '</div>';
+    html += '</div>';
+    html += '<span style="font-weight:600; color:' + (count > 0 ? '#2d5a47' : '#ccc') + ';">' + count + '社</span>';
+    html += '</div>';
+  }
+  document.getElementById('regionList').innerHTML = html;
+}
+
+function filterByRegion(region) {
+  document.getElementById('filterRegion').value = region;
+  updatePrefectureFilter();
+  renderProspects();
+}
+
+function updateRegionFilter() {
+  var select = document.getElementById('filterRegion');
+  var currentVal = select.value;
+  var html = '<option value="">全エリア</option>';
+  for (var i = 0; i < REGIONS.length; i++) {
+    html += '<option value="' + REGIONS[i] + '">' + REGIONS[i] + '</option>';
+  }
+  select.innerHTML = html;
+  select.value = currentVal;
+}
+
+function updatePrefectureFilter() {
+  var region = document.getElementById('filterRegion').value;
+  var select = document.getElementById('filterPref');
+  var prefs = region ? (PREFECTURES[region] || []) : [];
+  
+  var html = '<option value="">全都道府県</option>';
+  if (region) {
+    for (var i = 0; i < prefs.length; i++) {
+      // その都道府県の葬儀社数をカウント
+      var count = prospects.filter(function(p) { return p.area === prefs[i]; }).length;
+      html += '<option value="' + prefs[i] + '">' + prefs[i] + ' (' + count + ')</option>';
+    }
+  }
+  select.innerHTML = html;
+}
+
+function getTempEmoji(temp) {
+  var map = { '熱い': '🔥', '温かい': '☀️', '普通': '😐', '冷たい': '❄️' };
+  return map[temp] || '';
+}
+
 function getBadge(status) {
   var map = { '未訪問': 'badge-gray', '訪問済み': 'badge-blue', '商談中': 'badge-yellow', '成約': 'badge-green', '見送り': 'badge-red' };
   return map[status] || 'badge-gray';
+}
+
+// 葬儀社詳細モーダルを開く
+function openProspectDetail(id) {
+  var p = prospects.find(function(x) { return x.id === id; });
+  if (!p) return;
+  
+  var member = members.find(function(m) { return m.id === p.assigned_to; });
+  var isMyProspect = p.assigned_to === currentUser.id;
+  var isUnassigned = !p.assigned_to;
+  
+  var html = '<div style="margin-bottom:1rem;">';
+  html += '<div style="font-size:1.2rem; font-weight:700; margin-bottom:0.5rem;">' + esc(p.company_name) + '</div>';
+  html += '<div style="font-size:0.9rem; color:#5a5a5a;">';
+  html += '📍 ' + esc(p.region || '') + ' / ' + esc(p.area || '') + '<br>';
+  if (p.address) html += '🏠 ' + esc(p.address) + '<br>';
+  if (p.phone) html += '📞 ' + esc(p.phone) + '<br>';
+  if (p.temperature && p.temperature !== '未設定') html += '🌡️ 感度: ' + p.temperature + '<br>';
+  if (p.notes) html += '📝 ' + esc(p.notes) + '<br>';
+  html += '</div></div>';
+  
+  if (member) {
+    html += '<div style="background:#e8f0ec; padding:0.75rem; border-radius:8px; margin-bottom:1rem;">';
+    html += '<div style="font-size:0.85rem;"><strong>' + esc(member.name) + '</strong> さんが担当中</div>';
+    html += '</div>';
+  }
+  
+  html += '<div style="font-weight:600; margin-bottom:0.5rem;">ステータス</div>';
+  html += '<select class="form-input" id="prospectStatus" style="margin-bottom:1rem;">';
+  html += '<option value="未訪問"' + (p.status === '未訪問' ? ' selected' : '') + '>未訪問</option>';
+  html += '<option value="訪問済み"' + (p.status === '訪問済み' ? ' selected' : '') + '>訪問済み</option>';
+  html += '<option value="商談中"' + (p.status === '商談中' ? ' selected' : '') + '>商談中</option>';
+  html += '<option value="成約"' + (p.status === '成約' ? ' selected' : '') + '>成約</option>';
+  html += '<option value="見送り"' + (p.status === '見送り' ? ' selected' : '') + '>見送り</option>';
+  html += '</select>';
+  
+  document.getElementById('prospectDetailContent').innerHTML = html;
+  
+  // ボタン表示制御
+  var assignBtn = document.getElementById('assignBtn');
+  var unassignBtn = document.getElementById('unassignBtn');
+  
+  if (isUnassigned) {
+    assignBtn.style.display = 'block';
+    assignBtn.textContent = '担当する';
+    unassignBtn.style.display = 'none';
+  } else if (isMyProspect) {
+    assignBtn.style.display = 'none';
+    unassignBtn.style.display = 'block';
+  } else {
+    assignBtn.style.display = 'none';
+    unassignBtn.style.display = 'none';
+  }
+  
+  document.getElementById('selectedProspectId').value = id;
+  openModal('prospectDetailModal');
+}
+
+function assignProspect() {
+  var id = document.getElementById('selectedProspectId').value;
+  if (!id) return;
+  
+  supabase.from('sales_prospects').update({ 
+    assigned_to: currentUser.id,
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function() {
+    closeModal('prospectDetailModal');
+    loadData();
+  });
+}
+
+function unassignProspect() {
+  var id = document.getElementById('selectedProspectId').value;
+  if (!id) return;
+  
+  if (!confirm('担当を解除しますか？')) return;
+  
+  supabase.from('sales_prospects').update({ 
+    assigned_to: null,
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function() {
+    closeModal('prospectDetailModal');
+    loadData();
+  });
+}
+
+function updateProspectStatus() {
+  var id = document.getElementById('selectedProspectId').value;
+  var status = document.getElementById('prospectStatus').value;
+  if (!id) return;
+  
+  supabase.from('sales_prospects').update({ 
+    status: status,
+    assigned_to: currentUser.id, // ステータス更新時に自動で担当になる
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function() {
+    closeModal('prospectDetailModal');
+    loadData();
+  });
 }
 
 function openProspectModal() {
