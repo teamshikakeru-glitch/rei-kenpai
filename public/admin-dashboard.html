@@ -147,6 +147,15 @@
     .menu-item-title { font-weight: 600; font-size: 1rem; }
     .menu-item-desc { font-size: 0.8rem; color: #8a8a9a; }
     .menu-item-arrow { color: #8a8a9a; font-size: 1.2rem; }
+    .menu-item-badge span {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-total { background: #3d4559; color: #e0e0e0; }
+    .badge-pass { background: #28a745; color: white; }
     
     /* URL共有セクション */
     .url-section {
@@ -257,8 +266,9 @@
         <div class="menu-item-icon">📋</div>
         <div class="menu-item-content">
           <div class="menu-item-title">テスト結果管理</div>
-          <div class="menu-item-desc">受験者一覧と合格者の確認</div>
+          <div class="menu-item-desc" id="testStatsDesc">受験者一覧と合格者の確認</div>
         </div>
+        <div class="menu-item-badge" id="testStatsBadge" style="display:flex; gap:0.5rem; margin-right:0.75rem;"></div>
         <div class="menu-item-arrow">→</div>
       </a>
       <a class="menu-item" href="admin">
@@ -407,6 +417,7 @@ function showMenu() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainMenu').style.display = 'block';
   loadStats();
+  loadTestStats();
 }
 
 // 成約数を取得
@@ -438,6 +449,40 @@ async function loadStats() {
       '<div class="stats-number">0</div>' +
       '<div class="stats-label">件の成約</div>' +
       '<div class="stats-sub">まだ成約がありません</div>';
+  }
+}
+
+// テスト統計を取得
+async function loadTestStats() {
+  var badgeContainer = document.getElementById('testStatsBadge');
+  var descEl = document.getElementById('testStatsDesc');
+  
+  try {
+    if (!supabase) throw new Error('Supabase未初期化');
+    
+    // sales_test_results テーブルからテスト結果を取得
+    var { data, error } = await supabase
+      .from('sales_test_results')
+      .select('score');
+    
+    if (error) throw error;
+    
+    var results = data || [];
+    var totalCount = results.length;
+    var passCount = results.filter(function(r) { return r.score >= 80; }).length;
+    
+    // バッジを表示
+    badgeContainer.innerHTML = 
+      '<span class="badge-total">受験 ' + totalCount + '人</span>' +
+      '<span class="badge-pass">合格 ' + passCount + '人</span>';
+    
+    // 説明文を更新
+    descEl.textContent = '合格率: ' + (totalCount > 0 ? Math.round(passCount / totalCount * 100) : 0) + '%';
+    
+  } catch(e) {
+    console.error('テスト統計取得エラー:', e);
+    badgeContainer.innerHTML = '';
+    descEl.textContent = '受験者一覧と合格者の確認';
   }
 }
 
