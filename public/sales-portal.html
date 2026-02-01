@@ -207,7 +207,99 @@
     .stat-value { font-size: 1.5rem; font-weight: 700; color: #2d5a47; }
     .stat-sub { font-size: 0.7rem; color: #8a8a8a; }
     
-    /* 目標進捗バー */
+    /* プロフィールカード（ゲーミフィケーション） */
+    .profile-card {
+      background: linear-gradient(135deg, #2d5a47 0%, #3d7a5f 50%, #4d9a6f 100%);
+      border-radius: 16px;
+      padding: 1.25rem;
+      color: white;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      border: 3px solid rgba(255,255,255,0.3);
+    }
+    .profile-info { flex: 1; }
+    .profile-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .profile-level {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255,255,255,0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-stat {
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+    .profile-stat-value { font-size: 1.3rem; font-weight: 700; }
+    .profile-stat-label { font-size: 0.65rem; opacity: 0.8; }
+    
+    /* バッジコレクション */
+    .badge-collection {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+    .achievement-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255,215,0,0.2);
+      border: 1px solid rgba(255,215,0,0.5);
+      padding: 0.2rem 0.5rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .achievement-badge.locked {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      opacity: 0.5;
+    }
+    
+    /* 目標進捗バー（改善版） */
     .goal-section { margin-bottom: 1rem; }
     .goal-header {
       display: flex;
@@ -218,18 +310,108 @@
     .goal-title { font-size: 0.8rem; font-weight: 600; }
     .goal-numbers { font-size: 0.75rem; color: #5a5a5a; }
     .goal-bar {
-      height: 8px;
+      height: 12px;
       background: #e5e2dd;
-      border-radius: 4px;
+      border-radius: 6px;
       overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
     .goal-fill {
       height: 100%;
-      background: linear-gradient(90deg, #2d5a47, #3d7a5f);
-      border-radius: 4px;
-      transition: width 0.3s;
+      background: linear-gradient(90deg, #ff6b6b, #ffc107, #28a745);
+      background-size: 200% 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease-out;
+      position: relative;
+      animation: shimmer 2s ease-in-out infinite;
     }
-    .goal-fill.over { background: linear-gradient(90deg, #28a745, #5cb85c); }
+    .goal-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shine 2s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
+    }
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .goal-fill.low { background: linear-gradient(90deg, #ff6b6b, #ff8787); }
+    .goal-fill.mid { background: linear-gradient(90deg, #ffc107, #ffd700); }
+    .goal-fill.high { background: linear-gradient(90deg, #28a745, #5cb85c); }
+    .goal-fill.over { 
+      background: linear-gradient(90deg, #28a745, #20c997, #28a745);
+      animation: celebrate 1s ease-in-out infinite;
+    }
+    @keyframes celebrate {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.1); }
+    }
+    
+    /* 励ましメッセージ */
+    .motivation-card {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      padding: 1rem;
+      color: white;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .motivation-icon { font-size: 2rem; }
+    .motivation-text { flex: 1; }
+    .motivation-main { font-weight: 600; font-size: 0.95rem; }
+    .motivation-sub { font-size: 0.8rem; opacity: 0.9; margin-top: 0.25rem; }
+    
+    /* ランキングカード改善 */
+    .rank-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .rank-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .rank-card.my-rank {
+      background: linear-gradient(135deg, #e8f0ec, #d4edda);
+      border: 2px solid #2d5a47;
+    }
+    .rank-position {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .rank-position.gold { background: linear-gradient(135deg, #ffd700, #ffec8b); color: #8b6914; }
+    .rank-position.silver { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #666; }
+    .rank-position.bronze { background: linear-gradient(135deg, #cd7f32, #daa06d); color: #5c3d1e; }
+    .rank-position.normal { background: #f5f6fa; color: #8a8a8a; }
+    .rank-info { flex: 1; }
+    .rank-name { font-weight: 600; font-size: 0.95rem; }
+    .rank-stats { font-size: 0.75rem; color: #8a8a8a; }
+    .rank-value { font-weight: 700; font-size: 1.1rem; color: #2d5a47; }
+    .rank-change { font-size: 0.7rem; margin-left: 0.25rem; }
+    .rank-change.up { color: #28a745; }
+    .rank-change.down { color: #dc3545; }
     
     /* リストアイテム */
     .list-item {
@@ -769,6 +951,46 @@
   <main class="main">
     <!-- ホーム -->
     <div class="page active" id="page-home">
+      <!-- プロフィールカード（ゲーミフィケーション） -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">👤</div>
+          <div class="profile-info">
+            <div class="profile-name" id="profileName">-</div>
+            <div class="profile-level" id="profileLevel">
+              <span>⭐</span>
+              <span id="levelText">Lv.1 新人営業</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="profile-stat-value" id="profileClosed">0</div>
+            <div class="profile-stat-label">成約</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-value" id="profileNego">0</div>
+            <div class="profile-stat-label">商談中</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-value" id="profileRank">-</div>
+            <div class="profile-stat-label">ランキング</div>
+          </div>
+        </div>
+        <div class="badge-collection" id="badgeCollection">
+          <!-- バッジはJSで動的生成 -->
+        </div>
+      </div>
+
+      <!-- 励ましメッセージ -->
+      <div class="motivation-card" id="motivationCard">
+        <div class="motivation-icon" id="motivationIcon">💪</div>
+        <div class="motivation-text">
+          <div class="motivation-main" id="motivationMain">今日も頑張りましょう！</div>
+          <div class="motivation-sub" id="motivationSub">目標達成まであと少し</div>
+        </div>
+      </div>
+
       <div class="card" id="newNotifCard" style="display:none; background:linear-gradient(135deg, #ff6b6b, #ee5a5a); color:white;">
         <div class="card-body" onclick="switchPage('notifications')" style="cursor:pointer;">
           <div style="display:flex; align-items:center; gap:0.75rem;">
@@ -1987,17 +2209,21 @@ function showMainApp() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainApp').style.display = 'block';
   document.getElementById('userName').textContent = currentUser.name;
+  document.getElementById('profileName').textContent = currentUser.name;
+  document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0);
   loadData();
 }
 
 function loadData() {
-  supabase.from('sales_members').select('*').then(function(r) { members = r.data || []; renderRanking(); });
+  supabase.from('sales_members').select('*').then(function(r) { members = r.data || []; renderRanking(); updateProfileCard(); });
   supabase.from('sales_prospects').select('*').order('created_at', { ascending: false }).then(function(r) { 
     prospects = r.data || []; 
     updateStats(); 
     renderProspects(); 
     updateFollowups();
     updateScheduleProspects();
+    updateProfileCard();
+    updateMotivation();
   });
   supabase.from('sales_schedules').select('*').eq('member_id', currentUser.id).order('scheduled_date', { ascending: true }).then(function(r) { 
     schedules = r.data || []; 
@@ -2025,6 +2251,7 @@ function loadData() {
   supabase.from('sales_goals').select('*').eq('member_id', currentUser.id).eq('month', month).single().then(function(r) {
     myGoal = r.data || null;
     updateGoalDisplay();
+    updateMotivation();
   });
 }
 
@@ -2103,11 +2330,11 @@ function updateGoalDisplay() {
   document.getElementById('goalNegoBar').style.width = negoPct + '%';
   document.getElementById('goalAppoBar').style.width = appoPct + '%';
   
-  // 達成時のスタイル
-  if (closed >= closedTarget && closedTarget > 0) document.getElementById('goalClosedBar').classList.add('over');
-  if (prospect >= prospectTarget && prospectTarget > 0) document.getElementById('goalProspectBar').classList.add('over');
-  if (nego >= negoTarget && negoTarget > 0) document.getElementById('goalNegoBar').classList.add('over');
-  if (appo >= appoTarget && appoTarget > 0) document.getElementById('goalAppoBar').classList.add('over');
+  // 達成度に応じた色変更
+  setBarColor('goalClosedBar', closedPct, closed >= closedTarget && closedTarget > 0);
+  setBarColor('goalProspectBar', prospectPct, prospect >= prospectTarget && prospectTarget > 0);
+  setBarColor('goalNegoBar', negoPct, nego >= negoTarget && negoTarget > 0);
+  setBarColor('goalAppoBar', appoPct, appo >= appoTarget && appoTarget > 0);
   
   // KPI計算カード更新
   updateKpiCalcCard(closedTarget, appoTarget, negoTarget, prospectTarget, appo, nego, prospect, closed);
@@ -2855,6 +3082,144 @@ function renderSelectedDateSchedules() {
     html += '</div></div>';
   }
   container.innerHTML = html;
+}
+
+// ゲーミフィケーション関連
+function setBarColor(barId, pct, isOver) {
+  var bar = document.getElementById(barId);
+  bar.classList.remove('low', 'mid', 'high', 'over');
+  if (isOver) {
+    bar.classList.add('over');
+  } else if (pct >= 70) {
+    bar.classList.add('high');
+  } else if (pct >= 40) {
+    bar.classList.add('mid');
+  } else {
+    bar.classList.add('low');
+  }
+}
+
+function updateProfileCard() {
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
+  var nego = myProspects.filter(function(p) { return p.status === '商談中' || p.status === '見込み'; }).length;
+  
+  document.getElementById('profileClosed').textContent = closed;
+  document.getElementById('profileNego').textContent = nego;
+  
+  // レベル計算（成約数ベース）
+  var level = getLevelInfo(closed);
+  document.getElementById('levelText').textContent = 'Lv.' + level.level + ' ' + level.title;
+  
+  // ランキング計算
+  var rankData = calculateRanking();
+  var myRank = rankData.findIndex(function(r) { return r.id === currentUser.id; }) + 1;
+  document.getElementById('profileRank').textContent = myRank > 0 ? myRank + '位' : '-';
+  
+  // バッジ生成
+  updateBadges(closed, nego, myProspects.length);
+}
+
+function getLevelInfo(closedCount) {
+  var levels = [
+    { min: 0, level: 1, title: '新人営業' },
+    { min: 1, level: 2, title: '見習い営業' },
+    { min: 3, level: 3, title: '一人前営業' },
+    { min: 5, level: 4, title: 'ベテラン営業' },
+    { min: 10, level: 5, title: '営業マスター' },
+    { min: 20, level: 6, title: '営業エキスパート' },
+    { min: 50, level: 7, title: 'レジェンド' }
+  ];
+  for (var i = levels.length - 1; i >= 0; i--) {
+    if (closedCount >= levels[i].min) return levels[i];
+  }
+  return levels[0];
+}
+
+function updateBadges(closed, nego, total) {
+  var badges = [];
+  
+  // 成約バッジ
+  if (closed >= 1) badges.push({ icon: '🥉', text: '初成約' });
+  if (closed >= 5) badges.push({ icon: '🥈', text: '5社達成' });
+  if (closed >= 10) badges.push({ icon: '🥇', text: '10社達成' });
+  if (closed >= 20) badges.push({ icon: '👑', text: '20社達成' });
+  
+  // 商談バッジ
+  if (nego >= 3) badges.push({ icon: '🔥', text: '商談王' });
+  
+  // 担当バッジ
+  if (total >= 10) badges.push({ icon: '📋', text: '担当10社' });
+  if (total >= 30) badges.push({ icon: '🌟', text: '担当30社' });
+  
+  var html = '';
+  badges.forEach(function(b) {
+    html += '<div class="achievement-badge"><span>' + b.icon + '</span><span>' + b.text + '</span></div>';
+  });
+  
+  // 未獲得バッジ（ヒント）
+  if (closed < 1) html += '<div class="achievement-badge locked"><span>🔒</span><span>初成約で解放</span></div>';
+  
+  document.getElementById('badgeCollection').innerHTML = html;
+}
+
+function calculateRanking() {
+  var counts = [];
+  members.forEach(function(m) {
+    var mp = prospects.filter(function(p) { return p.assigned_to === m.id; });
+    var closed = mp.filter(function(p) { return p.status === '成約'; }).length;
+    var nego = mp.filter(function(p) { return p.status === '商談中' || p.status === '見込み'; }).length;
+    counts.push({ id: m.id, name: m.name, closed: closed, nego: nego, score: closed * 10 + nego });
+  });
+  counts.sort(function(a, b) { return b.score - a.score; });
+  return counts;
+}
+
+function updateMotivation() {
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
+  var closedTarget = myGoal ? myGoal.closed_goal : 0;
+  var remaining = closedTarget - closed;
+  
+  var messages = [];
+  var hour = new Date().getHours();
+  
+  if (hour < 12) {
+    messages.push({ icon: '☀️', main: 'おはようございます！', sub: '今日も1日頑張りましょう' });
+  } else if (hour < 18) {
+    messages.push({ icon: '💪', main: '午後も頑張りましょう！', sub: 'もうひと踏ん張り' });
+  } else {
+    messages.push({ icon: '🌙', main: 'お疲れ様です！', sub: '今日の振り返りをしましょう' });
+  }
+  
+  if (closedTarget > 0) {
+    if (remaining <= 0) {
+      messages = [{ icon: '🎉', main: '目標達成おめでとう！', sub: '素晴らしい成果です！次の目標に挑戦しましょう' }];
+    } else if (remaining === 1) {
+      messages = [{ icon: '🔥', main: 'あと1社で目標達成！', sub: '最後の一押し、頑張れ！' }];
+    } else if (remaining <= 3) {
+      messages = [{ icon: '✨', main: 'あと' + remaining + '社で目標達成！', sub: 'ゴールはすぐそこ！' }];
+    } else {
+      var rate = Math.round((closed / closedTarget) * 100);
+      if (rate >= 50) {
+        messages = [{ icon: '📈', main: '順調に進んでいます！', sub: '達成率' + rate + '%、この調子！' }];
+      }
+    }
+  }
+  
+  // ランキングメッセージ
+  var rankData = calculateRanking();
+  var myRank = rankData.findIndex(function(r) { return r.id === currentUser.id; }) + 1;
+  if (myRank === 1) {
+    messages = [{ icon: '👑', main: '現在1位！トップをキープ！', sub: 'チームを引っ張っています' }];
+  } else if (myRank === 2) {
+    messages.push({ icon: '🥈', main: '現在2位！1位まであと少し', sub: '追い上げていきましょう' });
+  }
+  
+  var msg = messages[Math.floor(Math.random() * messages.length)];
+  document.getElementById('motivationIcon').textContent = msg.icon;
+  document.getElementById('motivationMain').textContent = msg.main;
+  document.getElementById('motivationSub').textContent = msg.sub;
 }
 
 function esc(str) {
