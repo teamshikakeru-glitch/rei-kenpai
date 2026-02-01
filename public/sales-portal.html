@@ -1111,13 +1111,222 @@
       </div>
     </div>
 
-    <!-- 営業マニュアル / FAQ（新規追加） -->
+    <!-- 営業マニュアル / FAQ -->
     <div class="page" id="page-manual">
-      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
-      
+      <div class="card" style="background: linear-gradient(135deg, #2d5a47, #3d7a5f); color: white; margin-bottom: 1rem;">
+        <div class="card-body" style="text-align:center;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📖</div>
+          <div style="font-size: 1.1rem; font-weight: 700;">営業マニュアル</div>
+          <div style="font-size: 0.8rem; opacity: 0.9;">礼（Rei）システム完全ガイド</div>
+        </div>
+      </div>
+
+      <!-- 葬儀業界の基礎知識 -->
       <div class="card">
         <div class="card-header">
-          <span class="card-title">📚 基礎知識</span>
+          <span class="card-title">🏛️ 葬儀業界の基礎知識</span>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">📊</span>
+            <span>葬儀業界の市場規模</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>市場規模</strong></p>
+            <p>・国内葬儀市場：約1.8兆円</p>
+            <p>・年間死亡者数：約156万人（2023年）</p>
+            <p>・今後も高齢化で増加傾向</p>
+            <br>
+            <p><strong>葬儀1件あたりの平均費用</strong></p>
+            <p>・一般葬：150〜200万円</p>
+            <p>・家族葬：50〜100万円</p>
+            <p>・直葬：20〜40万円</p>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「葬儀業界は年間約1.8兆円の市場で、高齢化に伴い今後も拡大が見込まれています。その中で、遠方の方への対応は御社の差別化ポイントになります。」
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">👨‍👩‍👧‍👦</span>
+            <span>葬儀形態のトレンド</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>葬儀形態の変化</strong></p>
+            <p>・<strong>家族葬</strong>：全体の約55%（増加中）</p>
+            <p>・一般葬：約30%（減少傾向）</p>
+            <p>・直葬・火葬式：約15%（増加中）</p>
+            <br>
+            <p><strong>家族葬が増える理由</strong></p>
+            <p>・コロナ禍で小規模化が進んだ</p>
+            <p>・高齢化で参列者が減少</p>
+            <p>・費用を抑えたいニーズ</p>
+            <p>・「故人の意向」として選ばれる</p>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「家族葬が増える一方で、『本当は参列したかった』という方も多いんです。礼システムは、そういった方の気持ちを届ける手段になります。」
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">💴</span>
+            <span>香典の相場と実態</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>香典の相場</strong></p>
+            <p>・友人・知人：5,000〜10,000円</p>
+            <p>・会社関係：5,000〜10,000円</p>
+            <p>・親族：10,000〜50,000円</p>
+            <p>・近い親族：30,000〜100,000円</p>
+            <br>
+            <p><strong>香典辞退の増加</strong></p>
+            <p>・家族葬では約40%が香典辞退</p>
+            <p>・「気を遣わせたくない」という遺族の気持ち</p>
+            <p>・しかし「何かしたい」という参列できない方も多い</p>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「香典辞退が増えている一方で、『何かしたい』という声も多いんです。献杯なら、遺族様の負担にならない形で気持ちを届けられます。」
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🏢</span>
+            <span>葬儀社の課題</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>葬儀社が抱える課題</strong></p>
+            <p>・価格競争の激化</p>
+            <p>・家族葬増加による単価の低下</p>
+            <p>・差別化が難しい</p>
+            <p>・人手不足</p>
+            <p>・デジタル化の遅れ</p>
+            <br>
+            <p><strong>礼で解決できること</strong></p>
+            <p>・遠方対応という付加価値</p>
+            <p>・遺族満足度の向上</p>
+            <p>・他社との差別化</p>
+            <p>・追加コストなしで導入可能</p>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「葬儀社様の差別化は難しくなっていますよね。礼を導入いただくと、『遠方の方への対応もできる』という付加価値を、追加コストなしでご提供できます。」
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 競合サービスとの比較 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">⚔️ 競合サービスとの比較</span>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🆚</span>
+            <span>礼 vs 他社サービス比較表</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>主要サービス比較</strong></p>
+            <div style="overflow-x:auto; margin:1rem 0;">
+              <table style="width:100%; border-collapse:collapse; font-size:0.8rem;">
+                <tr style="background:#2d5a47; color:white;">
+                  <th style="padding:0.5rem; text-align:left;">項目</th>
+                  <th style="padding:0.5rem; text-align:center;">礼（Rei）</th>
+                  <th style="padding:0.5rem; text-align:center;">A社</th>
+                  <th style="padding:0.5rem; text-align:center;">B社</th>
+                </tr>
+                <tr style="background:#f5f6fa;">
+                  <td style="padding:0.5rem;">初期費用</td>
+                  <td style="padding:0.5rem; text-align:center; color:#28a745; font-weight:bold;">無料</td>
+                  <td style="padding:0.5rem; text-align:center;">5万円〜</td>
+                  <td style="padding:0.5rem; text-align:center;">3万円〜</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.5rem;">月額費用</td>
+                  <td style="padding:0.5rem; text-align:center; color:#28a745; font-weight:bold;">無料</td>
+                  <td style="padding:0.5rem; text-align:center;">1万円〜</td>
+                  <td style="padding:0.5rem; text-align:center;">5千円〜</td>
+                </tr>
+                <tr style="background:#f5f6fa;">
+                  <td style="padding:0.5rem;">手数料</td>
+                  <td style="padding:0.5rem; text-align:center;">11.6%</td>
+                  <td style="padding:0.5rem; text-align:center;">15%〜</td>
+                  <td style="padding:0.5rem; text-align:center;">12%〜</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.5rem;">導入の手軽さ</td>
+                  <td style="padding:0.5rem; text-align:center; color:#28a745; font-weight:bold;">◎</td>
+                  <td style="padding:0.5rem; text-align:center;">△</td>
+                  <td style="padding:0.5rem; text-align:center;">○</td>
+                </tr>
+                <tr style="background:#f5f6fa;">
+                  <td style="padding:0.5rem;">操作の簡単さ</td>
+                  <td style="padding:0.5rem; text-align:center; color:#28a745; font-weight:bold;">◎</td>
+                  <td style="padding:0.5rem; text-align:center;">○</td>
+                  <td style="padding:0.5rem; text-align:center;">○</td>
+                </tr>
+              </table>
+            </div>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「他社さんは初期費用や月額費用がかかりますが、礼は完全無料で始められます。使った分だけの手数料なので、リスクゼロでお試しいただけます。」
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">💪</span>
+            <span>礼の強み・差別化ポイント</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>礼の5つの強み</strong></p>
+            <p>1️⃣ <strong>完全無料で導入</strong>：初期費用・月額費用ゼロ</p>
+            <p>2️⃣ <strong>シンプルな操作</strong>：スマホで3分で献杯ページ作成</p>
+            <p>3️⃣ <strong>安心のセキュリティ</strong>：Stripe採用で世界水準</p>
+            <p>4️⃣ <strong>遺族への即時反映</strong>：献杯はリアルタイムで確認可能</p>
+            <p>5️⃣ <strong>サポート体制</strong>：困ったらすぐに相談できる</p>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「礼の最大の特徴は、導入のハードルの低さです。費用ゼロ、操作もシンプル。まずは1件試していただいて、良ければ続けていただく形で大丈夫です。」
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🎯</span>
+            <span>競合に勝つポイント</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>競合との違いを伝えるコツ</strong></p>
+            <br>
+            <p>❌ 悪い例：「他社より安いです」</p>
+            <p>⭕ 良い例：「初期費用・月額費用がかからないので、リスクなく始められます」</p>
+            <br>
+            <p>❌ 悪い例：「競合のA社はここがダメです」</p>
+            <p>⭕ 良い例：「礼はここが特に優れています」</p>
+            <br>
+            <p><strong>比較されたときの対応</strong></p>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「他社様と比較されているんですね。礼は"まず試してみる"ができるのが強みです。導入コストゼロなので、実際に使ってみて判断いただければと思います。」
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 基礎知識 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📚 サービス基礎知識</span>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
@@ -1155,22 +1364,23 @@
             <p>　- システム利用料: 8%</p>
             <p>・遺族への支払い: <strong>88.4%</strong></p>
             <br>
+            <p><strong>具体例</strong></p>
+            <p>・10,000円の献杯 → 遺族に8,840円</p>
+            <p>・30,000円の献杯 → 遺族に26,520円</p>
+            <br>
             <p><strong>請求・支払い方法</strong></p>
             <p>・<strong>月末締め</strong>で集計</p>
             <p>・翌月に請求書を発行</p>
             <p>・葬儀社様から弊社へお支払い</p>
-            <br>
-            <p><strong>遺族への支払い</strong></p>
-            <p>・葬儀社様から遺族様へ直接お渡し</p>
-            <p>・または振込（葬儀社様にお任せ）</p>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
-              「手数料は11.6%で、遺族様には88.4%が届きます。月末締めで翌月に請求書をお送りしますので、まとめてお支払いいただけます。」
+              「手数料は11.6%で、遺族様には88.4%が届きます。例えば1万円の献杯なら、8,840円が遺族様に届きます。」
             </div>
           </div>
         </div>
       </div>
 
+      <!-- セキュリティ -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">🔒 セキュリティ</span>
@@ -1193,34 +1403,13 @@
             <p>・不正利用検知システム</p>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
-              「決済はStripeという世界最大の決済会社を使っています。AmazonやGoogleも使っているサービスで、カード情報は私たちのサーバーには一切残りません。銀行のATMと同じくらい安全とお考えください。」
-            </div>
-          </div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span class="faq-icon">👤</span>
-            <span>個人情報の取り扱いは？</span>
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">
-            <p><strong>収集する情報</strong></p>
-            <p>・献杯者の氏名（匿名も可）</p>
-            <p>・メッセージ（任意）</p>
-            <p>・住所・電話番号（任意・お返し用）</p>
-            <br>
-            <p><strong>利用目的</strong></p>
-            <p>・献杯の処理のみに使用</p>
-            <p>・遺族への情報提供</p>
-            <p>・マーケティング等には使用しない</p>
-            <div class="talk-box">
-              <div class="talk-label">💬 営業トーク例</div>
-              「個人情報は献杯の処理と遺族様へのお知らせ以外には使いません。広告やDMに使うことは一切ありませんのでご安心ください。」
+              「決済はStripeという世界最大の決済会社を使っています。AmazonやGoogleも使っているサービスで、カード情報は私たちのサーバーには一切残りません。」
             </div>
           </div>
         </div>
       </div>
 
+      <!-- 営業アプローチ -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">🎯 営業アプローチ</span>
@@ -1232,23 +1421,23 @@
             <span class="faq-arrow">▼</span>
           </div>
           <div class="faq-answer">
-            <p><strong>ステップ1: 課題の確認</strong></p>
+            <p><strong>ステップ1: アイスブレイク</strong></p>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
-              「最近、遠方からの参列が難しいという声は増えていますか？」<br>
+              「お忙しいところ失礼いたします。遠方の方への対応についてお伺いしたくてお邪魔しました。」
+            </div>
+            <br>
+            <p><strong>ステップ2: 課題の確認</strong></p>
+            <div class="talk-box">
+              <div class="talk-label">💬 営業トーク例</div>
+              「最近、遠方からの参列が難しいという声は増えていますか？」<br><br>
               「コロナ以降、家族葬が増えて、香典を渡せなかった方からの問い合わせはありませんか？」
             </div>
             <br>
-            <p><strong>ステップ2: 解決策の提示</strong></p>
+            <p><strong>ステップ3: 解決策の提示</strong></p>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
               「実は、そういった方向けに"オンラインで香典を送れる"サービスがあるんです。遺族様にとっても、参列できない方からのお気持ちを受け取れるメリットがあります。」
-            </div>
-            <br>
-            <p><strong>ステップ3: 導入メリット</strong></p>
-            <div class="talk-box">
-              <div class="talk-label">💬 営業トーク例</div>
-              「御社としても、遺族様へのサービス向上になりますし、初期費用や月額費用はかかりません。献杯があった時だけ手数料が発生する形です。」
             </div>
           </div>
         </div>
@@ -1262,7 +1451,7 @@
             <p><strong>「うちは必要ない」</strong></p>
             <div class="talk-box">
               <div class="talk-label">💬 対応例</div>
-              「おっしゃる通り、全ての葬儀で使われるわけではありません。ただ、いざ"遠方の方が参列できない"となった時に、ご案内できる選択肢があると遺族様に喜ばれます。導入しておいて損はないかと思います。」
+              「おっしゃる通り、全ての葬儀で使われるわけではありません。ただ、いざ"遠方の方が参列できない"となった時に、ご案内できる選択肢があると遺族様に喜ばれます。導入コストゼロなので、選択肢として持っておくだけでも価値があります。」
             </div>
             <br>
             <p><strong>「高齢者はネットを使えない」</strong></p>
@@ -1274,12 +1463,130 @@
             <p><strong>「手数料が高い」</strong></p>
             <div class="talk-box">
               <div class="talk-label">💬 対応例</div>
-              「11.6%のうち3.6%はカード会社への手数料ですので、実質8%です。初期費用や月額費用がないので、使った分だけのお支払いです。」
+              「11.6%のうち3.6%はカード会社への手数料ですので、実質8%です。初期費用や月額費用がないので、使った分だけのお支払いです。他社さんは月額費用だけで年間数万円かかるところもあります。」
+            </div>
+            <br>
+            <p><strong>「検討します」</strong></p>
+            <div class="talk-box">
+              <div class="talk-label">💬 対応例</div>
+              「ありがとうございます。ちなみに、ご検討いただく上で気になる点や、追加で知りたい情報はありますか？」<br><br>
+              →具体的な懸念を引き出してその場で解消する
             </div>
           </div>
         </div>
       </div>
 
+      <!-- クロージングテクニック -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🏁 クロージングテクニック</span>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">✅</span>
+            <span>クロージングの基本</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>クロージングの3原則</strong></p>
+            <p>1️⃣ <strong>選択肢を与える</strong>：Yes/Noではなく、AかBかで聞く</p>
+            <p>2️⃣ <strong>小さなYesを積み重ねる</strong>：段階的に合意を得る</p>
+            <p>3️⃣ <strong>行動を具体化する</strong>：「いつ」「誰が」「何を」を明確に</p>
+            <br>
+            <p><strong>タイミングの見極め</strong></p>
+            <p>・質問が具体的になってきた</p>
+            <p>・「うちの場合は…」と自社に当てはめ始めた</p>
+            <p>・料金や手続きについて聞いてきた</p>
+            <p>・うなずきや相づちが増えた</p>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">💬</span>
+            <span>クロージングトーク集</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>テストクロージング</strong></p>
+            <div class="talk-box">
+              <div class="talk-label">💬 トーク例</div>
+              「もし導入されるとしたら、どなたがご担当されますか？」<br><br>
+              「実際に使う場面をイメージすると、どんな葬儀で使えそうですか？」
+            </div>
+            <br>
+            <p><strong>選択式クロージング</strong></p>
+            <div class="talk-box">
+              <div class="talk-label">💬 トーク例</div>
+              「導入のご説明は、今週と来週どちらがご都合よろしいですか？」<br><br>
+              「まずは1件試してみるか、資料をお渡しして後日ご検討いただくか、どちらがよろしいですか？」
+            </div>
+            <br>
+            <p><strong>期限を設けるクロージング</strong></p>
+            <div class="talk-box">
+              <div class="talk-label">💬 トーク例</div>
+              「今月中にお申し込みいただければ、導入サポートを優先的にご対応できます。」
+            </div>
+            <br>
+            <p><strong>リスクゼロ訴求</strong></p>
+            <div class="talk-box">
+              <div class="talk-label">💬 トーク例</div>
+              「初期費用も月額費用もかかりません。まずは登録だけしておいて、実際に使えそうな案件が来たら使う、という形でいかがでしょうか？」
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🎯</span>
+            <span>成約までの流れ</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>理想的な商談の流れ</strong></p>
+            <p>1️⃣ 信頼関係構築（アイスブレイク）：2分</p>
+            <p>2️⃣ 課題のヒアリング：5分</p>
+            <p>3️⃣ サービス説明：5分</p>
+            <p>4️⃣ 質疑応答・反論処理：5分</p>
+            <p>5️⃣ クロージング：3分</p>
+            <br>
+            <p><strong>次のアクションを必ず決める</strong></p>
+            <p>・導入決定 → その場で登録サポート</p>
+            <p>・検討中 → 次回訪問日を決める</p>
+            <p>・見送り → 理由を聞いて記録、3ヶ月後に再アプローチ</p>
+            <div class="talk-box">
+              <div class="talk-label">💬 トーク例（次回につなげる）</div>
+              「本日はお時間いただきありがとうございました。来週の水曜日に改めてお伺いしてもよろしいでしょうか？その際に、実際の操作画面をお見せできればと思います。」
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🚫</span>
+            <span>NGなクロージング</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>やってはいけないこと</strong></p>
+            <p>❌ 押し売り感を出す</p>
+            <p>→「今日決めてください」と迫る</p>
+            <br>
+            <p>❌ 曖昧なまま終わる</p>
+            <p>→「また来ます」で次のアクションが不明確</p>
+            <br>
+            <p>❌ 嘘や誇張</p>
+            <p>→「みんな使ってます」「絶対に便利です」</p>
+            <br>
+            <p>❌ 競合の悪口</p>
+            <p>→「A社は対応が悪いですよ」</p>
+            <br>
+            <p><strong>代わりにやること</strong></p>
+            <p>⭕ 相手のペースを尊重しつつ、具体的な次のステップを提案</p>
+            <p>⭕ 事実ベースで礼のメリットを伝える</p>
+            <p>⭕ 「お試し」「リスクゼロ」を強調する</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 問い合わせ対応 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">📞 問い合わせ対応</span>
@@ -1350,9 +1657,9 @@
       <span class="nav-btn-icon">📅</span>
       <span>予定</span>
     </button>
-    <button class="nav-btn" data-page="ranking">
-      <span class="nav-btn-icon">🏆</span>
-      <span>ランキング</span>
+    <button class="nav-btn" data-page="manual">
+      <span class="nav-btn-icon">📖</span>
+      <span>マニュアル</span>
     </button>
     <button class="nav-btn" data-page="expenses">
       <span class="nav-btn-icon">💰</span>
