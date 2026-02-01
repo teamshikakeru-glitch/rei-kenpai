@@ -1408,6 +1408,14 @@
           </div>
           <div class="list-item-right">→</div>
         </div>
+        <div class="list-item" onclick="switchPage('research')" style="background:linear-gradient(135deg, #e8f4fd, #d1e9ff);">
+          <div class="list-item-icon">🔍</div>
+          <div class="list-item-content">
+            <div class="list-item-title">下調べ</div>
+            <div class="list-item-sub">担当会社の事前リサーチ</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
         <div class="list-item" onclick="switchPage('board')">
           <div class="list-item-icon">💬</div>
           <div class="list-item-content">
@@ -1642,6 +1650,101 @@
           <span class="card-title">📊 過去の振り返り</span>
         </div>
         <div id="selfEvalHistory"></div>
+      </div>
+    </div>
+
+    <!-- 下調べページ -->
+    <div class="page" id="page-research">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      
+      <div class="card" style="background: linear-gradient(135deg, #17a2b8, #138496); color: white;">
+        <div class="card-body" style="text-align:center;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+          <div style="font-size: 1.1rem; font-weight: 700;">下調べ・事前リサーチ</div>
+          <div style="font-size: 0.8rem; opacity: 0.9;">商談前に相手を知っておこう</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🏢 担当会社を選択</span>
+        </div>
+        <div class="card-body">
+          <select class="form-input" id="researchProspectSelect" onchange="loadResearchData()">
+            <option value="">会社を選んでください</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 下調べ入力フォーム -->
+      <div id="researchForm" style="display:none;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📋 下調べ内容</span>
+            <span class="badge" id="researchStatus" style="background:#ffc107; color:#1a1f2e;">未入力</span>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label">🌐 ホームページURL</label>
+              <input type="url" class="form-input" id="researchUrl" placeholder="https://...">
+              <button class="btn btn-sm btn-secondary" onclick="openResearchUrl()" style="margin-top:0.5rem;">サイトを開く ↗</button>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">👤 代表者名・決裁者</label>
+              <input type="text" class="form-input" id="researchCeo" placeholder="例：山田太郎（代表取締役）">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">👥 従業員数・規模</label>
+              <select class="form-input" id="researchScale">
+                <option value="">選択してください</option>
+                <option value="1-5名">1〜5名（小規模）</option>
+                <option value="6-20名">6〜20名（中小規模）</option>
+                <option value="21-50名">21〜50名（中規模）</option>
+                <option value="51-100名">51〜100名（大規模）</option>
+                <option value="100名以上">100名以上（大手）</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">⭐ 会社の特徴・強み</label>
+              <textarea class="form-input" id="researchFeatures" rows="3" placeholder="例：家族葬に特化、24時間対応、地域密着型..."></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">🏁 競合情報</label>
+              <textarea class="form-input" id="researchCompetitors" rows="2" placeholder="例：近隣に○○葬祭あり、価格競争が激しいエリア..."></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">📝 その他メモ</label>
+              <textarea class="form-input" id="researchMemo" rows="3" placeholder="商談に活かせる情報をメモ..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="saveResearch()" style="width:100%; margin-top:1rem;">
+              💾 下調べを保存
+            </button>
+          </div>
+        </div>
+
+        <!-- 下調べチェックリスト -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">✅ 下調べチェックリスト</span>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <div id="researchChecklist"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下調べ済み一覧 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📚 下調べ済み一覧</span>
+        </div>
+        <div id="researchList"></div>
       </div>
     </div>
 
@@ -3160,14 +3263,58 @@
 
 <!-- 葬儀社詳細モーダル -->
 <div class="modal-bg" id="prospectDetailModal">
-  <div class="modal-box">
+  <div class="modal-box" style="max-width:500px;">
     <div class="modal-head">
       <h3>葬儀社詳細</h3>
       <button class="modal-close" onclick="closeModal('prospectDetailModal')">&times;</button>
     </div>
-    <div class="modal-content">
+    <div class="modal-content" style="max-height:70vh; overflow-y:auto;">
       <input type="hidden" id="selectedProspectId">
-      <div id="prospectDetailContent"></div>
+      <!-- タブ切り替え -->
+      <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+        <button class="btn btn-sm" id="tabBasic" onclick="switchProspectTab('basic')" style="flex:1; background:#2d5a47; color:white;">基本情報</button>
+        <button class="btn btn-sm btn-secondary" id="tabResearch" onclick="switchProspectTab('research')" style="flex:1;">下調べ</button>
+      </div>
+      <!-- 基本情報タブ -->
+      <div id="prospectTabBasic">
+        <div id="prospectDetailContent"></div>
+      </div>
+      <!-- 下調べタブ -->
+      <div id="prospectTabResearch" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">🌐 ホームページURL</label>
+          <input type="url" class="form-input" id="modalResearchUrl" placeholder="https://...">
+          <button class="btn btn-sm btn-secondary" onclick="openModalResearchUrl()" style="margin-top:0.5rem;">サイトを開く ↗</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">👤 代表者名・決裁者</label>
+          <input type="text" class="form-input" id="modalResearchCeo" placeholder="例：山田太郎">
+        </div>
+        <div class="form-group">
+          <label class="form-label">👥 従業員数・規模</label>
+          <select class="form-input" id="modalResearchScale">
+            <option value="">選択してください</option>
+            <option value="1-5名">1〜5名</option>
+            <option value="6-20名">6〜20名</option>
+            <option value="21-50名">21〜50名</option>
+            <option value="51-100名">51〜100名</option>
+            <option value="100名以上">100名以上</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">⭐ 会社の特徴・強み</label>
+          <textarea class="form-input" id="modalResearchFeatures" rows="2" placeholder="例：家族葬に特化..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🏁 競合情報</label>
+          <textarea class="form-input" id="modalResearchCompetitors" rows="2" placeholder="例：近隣に○○葬祭あり..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📝 その他メモ</label>
+          <textarea class="form-input" id="modalResearchMemo" rows="2"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="saveModalResearch()" style="width:100%;">下調べを保存</button>
+      </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-secondary" onclick="closeModal('prospectDetailModal')">閉じる</button>
@@ -3623,6 +3770,10 @@ function switchPage(page) {
   if (page === 'selfEval' && typeof initSelfEval === 'function') {
     initSelfEval();
   }
+  // 下調べページの場合は初期化
+  if (page === 'research' && typeof initResearchPage === 'function') {
+    initResearchPage();
+  }
 }
 
 function switchTab(prefix, tab) {
@@ -3889,7 +4040,236 @@ function openProspectDetail(id) {
   else if (isMyProspect) { assignBtn.style.display = 'none'; unassignBtn.style.display = 'block'; }
   else { assignBtn.style.display = 'none'; unassignBtn.style.display = 'none'; }
   document.getElementById('selectedProspectId').value = id;
+  // 下調べタブのデータをロード
+  loadModalResearchData(p);
+  // 基本情報タブを表示
+  switchProspectTab('basic');
   openModal('prospectDetailModal');
+}
+
+function switchProspectTab(tab) {
+  var basicTab = document.getElementById('tabBasic');
+  var researchTab = document.getElementById('tabResearch');
+  var basicContent = document.getElementById('prospectTabBasic');
+  var researchContent = document.getElementById('prospectTabResearch');
+  if (tab === 'basic') {
+    basicTab.style.background = '#2d5a47';
+    basicTab.style.color = 'white';
+    basicTab.classList.remove('btn-secondary');
+    researchTab.style.background = '';
+    researchTab.style.color = '';
+    researchTab.classList.add('btn-secondary');
+    basicContent.style.display = 'block';
+    researchContent.style.display = 'none';
+  } else {
+    researchTab.style.background = '#2d5a47';
+    researchTab.style.color = 'white';
+    researchTab.classList.remove('btn-secondary');
+    basicTab.style.background = '';
+    basicTab.style.color = '';
+    basicTab.classList.add('btn-secondary');
+    basicContent.style.display = 'none';
+    researchContent.style.display = 'block';
+  }
+}
+
+function loadModalResearchData(p) {
+  document.getElementById('modalResearchUrl').value = p.research_url || '';
+  document.getElementById('modalResearchCeo').value = p.research_ceo || '';
+  document.getElementById('modalResearchScale').value = p.research_scale || '';
+  document.getElementById('modalResearchFeatures').value = p.research_features || '';
+  document.getElementById('modalResearchCompetitors').value = p.research_competitors || '';
+  document.getElementById('modalResearchMemo').value = p.research_memo || '';
+}
+
+function openModalResearchUrl() {
+  var url = document.getElementById('modalResearchUrl').value;
+  if (url) window.open(url, '_blank');
+}
+
+function saveModalResearch() {
+  var id = document.getElementById('selectedProspectId').value;
+  if (!id) return;
+  var data = {
+    research_url: document.getElementById('modalResearchUrl').value,
+    research_ceo: document.getElementById('modalResearchCeo').value,
+    research_scale: document.getElementById('modalResearchScale').value,
+    research_features: document.getElementById('modalResearchFeatures').value,
+    research_competitors: document.getElementById('modalResearchCompetitors').value,
+    research_memo: document.getElementById('modalResearchMemo').value,
+    updated_at: new Date().toISOString()
+  };
+  supabase.from('sales_prospects').update(data).eq('id', id).then(function(res) {
+    if (res.error) {
+      alert('保存に失敗しました');
+      return;
+    }
+    alert('下調べを保存しました');
+    loadData();
+  });
+}
+
+// ==================== 下調べページ機能 ====================
+function initResearchPage() {
+  var select = document.getElementById('researchProspectSelect');
+  if (!select) return;
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  var html = '<option value="">会社を選んでください</option>';
+  myProspects.forEach(function(p) {
+    var hasResearch = p.research_url || p.research_ceo || p.research_features;
+    var icon = hasResearch ? '✅' : '⬜';
+    html += '<option value="' + p.id + '">' + icon + ' ' + esc(p.company_name) + '</option>';
+  });
+  select.innerHTML = html;
+  renderResearchList();
+}
+
+function loadResearchData() {
+  var select = document.getElementById('researchProspectSelect');
+  var id = select.value;
+  var form = document.getElementById('researchForm');
+  if (!id) {
+    form.style.display = 'none';
+    return;
+  }
+  form.style.display = 'block';
+  var p = prospects.find(function(x) { return x.id === id; });
+  if (!p) return;
+  
+  document.getElementById('researchUrl').value = p.research_url || '';
+  document.getElementById('researchCeo').value = p.research_ceo || '';
+  document.getElementById('researchScale').value = p.research_scale || '';
+  document.getElementById('researchFeatures').value = p.research_features || '';
+  document.getElementById('researchCompetitors').value = p.research_competitors || '';
+  document.getElementById('researchMemo').value = p.research_memo || '';
+  
+  updateResearchStatus(p);
+  updateResearchChecklist(p);
+}
+
+function updateResearchStatus(p) {
+  var statusEl = document.getElementById('researchStatus');
+  var filled = 0;
+  if (p.research_url) filled++;
+  if (p.research_ceo) filled++;
+  if (p.research_scale) filled++;
+  if (p.research_features) filled++;
+  if (p.research_competitors) filled++;
+  if (p.research_memo) filled++;
+  
+  if (filled === 0) {
+    statusEl.textContent = '未入力';
+    statusEl.style.background = '#dc3545';
+    statusEl.style.color = 'white';
+  } else if (filled < 4) {
+    statusEl.textContent = filled + '/6 入力中';
+    statusEl.style.background = '#ffc107';
+    statusEl.style.color = '#1a1f2e';
+  } else {
+    statusEl.textContent = '✅ 完了';
+    statusEl.style.background = '#28a745';
+    statusEl.style.color = 'white';
+  }
+}
+
+function updateResearchChecklist(p) {
+  var items = [
+    { key: 'research_url', label: 'ホームページURL', icon: '🌐' },
+    { key: 'research_ceo', label: '代表者名・決裁者', icon: '👤' },
+    { key: 'research_scale', label: '従業員数・規模', icon: '👥' },
+    { key: 'research_features', label: '会社の特徴・強み', icon: '⭐' },
+    { key: 'research_competitors', label: '競合情報', icon: '🏁' },
+    { key: 'research_memo', label: 'その他メモ', icon: '📝' }
+  ];
+  var html = '';
+  items.forEach(function(item) {
+    var done = p[item.key] ? true : false;
+    html += '<div class="list-item" style="padding:0.75rem;">';
+    html += '<span style="font-size:1.2rem; margin-right:0.5rem;">' + (done ? '✅' : '⬜') + '</span>';
+    html += '<span style="color:' + (done ? '#2d5a47' : '#8a8a8a') + ';">' + item.icon + ' ' + item.label + '</span>';
+    html += '</div>';
+  });
+  document.getElementById('researchChecklist').innerHTML = html;
+}
+
+function openResearchUrl() {
+  var url = document.getElementById('researchUrl').value;
+  if (url) window.open(url, '_blank');
+}
+
+function saveResearch() {
+  var id = document.getElementById('researchProspectSelect').value;
+  if (!id) {
+    alert('会社を選択してください');
+    return;
+  }
+  var data = {
+    research_url: document.getElementById('researchUrl').value,
+    research_ceo: document.getElementById('researchCeo').value,
+    research_scale: document.getElementById('researchScale').value,
+    research_features: document.getElementById('researchFeatures').value,
+    research_competitors: document.getElementById('researchCompetitors').value,
+    research_memo: document.getElementById('researchMemo').value,
+    updated_at: new Date().toISOString()
+  };
+  supabase.from('sales_prospects').update(data).eq('id', id).then(function(res) {
+    if (res.error) {
+      alert('保存に失敗しました');
+      return;
+    }
+    alert('下調べを保存しました！');
+    loadData();
+    setTimeout(function() {
+      loadResearchData();
+    }, 500);
+  });
+}
+
+function renderResearchList() {
+  var container = document.getElementById('researchList');
+  if (!container) return;
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  var researched = myProspects.filter(function(p) { 
+    return p.research_url || p.research_ceo || p.research_features; 
+  });
+  
+  if (researched.length === 0) {
+    container.innerHTML = '<div class="card-body" style="text-align:center; color:#8a8a8a; padding:2rem;">まだ下調べがありません</div>';
+    return;
+  }
+  
+  var html = '';
+  researched.forEach(function(p) {
+    var filled = 0;
+    if (p.research_url) filled++;
+    if (p.research_ceo) filled++;
+    if (p.research_scale) filled++;
+    if (p.research_features) filled++;
+    if (p.research_competitors) filled++;
+    if (p.research_memo) filled++;
+    
+    html += '<div class="list-item" onclick="selectResearchProspect(\'' + p.id + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div style="font-weight:600;">' + esc(p.company_name) + '</div>';
+    html += '<div style="font-size:0.8rem; color:#8a8a8a;">';
+    if (p.research_ceo) html += '👤 ' + esc(p.research_ceo) + ' ';
+    if (p.research_scale) html += '👥 ' + esc(p.research_scale);
+    html += '</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;">';
+    html += '<span class="badge" style="background:' + (filled >= 4 ? '#28a745' : '#ffc107') + '; color:' + (filled >= 4 ? 'white' : '#1a1f2e') + ';">' + filled + '/6</span>';
+    html += '</div>';
+    html += '</div>';
+  });
+  
+  container.innerHTML = html;
+}
+
+function selectResearchProspect(id) {
+  var select = document.getElementById('researchProspectSelect');
+  select.value = id;
+  loadResearchData();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function assignProspect() {
