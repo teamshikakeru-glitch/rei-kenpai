@@ -151,6 +151,7 @@
       <button class="nav-item active" data-page="dashboard"><span>📊</span><span>ダッシュボード</span></button>
       <button class="nav-item" data-page="goals"><span>🎯</span><span>目標管理</span></button>
       <button class="nav-item" data-page="funerals"><span>🏢</span><span>葬儀社管理</span></button>
+      <button class="nav-item" data-page="research"><span>🔍</span><span>下調べ</span></button>
       <button class="nav-item" data-page="expenses"><span>💰</span><span>経費申請</span><span class="nav-badge" id="expenseBadge" style="display:none;">0</span></button>
       <button class="nav-item" data-page="members"><span>👥</span><span>メンバー</span></button>
       <button class="nav-item" data-page="todos"><span>📋</span><span>TODO指示</span></button>
@@ -379,6 +380,56 @@
                 </tr>
               </thead>
               <tbody id="scheduleListTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下調べページ -->
+      <div class="page" id="page-research">
+        <h1 class="page-title">🔍 下調べ管理</h1>
+        
+        <!-- 統計 -->
+        <div class="stats-grid" style="grid-template-columns:repeat(3, 1fr);">
+          <div class="stat-card info"><div class="stat-label">担当あり会社数</div><div class="stat-value" id="researchStatAssigned">0</div></div>
+          <div class="stat-card success"><div class="stat-label">下調べ完了</div><div class="stat-value" id="researchStatComplete">0</div></div>
+          <div class="stat-card warning"><div class="stat-label">下調べ未完了</div><div class="stat-value" id="researchStatIncomplete">0</div></div>
+        </div>
+
+        <!-- フィルター -->
+        <div class="card">
+          <div class="card-body" style="padding:0.75rem;">
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <select class="form-input-dark" id="researchFilterMember" style="flex:1; min-width:120px;" onchange="renderAdminResearchList()">
+                <option value="">全メンバー</option>
+              </select>
+              <select class="form-input-dark" id="researchFilterStatus" style="flex:1; min-width:120px;" onchange="renderAdminResearchList()">
+                <option value="">全ステータス</option>
+                <option value="complete">✅ 完了のみ</option>
+                <option value="incomplete">⬜ 未完了のみ</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 下調べ一覧 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📋 下調べ一覧</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>葬儀社名</th>
+                  <th>担当者</th>
+                  <th>進捗</th>
+                  <th>代表者</th>
+                  <th>規模</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="adminResearchTable"></tbody>
             </table>
           </div>
         </div>
@@ -661,6 +712,7 @@
 <div class="modal-bg" id="memberModal"><div class="modal-box"><div class="modal-head"><h3 id="memberModalTitle">メンバー</h3><button class="modal-close" onclick="closeModal('memberModal')">&times;</button></div><div class="modal-content"><div id="memberDetail"></div><hr style="border:none;border-top:1px solid #3d4559;margin:1rem 0;"><textarea class="form-input-dark" id="memberMessage" rows="2" placeholder="メッセージ..."></textarea><button class="btn btn-sm btn-gold" onclick="sendNotification()" style="margin-top:0.5rem;">送信</button></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('memberModal')">閉じる</button></div></div></div>
 <div class="modal-bg" id="goalEditModal"><div class="modal-box"><div class="modal-head"><h3>🎯 目標を設定</h3><button class="modal-close" onclick="closeModal('goalEditModal')">&times;</button></div><div class="modal-content"><input type="hidden" id="goalEditMemberId"><input type="hidden" id="goalEditId"><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; margin-bottom:1rem;"><div style="font-size:0.8rem; color:#8a8a9a;">対象メンバー</div><div style="font-weight:600; color:#c9a962;" id="goalEditMemberName">-</div></div><div class="form-group"><label class="form-label">🏆 月間受注目標（社）</label><input type="number" class="form-input-dark" id="goalEditClosed" placeholder="例：5" oninput="calcGoalPreview()"><div style="font-size:0.75rem; color:#8a8a9a; margin-top:0.25rem;">この数字から必要なアポ数を自動逆算します</div></div><div id="goalEditPreview" style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-top:1rem; display:none;"><div style="font-weight:600; margin-bottom:0.5rem; color:#c9a962;">📊 必要数の逆算</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;"><div style="color:#8a8a9a;">見込み数:</div><div id="goalPreviewProspect">-</div><div style="color:#8a8a9a;">商談数:</div><div id="goalPreviewNego">-</div><div style="color:#8a8a9a;">アポ数:</div><div style="color:#28a745; font-weight:600;" id="goalPreviewAppo">-</div></div><hr style="border:none;border-top:1px solid #3d4559;margin:0.75rem 0;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.85rem; color:#8a8a9a;"><div>週あたり:</div><div id="goalPreviewWeekly">-</div><div>日あたり:</div><div id="goalPreviewDaily">-</div></div></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('goalEditModal')">キャンセル</button><button class="btn btn-gold" onclick="saveGoalEdit()">保存</button></div></div></div>
 <div class="modal-bg" id="selfEvalDetailModal"><div class="modal-box" style="max-width:600px;"><div class="modal-head"><h3>📝 振り返り詳細</h3><button class="modal-close" onclick="closeModal('selfEvalDetailModal')">&times;</button></div><div class="modal-content" id="selfEvalDetailContent"></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('selfEvalDetailModal')">閉じる</button></div></div></div>
+<div class="modal-bg" id="researchEditModal"><div class="modal-box" style="max-width:550px;"><div class="modal-head"><h3>🔍 下調べ編集</h3><button class="modal-close" onclick="closeModal('researchEditModal')">&times;</button></div><div class="modal-content" style="max-height:70vh; overflow-y:auto;"><input type="hidden" id="researchEditId"><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; margin-bottom:1rem;"><div style="font-size:0.8rem; color:#8a8a9a;">葬儀社名</div><div style="font-weight:600; color:#c9a962;" id="researchEditCompany">-</div></div><div class="form-group"><label class="form-label">🌐 ホームページURL</label><input type="url" class="form-input-dark" id="researchEditUrl" placeholder="https://..."></div><div class="form-group"><label class="form-label">👤 代表者名・決裁者</label><input type="text" class="form-input-dark" id="researchEditCeo" placeholder="例：山田太郎"></div><div class="form-group"><label class="form-label">👥 従業員数・規模</label><select class="form-input-dark" id="researchEditScale"><option value="">選択してください</option><option value="1-5名">1〜5名</option><option value="6-20名">6〜20名</option><option value="21-50名">21〜50名</option><option value="51-100名">51〜100名</option><option value="100名以上">100名以上</option></select></div><div class="form-group"><label class="form-label">⭐ 会社の特徴・強み</label><textarea class="form-input-dark" id="researchEditFeatures" rows="3" placeholder="例：家族葬に特化、24時間対応..."></textarea></div><div class="form-group"><label class="form-label">🏁 競合情報</label><textarea class="form-input-dark" id="researchEditCompetitors" rows="2" placeholder="例：近隣に○○葬祭あり..."></textarea></div><div class="form-group"><label class="form-label">📝 その他メモ</label><textarea class="form-input-dark" id="researchEditMemo" rows="3"></textarea></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('researchEditModal')">キャンセル</button><button class="btn btn-gold" onclick="saveAdminResearch()">保存</button></div></div></div>
 <script>
 var supabase,members=[],prospects=[],expenses=[],todos=[],posts=[],schedules=[],goals=[],selectedMemberId=null,adminCalendarDate=new Date(),adminSelectedDate=null;
 var ADMIN_PASS='1123';
@@ -673,7 +725,7 @@ function updatePrefOptions(region,selectId,defaultText){var s=document.getElemen
 function doLogin(){if(document.getElementById('adminPass').value===ADMIN_PASS){localStorage.setItem('salesAdminLoggedIn','true');showMainApp();}else{document.getElementById('loginError').style.display='block';}}
 function doLogout(){localStorage.removeItem('salesAdminLoggedIn');document.getElementById('mainApp').style.display='none';document.getElementById('loginScreen').style.display='flex';}
 function showMainApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';loadData();}
-function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();updateScheduleMemberFilter();initEvaluation();loadSelfEvaluations();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();renderGoalStats();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();renderExpenseHistory();updateExpenseSummary();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r){schedules=r.data||[];renderMemberActivity();renderAdminCalendar();renderScheduleList();});supabase.from('sales_goals').select('*').then(function(r){goals=r.data||[];initGoalMonthFilter();renderGoalStats();});}
+function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();updateScheduleMemberFilter();initEvaluation();loadSelfEvaluations();initAdminResearch();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();renderGoalStats();renderAdminResearchList();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();renderExpenseHistory();updateExpenseSummary();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r){schedules=r.data||[];renderMemberActivity();renderAdminCalendar();renderScheduleList();});supabase.from('sales_goals').select('*').then(function(r){goals=r.data||[];initGoalMonthFilter();renderGoalStats();});}
 function switchPage(page){document.querySelectorAll('.nav-item').forEach(function(el){el.classList.toggle('active',el.dataset.page===page);});document.querySelectorAll('.page').forEach(function(el){el.classList.toggle('active',el.id==='page-'+page);});}
 function updateStats(){var pending=expenses.filter(function(e){return e.status==='申請中';}).length;var nego=prospects.filter(function(p){return p.status==='商談中';}).length;var closed=prospects.filter(function(p){return p.status==='成約';}).length;var approvedTotal=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('statTotal').textContent=prospects.length;document.getElementById('statNego').textContent=nego;document.getElementById('statClosed').textContent=closed;document.getElementById('statPending').textContent=pending;document.getElementById('statExpenseTotal').textContent='¥'+approvedTotal.toLocaleString();document.getElementById('funeralCount').textContent=prospects.length;var badge=document.getElementById('expenseBadge');badge.textContent=pending;badge.style.display=pending>0?'inline':'none';var rc={};Object.keys(REGIONS).forEach(function(r){rc[r]=0;});prospects.forEach(function(p){if(p.region&&rc[p.region]!==undefined)rc[p.region]++;});var rh='';Object.keys(rc).forEach(function(r){if(rc[r]>0)rh+='<div class="region-stat"><strong>'+r+'</strong> '+rc[r]+'社</div>';});document.getElementById('regionStats').innerHTML=rh||'<span style="color:#8a8a9a;">なし</span>';var mh='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var mn=mp.filter(function(p){return p.status==='商談中';}).length;var mc=mp.filter(function(p){return p.status==='成約';}).length;mh+='<tr><td>'+esc(m.name)+'</td><td>'+mp.length+'</td><td>'+mn+'</td><td>'+mc+'</td></tr>';});document.getElementById('memberStatsTable').innerHTML=mh||'<tr><td colspan="4" class="empty">なし</td></tr>';}
 function updateExpenseSummary(){var pendingAmount=expenses.filter(function(e){return e.status==='申請中';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var approvedAmount=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var rejectedAmount=expenses.filter(function(e){return e.status==='却下';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var totalAmount=expenses.reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('expPending').textContent='¥'+pendingAmount.toLocaleString();document.getElementById('expApproved').textContent='¥'+approvedAmount.toLocaleString();document.getElementById('expRejected').textContent='¥'+rejectedAmount.toLocaleString();document.getElementById('expTotal').textContent='¥'+totalAmount.toLocaleString();}
@@ -1034,6 +1086,126 @@ function showSelfEvalDetail(idx) {
   
   document.getElementById('selfEvalDetailContent').innerHTML = html;
   openModal('selfEvalDetailModal');
+}
+
+// ==================== 下調べ管理 ====================
+function initAdminResearch() {
+  var filterSelect = document.getElementById('researchFilterMember');
+  if (filterSelect) {
+    var html = '<option value="">全メンバー</option>';
+    members.forEach(function(m) {
+      html += '<option value="' + m.id + '">' + esc(m.name) + '</option>';
+    });
+    filterSelect.innerHTML = html;
+  }
+  renderAdminResearchList();
+}
+
+function renderAdminResearchList() {
+  var memberFilter = document.getElementById('researchFilterMember').value;
+  var statusFilter = document.getElementById('researchFilterStatus').value;
+  
+  // 担当ありの会社のみ
+  var assigned = prospects.filter(function(p) { return p.assigned_to; });
+  
+  // フィルター適用
+  var filtered = assigned;
+  if (memberFilter) {
+    filtered = filtered.filter(function(p) { return p.assigned_to === memberFilter; });
+  }
+  if (statusFilter === 'complete') {
+    filtered = filtered.filter(function(p) { return isResearchComplete(p); });
+  } else if (statusFilter === 'incomplete') {
+    filtered = filtered.filter(function(p) { return !isResearchComplete(p); });
+  }
+  
+  // 統計更新
+  var complete = assigned.filter(function(p) { return isResearchComplete(p); }).length;
+  document.getElementById('researchStatAssigned').textContent = assigned.length;
+  document.getElementById('researchStatComplete').textContent = complete;
+  document.getElementById('researchStatIncomplete').textContent = assigned.length - complete;
+  
+  // テーブル描画
+  var tbody = document.getElementById('adminResearchTable');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">データがありません</td></tr>';
+    return;
+  }
+  
+  var html = '';
+  filtered.forEach(function(p) {
+    var member = members.find(function(m) { return m.id === p.assigned_to; });
+    var memberName = member ? member.name : '-';
+    var filled = countResearchFields(p);
+    var isComplete = filled >= 4;
+    
+    html += '<tr>';
+    html += '<td><strong>' + esc(p.company_name) + '</strong><br><span style="font-size:0.75rem; color:#8a8a9a;">' + esc(p.area || '') + '</span></td>';
+    html += '<td>' + esc(memberName) + '</td>';
+    html += '<td><span class="badge ' + (isComplete ? 'badge-green' : 'badge-yellow') + '">' + (isComplete ? '✅ ' + filled + '/6' : '⬜ ' + filled + '/6') + '</span></td>';
+    html += '<td>' + esc(p.research_ceo || '-') + '</td>';
+    html += '<td>' + esc(p.research_scale || '-') + '</td>';
+    html += '<td><button class="btn btn-sm btn-secondary" onclick="openResearchEdit(\'' + p.id + '\')">編集</button></td>';
+    html += '</tr>';
+  });
+  
+  tbody.innerHTML = html;
+}
+
+function isResearchComplete(p) {
+  return countResearchFields(p) >= 4;
+}
+
+function countResearchFields(p) {
+  var count = 0;
+  if (p.research_url) count++;
+  if (p.research_ceo) count++;
+  if (p.research_scale) count++;
+  if (p.research_features) count++;
+  if (p.research_competitors) count++;
+  if (p.research_memo) count++;
+  return count;
+}
+
+function openResearchEdit(id) {
+  var p = prospects.find(function(x) { return x.id === id; });
+  if (!p) return;
+  
+  document.getElementById('researchEditId').value = id;
+  document.getElementById('researchEditCompany').textContent = p.company_name;
+  document.getElementById('researchEditUrl').value = p.research_url || '';
+  document.getElementById('researchEditCeo').value = p.research_ceo || '';
+  document.getElementById('researchEditScale').value = p.research_scale || '';
+  document.getElementById('researchEditFeatures').value = p.research_features || '';
+  document.getElementById('researchEditCompetitors').value = p.research_competitors || '';
+  document.getElementById('researchEditMemo').value = p.research_memo || '';
+  
+  openModal('researchEditModal');
+}
+
+function saveAdminResearch() {
+  var id = document.getElementById('researchEditId').value;
+  if (!id) return;
+  
+  var data = {
+    research_url: document.getElementById('researchEditUrl').value,
+    research_ceo: document.getElementById('researchEditCeo').value,
+    research_scale: document.getElementById('researchEditScale').value,
+    research_features: document.getElementById('researchEditFeatures').value,
+    research_competitors: document.getElementById('researchEditCompetitors').value,
+    research_memo: document.getElementById('researchEditMemo').value,
+    updated_at: new Date().toISOString()
+  };
+  
+  supabase.from('sales_prospects').update(data).eq('id', id).then(function(res) {
+    if (res.error) {
+      alert('保存に失敗しました');
+      return;
+    }
+    alert('下調べを保存しました');
+    closeModal('researchEditModal');
+    loadData();
+  });
 }
 </script>
 </body>
