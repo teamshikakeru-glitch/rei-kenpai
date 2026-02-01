@@ -439,6 +439,31 @@
       <div class="page" id="page-evaluation">
         <h1 class="page-title">📝 営業評価シート</h1>
         
+        <!-- メンバー振り返り一覧（自己申告）を一番上に -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📝 メンバーの振り返り（自己申告）</span>
+            <select class="form-input-dark" id="selfEvalFilter" style="width:auto; padding:0.4rem;" onchange="renderSelfEvalList()">
+              <option value="">全メンバー</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>日付</th>
+                  <th>メンバー</th>
+                  <th>商談先</th>
+                  <th>結果</th>
+                  <th>スコア</th>
+                  <th>詳細</th>
+                </tr>
+              </thead>
+              <tbody id="selfEvalListTable"></tbody>
+            </table>
+          </div>
+        </div>
+
         <div class="card" style="background:linear-gradient(135deg, #252b3d, #2d3548); border-left:4px solid #c9a962;">
           <div class="card-body">
             <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
@@ -591,31 +616,6 @@
             </div>
 
             <button class="btn btn-gold" onclick="saveEvaluation()" style="margin-top:1rem;">評価を保存</button>
-          </div>
-        </div>
-
-        <!-- メンバー振り返り一覧（自己申告） -->
-        <div class="card">
-          <div class="card-header">
-            <span class="card-title">📝 メンバーの振り返り（自己申告）</span>
-            <select class="form-input-dark" id="selfEvalFilter" style="width:auto; padding:0.4rem;" onchange="renderSelfEvalList()">
-              <option value="">全メンバー</option>
-            </select>
-          </div>
-          <div style="overflow-x:auto;">
-            <table>
-              <thead>
-                <tr>
-                  <th>日付</th>
-                  <th>メンバー</th>
-                  <th>商談先</th>
-                  <th>結果</th>
-                  <th>スコア</th>
-                  <th>詳細</th>
-                </tr>
-              </thead>
-              <tbody id="selfEvalListTable"></tbody>
-            </table>
           </div>
         </div>
 
