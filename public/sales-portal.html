@@ -1,10 +1,656 @@
-<!-- ============================================== -->
-<!-- sales-portal.html への追加内容                -->
-<!-- ============================================== -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Rei 営業ポータル</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
+      background: #f5f6fa; 
+      color: #2c2c2c; 
+      line-height: 1.5;
+      font-size: 14px;
+      padding-bottom: 70px;
+    }
+    
+    /* ログイン画面 */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #2d5a47 0%, #3d7a5f 100%);
+      padding: 1rem;
+    }
+    .login-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 360px;
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .login-logo-symbol {
+      font-size: 2.5rem;
+      color: #2d5a47;
+    }
+    .login-logo-text {
+      font-size: 1rem;
+      color: #5a5a5a;
+      margin-top: 0.25rem;
+    }
+    .login-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: #5a5a5a;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      font-size: 16px;
+      border: 2px solid #e5e2dd;
+      border-radius: 8px;
+      appearance: none; -webkit-appearance: none;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #2d5a47;
+    }
+    .form-input.error {
+      border-color: #dc3545;
+    }
+    .form-hint {
+      font-size: 0.75rem;
+      color: #8a8a8a;
+      margin-top: 0.3rem;
+    }
+    .form-hint.error {
+      color: #dc3545;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-primary { background: #2d5a47; color: white; }
+    .btn-primary:active { background: #3d7a5f; }
+    .btn-secondary { background: #f5f6fa; color: #2c2c2c; border: 1px solid #e5e2dd; }
+    .btn-sm { padding: 0.5rem 0.75rem; font-size: 0.85rem; width: auto; }
+    .login-footer {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: #8a8a8a;
+    }
+    .login-footer a { color: #2d5a47; text-decoration: none; font-weight: 600; }
+    .error-box {
+      background: #fee;
+      color: #dc3545;
+      padding: 0.6rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+    }
+    .hidden { display: none !important; }
 
-<!-- 
-【追加場所1】CSSに追加（</style>の直前）
--->
+    /* メインアプリ */
+    #mainApp { display: none; }
+    .header {
+      background: #2d5a47;
+      color: white;
+      padding: 0.75rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-logo { font-size: 1.1rem; font-weight: 700; }
+    .header-user { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+    .header-logout {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: none;
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+    }
+    
+    /* 下部ナビゲーション */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #e5e2dd;
+      display: flex;
+      z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 0.5rem 0.25rem;
+      font-size: 0.65rem;
+      color: #8a8a8a;
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+    .nav-btn-icon { font-size: 1.25rem; }
+    .nav-btn.active { color: #2d5a47; }
+    
+    /* コンテンツ */
+    .main { padding: 1rem; }
+    .page { display: none; }
+    .page.active { display: block; }
+    
+    /* カード */
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e5e2dd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title { font-size: 0.9rem; font-weight: 600; }
+    .card-body { padding: 1rem; }
+    
+    /* 統計グリッド */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .stat-label { font-size: 0.7rem; color: #8a8a8a; margin-bottom: 0.25rem; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; color: #2d5a47; }
+    .stat-sub { font-size: 0.7rem; color: #8a8a8a; }
+    
+    /* 目標進捗バー */
+    .goal-section { margin-bottom: 1rem; }
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .goal-title { font-size: 0.8rem; font-weight: 600; }
+    .goal-numbers { font-size: 0.75rem; color: #5a5a5a; }
+    .goal-bar {
+      height: 8px;
+      background: #e5e2dd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .goal-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2d5a47, #3d7a5f);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    .goal-fill.over { background: linear-gradient(90deg, #28a745, #5cb85c); }
+    
+    /* リストアイテム */
+    .list-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .list-item:last-child { border-bottom: none; }
+    .list-item-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e8f0ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .list-item-content { flex: 1; min-width: 0; }
+    .list-item-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .list-item-sub { font-size: 0.75rem; color: #8a8a8a; }
+    .list-item-right { text-align: right; flex-shrink: 0; }
+    
+    /* バッジ */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 100px;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+    .badge-gray { background: #f5f6fa; color: #8a8a8a; }
+    .badge-blue { background: #cce5ff; color: #004085; }
+    .badge-yellow { background: #fff3cd; color: #856404; }
+    .badge-green { background: #d4edda; color: #155724; }
+    .badge-red { background: #f8d7da; color: #721c24; }
+    
+    /* アラートカード */
+    .alert-card {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .alert-card-title {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #856404;
+      margin-bottom: 0.5rem;
+    }
+    .alert-card-item {
+      font-size: 0.8rem;
+      color: #856404;
+      padding: 0.25rem 0;
+    }
+    
+    /* モーダル */
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-bg.show { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 16px 16px 0 0;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+    }
+    .modal-head {
+      padding: 1rem;
+      border-bottom: 1px solid #e5e2dd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-head h3 { font-size: 1rem; }
+    .modal-close {
+      width: 28px; height: 28px;
+      border: none;
+      background: #f5f6fa;
+      border-radius: 50%;
+      font-size: 1rem;
+    }
+    .modal-content {
+      padding: 1rem;
+      max-height: calc(90vh - 130px);
+      overflow-y: auto;
+    }
+    .modal-foot {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid #e5e2dd;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .modal-foot .btn { flex: 1; }
+    
+    /* 掲示板 */
+    .post-item {
+      padding: 0.75rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .post-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #2d5a47;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .post-name { font-weight: 600; font-size: 0.85rem; }
+    .post-time { font-size: 0.7rem; color: #8a8a8a; margin-left: auto; }
+    .post-content { font-size: 0.9rem; line-height: 1.5; }
+    
+    /* 投稿入力 */
+    .post-input-area {
+      padding: 0.75rem;
+      background: white;
+      border-top: 1px solid #e5e2dd;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .post-input {
+      flex: 1;
+      padding: 0.6rem;
+      border: 1px solid #e5e2dd;
+      border-radius: 20px;
+      font-size: 14px;
+      appearance: none; -webkit-appearance: none;
+    }
+    .post-send {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #2d5a47;
+      color: white;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    /* スケジュール */
+    .schedule-date {
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      background: #f5f6fa;
+      color: #5a5a5a;
+    }
+    .schedule-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .schedule-check {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #e5e2dd;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .schedule-check.done {
+      background: #2d5a47;
+      border-color: #2d5a47;
+    }
+    .schedule-check.done::after {
+      content: '✓';
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+    .schedule-info { flex: 1; }
+    .schedule-company { font-weight: 600; font-size: 0.9rem; }
+    .schedule-memo { font-size: 0.75rem; color: #8a8a8a; }
+    
+    /* 経費 */
+    .expense-total {
+      background: linear-gradient(135deg, #2d5a47, #3d7a5f);
+      color: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .expense-total-label { font-size: 0.8rem; opacity: 0.9; }
+    .expense-total-value { font-size: 2rem; font-weight: 700; }
+    
+    /* 週報 */
+    .report-section { margin-bottom: 1rem; }
+    .report-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #5a5a5a;
+      margin-bottom: 0.5rem;
+    }
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+    .report-item {
+      background: #f5f6fa;
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+    .report-value { font-size: 1.25rem; font-weight: 700; color: #2d5a47; }
+    .report-label { font-size: 0.7rem; color: #8a8a8a; }
+    
+    /* FAB */
+    .fab {
+      position: fixed;
+      bottom: 80px;
+      right: 16px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #2d5a47;
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 90;
+    }
+    
+    /* 空 */
+    .empty {
+      text-align: center;
+      padding: 2rem;
+      color: #8a8a8a;
+      font-size: 0.85rem;
+    }
+    
+    /* 通知バッジ */
+    .notif-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #dc3545;
+      color: white;
+      font-size: 0.6rem;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .nav-btn { position: relative; }
+    
+    /* 通知リスト */
+    .notif-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .notif-item.unread { background: #e8f4fd; }
+    .notif-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .notif-icon.success { background: #d4edda; }
+    .notif-icon.error { background: #f8d7da; }
+    .notif-icon.info { background: #cce5ff; }
+    .notif-content { flex: 1; }
+    .notif-title { font-weight: 600; font-size: 0.85rem; }
+    .notif-text { font-size: 0.8rem; color: #5a5a5a; }
+    .notif-time { font-size: 0.7rem; color: #8a8a8a; }
+    
+    /* TODOリスト */
+    .my-todo-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .my-todo-check {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #e5e2dd;
+      border-radius: 50%;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .my-todo-check.done {
+      background: #2d5a47;
+      border-color: #2d5a47;
+    }
+    .my-todo-content { flex: 1; }
+    .my-todo-title { font-weight: 600; font-size: 0.9rem; }
+    .my-todo-meta { font-size: 0.75rem; color: #8a8a8a; }
+    
+    /* ランキング */
+    .rank-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .rank-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      background: #f5f6fa;
+      color: #8a8a8a;
+    }
+    .rank-num.gold { background: linear-gradient(135deg, #ffd700, #ffec8b); color: #8b6914; }
+    .rank-num.silver { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #666; }
+    .rank-num.bronze { background: linear-gradient(135deg, #cd7f32, #daa06d); color: #5c3d1e; }
+    .rank-name { flex: 1; font-weight: 600; font-size: 0.9rem; }
+    .rank-val { font-weight: 700; color: #2d5a47; }
+
+    /* タブ */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e5e2dd;
+      background: white;
+      margin: -1rem -1rem 1rem -1rem;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #8a8a8a;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-btn.active {
+      color: #2d5a47;
+      border-bottom-color: #2d5a47;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    /* カレンダー */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .calendar-header {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #8a8a8a;
+      padding: 0.5rem 0;
+    }
+    .calendar-header.sun { color: #dc3545; }
+    .calendar-header.sat { color: #17a2b8; }
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      background: #f5f6fa;
+    }
+    .calendar-day:hover { background: #e8f0ec; }
+    .calendar-day.other-month { color: #ccc; background: transparent; }
+    .calendar-day.today { background: #2d5a47; color: white; font-weight: 700; }
+    .calendar-day.selected { border: 2px solid #c9a962; }
+    .calendar-day.has-schedule::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #c9a962;
+    }
+    .calendar-day.today.has-schedule::after { background: white; }
+
     /* マニュアル用スタイル */
     .faq-item {
       border-bottom: 1px solid #f0f0f0;
@@ -17,10 +663,20 @@
       align-items: center;
       gap: 0.75rem;
     }
-    .faq-question:hover { background: #f8f8f8; }
-    .faq-icon { font-size: 1.2rem; }
-    .faq-arrow { margin-left: auto; color: #8a8a8a; transition: transform 0.3s; }
-    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-question:hover {
+      background: #f8f8f8;
+    }
+    .faq-icon {
+      font-size: 1.2rem;
+    }
+    .faq-arrow {
+      margin-left: auto;
+      color: #8a8a8a;
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-arrow {
+      transform: rotate(180deg);
+    }
     .faq-answer {
       display: none;
       padding: 0 1rem 1rem 3rem;
@@ -28,12 +684,14 @@
       color: #5a5a5a;
       line-height: 1.8;
     }
-    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-answer {
+      display: block;
+    }
     .talk-box {
       background: #e8f0ec;
       border-radius: 12px;
       padding: 1rem;
-      margin: 0.5rem 0;
+      margin: 0.75rem 0;
       font-size: 0.9rem;
     }
     .talk-label {
@@ -42,12 +700,300 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
+  </style>
+</head>
+<body>
 
+<!-- ログイン画面 -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-symbol">礼</div>
+      <div class="login-logo-text">営業ポータル</div>
+    </div>
+    <h2 class="login-title">ログイン</h2>
+    <div id="loginError" class="error-box hidden"></div>
+    <div class="form-group">
+      <label class="form-label">お名前</label>
+      <input type="text" class="form-input" id="loginName" placeholder="山田太郎">
+    </div>
+    <div class="form-group">
+      <label class="form-label">パスワード</label>
+      <input type="password" class="form-input" id="loginPass" placeholder="パスワード">
+    </div>
+    <button class="btn btn-primary" id="loginBtn">ログイン</button>
+    <div class="login-footer">
+      初めての方は <a href="javascript:void(0)" id="showRegisterLink">新規登録</a>
+    </div>
+  </div>
+</div>
 
-<!-- 
-【追加場所2】「その他」メニューに追加
-「週報・月報」の下に追加
--->
+<!-- 新規登録モーダル -->
+<div class="modal-bg" id="registerModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>新規登録</h3>
+      <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div id="registerError" class="error-box hidden"></div>
+      <div class="form-group">
+        <label class="form-label">お名前 *</label>
+        <input type="text" class="form-input" id="registerName">
+      </div>
+      <div class="form-group">
+        <label class="form-label">パスワード *</label>
+        <input type="password" class="form-input" id="registerPass" placeholder="4文字以上で入力" oninput="validatePassword()">
+        <div class="form-hint" id="registerPassHint">※ 4文字以上で入力してください</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('registerModal')">キャンセル</button>
+      <button class="btn btn-primary" id="registerBtn">登録</button>
+    </div>
+  </div>
+</div>
+
+<!-- メインアプリ -->
+<div id="mainApp">
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">礼 営業ポータル</div>
+      <div class="header-user">
+        <span id="userName"></span>
+        <button class="header-logout" id="logoutBtn">ログアウト</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- ホーム -->
+    <div class="page active" id="page-home">
+      <div class="card" id="newNotifCard" style="display:none; background:linear-gradient(135deg, #ff6b6b, #ee5a5a); color:white;">
+        <div class="card-body" onclick="switchPage('notifications')" style="cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="font-size:1.5rem;">🔔</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;" id="newNotifTitle">新しい通知があります</div>
+              <div style="font-size:0.8rem; opacity:0.9;" id="newNotifPreview"></div>
+            </div>
+            <div style="font-size:1.2rem;">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="newTodoCard" style="display:none; background:linear-gradient(135deg, #ffc107, #e0a800); color:#1a1f2e;">
+        <div class="card-body" onclick="switchPage('mytodos')" style="cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="font-size:1.5rem;">📋</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;" id="newTodoTitle">未完了のTODOがあります</div>
+              <div style="font-size:0.8rem; opacity:0.9;" id="newTodoPreview"></div>
+            </div>
+            <div style="font-size:1.2rem;">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🎯 今月の目標</span>
+          <button class="btn btn-sm btn-secondary" onclick="openGoalModal()">設定</button>
+        </div>
+        <div class="card-body">
+          <div class="goal-section">
+            <div class="goal-header">
+              <span class="goal-title">訪問</span>
+              <span class="goal-numbers"><span id="goalVisitCurrent">0</span> / <span id="goalVisitTarget">0</span></span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" id="goalVisitBar" style="width:0%"></div></div>
+          </div>
+          <div class="goal-section">
+            <div class="goal-header">
+              <span class="goal-title">商談</span>
+              <span class="goal-numbers"><span id="goalNegoCurrent">0</span> / <span id="goalNegoTarget">0</span></span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" id="goalNegoBar" style="width:0%"></div></div>
+          </div>
+          <div class="goal-section" style="margin-bottom:0">
+            <div class="goal-header">
+              <span class="goal-title">成約</span>
+              <span class="goal-numbers"><span id="goalClosedCurrent">0</span> / <span id="goalClosedTarget">0</span></span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" id="goalClosedBar" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert-card" id="followupAlert" style="display:none;">
+        <div class="alert-card-title">⚠️ フォローが必要な案件</div>
+        <div id="followupList"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">今月の訪問</div>
+          <div class="stat-value" id="statMyVisits">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">商談中</div>
+          <div class="stat-value" id="statNegotiating">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">成約</div>
+          <div class="stat-value" id="statClosed">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">今月の経費</div>
+          <div class="stat-value" id="statExpense">¥0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📅 今日の予定</span>
+        </div>
+        <div id="todaySchedule"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 TODO（指示）</span>
+          <button class="btn btn-sm btn-secondary" onclick="switchPage('mytodos')">すべて見る</button>
+        </div>
+        <div id="homeTodoList"></div>
+      </div>
+    </div>
+
+    <!-- 訪問先 -->
+    <div class="page" id="page-prospects">
+      <div class="card" style="background: linear-gradient(135deg, #2d5a47, #3d7a5f); color: white;">
+        <div class="card-body" style="text-align:center;">
+          <div style="font-size:0.85rem; opacity:0.9;">登録葬儀社</div>
+          <div style="font-size:2rem; font-weight:700;" id="totalProspectsCount">0</div>
+          <div style="font-size:0.8rem; opacity:0.8;" id="myProspectsCount">あなたの担当: 0社</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📍 エリアから選ぶ</span>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div id="regionList"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body" style="padding: 0.75rem;">
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <select class="form-input" id="filterRegion" style="flex:1; min-width:80px; padding:0.5rem;">
+              <option value="">全エリア</option>
+            </select>
+            <select class="form-input" id="filterPref" style="flex:1; min-width:80px; padding:0.5rem;">
+              <option value="">全都道府県</option>
+            </select>
+            <select class="form-input" id="filterStatus" style="flex:1; min-width:80px; padding:0.5rem;">
+              <option value="">全状態</option>
+              <option value="未訪問">未訪問</option>
+              <option value="訪問済み">訪問済み</option>
+              <option value="商談中">商談中</option>
+              <option value="成約">成約</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="prospectsList"></div>
+    </div>
+
+    <!-- スケジュール -->
+    <div class="page" id="page-schedule">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('scheduleTab', 'upcoming')">予定</button>
+        <button class="tab-btn" onclick="switchTab('scheduleTab', 'done')">完了</button>
+      </div>
+      <div class="tab-content active" id="scheduleTab-upcoming">
+        <div id="upcomingSchedules"></div>
+      </div>
+      <div class="tab-content" id="scheduleTab-done">
+        <div id="doneSchedules"></div>
+      </div>
+      <button class="fab" onclick="openScheduleModal()">+</button>
+    </div>
+
+    <!-- カレンダー -->
+    <div class="page" id="page-calendar">
+      <div class="card">
+        <div class="card-header">
+          <button class="btn btn-sm btn-secondary" onclick="changeMonth(-1)">◀</button>
+          <span class="card-title" id="calendarTitle">2026年1月</span>
+          <button class="btn btn-sm btn-secondary" onclick="changeMonth(1)">▶</button>
+        </div>
+        <div class="card-body" style="padding:0.5rem;">
+          <div id="calendarGrid"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="selectedDateTitle">予定</span>
+          <button class="btn btn-sm btn-primary" onclick="openScheduleModal()">+ 追加</button>
+        </div>
+        <div id="selectedDateSchedules"></div>
+      </div>
+    </div>
+
+    <!-- 掲示板 -->
+    <div class="page" id="page-board">
+      <div class="card" style="margin-bottom:60px;">
+        <div id="postsList" style="max-height: calc(100vh - 220px); overflow-y: auto;"></div>
+      </div>
+      <div class="post-input-area" style="position:fixed; bottom:56px; left:0; right:0;">
+        <input type="text" class="post-input" id="postInput" placeholder="投稿を入力...">
+        <button class="post-send" onclick="sendPost()">↑</button>
+      </div>
+    </div>
+
+    <!-- その他 -->
+    <div class="page" id="page-more">
+      <div class="card">
+        <div class="list-item" onclick="switchPage('notifications')">
+          <div class="list-item-icon">🔔</div>
+          <div class="list-item-content">
+            <div class="list-item-title">通知</div>
+            <div class="list-item-sub" id="notifCount">0件の未読</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
+        <div class="list-item" onclick="switchPage('mytodos')">
+          <div class="list-item-icon">📋</div>
+          <div class="list-item-content">
+            <div class="list-item-title">TODO（指示）</div>
+            <div class="list-item-sub" id="todoCount">0件の未完了</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
+        <div class="list-item" onclick="switchPage('board')">
+          <div class="list-item-icon">💬</div>
+          <div class="list-item-content">
+            <div class="list-item-title">掲示板</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
+        <div class="list-item" onclick="switchPage('knowledge')">
+          <div class="list-item-icon">📚</div>
+          <div class="list-item-content">
+            <div class="list-item-title">ナレッジ共有</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
+        <div class="list-item" onclick="switchPage('report')">
+          <div class="list-item-icon">📊</div>
+          <div class="list-item-content">
+            <div class="list-item-title">週報・月報</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
         <div class="list-item" onclick="switchPage('manual')">
           <div class="list-item-icon">📖</div>
           <div class="list-item-content">
@@ -56,21 +1002,123 @@
           </div>
           <div class="list-item-right">→</div>
         </div>
+      </div>
+    </div>
 
+    <!-- 通知 -->
+    <div class="page" id="page-notifications">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🔔 通知</span>
+          <button class="btn btn-sm btn-secondary" onclick="markAllRead()">全て既読</button>
+        </div>
+        <div id="notificationsList"></div>
+      </div>
+    </div>
 
-<!-- 
-【追加場所3】「週報・月報」ページの後に追加（</main>の直前）
--->
-    <!-- 営業マニュアル / FAQ -->
+    <!-- TODO -->
+    <div class="page" id="page-mytodos">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 TODO（指示）</span>
+        </div>
+        <div id="myTodosList"></div>
+      </div>
+    </div>
+
+    <!-- 経費 -->
+    <div class="page" id="page-expenses">
+      <div class="expense-total">
+        <div class="expense-total-label">今月の申請合計</div>
+        <div class="expense-total-value" id="expenseTotal">¥0</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">経費一覧</span>
+          <button class="btn btn-sm btn-primary" onclick="openExpenseModal()">+ 申請</button>
+        </div>
+        <div id="expensesList"></div>
+      </div>
+    </div>
+
+    <!-- ナレッジ -->
+    <div class="page" id="page-knowledge">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">ナレッジ共有</span>
+          <button class="btn btn-sm btn-primary" onclick="openKnowledgeModal()">+ 投稿</button>
+        </div>
+      </div>
+      <div id="knowledgeList"></div>
+    </div>
+
+    <!-- ランキング -->
+    <div class="page" id="page-ranking">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🏆 訪問数ランキング</span>
+        </div>
+        <div id="rankingList"></div>
+      </div>
+    </div>
+
+    <!-- 週報・月報 -->
+    <div class="page" id="page-report">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📊 今月のレポート</span>
+        </div>
+        <div class="card-body">
+          <div class="report-section">
+            <div class="report-title">営業活動</div>
+            <div class="report-grid">
+              <div class="report-item">
+                <div class="report-value" id="reportVisits">0</div>
+                <div class="report-label">訪問</div>
+              </div>
+              <div class="report-item">
+                <div class="report-value" id="reportNego">0</div>
+                <div class="report-label">商談</div>
+              </div>
+              <div class="report-item">
+                <div class="report-value" id="reportClosed">0</div>
+                <div class="report-label">成約</div>
+              </div>
+            </div>
+          </div>
+          <div class="report-section">
+            <div class="report-title">経費</div>
+            <div class="report-grid">
+              <div class="report-item">
+                <div class="report-value" id="reportExpense">¥0</div>
+                <div class="report-label">合計</div>
+              </div>
+              <div class="report-item">
+                <div class="report-value" id="reportExpenseCount">0</div>
+                <div class="report-label">件数</div>
+              </div>
+              <div class="report-item">
+                <div class="report-value" id="reportTransport">¥0</div>
+                <div class="report-label">交通費</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 営業マニュアル / FAQ（新規追加） -->
     <div class="page" id="page-manual">
       <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
       
-      <!-- 基礎知識 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">📚 基礎知識</span>
         </div>
-        
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">❓</span>
@@ -88,14 +1136,12 @@
             <p>・クレジットカードで決済</p>
             <p>・スマホから24時間いつでも可能</p>
             <p>・メッセージも添えられる</p>
-            <br>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
               「香典は参列される方からいただきますが、遠方でどうしても来られない方もいらっしゃいますよね。そういった方が"気持ちだけでも届けたい"という時に使えるのが『献杯』です。香典のオンライン版とお考えください。」
             </div>
           </div>
         </div>
-
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">💰</span>
@@ -117,7 +1163,6 @@
             <p><strong>遺族への支払い</strong></p>
             <p>・葬儀社様から遺族様へ直接お渡し</p>
             <p>・または振込（葬儀社様にお任せ）</p>
-            <br>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
               「手数料は11.6%で、遺族様には88.4%が届きます。月末締めで翌月に請求書をお送りしますので、まとめてお支払いいただけます。」
@@ -126,12 +1171,10 @@
         </div>
       </div>
 
-      <!-- セキュリティ -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">🔒 セキュリティ</span>
         </div>
-        
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">🛡️</span>
@@ -148,14 +1191,12 @@
             <p>・カード情報は弊社サーバーを通過しない</p>
             <p>・SSL/TLS暗号化通信</p>
             <p>・不正利用検知システム</p>
-            <br>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
               「決済はStripeという世界最大の決済会社を使っています。AmazonやGoogleも使っているサービスで、カード情報は私たちのサーバーには一切残りません。銀行のATMと同じくらい安全とお考えください。」
             </div>
           </div>
         </div>
-
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">👤</span>
@@ -172,7 +1213,6 @@
             <p>・献杯の処理のみに使用</p>
             <p>・遺族への情報提供</p>
             <p>・マーケティング等には使用しない</p>
-            <br>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
               「個人情報は献杯の処理と遺族様へのお知らせ以外には使いません。広告やDMに使うことは一切ありませんのでご安心ください。」
@@ -181,12 +1221,10 @@
         </div>
       </div>
 
-      <!-- 営業アプローチ -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">🎯 営業アプローチ</span>
         </div>
-        
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">🚀</span>
@@ -214,7 +1252,6 @@
             </div>
           </div>
         </div>
-
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">🤔</span>
@@ -243,12 +1280,10 @@
         </div>
       </div>
 
-      <!-- 問い合わせ対応 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">📞 問い合わせ対応</span>
         </div>
-        
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">❌</span>
@@ -259,16 +1294,13 @@
             <p><strong>基本方針</strong></p>
             <p>・決済完了後のキャンセルは原則不可</p>
             <p>・決済前（Stripe画面でやめた場合）は問題なし</p>
-            <br>
             <div class="talk-box">
               <div class="talk-label">💬 対応例</div>
               「申し訳ございませんが、献杯は決済完了後のキャンセルは承っておりません。香典と同様、一度お渡ししたものはお返しできないとお考えください。」
             </div>
-            <br>
-            <p>※特別な事情がある場合は管理者に相談</p>
+            <p style="margin-top:0.5rem; font-size:0.8rem; color:#8a8a8a;">※特別な事情がある場合は管理者に相談</p>
           </div>
         </div>
-
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">📧</span>
@@ -279,14 +1311,12 @@
             <p><strong>対応方法</strong></p>
             <p>・Stripeから自動で領収書メールが届く</p>
             <p>・届いていない場合は迷惑メールフォルダを確認</p>
-            <br>
             <div class="talk-box">
               <div class="talk-label">💬 対応例</div>
               「決済完了時にご登録のメールアドレスに領収書が届いております。もし届いていない場合は、迷惑メールフォルダをご確認ください。」
             </div>
           </div>
         </div>
-
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">🔧</span>
@@ -299,19 +1329,1216 @@
             <p>2. ブラウザのキャッシュをクリア</p>
             <p>3. 別のブラウザで試す</p>
             <p>4. Wi-Fi / モバイル回線を切り替え</p>
-            <br>
-            <p>※上記で解決しない場合は管理者に連絡</p>
+            <p style="margin-top:0.5rem; font-size:0.8rem; color:#8a8a8a;">※上記で解決しない場合は管理者に連絡</p>
           </div>
         </div>
       </div>
     </div>
+  </main>
 
+  <!-- 下部ナビ -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-page="home">
+      <span class="nav-btn-icon">🏠</span>
+      <span>ホーム</span>
+    </button>
+    <button class="nav-btn" data-page="prospects">
+      <span class="nav-btn-icon">🏢</span>
+      <span>訪問先</span>
+    </button>
+    <button class="nav-btn" data-page="calendar">
+      <span class="nav-btn-icon">📅</span>
+      <span>予定</span>
+    </button>
+    <button class="nav-btn" data-page="ranking">
+      <span class="nav-btn-icon">🏆</span>
+      <span>ランキング</span>
+    </button>
+    <button class="nav-btn" data-page="expenses">
+      <span class="nav-btn-icon">💰</span>
+      <span>経費</span>
+    </button>
+    <button class="nav-btn" data-page="more">
+      <span class="nav-btn-icon">≡</span>
+      <span>その他</span>
+    </button>
+  </nav>
+</div>
 
-<!-- 
-【追加場所4】JavaScript に追加（</script>の直前）
--->
+<!-- 葬儀社詳細モーダル -->
+<div class="modal-bg" id="prospectDetailModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>葬儀社詳細</h3>
+      <button class="modal-close" onclick="closeModal('prospectDetailModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <input type="hidden" id="selectedProspectId">
+      <div id="prospectDetailContent"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('prospectDetailModal')">閉じる</button>
+      <button class="btn btn-secondary" id="unassignBtn" onclick="unassignProspect()" style="display:none;">担当解除</button>
+      <button class="btn btn-primary" id="assignBtn" onclick="assignProspect()">担当する</button>
+      <button class="btn btn-primary" onclick="updateProspectStatus()">更新</button>
+    </div>
+  </div>
+</div>
 
-// FAQ開閉
+<!-- 訪問先モーダル -->
+<div class="modal-bg" id="prospectModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="prospectModalTitle">訪問先を追加</h3>
+      <button class="modal-close" onclick="closeModal('prospectModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <input type="hidden" id="prospectId">
+      <div class="form-group">
+        <label class="form-label">葬儀社名 *</label>
+        <input type="text" class="form-input" id="pName">
+      </div>
+      <div class="form-group">
+        <label class="form-label">都道府県 *</label>
+        <input type="text" class="form-input" id="pArea" placeholder="例：大阪府">
+      </div>
+      <div class="form-group">
+        <label class="form-label">電話番号</label>
+        <input type="tel" class="form-input" id="pPhone">
+      </div>
+      <div class="form-group">
+        <label class="form-label">ステータス</label>
+        <select class="form-input" id="pStatus">
+          <option value="未訪問">未訪問</option>
+          <option value="訪問済み">訪問済み</option>
+          <option value="商談中">商談中</option>
+          <option value="成約">成約</option>
+          <option value="見送り">見送り</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">メモ</label>
+        <textarea class="form-input" id="pNotes" rows="2"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('prospectModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveProspect()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- スケジュールモーダル -->
+<div class="modal-bg" id="scheduleModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>予定を追加</h3>
+      <button class="modal-close" onclick="closeModal('scheduleModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div class="form-group">
+        <label class="form-label">訪問先 *</label>
+        <select class="form-input" id="sProspect"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">訪問予定日 *</label>
+        <input type="date" class="form-input" id="sDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">メモ</label>
+        <input type="text" class="form-input" id="sMemo">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('scheduleModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveSchedule()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 目標モーダル -->
+<div class="modal-bg" id="goalModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>今月の目標を設定</h3>
+      <button class="modal-close" onclick="closeModal('goalModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div class="form-group">
+        <label class="form-label">訪問目標（件）</label>
+        <input type="number" class="form-input" id="gVisit" placeholder="例：20">
+      </div>
+      <div class="form-group">
+        <label class="form-label">商談目標（件）</label>
+        <input type="number" class="form-input" id="gNego" placeholder="例：5">
+      </div>
+      <div class="form-group">
+        <label class="form-label">成約目標（件）</label>
+        <input type="number" class="form-input" id="gClosed" placeholder="例：1">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('goalModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveGoal()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 経費モーダル -->
+<div class="modal-bg" id="expenseModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>経費を申請</h3>
+      <button class="modal-close" onclick="closeModal('expenseModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div class="form-group">
+        <label class="form-label">日付 *</label>
+        <input type="date" class="form-input" id="eDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">カテゴリ *</label>
+        <select class="form-input" id="eCategory">
+          <option value="交通費">🚃 交通費</option>
+          <option value="ガソリン代">⛽ ガソリン代</option>
+          <option value="駐車場代">🅿️ 駐車場代</option>
+          <option value="接待費">🍽️ 接待費</option>
+          <option value="宿泊費">🏨 宿泊費</option>
+          <option value="その他">📝 その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">金額 *</label>
+        <input type="number" class="form-input" id="eAmount" placeholder="1000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">内容</label>
+        <input type="text" class="form-input" id="eDescription">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('expenseModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveExpense()">申請</button>
+    </div>
+  </div>
+</div>
+
+<!-- ナレッジモーダル -->
+<div class="modal-bg" id="knowledgeModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>ナレッジを投稿</h3>
+      <button class="modal-close" onclick="closeModal('knowledgeModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div class="form-group">
+        <label class="form-label">カテゴリ *</label>
+        <select class="form-input" id="kCategory">
+          <option value="成功事例">📈 成功事例</option>
+          <option value="失敗事例">📉 失敗事例</option>
+          <option value="FAQ">❓ FAQ</option>
+          <option value="Tips">💡 Tips</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">タイトル *</label>
+        <input type="text" class="form-input" id="kTitle">
+      </div>
+      <div class="form-group">
+        <label class="form-label">内容 *</label>
+        <textarea class="form-input" id="kContent" rows="4"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('knowledgeModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveKnowledge()">投稿</button>
+    </div>
+  </div>
+</div>
+
+<!-- TODO詳細モーダル -->
+<div class="modal-bg" id="todoDetailModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>📋 TODO詳細</h3>
+      <button class="modal-close" onclick="closeModal('todoDetailModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div id="todoDetailContent"></div>
+      <hr style="border:none; border-top:1px solid #e5e2dd; margin:1rem 0;">
+      <div class="form-group">
+        <label class="form-label">ステータス</label>
+        <select class="form-input" id="todoStatus">
+          <option value="未着手">未着手</option>
+          <option value="確認済み">確認済み</option>
+          <option value="取組中">取組中</option>
+          <option value="完了">完了</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">完了予定日</label>
+        <input type="date" class="form-input" id="todoEstimatedDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">返信・コメント</label>
+        <textarea class="form-input" id="todoReply" rows="3" placeholder="進捗や質問など..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('todoDetailModal')">閉じる</button>
+      <button class="btn btn-primary" onclick="updateTodoStatus()">更新</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var supabase;
+var currentUser = null;
+var prospects = [];
+var members = [];
+var schedules = [];
+var expenses = [];
+var knowledge = [];
+var posts = [];
+var myGoal = null;
+var notifications = [];
+var myTodos = [];
+var selectedTodoId = null;
+var currentCalendarDate = new Date();
+var selectedDate = null;
+
+var REGIONS = ['北海道', '東北', '関東', '北陸', '東海', '関西', '中国', '四国', '九州'];
+var PREFECTURES = {
+  '北海道': ['北海道'],
+  '東北': ['青森県','岩手県','宮城県','秋田県','山形県','福島県'],
+  '関東': ['東京都','神奈川県','埼玉県','千葉県','茨城県','栃木県','群馬県'],
+  '北陸': ['新潟県','富山県','石川県','福井県'],
+  '東海': ['山梨県','長野県','岐阜県','静岡県','愛知県','三重県'],
+  '関西': ['滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県'],
+  '中国': ['鳥取県','島根県','岡山県','広島県','山口県'],
+  '四国': ['徳島県','香川県','愛媛県','高知県'],
+  '九州': ['福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県']
+};
+
+var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
+
+window.onload = function() {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  var saved = localStorage.getItem('salesUser');
+  if (saved) {
+    currentUser = JSON.parse(saved);
+    showMainApp();
+  }
+  document.getElementById('eDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('sDate').value = new Date().toISOString().split('T')[0];
+  setupEvents();
+};
+
+function validatePassword() {
+  var pass = document.getElementById('registerPass').value;
+  var hint = document.getElementById('registerPassHint');
+  var input = document.getElementById('registerPass');
+  
+  if (pass.length === 0) {
+    hint.textContent = '※ 4文字以上で入力してください';
+    hint.classList.remove('error');
+    hint.style.color = '#8a8a8a';
+    input.classList.remove('error');
+  } else if (pass.length < 4) {
+    hint.textContent = '⚠️ パスワードは4文字以上必要です（現在' + pass.length + '文字）';
+    hint.classList.add('error');
+    hint.style.color = '#dc3545';
+    input.classList.add('error');
+  } else {
+    hint.textContent = '✓ OK';
+    hint.classList.remove('error');
+    hint.style.color = '#28a745';
+    input.classList.remove('error');
+  }
+}
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
+
+function setupEvents() {
+  document.getElementById('loginBtn').onclick = doLogin;
+  document.getElementById('showRegisterLink').onclick = function() {
+    document.getElementById('registerModal').classList.add('show');
+  };
+  document.getElementById('registerBtn').onclick = doRegister;
+  document.getElementById('logoutBtn').onclick = doLogout;
+  
+  var navBtns = document.querySelectorAll('.bottom-nav .nav-btn');
+  for (var i = 0; i < navBtns.length; i++) {
+    navBtns[i].onclick = function() {
+      switchPage(this.getAttribute('data-page'));
+    };
+  }
+  
+  document.getElementById('filterStatus').onchange = renderProspects;
+  document.getElementById('filterRegion').onchange = function() {
+    updatePrefectureFilter();
+    renderProspects();
+  };
+  document.getElementById('filterPref').onchange = renderProspects;
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+
+function doLogin() {
+  var name = document.getElementById('loginName').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  if (!name || !pass) { showError('loginError', '名前とパスワードを入力してください'); return; }
+  supabase.from('sales_members').select('*').eq('name', name).eq('password_hash', pass).single()
+    .then(function(r) {
+      if (r.error || !r.data) { showError('loginError', '名前またはパスワードが違います'); return; }
+      currentUser = r.data;
+      localStorage.setItem('salesUser', JSON.stringify(currentUser));
+      showMainApp();
+    });
+}
+
+function doRegister() {
+  var name = document.getElementById('registerName').value.trim();
+  var pass = document.getElementById('registerPass').value;
+  if (!name || !pass) { showError('registerError', '名前とパスワードを入力してください'); return; }
+  if (pass.length < 4) {
+    showError('registerError', 'パスワードは4文字以上で入力してください');
+    document.getElementById('registerPass').classList.add('error');
+    return;
+  }
+  supabase.from('sales_members').insert({ name: name, password_hash: pass }).select().single()
+    .then(function(r) {
+      if (r.error) { showError('registerError', '登録に失敗しました'); return; }
+      currentUser = r.data;
+      localStorage.setItem('salesUser', JSON.stringify(currentUser));
+      closeModal('registerModal');
+      showMainApp();
+    });
+}
+
+function doLogout() {
+  currentUser = null;
+  localStorage.removeItem('salesUser');
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function showError(id, msg) {
+  var el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+function showMainApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('userName').textContent = currentUser.name;
+  loadData();
+}
+
+function loadData() {
+  supabase.from('sales_members').select('*').then(function(r) { members = r.data || []; renderRanking(); });
+  supabase.from('sales_prospects').select('*').order('created_at', { ascending: false }).then(function(r) { 
+    prospects = r.data || []; 
+    updateStats(); 
+    renderProspects(); 
+    updateFollowups();
+    updateScheduleProspects();
+  });
+  supabase.from('sales_schedules').select('*').eq('member_id', currentUser.id).order('scheduled_date', { ascending: true }).then(function(r) { 
+    schedules = r.data || []; 
+    renderSchedules(); 
+    renderTodaySchedule();
+    renderCalendar();
+  });
+  supabase.from('sales_expenses').select('*').eq('member_id', currentUser.id).order('expense_date', { ascending: false }).then(function(r) { 
+    expenses = r.data || []; 
+    updateStats(); 
+    renderExpenses(); 
+    updateReport();
+  });
+  supabase.from('sales_knowledge').select('*').order('created_at', { ascending: false }).then(function(r) { knowledge = r.data || []; renderKnowledge(); });
+  supabase.from('sales_posts').select('*').order('created_at', { ascending: false }).limit(50).then(function(r) { posts = r.data || []; renderPosts(); });
+  supabase.from('sales_notifications').select('*').eq('member_id', currentUser.id).order('created_at', { ascending: false }).then(function(r) {
+    notifications = r.data || [];
+    renderNotifications();
+  });
+  supabase.from('sales_todos').select('*').eq('member_id', currentUser.id).order('created_at', { ascending: false }).then(function(r) {
+    myTodos = r.data || [];
+    renderMyTodos();
+  });
+  var month = new Date().toISOString().slice(0, 7);
+  supabase.from('sales_goals').select('*').eq('member_id', currentUser.id).eq('month', month).single().then(function(r) {
+    myGoal = r.data || null;
+    updateGoalDisplay();
+  });
+}
+
+function switchPage(page) {
+  var navBtns = document.querySelectorAll('.bottom-nav .nav-btn');
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < navBtns.length; i++) {
+    navBtns[i].classList.remove('active');
+    if (navBtns[i].getAttribute('data-page') === page) navBtns[i].classList.add('active');
+  }
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
+  document.getElementById('page-' + page).classList.add('active');
+}
+
+function switchTab(prefix, tab) {
+  var btns = document.querySelectorAll('.tab-btn');
+  var contents = document.querySelectorAll('.tab-content');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  for (var i = 0; i < contents.length; i++) contents[i].classList.remove('active');
+  event.target.classList.add('active');
+  document.getElementById(prefix + '-' + tab).classList.add('active');
+}
+
+function updateStats() {
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  var visits = myProspects.filter(function(p) { return p.status !== '未訪問'; }).length;
+  var nego = myProspects.filter(function(p) { return p.status === '商談中'; }).length;
+  var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
+  var now = new Date();
+  var thisMonth = now.getMonth();
+  var thisYear = now.getFullYear();
+  var monthExp = 0;
+  for (var i = 0; i < expenses.length; i++) {
+    var d = new Date(expenses[i].expense_date);
+    if (d.getMonth() === thisMonth && d.getFullYear() === thisYear) monthExp += expenses[i].amount;
+  }
+  document.getElementById('statMyVisits').textContent = visits;
+  document.getElementById('statNegotiating').textContent = nego;
+  document.getElementById('statClosed').textContent = closed;
+  document.getElementById('statExpense').textContent = '¥' + monthExp.toLocaleString();
+}
+
+function updateGoalDisplay() {
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  var visits = myProspects.filter(function(p) { return p.status !== '未訪問'; }).length;
+  var nego = myProspects.filter(function(p) { return p.status === '商談中'; }).length;
+  var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
+  var vTarget = myGoal ? myGoal.visit_goal : 0;
+  var nTarget = myGoal ? myGoal.negotiation_goal : 0;
+  var cTarget = myGoal ? myGoal.closed_goal : 0;
+  document.getElementById('goalVisitCurrent').textContent = visits;
+  document.getElementById('goalVisitTarget').textContent = vTarget;
+  document.getElementById('goalNegoCurrent').textContent = nego;
+  document.getElementById('goalNegoTarget').textContent = nTarget;
+  document.getElementById('goalClosedCurrent').textContent = closed;
+  document.getElementById('goalClosedTarget').textContent = cTarget;
+  var vPct = vTarget > 0 ? Math.min(100, (visits / vTarget) * 100) : 0;
+  var nPct = nTarget > 0 ? Math.min(100, (nego / nTarget) * 100) : 0;
+  var cPct = cTarget > 0 ? Math.min(100, (closed / cTarget) * 100) : 0;
+  document.getElementById('goalVisitBar').style.width = vPct + '%';
+  document.getElementById('goalNegoBar').style.width = nPct + '%';
+  document.getElementById('goalClosedBar').style.width = cPct + '%';
+  if (visits >= vTarget && vTarget > 0) document.getElementById('goalVisitBar').classList.add('over');
+  if (nego >= nTarget && nTarget > 0) document.getElementById('goalNegoBar').classList.add('over');
+  if (closed >= cTarget && cTarget > 0) document.getElementById('goalClosedBar').classList.add('over');
+}
+
+function updateFollowups() {
+  var now = new Date();
+  var sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  var followups = prospects.filter(function(p) {
+    if (p.assigned_to !== currentUser.id) return false;
+    if (p.status === '成約' || p.status === '見送り') return false;
+    var updated = new Date(p.updated_at);
+    return updated < sevenDaysAgo;
+  });
+  var container = document.getElementById('followupList');
+  var alert = document.getElementById('followupAlert');
+  var html = '';
+  for (var i = 0; i < Math.min(3, followups.length); i++) {
+    html += '<div class="alert-card-item">・' + esc(followups[i].company_name) + '</div>';
+  }
+  if (followups.length > 3) html += '<div class="alert-card-item">他 ' + (followups.length - 3) + '件</div>';
+  container.innerHTML = html;
+}
+
+function renderProspects() {
+  var region = document.getElementById('filterRegion').value;
+  var pref = document.getElementById('filterPref').value;
+  var status = document.getElementById('filterStatus').value;
+  var filtered = prospects.filter(function(p) {
+    if (region && p.region !== region) return false;
+    if (pref && p.area !== pref) return false;
+    if (status && p.status !== status) return false;
+    return true;
+  });
+  document.getElementById('totalProspectsCount').textContent = prospects.length;
+  var myCount = prospects.filter(function(p) { return p.assigned_to === currentUser.id; }).length;
+  document.getElementById('myProspectsCount').textContent = 'あなたの担当: ' + myCount + '社';
+  renderRegionList();
+  updateRegionFilter();
+  var container = document.getElementById('prospectsList');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="card"><div class="empty">該当する葬儀社がありません</div></div>';
+    return;
+  }
+  var html = '<div class="card">';
+  html += '<div class="card-header"><span class="card-title">葬儀社一覧（' + filtered.length + '社）</span></div>';
+  for (var i = 0; i < filtered.length; i++) {
+    var p = filtered[i];
+    var member = members.find(function(m) { return m.id === p.assigned_to; });
+    var badge = getBadge(p.status);
+    var isMyProspect = p.assigned_to === currentUser.id;
+    html += '<div class="list-item" onclick="openProspectDetail(\'' + p.id + '\')" style="' + (isMyProspect ? 'background:#e8f0ec;' : '') + '">';
+    html += '<div class="list-item-content">';
+    html += '<div class="list-item-title">' + esc(p.company_name);
+    if (member) html += ' <span style="font-size:0.75rem; color:#2d5a47; font-weight:600;">【' + member.name.charAt(0) + '】</span>';
+    html += '</div>';
+    html += '<div class="list-item-sub">' + esc(p.area || '') + (p.temperature && p.temperature !== '未設定' ? ' • ' + getTempEmoji(p.temperature) : '') + '</div>';
+    html += '</div>';
+    html += '<span class="badge ' + badge + '">' + (p.status || '未訪問') + '</span>';
+    html += '</div>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderRegionList() {
+  var regionCounts = {};
+  for (var i = 0; i < REGIONS.length; i++) regionCounts[REGIONS[i]] = 0;
+  for (var i = 0; i < prospects.length; i++) {
+    var r = prospects[i].region;
+    if (r && regionCounts[r] !== undefined) regionCounts[r]++;
+  }
+  var html = '';
+  for (var i = 0; i < REGIONS.length; i++) {
+    var r = REGIONS[i];
+    var count = regionCounts[r];
+    html += '<div class="list-item" onclick="filterByRegion(\'' + r + '\')" style="padding:0.75rem 1rem;">';
+    html += '<div class="list-item-content"><div class="list-item-title" style="font-size:0.9rem;">' + r + '</div></div>';
+    html += '<span style="font-weight:600; color:' + (count > 0 ? '#2d5a47' : '#ccc') + ';">' + count + '社</span></div>';
+  }
+  document.getElementById('regionList').innerHTML = html;
+}
+
+function filterByRegion(region) {
+  document.getElementById('filterRegion').value = region;
+  updatePrefectureFilter();
+  renderProspects();
+}
+
+function updateRegionFilter() {
+  var select = document.getElementById('filterRegion');
+  var currentVal = select.value;
+  var html = '<option value="">全エリア</option>';
+  for (var i = 0; i < REGIONS.length; i++) html += '<option value="' + REGIONS[i] + '">' + REGIONS[i] + '</option>';
+  select.innerHTML = html;
+  select.value = currentVal;
+}
+
+function updatePrefectureFilter() {
+  var region = document.getElementById('filterRegion').value;
+  var select = document.getElementById('filterPref');
+  var prefs = region ? (PREFECTURES[region] || []) : [];
+  var html = '<option value="">全都道府県</option>';
+  if (region) {
+    for (var i = 0; i < prefs.length; i++) {
+      var count = prospects.filter(function(p) { return p.area === prefs[i]; }).length;
+      html += '<option value="' + prefs[i] + '">' + prefs[i] + ' (' + count + ')</option>';
+    }
+  }
+  select.innerHTML = html;
+}
+
+function getTempEmoji(temp) {
+  var map = { '熱い': '🔥', '温かい': '☀️', '普通': '😐', '冷たい': '❄️' };
+  return map[temp] || '';
+}
+
+function getBadge(status) {
+  var map = { '未訪問': 'badge-gray', '訪問済み': 'badge-blue', '商談中': 'badge-yellow', '成約': 'badge-green', '見送り': 'badge-red' };
+  return map[status] || 'badge-gray';
+}
+
+function openProspectDetail(id) {
+  var p = prospects.find(function(x) { return x.id === id; });
+  if (!p) return;
+  var member = members.find(function(m) { return m.id === p.assigned_to; });
+  var isMyProspect = p.assigned_to === currentUser.id;
+  var isUnassigned = !p.assigned_to;
+  var html = '<div style="margin-bottom:1rem;">';
+  html += '<div style="font-size:1.2rem; font-weight:700; margin-bottom:0.5rem;">' + esc(p.company_name) + '</div>';
+  html += '<div style="font-size:0.9rem; color:#5a5a5a;">';
+  html += '📍 ' + esc(p.region || '') + ' / ' + esc(p.area || '') + '<br>';
+  if (p.address) html += '🏠 ' + esc(p.address) + '<br>';
+  if (p.phone) html += '📞 ' + esc(p.phone) + '<br>';
+  if (p.temperature && p.temperature !== '未設定') html += '🌡️ 感度: ' + p.temperature + '<br>';
+  if (p.notes) html += '📝 ' + esc(p.notes) + '<br>';
+  html += '</div></div>';
+  if (member) {
+    html += '<div style="background:#e8f0ec; padding:0.75rem; border-radius:8px; margin-bottom:1rem;">';
+    html += '<div style="font-size:0.85rem;"><strong>' + esc(member.name) + '</strong> さんが担当中</div></div>';
+  }
+  html += '<div style="font-weight:600; margin-bottom:0.5rem;">ステータス</div>';
+  html += '<select class="form-input" id="prospectStatus" style="margin-bottom:1rem;">';
+  html += '<option value="未訪問"' + (p.status === '未訪問' ? ' selected' : '') + '>未訪問</option>';
+  html += '<option value="訪問済み"' + (p.status === '訪問済み' ? ' selected' : '') + '>訪問済み</option>';
+  html += '<option value="商談中"' + (p.status === '商談中' ? ' selected' : '') + '>商談中</option>';
+  html += '<option value="成約"' + (p.status === '成約' ? ' selected' : '') + '>成約</option>';
+  html += '<option value="見送り"' + (p.status === '見送り' ? ' selected' : '') + '>見送り</option>';
+  html += '</select>';
+  document.getElementById('prospectDetailContent').innerHTML = html;
+  var assignBtn = document.getElementById('assignBtn');
+  var unassignBtn = document.getElementById('unassignBtn');
+  if (isUnassigned) { assignBtn.style.display = 'block'; assignBtn.textContent = '担当する'; unassignBtn.style.display = 'none'; }
+  else if (isMyProspect) { assignBtn.style.display = 'none'; unassignBtn.style.display = 'block'; }
+  else { assignBtn.style.display = 'none'; unassignBtn.style.display = 'none'; }
+  document.getElementById('selectedProspectId').value = id;
+  openModal('prospectDetailModal');
+}
+
+function assignProspect() {
+  var id = document.getElementById('selectedProspectId').value;
+  if (!id) return;
+  supabase.from('sales_prospects').update({ assigned_to: currentUser.id, updated_at: new Date().toISOString() }).eq('id', id).then(function() { closeModal('prospectDetailModal'); loadData(); });
+}
+
+function unassignProspect() {
+  var id = document.getElementById('selectedProspectId').value;
+  if (!id) return;
+  if (!confirm('担当を解除しますか？')) return;
+  supabase.from('sales_prospects').update({ assigned_to: null, updated_at: new Date().toISOString() }).eq('id', id).then(function() { closeModal('prospectDetailModal'); loadData(); });
+}
+
+function updateProspectStatus() {
+  var id = document.getElementById('selectedProspectId').value;
+  var status = document.getElementById('prospectStatus').value;
+  if (!id) return;
+  supabase.from('sales_prospects').update({ status: status, assigned_to: currentUser.id, updated_at: new Date().toISOString() }).eq('id', id).then(function() { closeModal('prospectDetailModal'); loadData(); });
+}
+
+function saveProspect() {
+  var id = document.getElementById('prospectId').value;
+  var data = {
+    company_name: document.getElementById('pName').value.trim(),
+    area: document.getElementById('pArea').value.trim(),
+    phone: document.getElementById('pPhone').value.trim(),
+    status: document.getElementById('pStatus').value,
+    notes: document.getElementById('pNotes').value.trim(),
+    updated_at: new Date().toISOString()
+  };
+  if (!data.company_name) { alert('葬儀社名を入力'); return; }
+  if (id) {
+    supabase.from('sales_prospects').update(data).eq('id', id).then(function() { closeModal('prospectModal'); loadData(); });
+  } else {
+    data.assigned_to = currentUser.id;
+    supabase.from('sales_prospects').insert(data).then(function() { closeModal('prospectModal'); loadData(); });
+  }
+}
+
+function updateScheduleProspects() {
+  var select = document.getElementById('sProspect');
+  var html = '<option value="">選択してください</option>';
+  for (var i = 0; i < prospects.length; i++) html += '<option value="' + prospects[i].id + '">' + esc(prospects[i].company_name) + '</option>';
+  select.innerHTML = html;
+}
+
+function openScheduleModal() {
+  document.getElementById('sProspect').value = '';
+  document.getElementById('sDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('sMemo').value = '';
+  openModal('scheduleModal');
+}
+
+function saveSchedule() {
+  var data = {
+    member_id: currentUser.id,
+    prospect_id: document.getElementById('sProspect').value || null,
+    scheduled_date: document.getElementById('sDate').value,
+    memo: document.getElementById('sMemo').value.trim()
+  };
+  if (!data.scheduled_date) { alert('日付を入力'); return; }
+  supabase.from('sales_schedules').insert(data).then(function() { closeModal('scheduleModal'); loadData(); });
+}
+
+function renderSchedules() {
+  var upcoming = schedules.filter(function(s) { return !s.is_done; });
+  var done = schedules.filter(function(s) { return s.is_done; });
+  document.getElementById('upcomingSchedules').innerHTML = renderScheduleList(upcoming);
+  document.getElementById('doneSchedules').innerHTML = renderScheduleList(done);
+}
+
+function renderScheduleList(list) {
+  if (list.length === 0) return '<div class="card"><div class="empty">予定がありません</div></div>';
+  var html = '<div class="card">';
+  for (var i = 0; i < list.length; i++) {
+    var s = list[i];
+    var p = prospects.find(function(x) { return x.id === s.prospect_id; });
+    html += '<div class="schedule-item" onclick="toggleSchedule(\'' + s.id + '\', ' + !s.is_done + ')">';
+    html += '<div class="schedule-check ' + (s.is_done ? 'done' : '') + '"></div>';
+    html += '<div class="schedule-info">';
+    html += '<div class="schedule-company">' + (p ? esc(p.company_name) : 'その他') + '</div>';
+    html += '<div class="schedule-memo">' + formatDate(s.scheduled_date) + (s.memo ? ' • ' + esc(s.memo) : '') + '</div>';
+    html += '</div></div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function toggleSchedule(id, done) {
+  supabase.from('sales_schedules').update({ is_done: done }).eq('id', id).then(function() { loadData(); });
+}
+
+function openGoalModal() {
+  document.getElementById('gVisit').value = myGoal ? myGoal.visit_goal : '';
+  document.getElementById('gNego').value = myGoal ? myGoal.negotiation_goal : '';
+  document.getElementById('gClosed').value = myGoal ? myGoal.closed_goal : '';
+  openModal('goalModal');
+}
+
+function saveGoal() {
+  var month = new Date().toISOString().slice(0, 7);
+  var data = {
+    member_id: currentUser.id,
+    month: month,
+    visit_goal: parseInt(document.getElementById('gVisit').value) || 0,
+    negotiation_goal: parseInt(document.getElementById('gNego').value) || 0,
+    closed_goal: parseInt(document.getElementById('gClosed').value) || 0
+  };
+  if (myGoal) {
+    supabase.from('sales_goals').update(data).eq('id', myGoal.id).then(function() { closeModal('goalModal'); loadData(); });
+  } else {
+    supabase.from('sales_goals').insert(data).then(function() { closeModal('goalModal'); loadData(); });
+  }
+}
+
+function renderTodaySchedule() {
+  var today = new Date().toISOString().split('T')[0];
+  var todayList = schedules.filter(function(s) { return s.scheduled_date === today && !s.is_done; });
+  var container = document.getElementById('todaySchedule');
+  if (todayList.length === 0) {
+    container.innerHTML = '<div class="empty" style="padding:1rem;">今日の予定はありません</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < todayList.length; i++) {
+    var s = todayList[i];
+    var p = prospects.find(function(x) { return x.id === s.prospect_id; });
+    html += '<div class="list-item">';
+    html += '<div class="list-item-icon">📍</div>';
+    html += '<div class="list-item-content">';
+    html += '<div class="list-item-title">' + (p ? esc(p.company_name) : 'その他') + '</div>';
+    if (s.memo) html += '<div class="list-item-sub">' + esc(s.memo) + '</div>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+function renderPosts() {
+  var container = document.getElementById('postsList');
+  if (posts.length === 0) { container.innerHTML = '<div class="empty">投稿がありません</div>'; return; }
+  var html = '';
+  for (var i = 0; i < posts.length; i++) {
+    var p = posts[i];
+    var member = members.find(function(m) { return m.id === p.member_id; });
+    var name = member ? member.name : '匿名';
+    html += '<div class="post-item">';
+    html += '<div class="post-header">';
+    html += '<div class="post-avatar">' + name.charAt(0) + '</div>';
+    html += '<span class="post-name">' + esc(name) + '</span>';
+    html += '<span class="post-time">' + formatDateTime(p.created_at) + '</span>';
+    html += '</div>';
+    html += '<div class="post-content">' + esc(p.content) + '</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function sendPost() {
+  var content = document.getElementById('postInput').value.trim();
+  if (!content) return;
+  supabase.from('sales_posts').insert({ member_id: currentUser.id, content: content }).then(function() {
+    document.getElementById('postInput').value = '';
+    loadData();
+  });
+}
+
+function openExpenseModal() {
+  document.getElementById('eDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('eCategory').value = '交通費';
+  document.getElementById('eAmount').value = '';
+  document.getElementById('eDescription').value = '';
+  openModal('expenseModal');
+}
+
+function saveExpense() {
+  var data = {
+    member_id: currentUser.id,
+    expense_date: document.getElementById('eDate').value,
+    category: document.getElementById('eCategory').value,
+    amount: parseInt(document.getElementById('eAmount').value) || 0,
+    description: document.getElementById('eDescription').value.trim(),
+    status: '申請中'
+  };
+  if (!data.expense_date || !data.amount) { alert('日付と金額を入力'); return; }
+  supabase.from('sales_expenses').insert(data).then(function() { closeModal('expenseModal'); loadData(); });
+}
+
+function renderExpenses() {
+  var now = new Date();
+  var thisMonth = now.getMonth();
+  var thisYear = now.getFullYear();
+  var total = 0;
+  for (var i = 0; i < expenses.length; i++) {
+    var d = new Date(expenses[i].expense_date);
+    if (d.getMonth() === thisMonth && d.getFullYear() === thisYear) total += expenses[i].amount;
+  }
+  document.getElementById('expenseTotal').textContent = '¥' + total.toLocaleString();
+  var container = document.getElementById('expensesList');
+  if (expenses.length === 0) { container.innerHTML = '<div class="empty">経費がありません</div>'; return; }
+  var html = '';
+  for (var i = 0; i < expenses.length; i++) {
+    var e = expenses[i];
+    var icon = getExpenseIcon(e.category);
+    html += '<div class="list-item">';
+    html += '<div class="list-item-icon">' + icon + '</div>';
+    html += '<div class="list-item-content">';
+    html += '<div class="list-item-title">' + e.category + '</div>';
+    html += '<div class="list-item-sub">' + formatDate(e.expense_date) + (e.description ? ' • ' + esc(e.description) : '') + '</div>';
+    html += '</div>';
+    html += '<div class="list-item-right"><strong>¥' + e.amount.toLocaleString() + '</strong></div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function getExpenseIcon(cat) {
+  var map = { '交通費': '🚃', 'ガソリン代': '⛽', '駐車場代': '🅿️', '接待費': '🍽️', '宿泊費': '🏨', 'その他': '📝' };
+  return map[cat] || '📝';
+}
+
+function openKnowledgeModal() {
+  document.getElementById('kCategory').value = '成功事例';
+  document.getElementById('kTitle').value = '';
+  document.getElementById('kContent').value = '';
+  openModal('knowledgeModal');
+}
+
+function saveKnowledge() {
+  var data = {
+    member_id: currentUser.id,
+    category: document.getElementById('kCategory').value,
+    title: document.getElementById('kTitle').value.trim(),
+    content: document.getElementById('kContent').value.trim()
+  };
+  if (!data.title || !data.content) { alert('タイトルと内容を入力'); return; }
+  supabase.from('sales_knowledge').insert(data).then(function() { closeModal('knowledgeModal'); loadData(); });
+}
+
+function renderKnowledge() {
+  var container = document.getElementById('knowledgeList');
+  if (knowledge.length === 0) { container.innerHTML = '<div class="card"><div class="empty">ナレッジがありません</div></div>'; return; }
+  var html = '';
+  for (var i = 0; i < knowledge.length; i++) {
+    var k = knowledge[i];
+    var member = members.find(function(m) { return m.id === k.member_id; });
+    var icon = { '成功事例': '📈', '失敗事例': '📉', 'FAQ': '❓', 'Tips': '💡' }[k.category] || '📝';
+    html += '<div class="card" style="margin-bottom:0.75rem;">';
+    html += '<div class="card-body">';
+    html += '<div style="font-size:0.75rem;color:#8a8a8a;margin-bottom:0.25rem;">' + icon + ' ' + k.category + '</div>';
+    html += '<div style="font-weight:600;margin-bottom:0.5rem;">' + esc(k.title) + '</div>';
+    html += '<div style="font-size:0.9rem;color:#5a5a5a;">' + esc(k.content) + '</div>';
+    html += '<div style="font-size:0.75rem;color:#8a8a8a;margin-top:0.5rem;">' + (member ? member.name : '匿名') + ' • ' + formatDate(k.created_at) + '</div>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+function renderRanking() {
+  var counts = {};
+  for (var i = 0; i < members.length; i++) counts[members[i].id] = { name: members[i].name, count: 0 };
+  for (var i = 0; i < prospects.length; i++) {
+    var p = prospects[i];
+    if (p.assigned_to && counts[p.assigned_to] && p.status !== '未訪問') counts[p.assigned_to].count++;
+  }
+  var arr = [];
+  for (var id in counts) arr.push(counts[id]);
+  arr.sort(function(a, b) { return b.count - a.count; });
+  var container = document.getElementById('rankingList');
+  if (arr.length === 0) { container.innerHTML = '<div class="empty">データがありません</div>'; return; }
+  var html = '';
+  for (var i = 0; i < arr.length; i++) {
+    var r = i === 0 ? 'gold' : (i === 1 ? 'silver' : (i === 2 ? 'bronze' : ''));
+    html += '<div class="rank-item">';
+    html += '<div class="rank-num ' + r + '">' + (i + 1) + '</div>';
+    html += '<div class="rank-name">' + esc(arr[i].name) + '</div>';
+    html += '<div class="rank-val">' + arr[i].count + '件</div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function updateReport() {
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  var visits = myProspects.filter(function(p) { return p.status !== '未訪問'; }).length;
+  var nego = myProspects.filter(function(p) { return p.status === '商談中'; }).length;
+  var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
+  var now = new Date();
+  var thisMonth = now.getMonth();
+  var thisYear = now.getFullYear();
+  var monthExp = 0, expCount = 0, transport = 0;
+  for (var i = 0; i < expenses.length; i++) {
+    var e = expenses[i];
+    var d = new Date(e.expense_date);
+    if (d.getMonth() === thisMonth && d.getFullYear() === thisYear) {
+      monthExp += e.amount;
+      expCount++;
+      if (e.category === '交通費' || e.category === 'ガソリン代') transport += e.amount;
+    }
+  }
+  document.getElementById('reportVisits').textContent = visits;
+  document.getElementById('reportNego').textContent = nego;
+  document.getElementById('reportClosed').textContent = closed;
+  document.getElementById('reportExpense').textContent = '¥' + monthExp.toLocaleString();
+  document.getElementById('reportExpenseCount').textContent = expCount;
+  document.getElementById('reportTransport').textContent = '¥' + transport.toLocaleString();
+}
+
+function renderNotifications() {
+  var unreadCount = notifications.filter(function(n) { return !n.is_read; }).length;
+  document.getElementById('notifCount').textContent = unreadCount + '件の未読';
+  var container = document.getElementById('notificationsList');
+  if (notifications.length === 0) { container.innerHTML = '<div class="empty">通知がありません</div>'; return; }
+  var html = '';
+  for (var i = 0; i < notifications.length; i++) {
+    var n = notifications[i];
+    var iconClass = n.type === 'success' ? 'success' : (n.type === 'error' ? 'error' : 'info');
+    var icon = n.type === 'success' ? '✓' : (n.type === 'error' ? '✕' : 'ℹ');
+    html += '<div class="notif-item ' + (n.is_read ? '' : 'unread') + '" onclick="markRead(\'' + n.id + '\')">';
+    html += '<div class="notif-icon ' + iconClass + '">' + icon + '</div>';
+    html += '<div class="notif-content">';
+    html += '<div class="notif-title">' + esc(n.title) + '</div>';
+    if (n.content) html += '<div class="notif-text">' + esc(n.content) + '</div>';
+    html += '<div class="notif-time">' + formatDateTime(n.created_at) + '</div>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+  updateHomeAlerts();
+}
+
+function markRead(id) {
+  supabase.from('sales_notifications').update({ is_read: true }).eq('id', id).then(function() { loadData(); });
+}
+
+function markAllRead() {
+  supabase.from('sales_notifications').update({ is_read: true }).eq('member_id', currentUser.id).then(function() { loadData(); });
+}
+
+function renderMyTodos() {
+  var pendingCount = myTodos.filter(function(t) { return t.status !== '完了'; }).length;
+  var unreadCount = myTodos.filter(function(t) { return !t.is_read; }).length;
+  document.getElementById('todoCount').textContent = pendingCount + '件の未完了' + (unreadCount > 0 ? '（' + unreadCount + '件未読）' : '');
+  var container = document.getElementById('myTodosList');
+  if (myTodos.length === 0) { container.innerHTML = '<div class="empty">TODOがありません</div>'; return; }
+  var html = '';
+  for (var i = 0; i < myTodos.length; i++) {
+    var t = myTodos[i];
+    var isDone = t.status === '完了';
+    var isUnread = !t.is_read;
+    var statusBadge = getTodoStatusBadge(t.status);
+    html += '<div class="my-todo-item" style="' + (isUnread ? 'background:#fff8e1;' : '') + '" onclick="openTodoDetail(\'' + t.id + '\')">';
+    html += '<div style="flex:1;">';
+    html += '<div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">';
+    if (isUnread) html += '<span style="background:#dc3545; color:white; font-size:0.6rem; padding:0.1rem 0.4rem; border-radius:4px;">NEW</span>';
+    html += '<span class="badge ' + statusBadge + '">' + t.status + '</span></div>';
+    html += '<div class="my-todo-title" style="' + (isDone ? 'text-decoration:line-through; color:#8a8a8a;' : '') + '">' + esc(t.title) + '</div>';
+    html += '<div class="my-todo-meta">';
+    if (t.due_date) html += '期限: ' + formatDate(t.due_date) + ' ';
+    if (t.estimated_date) html += '→ 完了予定: ' + formatDate(t.estimated_date);
+    html += '</div>';
+    if (t.description) html += '<div style="font-size:0.8rem; color:#5a5a5a; margin-top:0.25rem;">' + esc(t.description) + '</div>';
+    if (t.member_reply) html += '<div style="font-size:0.8rem; color:#2d5a47; margin-top:0.25rem; background:#e8f0ec; padding:0.4rem; border-radius:4px;">💬 ' + esc(t.member_reply) + '</div>';
+    html += '</div>';
+    html += '<div style="color:#8a8a8a;">→</div></div>';
+  }
+  container.innerHTML = html;
+  updateHomeAlerts();
+  renderHomeTodos();
+}
+
+function renderHomeTodos() {
+  var container = document.getElementById('homeTodoList');
+  var pendingTodos = myTodos.filter(function(t) { return t.status !== '完了'; });
+  if (pendingTodos.length === 0) { container.innerHTML = '<div class="empty" style="padding:1rem;">未完了のTODOはありません 🎉</div>'; return; }
+  var html = '';
+  var showCount = Math.min(3, pendingTodos.length);
+  for (var i = 0; i < showCount; i++) {
+    var t = pendingTodos[i];
+    var isUnread = !t.is_read;
+    var statusBadge = getTodoStatusBadge(t.status);
+    html += '<div class="list-item" style="' + (isUnread ? 'background:#fff8e1;' : '') + '" onclick="openTodoDetail(\'' + t.id + '\')">';
+    html += '<div class="list-item-icon" style="background:' + (isUnread ? '#ffc107' : '#e8f0ec') + ';">' + (isUnread ? '🆕' : '📋') + '</div>';
+    html += '<div class="list-item-content">';
+    html += '<div style="display:flex; align-items:center; gap:0.5rem;">';
+    html += '<span class="badge ' + statusBadge + '" style="font-size:0.6rem;">' + t.status + '</span>';
+    html += '<span class="list-item-title" style="font-size:0.85rem;">' + esc(t.title) + '</span></div>';
+    if (t.due_date) html += '<div class="list-item-sub">期限: ' + formatDate(t.due_date) + '</div>';
+    html += '</div>';
+    html += '<div class="list-item-right">→</div></div>';
+  }
+  if (pendingTodos.length > 3) html += '<div style="text-align:center; padding:0.5rem; font-size:0.8rem; color:#8a8a8a;">他 ' + (pendingTodos.length - 3) + '件</div>';
+  container.innerHTML = html;
+}
+
+function getTodoStatusBadge(status) {
+  var map = { '未着手': 'badge-gray', '確認済み': 'badge-blue', '取組中': 'badge-yellow', '完了': 'badge-green' };
+  return map[status] || 'badge-gray';
+}
+
+function openTodoDetail(id) {
+  selectedTodoId = id;
+  var t = myTodos.find(function(x) { return x.id === id; });
+  if (!t) return;
+  if (!t.is_read) {
+    supabase.from('sales_todos').update({ is_read: true, read_at: new Date().toISOString() }).eq('id', id).then(function() {
+      t.is_read = true;
+      renderMyTodos();
+    });
+  }
+  var html = '';
+  html += '<div style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">' + esc(t.title) + '</div>';
+  if (t.description) html += '<div style="color:#5a5a5a; margin-bottom:0.5rem;">' + esc(t.description) + '</div>';
+  html += '<div style="font-size:0.8rem; color:#8a8a8a;">';
+  if (t.due_date) html += '📅 期限: ' + formatDate(t.due_date) + '<br>';
+  html += '📆 作成日: ' + formatDateTime(t.created_at) + '</div>';
+  document.getElementById('todoDetailContent').innerHTML = html;
+  document.getElementById('todoStatus').value = t.status || '未着手';
+  document.getElementById('todoEstimatedDate').value = t.estimated_date || '';
+  document.getElementById('todoReply').value = t.member_reply || '';
+  openModal('todoDetailModal');
+}
+
+function updateTodoStatus() {
+  if (!selectedTodoId) return;
+  var data = {
+    status: document.getElementById('todoStatus').value,
+    estimated_date: document.getElementById('todoEstimatedDate').value || null,
+    member_reply: document.getElementById('todoReply').value.trim(),
+    replied_at: new Date().toISOString()
+  };
+  supabase.from('sales_todos').update(data).eq('id', selectedTodoId).then(function() { closeModal('todoDetailModal'); loadData(); });
+}
+
+function updateHomeAlerts() {
+  var unreadNotifs = notifications.filter(function(n) { return !n.is_read; });
+  var notifCard = document.getElementById('newNotifCard');
+  if (unreadNotifs.length > 0) {
+    notifCard.style.display = 'block';
+    document.getElementById('newNotifTitle').textContent = unreadNotifs.length + '件の新しい通知';
+    document.getElementById('newNotifPreview').textContent = unreadNotifs[0].title;
+  } else { notifCard.style.display = 'none'; }
+  var pendingTodos = myTodos.filter(function(t) { return t.status !== '完了'; });
+  var todoCard = document.getElementById('newTodoCard');
+  if (pendingTodos.length > 0) {
+    todoCard.style.display = 'block';
+    document.getElementById('newTodoTitle').textContent = pendingTodos.length + '件の未完了TODO';
+    document.getElementById('newTodoPreview').textContent = pendingTodos[0].title;
+  } else { todoCard.style.display = 'none'; }
+}
+
+function renderCalendar() {
+  var year = currentCalendarDate.getFullYear();
+  var month = currentCalendarDate.getMonth();
+  document.getElementById('calendarTitle').textContent = year + '年' + (month + 1) + '月';
+  var firstDay = new Date(year, month, 1);
+  var lastDay = new Date(year, month + 1, 0);
+  var startDay = firstDay.getDay();
+  var daysInMonth = lastDay.getDate();
+  var today = new Date();
+  var todayStr = today.toISOString().split('T')[0];
+  var scheduleDates = {};
+  for (var i = 0; i < schedules.length; i++) scheduleDates[schedules[i].scheduled_date] = true;
+  var html = '<div class="calendar-grid">';
+  var days = ['日', '月', '火', '水', '木', '金', '土'];
+  for (var d = 0; d < 7; d++) {
+    var cls = d === 0 ? 'sun' : (d === 6 ? 'sat' : '');
+    html += '<div class="calendar-header ' + cls + '">' + days[d] + '</div>';
+  }
+  var prevMonth = new Date(year, month, 0);
+  var prevDays = prevMonth.getDate();
+  for (var d = startDay - 1; d >= 0; d--) html += '<div class="calendar-day other-month">' + (prevDays - d) + '</div>';
+  for (var d = 1; d <= daysInMonth; d++) {
+    var dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    var isToday = dateStr === todayStr;
+    var isSelected = selectedDate === dateStr;
+    var hasSchedule = scheduleDates[dateStr];
+    var cls = 'calendar-day';
+    if (isToday) cls += ' today';
+    if (isSelected) cls += ' selected';
+    if (hasSchedule) cls += ' has-schedule';
+    html += '<div class="' + cls + '" onclick="selectDate(\'' + dateStr + '\')">' + d + '</div>';
+  }
+  var totalCells = startDay + daysInMonth;
+  var nextDays = 7 - (totalCells % 7);
+  if (nextDays < 7) {
+    for (var d = 1; d <= nextDays; d++) html += '<div class="calendar-day other-month">' + d + '</div>';
+  }
+  html += '</div>';
+  document.getElementById('calendarGrid').innerHTML = html;
+  if (!selectedDate) selectDate(todayStr);
+  else renderSelectedDateSchedules();
+}
+
+function changeMonth(delta) {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+  renderCalendar();
+}
+
+function selectDate(dateStr) {
+  selectedDate = dateStr;
+  document.getElementById('sDate').value = dateStr;
+  renderCalendar();
+  renderSelectedDateSchedules();
+}
+
+function renderSelectedDateSchedules() {
+  var d = new Date(selectedDate);
+  document.getElementById('selectedDateTitle').textContent = (d.getMonth() + 1) + '/' + d.getDate() + 'の予定';
+  var daySchedules = schedules.filter(function(s) { return s.scheduled_date === selectedDate; });
+  var container = document.getElementById('selectedDateSchedules');
+  if (daySchedules.length === 0) { container.innerHTML = '<div class="empty">予定がありません</div>'; return; }
+  var html = '';
+  for (var i = 0; i < daySchedules.length; i++) {
+    var s = daySchedules[i];
+    var p = prospects.find(function(x) { return x.id === s.prospect_id; });
+    html += '<div class="list-item" onclick="toggleSchedule(\'' + s.id + '\', ' + !s.is_done + ')">';
+    html += '<div class="list-item-icon" style="background:' + (s.is_done ? '#d4edda' : '#fff3cd') + ';">' + (s.is_done ? '✓' : '📍') + '</div>';
+    html += '<div class="list-item-content">';
+    html += '<div class="list-item-title" style="' + (s.is_done ? 'text-decoration:line-through; color:#8a8a8a;' : '') + '">' + (p ? esc(p.company_name) : 'その他') + '</div>';
+    if (s.memo) html += '<div class="list-item-sub">' + esc(s.memo) + '</div>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+function esc(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function formatDate(str) {
+  if (!str) return '-';
+  var d = new Date(str);
+  return (d.getMonth() + 1) + '/' + d.getDate();
+}
+
+function formatDateTime(str) {
+  if (!str) return '-';
+  var d = new Date(str);
+  return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+</script>
+
+</body>
+</html>
