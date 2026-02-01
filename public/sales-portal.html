@@ -882,6 +882,90 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
+    /* ドラッグ＆ドロップ用スタイル */
+    .sortable-item {
+      margin-bottom: 0.75rem;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sortable-item.dragging {
+      opacity: 0.8;
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+    .sortable-item.drag-over {
+      border-top: 3px solid #2d5a47;
+    }
+    .drag-handle {
+      position: absolute;
+      left: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #8a8a8a;
+      cursor: grab;
+      padding: 0.5rem;
+      user-select: none;
+    }
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+    .sort-mode .sortable-item {
+      margin-left: 35px;
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      padding: 4px;
+    }
+    .sort-mode .drag-handle {
+      display: block !important;
+    }
+    .sort-mode .sortable-item:hover {
+      border-color: #2d5a47;
+    }
+    /* スマホ用：設定モーダル */
+    .sort-list-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid #e5e2dd;
+      gap: 0.75rem;
+    }
+    .sort-list-item:last-child {
+      border-bottom: none;
+    }
+    .sort-list-icon {
+      font-size: 1.2rem;
+    }
+    .sort-list-name {
+      flex: 1;
+      font-weight: 500;
+    }
+    .sort-list-arrows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .sort-list-arrows button {
+      background: #f5f6fa;
+      border: none;
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .sort-list-arrows button:hover {
+      background: #e5e2dd;
+    }
+    .sort-list-arrows button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    @media (max-width: 600px) {
+      #sortModeToggle {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -952,7 +1036,7 @@
     <!-- ホーム -->
     <div class="page active" id="page-home">
       
-      <!-- 1. ランキング（プロフィールカード内） -->
+      <!-- 固定：プロフィールカード -->
       <div class="profile-card">
         <div class="profile-header">
           <div class="profile-avatar" id="profileAvatar">👤</div>
@@ -983,151 +1067,194 @@
             <div class="profile-stat-label">見込み</div>
           </div>
         </div>
-        <div class="badge-collection" id="badgeCollection">
-          <!-- バッジはJSで動的生成 -->
-        </div>
+        <div class="badge-collection" id="badgeCollection"></div>
       </div>
 
-      <!-- 2. 売上高 -->
-      <div class="card" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
-        <div class="card-body" style="text-align:center; padding:1.5rem;">
-          <div style="font-size:0.85rem; opacity:0.9;">💰 今月の売上高</div>
-          <div style="font-size:2.5rem; font-weight:800;" id="profileSales">¥0</div>
-          <div style="font-size:0.8rem; opacity:0.8;">成約 <span id="profileClosedCount">0</span>社 × 500万円</div>
-        </div>
+      <!-- 並び替えボタン（PC用） -->
+      <div id="sortModeToggle" style="display:flex; justify-content:flex-end; margin-bottom:0.5rem;">
+        <button class="btn btn-sm btn-secondary" onclick="toggleSortMode()" id="sortModeBtn">
+          <span id="sortModeIcon">⚙️</span> <span id="sortModeText">並び替え</span>
+        </button>
       </div>
 
-      <!-- 励ましメッセージ -->
-      <div class="motivation-card" id="motivationCard">
-        <div class="motivation-icon" id="motivationIcon">💪</div>
-        <div class="motivation-text">
-          <div class="motivation-main" id="motivationMain">今日も頑張りましょう！</div>
-          <div class="motivation-sub" id="motivationSub">目標達成まであと少し</div>
-        </div>
-      </div>
-
-      <!-- 通知カード（条件付き表示） -->
-      <div class="card" id="newNotifCard" style="display:none; background:linear-gradient(135deg, #ff6b6b, #ee5a5a); color:white;">
-        <div class="card-body" onclick="switchPage('notifications')" style="cursor:pointer;">
-          <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div style="font-size:1.5rem;">🔔</div>
-            <div style="flex:1;">
-              <div style="font-weight:600;" id="newNotifTitle">新しい通知があります</div>
-              <div style="font-size:0.8rem; opacity:0.9;" id="newNotifPreview"></div>
+      <!-- 並び替え可能なコンテナ -->
+      <div id="sortableContainer">
+        <!-- 1. 売上高 -->
+        <div class="sortable-item" data-section="sales">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="card" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; margin:0;">
+            <div class="card-body" style="text-align:center; padding:1.5rem;">
+              <div style="font-size:0.85rem; opacity:0.9;">💰 今月の売上高</div>
+              <div style="font-size:2.5rem; font-weight:800;" id="profileSales">¥0</div>
+              <div style="font-size:0.8rem; opacity:0.8;">成約 <span id="profileClosedCount">0</span>社 × 500万円</div>
             </div>
-            <div style="font-size:1.2rem;">→</div>
           </div>
         </div>
-      </div>
 
-      <!-- 3. 進捗サマリー -->
-      <div class="card" id="kpiCalcCard">
-        <div class="card-header">
-          <span class="card-title">📊 進捗サマリー</span>
-        </div>
-        <div class="card-body" style="font-size:0.85rem;">
-          <div id="kpiCalcContent">
-            <div style="color:#8a8a8a; text-align:center;">目標を設定すると計算結果が表示されます</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- フォローアップアラート -->
-      <div class="alert-card" id="followupAlert" style="display:none;">
-        <div class="alert-card-title">⚠️ フォローが必要な案件</div>
-        <div id="followupList"></div>
-      </div>
-
-      <!-- 4. 今日の予定 -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">📅 今日の予定</span>
-        </div>
-        <div id="todaySchedule"></div>
-      </div>
-
-      <!-- 5. 月の目標 -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">🎯 今月の目標</span>
-          <button class="btn btn-sm btn-secondary" onclick="openGoalModal()">設定</button>
-        </div>
-        <div class="card-body">
-          <!-- 受注目標（メイン・大きく表示） -->
-          <div style="text-align:center; padding:1rem; background:#f8f9fa; border-radius:12px; margin-bottom:1rem;">
-            <div style="font-size:0.8rem; color:#8a8a8a;">受注目標</div>
-            <div style="font-size:2.5rem; font-weight:800; color:#2d5a47;">
-              <span id="goalClosedCurrent2">0</span><span style="font-size:1.2rem; color:#8a8a8a;"> / <span id="goalClosedTarget2">0</span>社</span>
+        <!-- 励ましメッセージ -->
+        <div class="sortable-item" data-section="motivation">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="motivation-card" id="motivationCard" style="margin:0;">
+            <div class="motivation-icon" id="motivationIcon">💪</div>
+            <div class="motivation-text">
+              <div class="motivation-main" id="motivationMain">今日も頑張りましょう！</div>
+              <div class="motivation-sub" id="motivationSub">目標達成まであと少し</div>
             </div>
-            <div class="goal-bar" style="margin-top:0.5rem; height:16px;"><div class="goal-fill" id="goalClosedBar" style="width:0%"></div></div>
           </div>
-          
-          <!-- ファネル指標 -->
-          <div style="font-size:0.75rem; color:#8a8a8a; margin-bottom:0.75rem; padding:0.5rem; background:#f5f6fa; border-radius:8px;">
-            💡 受注するために必要な数を逆算しています
-          </div>
-          
-          <!-- ①見込み -->
-          <div class="goal-section">
-            <div class="goal-header">
-              <span class="goal-title">
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#ff6b6b; color:white; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">①</span>
-                見込み
-              </span>
-              <span class="goal-numbers"><span id="goalProspectCurrent">0</span> / <span id="goalProspectTarget">0</span></span>
+        </div>
+
+        <!-- 通知カード（条件付き表示） -->
+        <div class="sortable-item" data-section="notification" id="notifWrapper" style="display:none;">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="card" id="newNotifCard" style="background:linear-gradient(135deg, #ff6b6b, #ee5a5a); color:white; margin:0;">
+            <div class="card-body" onclick="switchPage('notifications')" style="cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:0.75rem;">
+                <div style="font-size:1.5rem;">🔔</div>
+                <div style="flex:1;">
+                  <div style="font-weight:600;" id="newNotifTitle">新しい通知があります</div>
+                  <div style="font-size:0.8rem; opacity:0.9;" id="newNotifPreview"></div>
+                </div>
+                <div style="font-size:1.2rem;">→</div>
+              </div>
             </div>
-            <div class="goal-bar"><div class="goal-fill" id="goalProspectBar" style="width:0%"></div></div>
-            <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">導入を前向きに検討中（D）</div>
           </div>
-          
-          <!-- ②商談 -->
-          <div class="goal-section">
-            <div class="goal-header">
-              <span class="goal-title">
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#ffc107; color:#1a1f2e; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">②</span>
-                商談（実施済み）
-              </span>
-              <span class="goal-numbers"><span id="goalNegoCurrent">0</span> / <span id="goalNegoTarget">0</span></span>
+        </div>
+
+        <!-- 2. 進捗サマリー -->
+        <div class="sortable-item" data-section="progress">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="card" id="kpiCalcCard" style="margin:0;">
+            <div class="card-header">
+              <span class="card-title">📊 進捗サマリー</span>
             </div>
-            <div class="goal-bar"><div class="goal-fill" id="goalNegoBar" style="width:0%"></div></div>
-            <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">実際に面会商談を実施した会社（C）</div>
+            <div class="card-body" style="font-size:0.85rem;">
+              <div id="kpiCalcContent">
+                <div style="color:#8a8a8a; text-align:center;">目標を設定すると計算結果が表示されます</div>
+              </div>
+            </div>
           </div>
-          
-          <!-- ③アポ -->
-          <div class="goal-section" style="margin-bottom:0">
-            <div class="goal-header">
-              <span class="goal-title">
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#17a2b8; color:white; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">③</span>
-                アポ（面会確定）
-              </span>
-              <span class="goal-numbers"><span id="goalAppoCurrent">0</span> / <span id="goalAppoTarget">0</span></span>
+        </div>
+
+        <!-- フォローアップアラート -->
+        <div class="alert-card" id="followupAlert" style="display:none;">
+          <div class="alert-card-title">⚠️ フォローが必要な案件</div>
+          <div id="followupList"></div>
+        </div>
+
+        <!-- 3. 今日の予定 -->
+        <div class="sortable-item" data-section="schedule">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="card" style="margin:0;">
+            <div class="card-header">
+              <span class="card-title">📅 今日の予定</span>
             </div>
-            <div class="goal-bar"><div class="goal-fill" id="goalAppoBar" style="width:0%"></div></div>
-            <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">面会商談が確定したアポ（B）※外注成果物</div>
+            <div id="todaySchedule"></div>
+          </div>
+        </div>
+
+        <!-- 4. 月の目標 -->
+        <div class="sortable-item" data-section="goal">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="card" style="margin:0;">
+            <div class="card-header">
+              <span class="card-title">🎯 今月の目標</span>
+              <button class="btn btn-sm btn-secondary" onclick="openGoalModal()">設定</button>
+            </div>
+            <div class="card-body">
+              <div style="text-align:center; padding:1rem; background:#f8f9fa; border-radius:12px; margin-bottom:1rem;">
+                <div style="font-size:0.8rem; color:#8a8a8a;">受注目標</div>
+                <div style="font-size:2.5rem; font-weight:800; color:#2d5a47;">
+                  <span id="goalClosedCurrent2">0</span><span style="font-size:1.2rem; color:#8a8a8a;"> / <span id="goalClosedTarget2">0</span>社</span>
+                </div>
+                <div class="goal-bar" style="margin-top:0.5rem; height:16px;"><div class="goal-fill" id="goalClosedBar" style="width:0%"></div></div>
+              </div>
+              <div style="font-size:0.75rem; color:#8a8a8a; margin-bottom:0.75rem; padding:0.5rem; background:#f5f6fa; border-radius:8px;">
+                💡 受注するために必要な数を逆算しています
+              </div>
+              <div class="goal-section">
+                <div class="goal-header">
+                  <span class="goal-title">
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#ff6b6b; color:white; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">①</span>
+                    見込み
+                  </span>
+                  <span class="goal-numbers"><span id="goalProspectCurrent">0</span> / <span id="goalProspectTarget">0</span></span>
+                </div>
+                <div class="goal-bar"><div class="goal-fill" id="goalProspectBar" style="width:0%"></div></div>
+                <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">導入を前向きに検討中（D）</div>
+              </div>
+              <div class="goal-section">
+                <div class="goal-header">
+                  <span class="goal-title">
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#ffc107; color:#1a1f2e; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">②</span>
+                    商談（実施済み）
+                  </span>
+                  <span class="goal-numbers"><span id="goalNegoCurrent">0</span> / <span id="goalNegoTarget">0</span></span>
+                </div>
+                <div class="goal-bar"><div class="goal-fill" id="goalNegoBar" style="width:0%"></div></div>
+                <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">実際に面会商談を実施した会社（C）</div>
+              </div>
+              <div class="goal-section" style="margin-bottom:0">
+                <div class="goal-header">
+                  <span class="goal-title">
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#17a2b8; color:white; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">③</span>
+                    アポ（面会確定）
+                  </span>
+                  <span class="goal-numbers"><span id="goalAppoCurrent">0</span> / <span id="goalAppoTarget">0</span></span>
+                </div>
+                <div class="goal-bar"><div class="goal-fill" id="goalAppoBar" style="width:0%"></div></div>
+                <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">面会商談が確定したアポ（B）※外注成果物</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 担当会社 -->
+        <div class="sortable-item" data-section="prospects">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="card" style="margin:0;">
+            <div class="card-header">
+              <span class="card-title">🏢 担当会社</span>
+              <button class="btn btn-sm btn-secondary" onclick="switchPage('prospects')">すべて見る</button>
+            </div>
+            <div id="myProspectsList"></div>
+          </div>
+        </div>
+
+        <!-- 6. TODO -->
+        <div class="sortable-item" data-section="todo">
+          <div class="drag-handle" style="display:none;">≡</div>
+          <div class="card" id="newTodoCard" style="display:none; background:linear-gradient(135deg, #ffc107, #e0a800); color:#1a1f2e; margin:0; margin-bottom:0.5rem;">
+            <div class="card-body" onclick="switchPage('mytodos')" style="cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:0.75rem;">
+                <div style="font-size:1.5rem;">📋</div>
+                <div style="flex:1;">
+                  <div style="font-weight:600;" id="newTodoTitle">未完了のTODOがあります</div>
+                  <div style="font-size:0.8rem; opacity:0.9;" id="newTodoPreview"></div>
+                </div>
+                <div style="font-size:1.2rem;">→</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin:0;">
+            <div class="card-header">
+              <span class="card-title">📋 TODO（指示）</span>
+              <button class="btn btn-sm btn-secondary" onclick="switchPage('mytodos')">すべて見る</button>
+            </div>
+            <div id="homeTodoList"></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- 6. 担当会社 -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">🏢 担当会社</span>
-          <button class="btn btn-sm btn-secondary" onclick="switchPage('prospects')">すべて見る</button>
+    <!-- 訪問先 -->
+    <div class="page" id="page-prospects">
+      <div class="card" style="background: linear-gradient(135deg, #2d5a47, #3d7a5f); color: white;">
+        <div class="card-body" style="text-align:center;">
+          <div style="font-size:0.85rem; opacity:0.9;">登録葬儀社</div>
+          <div style="font-size:2rem; font-weight:700;" id="totalProspectsCount">0</div>
+          <div style="font-size:0.8rem; opacity:0.8;" id="myProspectsCount">あなたの担当: 0社</div>
         </div>
-        <div id="myProspectsList"></div>
       </div>
-
-      <!-- 7. TODO -->
-      <div class="card" id="newTodoCard" style="display:none; background:linear-gradient(135deg, #ffc107, #e0a800); color:#1a1f2e;">
-        <div class="card-body" onclick="switchPage('mytodos')" style="cursor:pointer;">
-          <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div style="font-size:1.5rem;">📋</div>
-            <div style="flex:1;">
-              <div style="font-weight:600;" id="newTodoTitle">未完了のTODOがあります</div>
-              <div style="font-size:0.8rem; opacity:0.9;" id="newTodoPreview"></div>
-            </div>
-            <div style="font-size:1.2rem;">→</div>
-          </div>
         </div>
       </div>
 
@@ -1286,6 +1413,31 @@
           </div>
           <div class="list-item-right">→</div>
         </div>
+        <div class="list-item" onclick="switchPage('sortSettings')">
+          <div class="list-item-icon">⚙️</div>
+          <div class="list-item-content">
+            <div class="list-item-title">ホーム画面の並び替え</div>
+            <div class="list-item-sub">表示順序をカスタマイズ</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 並び替え設定ページ（スマホ用） -->
+    <div class="page" id="page-sortSettings">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">⚙️ ホーム画面の並び替え</span>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div id="sortSettingsList"></div>
+        </div>
+      </div>
+      <div style="padding:1rem;">
+        <button class="btn btn-primary" onclick="saveSortOrder()" style="width:100%;">保存する</button>
+        <button class="btn btn-secondary" onclick="resetSortOrder()" style="width:100%; margin-top:0.5rem;">デフォルトに戻す</button>
       </div>
     </div>
 
@@ -2663,6 +2815,11 @@ function switchPage(page) {
   }
   for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
   document.getElementById('page-' + page).classList.add('active');
+  
+  // 並び替え設定ページの場合は設定リストを初期化
+  if (page === 'sortSettings' && typeof renderSortSettings === 'function') {
+    renderSortSettings();
+  }
 }
 
 function switchTab(prefix, tab) {
@@ -3859,6 +4016,195 @@ function updateMotivation() {
   document.getElementById('motivationMain').textContent = msg.main;
   document.getElementById('motivationSub').textContent = msg.sub;
 }
+
+// ==================== 並び替え機能 ====================
+var sortMode = false;
+var defaultSectionOrder = ['sales', 'motivation', 'progress', 'schedule', 'goal', 'prospects', 'todo'];
+var sectionLabels = {
+  'sales': { icon: '💰', name: '売上高' },
+  'motivation': { icon: '💪', name: '励ましメッセージ' },
+  'progress': { icon: '📊', name: '進捗サマリー' },
+  'schedule': { icon: '📅', name: '今日の予定' },
+  'goal': { icon: '🎯', name: '今月の目標' },
+  'prospects': { icon: '🏢', name: '担当会社' },
+  'todo': { icon: '📋', name: 'TODO' }
+};
+
+function getSavedOrder() {
+  try {
+    var saved = localStorage.getItem('homeSectionOrder');
+    if (saved) {
+      var order = JSON.parse(saved);
+      // 全てのセクションが含まれているか確認
+      var valid = defaultSectionOrder.every(function(s) { return order.indexOf(s) >= 0; });
+      if (valid) return order;
+    }
+  } catch (e) {}
+  return defaultSectionOrder.slice();
+}
+
+function saveSectionOrder(order) {
+  try {
+    localStorage.setItem('homeSectionOrder', JSON.stringify(order));
+  } catch (e) {}
+}
+
+function applySectionOrder() {
+  var order = getSavedOrder();
+  var container = document.getElementById('sortableContainer');
+  if (!container) return;
+  
+  order.forEach(function(sectionId) {
+    var item = container.querySelector('[data-section="' + sectionId + '"]');
+    if (item) container.appendChild(item);
+  });
+}
+
+function toggleSortMode() {
+  sortMode = !sortMode;
+  var container = document.getElementById('sortableContainer');
+  var btn = document.getElementById('sortModeBtn');
+  var icon = document.getElementById('sortModeIcon');
+  var text = document.getElementById('sortModeText');
+  
+  if (sortMode) {
+    container.classList.add('sort-mode');
+    icon.textContent = '✓';
+    text.textContent = '完了';
+    btn.classList.remove('btn-secondary');
+    btn.classList.add('btn-primary');
+    initDragAndDrop();
+  } else {
+    container.classList.remove('sort-mode');
+    icon.textContent = '⚙️';
+    text.textContent = '並び替え';
+    btn.classList.remove('btn-primary');
+    btn.classList.add('btn-secondary');
+    // 順序を保存
+    var items = container.querySelectorAll('.sortable-item');
+    var order = [];
+    items.forEach(function(item) {
+      var section = item.getAttribute('data-section');
+      if (section) order.push(section);
+    });
+    saveSectionOrder(order);
+  }
+}
+
+function initDragAndDrop() {
+  var container = document.getElementById('sortableContainer');
+  var items = container.querySelectorAll('.sortable-item');
+  var draggedItem = null;
+  
+  items.forEach(function(item) {
+    item.setAttribute('draggable', 'true');
+    
+    item.ondragstart = function(e) {
+      draggedItem = this;
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    };
+    
+    item.ondragend = function(e) {
+      this.classList.remove('dragging');
+      items.forEach(function(i) { i.classList.remove('drag-over'); });
+      draggedItem = null;
+    };
+    
+    item.ondragover = function(e) {
+      e.preventDefault();
+      if (this !== draggedItem) {
+        this.classList.add('drag-over');
+      }
+    };
+    
+    item.ondragleave = function(e) {
+      this.classList.remove('drag-over');
+    };
+    
+    item.ondrop = function(e) {
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      if (draggedItem && this !== draggedItem) {
+        var allItems = Array.from(container.querySelectorAll('.sortable-item'));
+        var fromIndex = allItems.indexOf(draggedItem);
+        var toIndex = allItems.indexOf(this);
+        
+        if (fromIndex < toIndex) {
+          container.insertBefore(draggedItem, this.nextSibling);
+        } else {
+          container.insertBefore(draggedItem, this);
+        }
+      }
+    };
+  });
+}
+
+// スマホ用：設定画面での並び替え
+function renderSortSettings() {
+  var container = document.getElementById('sortSettingsList');
+  if (!container) return;
+  
+  var order = getSavedOrder();
+  var html = '';
+  
+  order.forEach(function(sectionId, index) {
+    var label = sectionLabels[sectionId] || { icon: '📄', name: sectionId };
+    html += '<div class="sort-list-item" data-section="' + sectionId + '">';
+    html += '<div class="sort-list-icon">' + label.icon + '</div>';
+    html += '<div class="sort-list-name">' + label.name + '</div>';
+    html += '<div class="sort-list-arrows">';
+    html += '<button onclick="moveSectionUp(\'' + sectionId + '\')" ' + (index === 0 ? 'disabled' : '') + '>▲</button>';
+    html += '<button onclick="moveSectionDown(\'' + sectionId + '\')" ' + (index === order.length - 1 ? 'disabled' : '') + '>▼</button>';
+    html += '</div>';
+    html += '</div>';
+  });
+  
+  container.innerHTML = html;
+}
+
+function moveSectionUp(sectionId) {
+  var order = getSavedOrder();
+  var index = order.indexOf(sectionId);
+  if (index > 0) {
+    order.splice(index, 1);
+    order.splice(index - 1, 0, sectionId);
+    saveSectionOrder(order);
+    renderSortSettings();
+    applySectionOrder();
+  }
+}
+
+function moveSectionDown(sectionId) {
+  var order = getSavedOrder();
+  var index = order.indexOf(sectionId);
+  if (index < order.length - 1) {
+    order.splice(index, 1);
+    order.splice(index + 1, 0, sectionId);
+    saveSectionOrder(order);
+    renderSortSettings();
+    applySectionOrder();
+  }
+}
+
+function saveSortOrder() {
+  alert('並び替えを保存しました！');
+  switchPage('more');
+}
+
+function resetSortOrder() {
+  if (confirm('デフォルトの順序に戻しますか？')) {
+    saveSectionOrder(defaultSectionOrder.slice());
+    renderSortSettings();
+    applySectionOrder();
+    alert('デフォルトに戻しました');
+  }
+}
+
+// 初期化時に順序を適用
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(applySectionOrder, 100);
+});
 
 function scrollToHelp(id) {
   var el = document.getElementById(id);
