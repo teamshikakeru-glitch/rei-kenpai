@@ -149,6 +149,7 @@
   <div class="layout">
     <aside class="sidebar">
       <button class="nav-item active" data-page="dashboard"><span>📊</span><span>ダッシュボード</span></button>
+      <button class="nav-item" data-page="goals"><span>🎯</span><span>目標管理</span></button>
       <button class="nav-item" data-page="funerals"><span>🏢</span><span>葬儀社管理</span></button>
       <button class="nav-item" data-page="expenses"><span>💰</span><span>経費申請</span><span class="nav-badge" id="expenseBadge" style="display:none;">0</span></button>
       <button class="nav-item" data-page="members"><span>👥</span><span>メンバー</span></button>
@@ -168,6 +169,74 @@
         </div>
         <div class="card"><div class="card-header"><span class="card-title">📍 エリア別</span></div><div class="card-body"><div class="region-stats" id="regionStats"></div></div></div>
         <div class="card"><div class="card-header"><span class="card-title">📈 メンバー別</span></div><div class="card-body" style="padding:0;"><table><thead><tr><th>名前</th><th>担当</th><th>商談中</th><th>成約</th></tr></thead><tbody id="memberStatsTable"></tbody></table></div></div>
+      </div>
+      
+      <!-- 目標管理ページ -->
+      <div class="page" id="page-goals">
+        <h1 class="page-title">🎯 目標管理</h1>
+        
+        <!-- KPI設計の説明 -->
+        <div class="card" style="background:linear-gradient(135deg, #252b3d, #2d3548); border-left:4px solid #c9a962;">
+          <div class="card-body">
+            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+              <div style="font-size:2rem;">📐</div>
+              <div style="flex:1; min-width:200px;">
+                <div style="font-weight:600; color:#c9a962; margin-bottom:0.25rem;">KPI設計（転換率）</div>
+                <div style="font-size:0.85rem; color:#8a8a9a;">
+                  β（アポ→商談）= 70% ｜ γ（商談→見込み）= 50% ｜ δ（見込み→受注）= 10%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 全体サマリー -->
+        <div class="stats-grid" style="margin-top:1rem;">
+          <div class="stat-card success">
+            <div class="stat-label">今月の受注（チーム計）</div>
+            <div class="stat-value" id="goalTeamClosed">0</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-label">見込み（チーム計）</div>
+            <div class="stat-value" id="goalTeamProspect">0</div>
+          </div>
+          <div class="stat-card info">
+            <div class="stat-label">商談（チーム計）</div>
+            <div class="stat-value" id="goalTeamNego">0</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-label">アポ（チーム計）</div>
+            <div class="stat-value" id="goalTeamAppo">0</div>
+          </div>
+        </div>
+        
+        <!-- メンバー別目標一覧 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">👥 メンバー別 月間目標・進捗</span>
+            <select class="form-input-dark" id="goalMonthFilter" style="width:auto; padding:0.4rem;"></select>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>名前</th>
+                  <th style="text-align:center;">受注目標</th>
+                  <th style="text-align:center;">受注実績</th>
+                  <th style="text-align:center;">見込み</th>
+                  <th style="text-align:center;">商談</th>
+                  <th style="text-align:center;">アポ</th>
+                  <th style="text-align:center;">達成率</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="goalMemberTable"></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- メンバー別詳細カード -->
+        <div id="goalMemberCards"></div>
       </div>
       <div class="page" id="page-funerals">
         <h1 class="page-title">🏢 葬儀社管理（<span id="funeralCount">0</span>社）</h1>
@@ -315,8 +384,9 @@
 <div class="modal-bg" id="todoModal"><div class="modal-box"><div class="modal-head"><h3>TODO指示</h3><button class="modal-close" onclick="closeModal('todoModal')">&times;</button></div><div class="modal-content"><div class="form-group"><label class="form-label">担当者 *</label><select class="form-input-dark" id="todoMember"></select></div><div class="form-group"><label class="form-label">タイトル *</label><input type="text" class="form-input-dark" id="todoTitle"></div><div class="form-group"><label class="form-label">詳細</label><textarea class="form-input-dark" id="todoDesc" rows="2"></textarea></div><div class="form-group"><label class="form-label">期限</label><input type="date" class="form-input-dark" id="todoDue"></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('todoModal')">キャンセル</button><button class="btn btn-gold" onclick="saveTodo()">作成</button></div></div></div>
 <div class="modal-bg" id="postModal"><div class="modal-box"><div class="modal-head"><h3>投稿</h3><button class="modal-close" onclick="closeModal('postModal')">&times;</button></div><div class="modal-content"><div class="form-group"><label class="form-label">内容 *</label><textarea class="form-input-dark" id="postContent" rows="3"></textarea></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('postModal')">キャンセル</button><button class="btn btn-gold" onclick="savePost()">投稿</button></div></div></div>
 <div class="modal-bg" id="memberModal"><div class="modal-box"><div class="modal-head"><h3 id="memberModalTitle">メンバー</h3><button class="modal-close" onclick="closeModal('memberModal')">&times;</button></div><div class="modal-content"><div id="memberDetail"></div><hr style="border:none;border-top:1px solid #3d4559;margin:1rem 0;"><textarea class="form-input-dark" id="memberMessage" rows="2" placeholder="メッセージ..."></textarea><button class="btn btn-sm btn-gold" onclick="sendNotification()" style="margin-top:0.5rem;">送信</button></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('memberModal')">閉じる</button></div></div></div>
+<div class="modal-bg" id="goalEditModal"><div class="modal-box"><div class="modal-head"><h3>🎯 目標を設定</h3><button class="modal-close" onclick="closeModal('goalEditModal')">&times;</button></div><div class="modal-content"><input type="hidden" id="goalEditMemberId"><input type="hidden" id="goalEditId"><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; margin-bottom:1rem;"><div style="font-size:0.8rem; color:#8a8a9a;">対象メンバー</div><div style="font-weight:600; color:#c9a962;" id="goalEditMemberName">-</div></div><div class="form-group"><label class="form-label">🏆 月間受注目標（社）</label><input type="number" class="form-input-dark" id="goalEditClosed" placeholder="例：5" oninput="calcGoalPreview()"><div style="font-size:0.75rem; color:#8a8a9a; margin-top:0.25rem;">この数字から必要なアポ数を自動逆算します</div></div><div id="goalEditPreview" style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-top:1rem; display:none;"><div style="font-weight:600; margin-bottom:0.5rem; color:#c9a962;">📊 必要数の逆算</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;"><div style="color:#8a8a9a;">見込み数:</div><div id="goalPreviewProspect">-</div><div style="color:#8a8a9a;">商談数:</div><div id="goalPreviewNego">-</div><div style="color:#8a8a9a;">アポ数:</div><div style="color:#28a745; font-weight:600;" id="goalPreviewAppo">-</div></div><hr style="border:none;border-top:1px solid #3d4559;margin:0.75rem 0;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.85rem; color:#8a8a9a;"><div>週あたり:</div><div id="goalPreviewWeekly">-</div><div>日あたり:</div><div id="goalPreviewDaily">-</div></div></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('goalEditModal')">キャンセル</button><button class="btn btn-gold" onclick="saveGoalEdit()">保存</button></div></div></div>
 <script>
-var supabase,members=[],prospects=[],expenses=[],todos=[],posts=[],schedules=[],selectedMemberId=null,adminCalendarDate=new Date(),adminSelectedDate=null;
+var supabase,members=[],prospects=[],expenses=[],todos=[],posts=[],schedules=[],goals=[],selectedMemberId=null,adminCalendarDate=new Date(),adminSelectedDate=null;
 var ADMIN_PASS='1123';
 var SUPABASE_URL='https://osyysvompcfuadlnuojs.supabase.co';
 var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
@@ -327,7 +397,7 @@ function updatePrefOptions(region,selectId,defaultText){var s=document.getElemen
 function doLogin(){if(document.getElementById('adminPass').value===ADMIN_PASS){localStorage.setItem('salesAdminLoggedIn','true');showMainApp();}else{document.getElementById('loginError').style.display='block';}}
 function doLogout(){localStorage.removeItem('salesAdminLoggedIn');document.getElementById('mainApp').style.display='none';document.getElementById('loginScreen').style.display='flex';}
 function showMainApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';loadData();}
-function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();updateScheduleMemberFilter();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();renderExpenseHistory();updateExpenseSummary();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r){schedules=r.data||[];renderMemberActivity();renderAdminCalendar();renderScheduleList();});}
+function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();updateScheduleMemberFilter();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();renderGoalStats();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();renderExpenseHistory();updateExpenseSummary();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r){schedules=r.data||[];renderMemberActivity();renderAdminCalendar();renderScheduleList();});supabase.from('sales_goals').select('*').then(function(r){goals=r.data||[];initGoalMonthFilter();renderGoalStats();});}
 function switchPage(page){document.querySelectorAll('.nav-item').forEach(function(el){el.classList.toggle('active',el.dataset.page===page);});document.querySelectorAll('.page').forEach(function(el){el.classList.toggle('active',el.id==='page-'+page);});}
 function updateStats(){var pending=expenses.filter(function(e){return e.status==='申請中';}).length;var nego=prospects.filter(function(p){return p.status==='商談中';}).length;var closed=prospects.filter(function(p){return p.status==='成約';}).length;var approvedTotal=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('statTotal').textContent=prospects.length;document.getElementById('statNego').textContent=nego;document.getElementById('statClosed').textContent=closed;document.getElementById('statPending').textContent=pending;document.getElementById('statExpenseTotal').textContent='¥'+approvedTotal.toLocaleString();document.getElementById('funeralCount').textContent=prospects.length;var badge=document.getElementById('expenseBadge');badge.textContent=pending;badge.style.display=pending>0?'inline':'none';var rc={};Object.keys(REGIONS).forEach(function(r){rc[r]=0;});prospects.forEach(function(p){if(p.region&&rc[p.region]!==undefined)rc[p.region]++;});var rh='';Object.keys(rc).forEach(function(r){if(rc[r]>0)rh+='<div class="region-stat"><strong>'+r+'</strong> '+rc[r]+'社</div>';});document.getElementById('regionStats').innerHTML=rh||'<span style="color:#8a8a9a;">なし</span>';var mh='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var mn=mp.filter(function(p){return p.status==='商談中';}).length;var mc=mp.filter(function(p){return p.status==='成約';}).length;mh+='<tr><td>'+esc(m.name)+'</td><td>'+mp.length+'</td><td>'+mn+'</td><td>'+mc+'</td></tr>';});document.getElementById('memberStatsTable').innerHTML=mh||'<tr><td colspan="4" class="empty">なし</td></tr>';}
 function updateExpenseSummary(){var pendingAmount=expenses.filter(function(e){return e.status==='申請中';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var approvedAmount=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var rejectedAmount=expenses.filter(function(e){return e.status==='却下';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var totalAmount=expenses.reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('expPending').textContent='¥'+pendingAmount.toLocaleString();document.getElementById('expApproved').textContent='¥'+approvedAmount.toLocaleString();document.getElementById('expRejected').textContent='¥'+rejectedAmount.toLocaleString();document.getElementById('expTotal').textContent='¥'+totalAmount.toLocaleString();}
@@ -368,6 +438,17 @@ function changeAdminMonth(delta){adminCalendarDate.setMonth(adminCalendarDate.ge
 function selectAdminDate(dateStr){adminSelectedDate=dateStr;renderAdminCalendar();renderScheduleList();var d=new Date(dateStr);document.getElementById('adminSelectedDateTitle').textContent=(d.getMonth()+1)+'/'+d.getDate()+'の予定';}
 
 function renderScheduleList(){var tbody=document.getElementById('scheduleListTable');var memberFilter=document.getElementById('scheduleMemberFilter').value;var filtered=schedules;if(adminSelectedDate){filtered=filtered.filter(function(s){return s.scheduled_date===adminSelectedDate;});}if(memberFilter){filtered=filtered.filter(function(s){return s.member_id===memberFilter;});}if(filtered.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">予定がありません</td></tr>';return;}var h='';filtered.forEach(function(s){var member=members.find(function(m){return m.id===s.member_id;});var prospect=prospects.find(function(p){return p.id===s.prospect_id;});var statusBadge=s.is_done?'badge-green':'badge-yellow';var statusText=s.is_done?'完了':'予定';h+='<tr>';h+='<td>'+formatDate(s.scheduled_date)+'</td>';h+='<td>'+(member?esc(member.name):'<span style="color:#8a8a9a;">不明</span>')+'</td>';h+='<td>'+(prospect?esc(prospect.company_name):'<span style="color:#8a8a9a;">その他</span>')+'</td>';h+='<td>'+esc(s.memo||'-')+'</td>';h+='<td><span class="badge '+statusBadge+'">'+statusText+'</span></td>';h+='</tr>';});tbody.innerHTML=h;}
+
+// 目標管理関連
+function initGoalMonthFilter(){var select=document.getElementById('goalMonthFilter');var now=new Date();var h='';for(var i=0;i<6;i++){var d=new Date(now.getFullYear(),now.getMonth()-i,1);var val=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');var label=d.getFullYear()+'年'+(d.getMonth()+1)+'月';h+='<option value="'+val+'"'+(i===0?' selected':'')+'>'+label+'</option>';}select.innerHTML=h;select.onchange=renderGoalStats;}
+
+function renderGoalStats(){var monthFilter=document.getElementById('goalMonthFilter');if(!monthFilter)return;var selectedMonth=monthFilter.value||new Date().toISOString().slice(0,7);var teamClosed=0,teamProspect=0,teamNego=0,teamAppo=0;var tbody=document.getElementById('goalMemberTable');var cardsHtml='';var tableHtml='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var appo=mp.filter(function(p){return p.status==='訪問済み'||p.status==='商談中'||p.status==='見込み'||p.status==='成約';}).length;var nego=mp.filter(function(p){return p.status==='商談中'||p.status==='見込み'||p.status==='成約';}).length;var prospect=mp.filter(function(p){return p.status==='見込み'||p.status==='成約';}).length;var closed=mp.filter(function(p){return p.status==='成約';}).length;var goal=goals.find(function(g){return g.member_id===m.id&&g.month===selectedMonth;});var closedTarget=goal?goal.closed_goal:0;var prospectTarget=Math.ceil(closedTarget/0.10);var negoTarget=Math.ceil(prospectTarget/0.50);var appoTarget=Math.ceil(negoTarget/0.70);var rate=closedTarget>0?Math.round((closed/closedTarget)*100):0;var rateColor=rate>=100?'#28a745':(rate>=50?'#ffc107':'#dc3545');teamClosed+=closed;teamProspect+=prospect;teamNego+=nego;teamAppo+=appo;tableHtml+='<tr>';tableHtml+='<td><strong>'+esc(m.name)+'</strong></td>';tableHtml+='<td style="text-align:center;">'+(closedTarget>0?closedTarget+'社':'<span style="color:#8a8a9a;">未設定</span>')+'</td>';tableHtml+='<td style="text-align:center; font-weight:600; color:#28a745;">'+closed+'</td>';tableHtml+='<td style="text-align:center;">'+prospect+' / '+prospectTarget+'</td>';tableHtml+='<td style="text-align:center;">'+nego+' / '+negoTarget+'</td>';tableHtml+='<td style="text-align:center;">'+appo+' / '+appoTarget+'</td>';tableHtml+='<td style="text-align:center;"><span style="color:'+rateColor+'; font-weight:600;">'+(closedTarget>0?rate+'%':'-')+'</span></td>';tableHtml+='<td><button class="btn btn-sm btn-gold" onclick="openGoalEditModal(\''+m.id+'\',\''+esc(m.name).replace(/'/g,"\\'")+'\')">設定</button></td>';tableHtml+='</tr>';if(closedTarget>0){var actualBeta=appo>0?Math.round((nego/appo)*100):0;var actualGamma=nego>0?Math.round((prospect/nego)*100):0;var actualDelta=prospect>0?Math.round((closed/prospect)*100):0;cardsHtml+='<div class="card" style="margin-top:1rem;"><div class="card-header"><span class="card-title">'+esc(m.name)+' の詳細</span><span class="badge '+(rate>=100?'badge-green':(rate>=50?'badge-yellow':'badge-red'))+'">達成率 '+rate+'%</span></div><div class="card-body">';cardsHtml+='<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.5rem; margin-bottom:1rem;">';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">受注</div><div style="font-size:1.2rem; font-weight:700; color:#28a745;">'+closed+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+closedTarget+'</span></div></div>';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">見込み</div><div style="font-size:1.2rem; font-weight:700;">'+prospect+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+prospectTarget+'</span></div></div>';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">商談</div><div style="font-size:1.2rem; font-weight:700;">'+nego+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+negoTarget+'</span></div></div>';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">アポ</div><div style="font-size:1.2rem; font-weight:700;">'+appo+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+appoTarget+'</span></div></div>';cardsHtml+='</div>';cardsHtml+='<div style="font-size:0.85rem; color:#8a8a9a;">実績転換率: ';cardsHtml+='<span style="color:'+(actualBeta>=70?'#28a745':'#dc3545')+';">β '+actualBeta+'%</span> ｜ ';cardsHtml+='<span style="color:'+(actualGamma>=50?'#28a745':'#dc3545')+';">γ '+actualGamma+'%</span> ｜ ';cardsHtml+='<span style="color:'+(actualDelta>=10?'#28a745':'#dc3545')+';">δ '+actualDelta+'%</span>';cardsHtml+='</div></div></div>';}});tbody.innerHTML=tableHtml||'<tr><td colspan="8" class="empty">メンバーがいません</td></tr>';document.getElementById('goalMemberCards').innerHTML=cardsHtml;document.getElementById('goalTeamClosed').textContent=teamClosed;document.getElementById('goalTeamProspect').textContent=teamProspect;document.getElementById('goalTeamNego').textContent=teamNego;document.getElementById('goalTeamAppo').textContent=teamAppo;}
+
+function openGoalEditModal(memberId,memberName){var monthFilter=document.getElementById('goalMonthFilter');var selectedMonth=monthFilter?monthFilter.value:new Date().toISOString().slice(0,7);var goal=goals.find(function(g){return g.member_id===memberId&&g.month===selectedMonth;});document.getElementById('goalEditMemberId').value=memberId;document.getElementById('goalEditId').value=goal?goal.id:'';document.getElementById('goalEditMemberName').textContent=memberName;document.getElementById('goalEditClosed').value=goal?goal.closed_goal:'';calcGoalPreview();openModal('goalEditModal');}
+
+function calcGoalPreview(){var closedGoal=parseInt(document.getElementById('goalEditClosed').value)||0;var preview=document.getElementById('goalEditPreview');if(closedGoal<=0){preview.style.display='none';return;}var prospectNeeded=Math.ceil(closedGoal/0.10);var negoNeeded=Math.ceil(prospectNeeded/0.50);var appoNeeded=Math.ceil(negoNeeded/0.70);var weeklyAppo=Math.ceil(appoNeeded/4);var dailyAppo=Math.ceil(appoNeeded/20);document.getElementById('goalPreviewProspect').textContent=prospectNeeded+'件';document.getElementById('goalPreviewNego').textContent=negoNeeded+'件';document.getElementById('goalPreviewAppo').textContent=appoNeeded+'件';document.getElementById('goalPreviewWeekly').textContent=weeklyAppo+'件/週';document.getElementById('goalPreviewDaily').textContent=dailyAppo+'件/日';preview.style.display='block';}
+
+function saveGoalEdit(){var memberId=document.getElementById('goalEditMemberId').value;var goalId=document.getElementById('goalEditId').value;var closedGoal=parseInt(document.getElementById('goalEditClosed').value)||0;var monthFilter=document.getElementById('goalMonthFilter');var selectedMonth=monthFilter?monthFilter.value:new Date().toISOString().slice(0,7);var prospectGoal=Math.ceil(closedGoal/0.10);var negoGoal=Math.ceil(prospectGoal/0.50);var appoGoal=Math.ceil(negoGoal/0.70);var data={member_id:memberId,month:selectedMonth,visit_goal:appoGoal,negotiation_goal:negoGoal,closed_goal:closedGoal};if(goalId){supabase.from('sales_goals').update(data).eq('id',goalId).then(function(){closeModal('goalEditModal');loadData();});}else{supabase.from('sales_goals').insert(data).then(function(){closeModal('goalEditModal');loadData();});}}
 </script>
 </body>
 </html>
