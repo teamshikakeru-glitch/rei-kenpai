@@ -1131,6 +1131,15 @@
         <div id="todaySchedule"></div>
       </div>
 
+      <!-- 担当会社一覧（新規追加） -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🏢 担当会社</span>
+          <button class="btn btn-sm btn-secondary" onclick="switchPage('prospects')">すべて見る</button>
+        </div>
+        <div id="myProspectsList"></div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <span class="card-title">📋 TODO（指示）</span>
@@ -2622,6 +2631,7 @@ function loadData() {
     updateScheduleProspects();
     updateProfileCard();
     updateMotivation();
+    renderMyProspectsList();
   });
   supabase.from('sales_schedules').select('*').eq('member_id', currentUser.id).order('scheduled_date', { ascending: true }).then(function(r) { 
     schedules = r.data || []; 
@@ -3100,6 +3110,79 @@ function renderTodaySchedule() {
     if (s.memo) html += '<div class="list-item-sub">' + esc(s.memo) + '</div>';
     html += '</div></div>';
   }
+  container.innerHTML = html;
+}
+
+function renderMyProspectsList() {
+  var container = document.getElementById('myProspectsList');
+  var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
+  
+  if (myProspects.length === 0) {
+    container.innerHTML = '<div class="empty" style="padding:1rem;">担当会社がありません<br><span style="font-size:0.8rem;">「訪問先」から担当を取りましょう</span></div>';
+    return;
+  }
+  
+  // ステータス順にソート（成約→見込み→商談中→訪問済み→未訪問）
+  var statusOrder = {'成約': 0, '見込み': 1, '商談中': 2, '訪問済み': 3, '未訪問': 4};
+  myProspects.sort(function(a, b) {
+    return (statusOrder[a.status] || 5) - (statusOrder[b.status] || 5);
+  });
+  
+  // ステータスごとの件数を計算
+  var statusCounts = {};
+  myProspects.forEach(function(p) {
+    statusCounts[p.status] = (statusCounts[p.status] || 0) + 1;
+  });
+  
+  var html = '';
+  
+  // ステータスサマリー
+  html += '<div style="display:flex; gap:0.5rem; padding:0.75rem; background:#f5f6fa; flex-wrap:wrap;">';
+  var statuses = [
+    { name: '成約', color: '#28a745', icon: '🏆' },
+    { name: '見込み', color: '#ff6b6b', icon: '🔥' },
+    { name: '商談中', color: '#ffc107', icon: '💼' },
+    { name: '訪問済み', color: '#17a2b8', icon: '✓' },
+    { name: '未訪問', color: '#8a8a8a', icon: '○' }
+  ];
+  statuses.forEach(function(s) {
+    var count = statusCounts[s.name] || 0;
+    if (count > 0) {
+      html += '<div style="display:flex; align-items:center; gap:0.25rem; font-size:0.75rem;">';
+      html += '<span style="color:' + s.color + ';">' + s.icon + '</span>';
+      html += '<span>' + s.name + '</span>';
+      html += '<span style="font-weight:700; color:' + s.color + ';">' + count + '</span>';
+      html += '</div>';
+    }
+  });
+  html += '</div>';
+  
+  // 会社一覧（最大10件表示）
+  var displayList = myProspects.slice(0, 10);
+  displayList.forEach(function(p) {
+    var statusBadge = {
+      '成約': { bg: '#d4edda', color: '#155724', icon: '🏆' },
+      '見込み': { bg: '#f8d7da', color: '#721c24', icon: '🔥' },
+      '商談中': { bg: '#fff3cd', color: '#856404', icon: '💼' },
+      '訪問済み': { bg: '#cce5ff', color: '#004085', icon: '✓' },
+      '未訪問': { bg: '#f5f6fa', color: '#8a8a8a', icon: '○' }
+    }[p.status] || { bg: '#f5f6fa', color: '#8a8a8a', icon: '○' };
+    
+    html += '<div class="list-item" onclick="openProspectDetail(\'' + p.id + '\')" style="cursor:pointer;">';
+    html += '<div class="list-item-icon" style="background:' + statusBadge.bg + '; color:' + statusBadge.color + ';">' + statusBadge.icon + '</div>';
+    html += '<div class="list-item-content">';
+    html += '<div class="list-item-title">' + esc(p.company_name) + '</div>';
+    html += '<div class="list-item-sub">' + esc(p.area || '') + ' <span style="background:' + statusBadge.bg + '; color:' + statusBadge.color + '; padding:0.1rem 0.4rem; border-radius:10px; font-size:0.65rem;">' + (p.status || '未訪問') + '</span></div>';
+    html += '</div>';
+    html += '<div class="list-item-right">→</div>';
+    html += '</div>';
+  });
+  
+  // 残りがある場合
+  if (myProspects.length > 10) {
+    html += '<div style="text-align:center; padding:0.75rem; color:#8a8a8a; font-size:0.85rem;">他 ' + (myProspects.length - 10) + ' 社</div>';
+  }
+  
   container.innerHTML = html;
 }
 
