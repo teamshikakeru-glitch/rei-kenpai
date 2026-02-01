@@ -1103,6 +1103,38 @@
           </div>
         </div>
 
+        <!-- 商談リマインダーカード（商談前） -->
+        <div id="meetingReminderCard" style="display:none;">
+          <div class="card" style="background:linear-gradient(135deg, #17a2b8, #138496); color:white; margin-bottom:0.75rem;">
+            <div class="card-body" onclick="switchPage('selfEval')" style="cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:0.75rem;">
+                <div style="font-size:1.5rem;">📋</div>
+                <div style="flex:1;">
+                  <div style="font-weight:600;">今日は商談予定があります</div>
+                  <div style="font-size:0.8rem; opacity:0.9;" id="meetingReminderText">商談後は必ず振り返りを記入しましょう</div>
+                </div>
+                <div style="font-size:1.2rem;">→</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 振り返り未記入リマインダー（商談後） -->
+        <div id="evalReminderCard" style="display:none;">
+          <div class="card" style="background:linear-gradient(135deg, #fd7e14, #e06b10); color:white; margin-bottom:0.75rem;">
+            <div class="card-body" onclick="switchPage('selfEval')" style="cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:0.75rem;">
+                <div style="font-size:1.5rem;">⚠️</div>
+                <div style="flex:1;">
+                  <div style="font-weight:600;">振り返りを記入してください</div>
+                  <div style="font-size:0.8rem; opacity:0.9;" id="evalReminderText">今日の商談の振り返りがまだです</div>
+                </div>
+                <div style="font-size:1.2rem;">→</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 通知カード（条件付き表示） -->
         <div class="sortable-item" data-section="notification" id="notifWrapper" style="display:none;">
           <div class="drag-handle" style="display:none;">≡</div>
@@ -3111,9 +3143,9 @@
       <span class="nav-btn-icon">📅</span>
       <span>予定</span>
     </button>
-    <button class="nav-btn" data-page="manual">
-      <span class="nav-btn-icon">📖</span>
-      <span>マニュアル</span>
+    <button class="nav-btn" data-page="selfEval" id="navSelfEval">
+      <span class="nav-btn-icon">📝</span>
+      <span>振り返り</span>
     </button>
     <button class="nav-btn" data-page="expenses">
       <span class="nav-btn-icon">💰</span>
@@ -3533,6 +3565,8 @@ function loadData() {
     renderSchedules(); 
     renderTodaySchedule();
     renderCalendar();
+    // スケジュール読み込み後にリマインダーチェック
+    loadSelfEvaluationsForReminder();
   });
   supabase.from('sales_expenses').select('*').eq('member_id', currentUser.id).order('expense_date', { ascending: false }).then(function(r) { 
     expenses = r.data || []; 
@@ -3556,6 +3590,19 @@ function loadData() {
     updateGoalDisplay();
     updateMotivation();
   });
+}
+
+// リマインダー用に振り返りデータを読み込む
+function loadSelfEvaluationsForReminder() {
+  if (!currentUser) return;
+  supabase.from('sales_evaluations').select('*')
+    .eq('member_id', currentUser.id)
+    .order('eval_date', { ascending: false })
+    .limit(20)
+    .then(function(res) {
+      selfEvaluations = res.data || [];
+      checkMeetingReminders();
+    });
 }
 
 function switchPage(page) {
@@ -4974,6 +5021,92 @@ function initSelfEval() {
   loadSelfEvaluations();
 }
 
+// 商談リマインダーをチェック
+function checkMeetingReminders() {
+  var today = new Date().toISOString().slice(0, 10);
+  var now = new Date();
+  var currentHour = now.getHours();
+  
+  // 今日の商談予定を確認
+  var todayMeetings = schedules.filter(function(s) {
+    return s.member_id === currentUser.id && 
+           s.scheduled_date === today &&
+           (s.schedule_type === '商談' || s.schedule_type === '訪問');
+  });
+  
+  var meetingReminderCard = document.getElementById('meetingReminderCard');
+  var evalReminderCard = document.getElementById('evalReminderCard');
+  
+  if (todayMeetings.length === 0) {
+    // 商談予定なし
+    if (meetingReminderCard) meetingReminderCard.style.display = 'none';
+    if (evalReminderCard) evalReminderCard.style.display = 'none';
+    return;
+  }
+  
+  // 今日の振り返りを確認
+  var todayEval = selfEvaluations.find(function(e) {
+    return e.eval_date === today;
+  });
+  
+  if (todayEval) {
+    // 振り返り済み
+    if (meetingReminderCard) meetingReminderCard.style.display = 'none';
+    if (evalReminderCard) evalReminderCard.style.display = 'none';
+    return;
+  }
+  
+  // 商談の時間を取得（最初の商談）
+  var meetingTime = todayMeetings[0].start_time || '09:00';
+  var meetingHour = parseInt(meetingTime.split(':')[0]);
+  
+  // 商談前（商談時間の2時間前から）
+  if (currentHour < meetingHour) {
+    if (meetingReminderCard) {
+      meetingReminderCard.style.display = 'block';
+      var textEl = document.getElementById('meetingReminderText');
+      if (textEl) {
+        textEl.textContent = meetingTime + '〜 商談後は必ず振り返りを記入しましょう';
+      }
+    }
+    if (evalReminderCard) evalReminderCard.style.display = 'none';
+  } 
+  // 商談後（商談時間を過ぎたら）
+  else {
+    if (meetingReminderCard) meetingReminderCard.style.display = 'none';
+    if (evalReminderCard) {
+      evalReminderCard.style.display = 'block';
+      var textEl = document.getElementById('evalReminderText');
+      if (textEl) {
+        var companyName = todayMeetings[0].title || '商談';
+        textEl.textContent = '「' + companyName + '」の振り返りを記入してください';
+      }
+    }
+  }
+  
+  // 下部ナビの振り返りボタンにバッジを表示
+  highlightEvalNavButton(true);
+}
+
+function highlightEvalNavButton(show) {
+  var navBtn = document.getElementById('navSelfEval');
+  if (!navBtn) return;
+  
+  if (show) {
+    navBtn.style.position = 'relative';
+    var existingBadge = navBtn.querySelector('.nav-badge-dot');
+    if (!existingBadge) {
+      var badge = document.createElement('span');
+      badge.className = 'nav-badge-dot';
+      badge.style.cssText = 'position:absolute; top:4px; right:12px; width:8px; height:8px; background:#ff6b6b; border-radius:50%;';
+      navBtn.appendChild(badge);
+    }
+  } else {
+    var badge = navBtn.querySelector('.nav-badge-dot');
+    if (badge) badge.remove();
+  }
+}
+
 function calcSelfEvalScore() {
   var q1 = parseInt(document.getElementById('selfQ1').value) || 0;
   var q2 = parseInt(document.getElementById('selfQ2').value) || 0;
@@ -5071,6 +5204,12 @@ function saveSelfEval() {
     });
     calcSelfEvalScore();
     loadSelfEvaluations();
+    // リマインダーを非表示に
+    var meetingCard = document.getElementById('meetingReminderCard');
+    var evalCard = document.getElementById('evalReminderCard');
+    if (meetingCard) meetingCard.style.display = 'none';
+    if (evalCard) evalCard.style.display = 'none';
+    highlightEvalNavButton(false);
   });
 }
 
