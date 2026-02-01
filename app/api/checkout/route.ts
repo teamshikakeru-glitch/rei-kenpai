@@ -13,7 +13,18 @@ export async function POST(request: NextRequest) {
   );
 
   try {
-    const { amount, donor_name, project_id, slug, message, is_anonymous } = await request.json();
+    const { 
+      amount, 
+      donor_name, 
+      project_id, 
+      slug, 
+      message, 
+      is_anonymous,
+      // 住所情報を追加
+      postal_code,
+      address,
+      phone
+    } = await request.json();
 
     const { data: project, error: projectError } = await supabase
       .from('projects')
@@ -62,6 +73,10 @@ export async function POST(request: NextRequest) {
         message: message || '',
         is_anonymous: is_anonymous ? 'true' : 'false',
         funeral_home_id: project.funeral_home_id,
+        // 住所情報を追加
+        postal_code: postal_code || '',
+        address: address || '',
+        phone: phone || '',
       },
     };
 

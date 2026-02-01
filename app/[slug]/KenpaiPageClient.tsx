@@ -13,9 +13,16 @@ export default function KenpaiPageClient() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   
-  // フォーム状態
+  // フォーム状態（住所・電話番号を追加）
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({ donor_name: '', message: '', is_anonymous: false });
+  const [formData, setFormData] = useState({ 
+    donor_name: '', 
+    message: '', 
+    is_anonymous: false,
+    postal_code: '',
+    address: '',
+    phone: ''
+  });
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState('');
   const [showCustomInput, setShowCustomInput] = useState(false);
@@ -72,6 +79,29 @@ export default function KenpaiPageClient() {
     if (step > 1) setStep(step - 1);
   };
 
+  // 郵便番号から住所を自動入力
+  const handlePostalCodeChange = async (value: string) => {
+    // 数字とハイフンのみ許可
+    const cleaned = value.replace(/[^0-9-]/g, '');
+    setFormData({ ...formData, postal_code: cleaned });
+    
+    // 7桁の数字が入力されたら住所検索
+    const digits = cleaned.replace(/-/g, '');
+    if (digits.length === 7) {
+      try {
+        const response = await fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${digits}`);
+        const data = await response.json();
+        if (data.results && data.results[0]) {
+          const result = data.results[0];
+          const address = `${result.address1}${result.address2}${result.address3}`;
+          setFormData(prev => ({ ...prev, address, postal_code: cleaned }));
+        }
+      } catch (e) {
+        // エラー時は何もしない
+      }
+    }
+  };
+
   const handleSubmit = async () => {
     setSubmitStatus('loading');
     setErrorMessage('');
@@ -88,7 +118,11 @@ export default function KenpaiPageClient() {
           project_id: project.id,
           slug,
           message: formData.message,
-          is_anonymous: formData.is_anonymous
+          is_anonymous: formData.is_anonymous,
+          // 住所情報を追加
+          postal_code: formData.postal_code,
+          address: formData.address,
+          phone: formData.phone
         })
       });
       const { url, error } = await response.json();
@@ -110,7 +144,7 @@ export default function KenpaiPageClient() {
   const totalAmount = kenpaiList.reduce((sum, k) => sum + (k.amount || 0), 0);
   const currentAmount = showCustomInput ? parseInt(customAmount) || 0 : selectedAmount || 0;
 
-  // 金額選択肢（「人気」表示を削除）
+  // 金額選択肢
   const amounts = [
     { value: 3000, label: '3,000円' },
     { value: 5000, label: '5,000円' },
@@ -334,7 +368,7 @@ export default function KenpaiPageClient() {
               ご厚志を賜り<br />心より御礼申し上げます
             </p>
             <button
-              onClick={() => { setSubmitStatus('idle'); setStep(1); setFormData({ donor_name: '', message: '', is_anonymous: false }); setSelectedAmount(null); fetchData(); }}
+              onClick={() => { setSubmitStatus('idle'); setStep(1); setFormData({ donor_name: '', message: '', is_anonymous: false, postal_code: '', address: '', phone: '' }); setSelectedAmount(null); fetchData(); }}
               className="btn-hover"
               style={{
                 marginTop: '32px',
@@ -518,7 +552,7 @@ export default function KenpaiPageClient() {
               </div>
             )}
 
-            {/* ステップ2: お名前・メッセージ */}
+            {/* ステップ2: お名前・メッセージ・住所 */}
             {step === 2 && (
               <div className="fade-in" style={{
                 background: 'white',
@@ -528,7 +562,7 @@ export default function KenpaiPageClient() {
                 marginBottom: '24px',
               }}>
                 <h2 style={{ fontSize: '20px', fontWeight: '500', color: '#1a1a1a', textAlign: 'center', marginBottom: '28px' }}>
-                  お名前とメッセージ
+                  お名前とご連絡先
                 </h2>
 
                 {errorMessage && (
@@ -597,6 +631,90 @@ export default function KenpaiPageClient() {
                     />
                   </div>
                 )}
+
+                {/* ご連絡先セクション */}
+                <div style={{
+                  background: '#f8f6f2',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  marginBottom: '24px',
+                }}>
+                  <p style={{ fontSize: '13px', color: '#666', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#c9a227' }}>📮</span>
+                    お返し送付用（任意）
+                  </p>
+
+                  {/* 郵便番号 */}
+                  <div style={{ marginBottom: '16px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '8px' }}>
+                      郵便番号
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.postal_code}
+                      onChange={(e) => handlePostalCodeChange(e.target.value)}
+                      placeholder="123-4567"
+                      maxLength={8}
+                      className="input-focus"
+                      style={{
+                        width: '50%',
+                        padding: '14px',
+                        border: '2px solid #e8e4dc',
+                        borderRadius: '10px',
+                        fontSize: '16px',
+                        boxSizing: 'border-box',
+                        background: 'white',
+                      }}
+                    />
+                    <span style={{ fontSize: '12px', color: '#999', marginLeft: '10px' }}>※自動で住所入力</span>
+                  </div>
+
+                  {/* 住所 */}
+                  <div style={{ marginBottom: '16px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '8px' }}>
+                      ご住所
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      placeholder="東京都渋谷区..."
+                      className="input-focus"
+                      style={{
+                        width: '100%',
+                        padding: '14px',
+                        border: '2px solid #e8e4dc',
+                        borderRadius: '10px',
+                        fontSize: '16px',
+                        boxSizing: 'border-box',
+                        background: 'white',
+                      }}
+                    />
+                  </div>
+
+                  {/* 電話番号 */}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '8px' }}>
+                      電話番号
+                    </label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="090-1234-5678"
+                      className="input-focus"
+                      style={{
+                        width: '100%',
+                        padding: '14px',
+                        border: '2px solid #e8e4dc',
+                        borderRadius: '10px',
+                        fontSize: '16px',
+                        boxSizing: 'border-box',
+                        background: 'white',
+                      }}
+                    />
+                  </div>
+                </div>
 
                 {/* メッセージ入力 */}
                 <div style={{ marginBottom: '24px' }}>
@@ -700,6 +818,22 @@ export default function KenpaiPageClient() {
                       {formData.is_anonymous ? '匿名' : formData.donor_name}
                     </span>
                   </div>
+
+                  {/* 住所情報表示 */}
+                  {(formData.postal_code || formData.address || formData.phone) && (
+                    <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid #e8e4dc' }}>
+                      <span style={{ color: '#666', fontSize: '14px', display: 'block', marginBottom: '10px' }}>ご連絡先</span>
+                      {formData.postal_code && (
+                        <p style={{ fontSize: '14px', color: '#1a1a1a', marginBottom: '4px' }}>〒{formData.postal_code}</p>
+                      )}
+                      {formData.address && (
+                        <p style={{ fontSize: '14px', color: '#1a1a1a', marginBottom: '4px' }}>{formData.address}</p>
+                      )}
+                      {formData.phone && (
+                        <p style={{ fontSize: '14px', color: '#1a1a1a' }}>TEL: {formData.phone}</p>
+                      )}
+                    </div>
+                  )}
 
                   {formData.message && (
                     <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid #e8e4dc' }}>
