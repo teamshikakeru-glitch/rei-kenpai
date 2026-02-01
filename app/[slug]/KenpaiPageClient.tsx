@@ -361,6 +361,31 @@ export default function KenpaiPageClient() {
           )}
         </div>
 
+        {/* ========== 献杯とは説明文 ========== */}
+        <div className="fade-in" style={{
+          background: 'linear-gradient(135deg, #f8f6f2 0%, #f0ebe3 100%)',
+          borderRadius: '16px',
+          padding: '20px 24px',
+          marginBottom: '24px',
+          border: '1px solid #e8e4dc',
+        }}>
+          <p style={{ 
+            fontSize: '14px', 
+            color: '#666', 
+            lineHeight: '2', 
+            textAlign: 'center',
+            margin: 0,
+          }}>
+            <span style={{ color: '#c9a227', fontSize: '16px' }}>✦</span>
+            <br />
+            <span style={{ fontWeight: '500', color: '#1a1a1a' }}>献杯とは</span>
+            <br />
+            直接お会いできなくても、
+            <br />
+            故人を想う気持ちを静かに届けるための形です。
+          </p>
+        </div>
+
         {/* 献杯総額サマリー */}
         {kenpaiList.length > 0 && (
           <div className="fade-in" style={{
@@ -389,7 +414,7 @@ export default function KenpaiPageClient() {
           </div>
         )}
 
-        {/* 成功メッセージ */}
+        {/* ========== 献杯完了時の自動お礼メッセージ ========== */}
         {submitStatus === 'success' ? (
           <div className="fade-in-up" style={{
             background: 'white',
@@ -417,14 +442,33 @@ export default function KenpaiPageClient() {
             <h2 style={{ fontSize: '22px', color: '#1a1a1a', marginBottom: '12px', fontWeight: '500' }}>
               ありがとうございます
             </h2>
-            <p style={{ color: '#666', fontSize: '15px', lineHeight: '1.9' }}>
+            <p style={{ color: '#666', fontSize: '15px', lineHeight: '1.9', marginBottom: '24px' }}>
               ご厚志を賜り<br />心より御礼申し上げます
             </p>
+            
+            {/* 自動お礼メッセージ */}
+            <div style={{
+              background: 'linear-gradient(135deg, #fffbf0 0%, #fff8e7 100%)',
+              border: '1px solid #f0e6c8',
+              borderRadius: '16px',
+              padding: '20px',
+              marginBottom: '24px',
+            }}>
+              <p style={{ fontSize: '13px', color: '#c9a227', marginBottom: '8px', fontWeight: '500' }}>
+                ご遺族からのメッセージ
+              </p>
+              <p style={{ fontSize: '15px', color: '#1a1a1a', lineHeight: '2', margin: 0 }}>
+                温かいお気持ちをありがとうございました。
+                <br />
+                家族一同、心より感謝申し上げます。
+              </p>
+            </div>
+            
             <button
               onClick={() => { setSubmitStatus('idle'); setStep(1); setFormData({ donor_name: '', message: '', is_anonymous: false, postal_code: '', address: '', phone: '' }); setSelectedAmount(null); fetchData(); }}
               className="btn-hover"
               style={{
-                marginTop: '32px',
+                marginTop: '8px',
                 padding: '16px 32px',
                 border: '2px solid #e8e4dc',
                 borderRadius: '12px',
@@ -483,7 +527,7 @@ export default function KenpaiPageClient() {
               </button>
             </div>
 
-            {/* メッセージのみタブ */}
+            {/* ========== メッセージのみタブ ========== */}
             {activeTab === 'message' && (
               <div className="fade-in" style={{
                 background: 'white',
@@ -493,6 +537,7 @@ export default function KenpaiPageClient() {
                 marginBottom: '24px',
               }}>
                 {messageSent ? (
+                  /* メッセージ送信完了 + 自動お礼 */
                   <div style={{ textAlign: 'center', padding: '24px 0' }}>
                     <div style={{
                       width: '80px',
@@ -509,9 +554,29 @@ export default function KenpaiPageClient() {
                     <h3 style={{ color: '#1a1a1a', marginBottom: '12px', fontSize: '20px', fontWeight: '500' }}>
                       メッセージを送信しました
                     </h3>
-                    <p style={{ color: '#666', marginBottom: '28px', fontSize: '14px', lineHeight: '1.8' }}>
+                    <p style={{ color: '#666', marginBottom: '20px', fontSize: '14px', lineHeight: '1.8' }}>
                       ご遺族にあなたの想いが届きます
                     </p>
+                    
+                    {/* 自動お礼メッセージ */}
+                    <div style={{
+                      background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
+                      border: '1px solid #ddd6fe',
+                      borderRadius: '16px',
+                      padding: '20px',
+                      marginBottom: '24px',
+                      textAlign: 'left',
+                    }}>
+                      <p style={{ fontSize: '13px', color: '#7c3aed', marginBottom: '8px', fontWeight: '500' }}>
+                        ご遺族からのメッセージ
+                      </p>
+                      <p style={{ fontSize: '15px', color: '#1a1a1a', lineHeight: '2', margin: 0 }}>
+                        温かいお気持ちをありがとうございました。
+                        <br />
+                        家族一同、心より感謝申し上げます。
+                      </p>
+                    </div>
+                    
                     <button
                       onClick={() => setMessageSent(false)}
                       className="btn-hover"
