@@ -963,6 +963,12 @@
             </div>
           </div>
         </div>
+        <!-- 売上高をメインに表示 -->
+        <div style="text-align:center; margin:1rem 0; padding:1rem; background:rgba(255,255,255,0.15); border-radius:12px;">
+          <div style="font-size:0.75rem; opacity:0.9;">今月の売上高</div>
+          <div style="font-size:2.2rem; font-weight:800;" id="profileSales">¥0</div>
+          <div style="font-size:0.7rem; opacity:0.8;">成約 <span id="profileClosedCount">0</span>社 × 500万円</div>
+        </div>
         <div class="profile-stats">
           <div class="profile-stat">
             <div class="profile-stat-value" id="profileClosed">0</div>
@@ -1017,51 +1023,72 @@
         </div>
       </div>
 
+      <!-- 今月の目標（改善版） -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">🎯 今月の目標</span>
           <button class="btn btn-sm btn-secondary" onclick="openGoalModal()">設定</button>
         </div>
         <div class="card-body">
-          <!-- 受注目標（メイン） -->
-          <div class="goal-section">
-            <div class="goal-header">
-              <span class="goal-title">🏆 受注</span>
-              <span class="goal-numbers"><span id="goalClosedCurrent">0</span> / <span id="goalClosedTarget">0</span></span>
+          <!-- 受注目標（メイン・大きく表示） -->
+          <div style="text-align:center; padding:1rem; background:#f8f9fa; border-radius:12px; margin-bottom:1rem;">
+            <div style="font-size:0.8rem; color:#8a8a8a;">受注目標</div>
+            <div style="font-size:2.5rem; font-weight:800; color:#2d5a47;">
+              <span id="goalClosedCurrent2">0</span><span style="font-size:1.2rem; color:#8a8a8a;"> / <span id="goalClosedTarget2">0</span>社</span>
             </div>
-            <div class="goal-bar"><div class="goal-fill" id="goalClosedBar" style="width:0%"></div></div>
+            <div class="goal-bar" style="margin-top:0.5rem; height:16px;"><div class="goal-fill" id="goalClosedBar" style="width:0%"></div></div>
           </div>
-          <!-- 見込み -->
+          
+          <!-- ファネル指標 -->
+          <div style="font-size:0.75rem; color:#8a8a8a; margin-bottom:0.75rem; padding:0.5rem; background:#f5f6fa; border-radius:8px;">
+            💡 受注するために必要な数を逆算しています
+          </div>
+          
+          <!-- ①見込み -->
           <div class="goal-section">
             <div class="goal-header">
-              <span class="goal-title">🔥 見込み</span>
+              <span class="goal-title">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#ff6b6b; color:white; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">①</span>
+                見込み
+              </span>
               <span class="goal-numbers"><span id="goalProspectCurrent">0</span> / <span id="goalProspectTarget">0</span></span>
             </div>
             <div class="goal-bar"><div class="goal-fill" id="goalProspectBar" style="width:0%"></div></div>
+            <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">導入を前向きに検討中の会社</div>
           </div>
-          <!-- 商談 -->
+          
+          <!-- ②商談 -->
           <div class="goal-section">
             <div class="goal-header">
-              <span class="goal-title">💼 商談</span>
+              <span class="goal-title">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#ffc107; color:#1a1f2e; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">②</span>
+                商談
+              </span>
               <span class="goal-numbers"><span id="goalNegoCurrent">0</span> / <span id="goalNegoTarget">0</span></span>
             </div>
             <div class="goal-bar"><div class="goal-fill" id="goalNegoBar" style="width:0%"></div></div>
+            <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">提案・説明を行い交渉中の会社</div>
           </div>
-          <!-- アポ -->
+          
+          <!-- ③アポ -->
           <div class="goal-section" style="margin-bottom:0">
             <div class="goal-header">
-              <span class="goal-title">📞 アポ</span>
+              <span class="goal-title">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#17a2b8; color:white; border-radius:50%; font-size:0.7rem; margin-right:0.25rem;">③</span>
+                アポ
+              </span>
               <span class="goal-numbers"><span id="goalAppoCurrent">0</span> / <span id="goalAppoTarget">0</span></span>
             </div>
             <div class="goal-bar"><div class="goal-fill" id="goalAppoBar" style="width:0%"></div></div>
+            <div style="font-size:0.65rem; color:#8a8a8a; margin-top:0.25rem;">訪問・面談のアポイントメント取得済み</div>
           </div>
         </div>
       </div>
 
-      <!-- KPI計算ロジック表示 -->
+      <!-- KPI計算ロジック表示（改善版） -->
       <div class="card" id="kpiCalcCard">
         <div class="card-header">
-          <span class="card-title">📊 KPI逆算（受注目標から）</span>
+          <span class="card-title">📊 進捗サマリー</span>
         </div>
         <div class="card-body" style="font-size:0.85rem;">
           <div id="kpiCalcContent">
@@ -1075,26 +1102,29 @@
         <div id="followupList"></div>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
+      <!-- 実績サマリー（改善版） -->
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.75rem; margin-bottom:1rem;">
+        <div class="stat-card" style="text-align:center;">
+          <div style="font-size:2rem; font-weight:800; color:#2d5a47;" id="statMyVisits">0</div>
           <div class="stat-label">今月の訪問</div>
-          <div class="stat-value" id="statMyVisits">0</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">商談中</div>
-          <div class="stat-value" id="statNegotiating">0</div>
-        </div>
-        <div class="stat-card">
+        <div class="stat-card" style="text-align:center;">
+          <div style="font-size:2rem; font-weight:800; color:#2d5a47;" id="statClosed">0</div>
           <div class="stat-label">成約</div>
-          <div class="stat-value" id="statClosed">0</div>
         </div>
-        <div class="stat-card">
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.75rem;">
+        <div class="stat-card" style="text-align:center;">
+          <div style="font-size:2rem; font-weight:800; color:#ffc107;" id="statNegotiating">0</div>
+          <div class="stat-label">商談中</div>
+        </div>
+        <div class="stat-card" style="text-align:center;">
+          <div style="font-size:1.5rem; font-weight:700; color:#2d5a47;" id="statExpense">¥0</div>
           <div class="stat-label">今月の経費</div>
-          <div class="stat-value" id="statExpense">¥0</div>
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" style="margin-top:1rem;">
         <div class="card-header">
           <span class="card-title">📅 今日の予定</span>
         </div>
@@ -1346,9 +1376,15 @@
           <span class="card-title">📈 転換率分析</span>
         </div>
         <div class="card-body">
+          <div style="font-size:0.75rem; color:#8a8a8a; margin-bottom:1rem; padding:0.5rem; background:#f5f6fa; border-radius:8px;">
+            💡 各ステップでどれだけ次に進めたかの割合です
+          </div>
           <div style="margin-bottom:1rem;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <span style="font-size:0.85rem;">β アポ → 商談</span>
+              <span style="font-size:0.85rem;">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:#17a2b8; color:white; border-radius:50%; font-size:0.65rem; margin-right:0.25rem;">③</span>
+                アポ → 商談
+              </span>
               <span style="font-weight:600;" id="reportBetaRate">0%</span>
             </div>
             <div class="goal-bar"><div class="goal-fill" id="reportBetaBar" style="width:0%"></div></div>
@@ -1359,7 +1395,10 @@
           </div>
           <div style="margin-bottom:1rem;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <span style="font-size:0.85rem;">γ 商談 → 見込み</span>
+              <span style="font-size:0.85rem;">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:#ffc107; color:#1a1f2e; border-radius:50%; font-size:0.65rem; margin-right:0.25rem;">②</span>
+                商談 → 見込み
+              </span>
               <span style="font-weight:600;" id="reportGammaRate">0%</span>
             </div>
             <div class="goal-bar"><div class="goal-fill" id="reportGammaBar" style="width:0%"></div></div>
@@ -1370,7 +1409,10 @@
           </div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <span style="font-size:0.85rem;">δ 見込み → 受注</span>
+              <span style="font-size:0.85rem;">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:#ff6b6b; color:white; border-radius:50%; font-size:0.65rem; margin-right:0.25rem;">①</span>
+                見込み → 受注
+              </span>
               <span style="font-weight:600;" id="reportDeltaRate">0%</span>
             </div>
             <div class="goal-bar"><div class="goal-fill" id="reportDeltaBar" style="width:0%"></div></div>
@@ -2375,13 +2417,17 @@ function updateGoalDisplay() {
   
   // 目標値（受注目標から逆算）
   var closedTarget = myGoal ? myGoal.closed_goal : 0;
-  var prospectTarget = Math.ceil(closedTarget / 0.10); // δ10%
-  var negoTarget = Math.ceil(prospectTarget / 0.50);   // γ50%
-  var appoTarget = Math.ceil(negoTarget / 0.70);       // β70%
+  var prospectTarget = Math.ceil(closedTarget / 0.10); // ①10%
+  var negoTarget = Math.ceil(prospectTarget / 0.50);   // ②50%
+  var appoTarget = Math.ceil(negoTarget / 0.70);       // ③70%
+  
+  // メインの受注目標表示
+  var el1 = document.getElementById('goalClosedCurrent2');
+  var el2 = document.getElementById('goalClosedTarget2');
+  if (el1) el1.textContent = closed;
+  if (el2) el2.textContent = closedTarget;
   
   // 表示更新
-  document.getElementById('goalClosedCurrent').textContent = closed;
-  document.getElementById('goalClosedTarget').textContent = closedTarget;
   document.getElementById('goalProspectCurrent').textContent = prospect;
   document.getElementById('goalProspectTarget').textContent = prospectTarget;
   document.getElementById('goalNegoCurrent').textContent = nego;
@@ -2641,7 +2687,11 @@ function saveProspect() {
 function updateScheduleProspects() {
   var select = document.getElementById('sProspect');
   var html = '<option value="">選択してください</option>';
+  html += '<option value="">--- その他（自由入力）---</option>';
   for (var i = 0; i < prospects.length; i++) html += '<option value="' + prospects[i].id + '">' + esc(prospects[i].company_name) + '</option>';
+  if (prospects.length === 0) {
+    html += '<option value="" disabled>（葬儀社が登録されていません）</option>';
+  }
   select.innerHTML = html;
 }
 
@@ -3320,6 +3370,17 @@ function updateProfileCard() {
   
   document.getElementById('profileClosed').textContent = closed;
   document.getElementById('profileNego').textContent = nego;
+  
+  // 売上高を計算・表示（成約数 × 500万円）
+  var sales = closed * 5000000;
+  var salesText = sales >= 100000000 ? (sales / 100000000).toFixed(1) + '億円' : (sales / 10000).toLocaleString() + '万円';
+  if (sales === 0) salesText = '¥0';
+  else salesText = '¥' + salesText.replace('¥', '');
+  
+  var salesEl = document.getElementById('profileSales');
+  var closedCountEl = document.getElementById('profileClosedCount');
+  if (salesEl) salesEl.textContent = sales > 0 ? (sales / 10000).toLocaleString() + '万円' : '¥0';
+  if (closedCountEl) closedCountEl.textContent = closed;
   
   // レベル計算（成約数ベース）
   var level = getLevelInfo(closed);
