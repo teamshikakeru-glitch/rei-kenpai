@@ -1397,6 +1397,14 @@
           </div>
           <div class="list-item-right">→</div>
         </div>
+        <div class="list-item" onclick="switchPage('selfEval')" style="background:linear-gradient(135deg, #fff3cd, #ffe69c);">
+          <div class="list-item-icon">📝</div>
+          <div class="list-item-content">
+            <div class="list-item-title">商談振り返り</div>
+            <div class="list-item-sub">商談後すぐに記入しよう</div>
+          </div>
+          <div class="list-item-right">→</div>
+        </div>
         <div class="list-item" onclick="switchPage('manual')">
           <div class="list-item-icon">📖</div>
           <div class="list-item-content">
@@ -1438,6 +1446,170 @@
       <div style="padding:1rem;">
         <button class="btn btn-primary" onclick="saveSortOrder()" style="width:100%;">保存する</button>
         <button class="btn btn-secondary" onclick="resetSortOrder()" style="width:100%; margin-top:0.5rem;">デフォルトに戻す</button>
+      </div>
+    </div>
+
+    <!-- 商談振り返り入力ページ -->
+    <div class="page" id="page-selfEval">
+      <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      
+      <div class="card" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+        <div class="card-body" style="text-align:center;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+          <div style="font-size: 1.1rem; font-weight: 700;">商談振り返りシート</div>
+          <div style="font-size: 0.8rem; opacity: 0.9;">商談後すぐに記入しましょう</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">商談日 *</label>
+            <input type="date" class="form-input" id="selfEvalDate">
+          </div>
+          <div class="form-group">
+            <label class="form-label">商談先（葬儀社名）*</label>
+            <input type="text" class="form-input" id="selfEvalCompany" placeholder="例：◯◯葬祭">
+          </div>
+
+          <div style="background:#f5f6fa; padding:1rem; border-radius:12px; margin:1rem 0;">
+            <div style="font-weight:600; color:#2d5a47; margin-bottom:0.5rem;">💡 評価の考え方</div>
+            <div style="font-size:0.85rem; color:#666;">
+              ・受注できたか ❌ ではなく<br>
+              ・<strong>正しい工程を踏めたか</strong> ⭕ で評価
+            </div>
+          </div>
+
+          <h4 style="color:#2d5a47; margin:1.5rem 0 1rem; font-size:0.95rem; border-bottom:2px solid #2d5a47; padding-bottom:0.5rem;">① 商談設計【30点】</h4>
+          <div class="form-group">
+            <label class="form-label">Q1. 「今日は判断の場」と伝えた？（10点）</label>
+            <select class="form-input" id="selfQ1" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ はい</option>
+              <option value="0">❌ いいえ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Q2. 決裁者に直接質問した？（10点）</label>
+            <select class="form-input" id="selfQ2" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ はい</option>
+              <option value="0">❌ いいえ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Q3. 30分以内に収めた？（10点）</label>
+            <select class="form-input" id="selfQ3" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ はい</option>
+              <option value="5">△ ほぼOK</option>
+              <option value="0">❌ オーバーした</option>
+            </select>
+          </div>
+
+          <h4 style="color:#2d5a47; margin:1.5rem 0 1rem; font-size:0.95rem; border-bottom:2px solid #2d5a47; padding-bottom:0.5rem;">② 判断軸【25点】</h4>
+          <div class="form-group">
+            <label class="form-label">Q4. 決裁者の「判断軸ワード」を取れた？（15点）</label>
+            <select class="form-input" id="selfQ4" onchange="calcSelfEvalScore()">
+              <option value="15">⭕ 明確に取れた</option>
+              <option value="5">△ 曖昧だった</option>
+              <option value="0">❌ 取れなかった</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">取れた判断軸ワード（メモ）</label>
+            <input type="text" class="form-input" id="selfKeyword" placeholder="例：現場の手間、お金の管理...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Q5. その言葉を3回以上使った？（10点）</label>
+            <select class="form-input" id="selfQ5" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ 3回以上使った</option>
+              <option value="5">△ 1〜2回</option>
+              <option value="0">❌ 使わなかった</option>
+            </select>
+          </div>
+
+          <h4 style="color:#2d5a47; margin:1.5rem 0 1rem; font-size:0.95rem; border-bottom:2px solid #2d5a47; padding-bottom:0.5rem;">③ 数値化【20点】</h4>
+          <div class="form-group">
+            <label class="form-label">Q6. 「1件◯分」を聞けた？（10点）</label>
+            <select class="form-input" id="selfQ6" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ はい</option>
+              <option value="0">❌ いいえ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Q7. 「月◯件分」に変換した？（10点）</label>
+            <select class="form-input" id="selfQ7" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ はい</option>
+              <option value="0">❌ いいえ</option>
+            </select>
+          </div>
+
+          <h4 style="color:#2d5a47; margin:1.5rem 0 1rem; font-size:0.95rem; border-bottom:2px solid #2d5a47; padding-bottom:0.5rem;">④ クロージング【15点】</h4>
+          <div class="form-group">
+            <label class="form-label">Q8. 価格前に「見送る理由」を聞いた？（10点）</label>
+            <select class="form-input" id="selfQ8" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ はい</option>
+              <option value="0">❌ いいえ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Q9. 最終クロージング質問をした？（5点）</label>
+            <select class="form-input" id="selfQ9" onchange="calcSelfEvalScore()">
+              <option value="5">⭕ はい</option>
+              <option value="0">❌ いいえ</option>
+            </select>
+          </div>
+
+          <h4 style="color:#2d5a47; margin:1.5rem 0 1rem; font-size:0.95rem; border-bottom:2px solid #2d5a47; padding-bottom:0.5rem;">⑤ 8%還元【10点】</h4>
+          <div class="form-group">
+            <label class="form-label">Q10. 正しいタイミングで出した？（10点）</label>
+            <select class="form-input" id="selfQ10" onchange="calcSelfEvalScore()">
+              <option value="10">⭕ 価格後＋迷いが出てから</option>
+              <option value="0">❌ 早出し or 使わなかった</option>
+            </select>
+          </div>
+
+          <!-- スコア表示 -->
+          <div style="background:linear-gradient(135deg, #2d5a47, #3d7a5f); color:white; padding:1.5rem; border-radius:16px; margin-top:1.5rem; text-align:center;">
+            <div style="font-size:0.85rem; opacity:0.9; margin-bottom:0.5rem;">あなたのスコア</div>
+            <div style="font-size:3.5rem; font-weight:800;" id="selfTotalScore">100</div>
+            <div style="font-size:1rem; opacity:0.8;">/ 100点</div>
+            <div style="margin-top:1rem; padding:0.75rem; border-radius:100px; display:inline-block; font-weight:600; font-size:0.95rem;" id="selfGrade">🟩 標準合格</div>
+            
+            <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem; margin-top:1rem; font-size:0.75rem;">
+              <div><div style="opacity:0.8;">商談設計</div><div style="font-weight:700;" id="selfScore1">30</div></div>
+              <div><div style="opacity:0.8;">判断軸</div><div style="font-weight:700;" id="selfScore2">25</div></div>
+              <div><div style="opacity:0.8;">数値化</div><div style="font-weight:700;" id="selfScore3">20</div></div>
+              <div><div style="opacity:0.8;">クロージング</div><div style="font-weight:700;" id="selfScore4">15</div></div>
+              <div><div style="opacity:0.8;">還元施策</div><div style="font-weight:700;" id="selfScore5">10</div></div>
+            </div>
+          </div>
+
+          <!-- 振り返りコメント -->
+          <div class="form-group" style="margin-top:1.5rem;">
+            <label class="form-label">商談の結果</label>
+            <select class="form-input" id="selfResult">
+              <option value="受注">🎉 受注</option>
+              <option value="見込み">🔥 見込み（前向き検討中）</option>
+              <option value="継続">💼 継続商談</option>
+              <option value="見送り">😢 見送り</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">次回やること・改善点</label>
+            <textarea class="form-input" id="selfComment" rows="3" placeholder="次の商談で意識すること..."></textarea>
+          </div>
+
+          <button class="btn btn-primary" onclick="saveSelfEval()" style="width:100%; margin-top:1rem; padding:1rem; font-size:1rem;">
+            💾 振り返りを保存
+          </button>
+        </div>
+      </div>
+
+      <!-- 過去の振り返り -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📊 過去の振り返り</span>
+        </div>
+        <div id="selfEvalHistory"></div>
       </div>
     </div>
 
@@ -3400,6 +3572,10 @@ function switchPage(page) {
   if (page === 'sortSettings' && typeof renderSortSettings === 'function') {
     renderSortSettings();
   }
+  // 商談振り返りページの場合は初期化
+  if (page === 'selfEval' && typeof initSelfEval === 'function') {
+    initSelfEval();
+  }
 }
 
 function switchTab(prefix, tab) {
@@ -4785,6 +4961,168 @@ function resetSortOrder() {
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(applySectionOrder, 100);
 });
+
+// ==================== 商談振り返り機能 ====================
+var selfEvaluations = [];
+
+function initSelfEval() {
+  var dateInput = document.getElementById('selfEvalDate');
+  if (dateInput && !dateInput.value) {
+    dateInput.value = new Date().toISOString().slice(0, 10);
+  }
+  calcSelfEvalScore();
+  loadSelfEvaluations();
+}
+
+function calcSelfEvalScore() {
+  var q1 = parseInt(document.getElementById('selfQ1').value) || 0;
+  var q2 = parseInt(document.getElementById('selfQ2').value) || 0;
+  var q3 = parseInt(document.getElementById('selfQ3').value) || 0;
+  var q4 = parseInt(document.getElementById('selfQ4').value) || 0;
+  var q5 = parseInt(document.getElementById('selfQ5').value) || 0;
+  var q6 = parseInt(document.getElementById('selfQ6').value) || 0;
+  var q7 = parseInt(document.getElementById('selfQ7').value) || 0;
+  var q8 = parseInt(document.getElementById('selfQ8').value) || 0;
+  var q9 = parseInt(document.getElementById('selfQ9').value) || 0;
+  var q10 = parseInt(document.getElementById('selfQ10').value) || 0;
+  
+  var score1 = q1 + q2 + q3;
+  var score2 = q4 + q5;
+  var score3 = q6 + q7;
+  var score4 = q8 + q9;
+  var score5 = q10;
+  var total = score1 + score2 + score3 + score4 + score5;
+  
+  document.getElementById('selfScore1').textContent = score1;
+  document.getElementById('selfScore2').textContent = score2;
+  document.getElementById('selfScore3').textContent = score3;
+  document.getElementById('selfScore4').textContent = score4;
+  document.getElementById('selfScore5').textContent = score5;
+  document.getElementById('selfTotalScore').textContent = total;
+  
+  var gradeEl = document.getElementById('selfGrade');
+  if (total >= 85) {
+    gradeEl.textContent = '🟦 上位営業レベル！';
+    gradeEl.style.background = 'rgba(23, 162, 184, 0.3)';
+  } else if (total >= 70) {
+    gradeEl.textContent = '🟩 標準合格！';
+    gradeEl.style.background = 'rgba(40, 167, 69, 0.3)';
+  } else if (total >= 60) {
+    gradeEl.textContent = '🟨 もう少し！';
+    gradeEl.style.background = 'rgba(255, 193, 7, 0.3)';
+  } else {
+    gradeEl.textContent = '🟥 振り返りが必要';
+    gradeEl.style.background = 'rgba(220, 53, 69, 0.3)';
+  }
+}
+
+function saveSelfEval() {
+  var evalDate = document.getElementById('selfEvalDate').value;
+  var company = document.getElementById('selfEvalCompany').value;
+  var keyword = document.getElementById('selfKeyword').value;
+  var result = document.getElementById('selfResult').value;
+  var comment = document.getElementById('selfComment').value;
+  
+  if (!evalDate || !company) {
+    alert('商談日と商談先を入力してください');
+    return;
+  }
+  
+  var scores = {
+    q1: parseInt(document.getElementById('selfQ1').value) || 0,
+    q2: parseInt(document.getElementById('selfQ2').value) || 0,
+    q3: parseInt(document.getElementById('selfQ3').value) || 0,
+    q4: parseInt(document.getElementById('selfQ4').value) || 0,
+    q5: parseInt(document.getElementById('selfQ5').value) || 0,
+    q6: parseInt(document.getElementById('selfQ6').value) || 0,
+    q7: parseInt(document.getElementById('selfQ7').value) || 0,
+    q8: parseInt(document.getElementById('selfQ8').value) || 0,
+    q9: parseInt(document.getElementById('selfQ9').value) || 0,
+    q10: parseInt(document.getElementById('selfQ10').value) || 0
+  };
+  var total = scores.q1 + scores.q2 + scores.q3 + scores.q4 + scores.q5 + scores.q6 + scores.q7 + scores.q8 + scores.q9 + scores.q10;
+  
+  var data = {
+    member_id: currentUser.id,
+    eval_date: evalDate,
+    company_name: company,
+    keyword: keyword,
+    result: result,
+    scores: JSON.stringify(scores),
+    total_score: total,
+    comment: comment,
+    is_self_eval: true
+  };
+  
+  supabase.from('sales_evaluations').insert(data).then(function(res) {
+    if (res.error) {
+      alert('保存に失敗しました');
+      console.error(res.error);
+      return;
+    }
+    alert('振り返りを保存しました！（' + total + '点）');
+    // フォームリセット
+    document.getElementById('selfEvalCompany').value = '';
+    document.getElementById('selfKeyword').value = '';
+    document.getElementById('selfComment').value = '';
+    document.getElementById('selfResult').selectedIndex = 0;
+    ['selfQ1','selfQ2','selfQ3','selfQ4','selfQ5','selfQ6','selfQ7','selfQ8','selfQ9','selfQ10'].forEach(function(id) {
+      document.getElementById(id).selectedIndex = 0;
+    });
+    calcSelfEvalScore();
+    loadSelfEvaluations();
+  });
+}
+
+function loadSelfEvaluations() {
+  if (!currentUser) return;
+  supabase.from('sales_evaluations').select('*')
+    .eq('member_id', currentUser.id)
+    .order('eval_date', { ascending: false })
+    .limit(20)
+    .then(function(res) {
+      selfEvaluations = res.data || [];
+      renderSelfEvalHistory();
+    });
+}
+
+function renderSelfEvalHistory() {
+  var container = document.getElementById('selfEvalHistory');
+  if (!container) return;
+  
+  if (selfEvaluations.length === 0) {
+    container.innerHTML = '<div class="card-body" style="text-align:center; color:#8a8a8a; padding:2rem;">まだ振り返りがありません</div>';
+    return;
+  }
+  
+  var html = '';
+  selfEvaluations.forEach(function(e) {
+    var score = e.total_score;
+    var gradeColor, gradeText;
+    if (score >= 85) { gradeColor = '#17a2b8'; gradeText = '🟦'; }
+    else if (score >= 70) { gradeColor = '#28a745'; gradeText = '🟩'; }
+    else if (score >= 60) { gradeColor = '#ffc107'; gradeText = '🟨'; }
+    else { gradeColor = '#dc3545'; gradeText = '🟥'; }
+    
+    var resultIcon = '';
+    if (e.result === '受注') resultIcon = '🎉';
+    else if (e.result === '見込み') resultIcon = '🔥';
+    else if (e.result === '継続') resultIcon = '💼';
+    else resultIcon = '😢';
+    
+    html += '<div class="list-item" style="flex-wrap:wrap;">';
+    html += '<div style="flex:1; min-width:150px;">';
+    html += '<div style="font-weight:600;">' + (e.company_name || '-') + '</div>';
+    html += '<div style="font-size:0.8rem; color:#8a8a8a;">' + e.eval_date + ' ' + resultIcon + ' ' + (e.result || '') + '</div>';
+    html += '</div>';
+    html += '<div style="text-align:right;">';
+    html += '<div style="font-size:1.5rem; font-weight:700; color:' + gradeColor + ';">' + gradeText + ' ' + score + '点</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+  
+  container.innerHTML = html;
+}
 
 function scrollToHelp(id) {
   var el = document.getElementById(id);
