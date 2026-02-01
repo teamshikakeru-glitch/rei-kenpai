@@ -801,26 +801,49 @@
           <button class="btn btn-sm btn-secondary" onclick="openGoalModal()">設定</button>
         </div>
         <div class="card-body">
+          <!-- 受注目標（メイン） -->
           <div class="goal-section">
             <div class="goal-header">
-              <span class="goal-title">訪問</span>
-              <span class="goal-numbers"><span id="goalVisitCurrent">0</span> / <span id="goalVisitTarget">0</span></span>
+              <span class="goal-title">🏆 受注（δ10%）</span>
+              <span class="goal-numbers"><span id="goalClosedCurrent">0</span> / <span id="goalClosedTarget">0</span></span>
             </div>
-            <div class="goal-bar"><div class="goal-fill" id="goalVisitBar" style="width:0%"></div></div>
+            <div class="goal-bar"><div class="goal-fill" id="goalClosedBar" style="width:0%"></div></div>
           </div>
+          <!-- 見込み -->
           <div class="goal-section">
             <div class="goal-header">
-              <span class="goal-title">商談</span>
+              <span class="goal-title">🔥 見込み（γ50%）</span>
+              <span class="goal-numbers"><span id="goalProspectCurrent">0</span> / <span id="goalProspectTarget">0</span></span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" id="goalProspectBar" style="width:0%"></div></div>
+          </div>
+          <!-- 商談 -->
+          <div class="goal-section">
+            <div class="goal-header">
+              <span class="goal-title">💼 商談（β70%）</span>
               <span class="goal-numbers"><span id="goalNegoCurrent">0</span> / <span id="goalNegoTarget">0</span></span>
             </div>
             <div class="goal-bar"><div class="goal-fill" id="goalNegoBar" style="width:0%"></div></div>
           </div>
+          <!-- アポ -->
           <div class="goal-section" style="margin-bottom:0">
             <div class="goal-header">
-              <span class="goal-title">成約</span>
-              <span class="goal-numbers"><span id="goalClosedCurrent">0</span> / <span id="goalClosedTarget">0</span></span>
+              <span class="goal-title">📞 アポ</span>
+              <span class="goal-numbers"><span id="goalAppoCurrent">0</span> / <span id="goalAppoTarget">0</span></span>
             </div>
-            <div class="goal-bar"><div class="goal-fill" id="goalClosedBar" style="width:0%"></div></div>
+            <div class="goal-bar"><div class="goal-fill" id="goalAppoBar" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI計算ロジック表示 -->
+      <div class="card" id="kpiCalcCard">
+        <div class="card-header">
+          <span class="card-title">📊 KPI逆算（受注目標から）</span>
+        </div>
+        <div class="card-body" style="font-size:0.85rem;">
+          <div id="kpiCalcContent">
+            <div style="color:#8a8a8a; text-align:center;">目標を設定すると計算結果が表示されます</div>
           </div>
         </div>
       </div>
@@ -898,6 +921,7 @@
               <option value="未訪問">未訪問</option>
               <option value="訪問済み">訪問済み</option>
               <option value="商談中">商談中</option>
+              <option value="見込み">見込み</option>
               <option value="成約">成約</option>
             </select>
           </div>
@@ -1252,10 +1276,18 @@
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-question">
             <span class="faq-icon">💰</span>
-            <span>手数料と支払い方法は？</span>
+            <span>費用と支払い方法は？</span>
             <span class="faq-arrow">▼</span>
           </div>
           <div class="faq-answer">
+            <p><strong>初期費用</strong></p>
+            <p>・導入費用：<strong>500万円</strong></p>
+            <br>
+            <p><strong>🎉 IT補助金で最大2/3補助！</strong></p>
+            <p>・IT導入補助金を活用で最大約333万円補助</p>
+            <p>・実質負担：約167万円〜</p>
+            <p>・補助金申請もサポートします</p>
+            <br>
             <p><strong>手数料</strong></p>
             <p>・献杯1件につき <strong>11.6%</strong></p>
             <p>　- Stripe決済手数料: 3.6%</p>
@@ -1272,7 +1304,7 @@
             <p>・葬儀社様から弊社へお支払い</p>
             <div class="talk-box">
               <div class="talk-label">💬 営業トーク例</div>
-              「手数料は11.6%で、遺族様には88.4%が届きます。例えば1万円の献杯なら、8,840円が遺族様に届きます。」
+              「初期費用は500万円ですが、IT補助金を使えば最大2/3、約333万円の補助が出ます。実質167万円程度でご導入いただけます。補助金申請のサポートもしていますので、ご安心ください。」
             </div>
           </div>
         </div>
@@ -1358,10 +1390,10 @@
               「献杯を送るのは参列できない方、つまり遠方の親戚や友人です。比較的若い世代も多いですし、お子さんやお孫さんが代わりに操作されるケースも多いです。」
             </div>
             <br>
-            <p><strong>「手数料が高い」</strong></p>
+            <p><strong>「費用が高い」「500万は出せない」</strong></p>
             <div class="talk-box">
               <div class="talk-label">💬 対応例</div>
-              「11.6%のうち3.6%はカード会社への手数料ですので、実質8%です。初期費用や月額費用がないので、使った分だけのお支払いです。他社さんは月額費用だけで年間数万円かかるところもあります。」
+              「おっしゃる通り、500万円は大きな金額ですよね。ただ、IT補助金を使えば最大2/3、約333万円の補助が出ます。実質167万円程度でご導入いただけます。補助金の申請サポートも行っていますので、ぜひご検討ください。」
             </div>
             <br>
             <p><strong>「検討します」</strong></p>
@@ -1617,6 +1649,7 @@
           <option value="未訪問">未訪問</option>
           <option value="訪問済み">訪問済み</option>
           <option value="商談中">商談中</option>
+          <option value="見込み">見込み</option>
           <option value="成約">成約</option>
           <option value="見送り">見送り</option>
         </select>
@@ -1665,21 +1698,33 @@
 <div class="modal-bg" id="goalModal">
   <div class="modal-box">
     <div class="modal-head">
-      <h3>今月の目標を設定</h3>
+      <h3>🎯 今月の目標を設定</h3>
       <button class="modal-close" onclick="closeModal('goalModal')">&times;</button>
     </div>
     <div class="modal-content">
-      <div class="form-group">
-        <label class="form-label">訪問目標（件）</label>
-        <input type="number" class="form-input" id="gVisit" placeholder="例：20">
+      <div style="background:#e8f0ec; padding:0.75rem; border-radius:8px; margin-bottom:1rem; font-size:0.8rem;">
+        <strong>📐 KPI設計</strong><br>
+        β（アポ→商談）= 70%<br>
+        γ（商談→見込み）= 50%<br>
+        δ（見込み→受注）= 10%
       </div>
       <div class="form-group">
-        <label class="form-label">商談目標（件）</label>
-        <input type="number" class="form-input" id="gNego" placeholder="例：5">
+        <label class="form-label">🏆 月間受注目標（社）</label>
+        <input type="number" class="form-input" id="gClosed" placeholder="例：5" oninput="calcKpiFromGoal()">
+        <div class="form-hint">この数字から必要なアポ数を逆算します</div>
       </div>
-      <div class="form-group">
-        <label class="form-label">成約目標（件）</label>
-        <input type="number" class="form-input" id="gClosed" placeholder="例：1">
+      <div id="goalCalcResult" style="background:#f5f6fa; padding:1rem; border-radius:8px; margin-top:1rem; display:none;">
+        <div style="font-weight:600; margin-bottom:0.5rem;">📊 必要数の逆算結果</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;">
+          <div>見込み数（D）:</div><div style="font-weight:600;" id="calcProspect">-</div>
+          <div>商談数（C）:</div><div style="font-weight:600;" id="calcNego">-</div>
+          <div>アポ数（B）:</div><div style="font-weight:600; color:#2d5a47;" id="calcAppo">-</div>
+        </div>
+        <hr style="border:none; border-top:1px solid #e5e2dd; margin:0.75rem 0;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.85rem; color:#5a5a5a;">
+          <div>週あたり:</div><div id="calcWeekly">-</div>
+          <div>日あたり:</div><div id="calcDaily">-</div>
+        </div>
       </div>
     </div>
     <div class="modal-foot">
@@ -2024,27 +2069,82 @@ function updateStats() {
 
 function updateGoalDisplay() {
   var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
-  var visits = myProspects.filter(function(p) { return p.status !== '未訪問'; }).length;
-  var nego = myProspects.filter(function(p) { return p.status === '商談中'; }).length;
+  
+  // 各ステータスの件数を取得
+  var appo = myProspects.filter(function(p) { return p.status === '訪問済み' || p.status === '商談中' || p.status === '見込み' || p.status === '成約'; }).length;
+  var nego = myProspects.filter(function(p) { return p.status === '商談中' || p.status === '見込み' || p.status === '成約'; }).length;
+  var prospect = myProspects.filter(function(p) { return p.status === '見込み' || p.status === '成約'; }).length;
   var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
-  var vTarget = myGoal ? myGoal.visit_goal : 0;
-  var nTarget = myGoal ? myGoal.negotiation_goal : 0;
-  var cTarget = myGoal ? myGoal.closed_goal : 0;
-  document.getElementById('goalVisitCurrent').textContent = visits;
-  document.getElementById('goalVisitTarget').textContent = vTarget;
-  document.getElementById('goalNegoCurrent').textContent = nego;
-  document.getElementById('goalNegoTarget').textContent = nTarget;
+  
+  // 目標値（受注目標から逆算）
+  var closedTarget = myGoal ? myGoal.closed_goal : 0;
+  var prospectTarget = Math.ceil(closedTarget / 0.10); // δ10%
+  var negoTarget = Math.ceil(prospectTarget / 0.50);   // γ50%
+  var appoTarget = Math.ceil(negoTarget / 0.70);       // β70%
+  
+  // 表示更新
   document.getElementById('goalClosedCurrent').textContent = closed;
-  document.getElementById('goalClosedTarget').textContent = cTarget;
-  var vPct = vTarget > 0 ? Math.min(100, (visits / vTarget) * 100) : 0;
-  var nPct = nTarget > 0 ? Math.min(100, (nego / nTarget) * 100) : 0;
-  var cPct = cTarget > 0 ? Math.min(100, (closed / cTarget) * 100) : 0;
-  document.getElementById('goalVisitBar').style.width = vPct + '%';
-  document.getElementById('goalNegoBar').style.width = nPct + '%';
-  document.getElementById('goalClosedBar').style.width = cPct + '%';
-  if (visits >= vTarget && vTarget > 0) document.getElementById('goalVisitBar').classList.add('over');
-  if (nego >= nTarget && nTarget > 0) document.getElementById('goalNegoBar').classList.add('over');
-  if (closed >= cTarget && cTarget > 0) document.getElementById('goalClosedBar').classList.add('over');
+  document.getElementById('goalClosedTarget').textContent = closedTarget;
+  document.getElementById('goalProspectCurrent').textContent = prospect;
+  document.getElementById('goalProspectTarget').textContent = prospectTarget;
+  document.getElementById('goalNegoCurrent').textContent = nego;
+  document.getElementById('goalNegoTarget').textContent = negoTarget;
+  document.getElementById('goalAppoCurrent').textContent = appo;
+  document.getElementById('goalAppoTarget').textContent = appoTarget;
+  
+  // プログレスバー更新
+  var closedPct = closedTarget > 0 ? Math.min(100, (closed / closedTarget) * 100) : 0;
+  var prospectPct = prospectTarget > 0 ? Math.min(100, (prospect / prospectTarget) * 100) : 0;
+  var negoPct = negoTarget > 0 ? Math.min(100, (nego / negoTarget) * 100) : 0;
+  var appoPct = appoTarget > 0 ? Math.min(100, (appo / appoTarget) * 100) : 0;
+  
+  document.getElementById('goalClosedBar').style.width = closedPct + '%';
+  document.getElementById('goalProspectBar').style.width = prospectPct + '%';
+  document.getElementById('goalNegoBar').style.width = negoPct + '%';
+  document.getElementById('goalAppoBar').style.width = appoPct + '%';
+  
+  // 達成時のスタイル
+  if (closed >= closedTarget && closedTarget > 0) document.getElementById('goalClosedBar').classList.add('over');
+  if (prospect >= prospectTarget && prospectTarget > 0) document.getElementById('goalProspectBar').classList.add('over');
+  if (nego >= negoTarget && negoTarget > 0) document.getElementById('goalNegoBar').classList.add('over');
+  if (appo >= appoTarget && appoTarget > 0) document.getElementById('goalAppoBar').classList.add('over');
+  
+  // KPI計算カード更新
+  updateKpiCalcCard(closedTarget, appoTarget, negoTarget, prospectTarget, appo, nego, prospect, closed);
+}
+
+function updateKpiCalcCard(closedTarget, appoTarget, negoTarget, prospectTarget, appo, nego, prospect, closed) {
+  var container = document.getElementById('kpiCalcContent');
+  if (!closedTarget || closedTarget === 0) {
+    container.innerHTML = '<div style="color:#8a8a8a; text-align:center;">目標を設定すると計算結果が表示されます</div>';
+    return;
+  }
+  
+  var weeklyAppo = Math.ceil(appoTarget / 4);
+  var dailyAppo = Math.ceil(appoTarget / 20);
+  var appoGap = appoTarget - appo;
+  
+  var html = '';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem; text-align:center; margin-bottom:1rem;">';
+  html += '<div style="background:#f5f6fa; padding:0.5rem; border-radius:8px;"><div style="font-size:0.7rem; color:#8a8a8a;">週目標</div><div style="font-weight:700; color:#2d5a47;">' + weeklyAppo + '件</div></div>';
+  html += '<div style="background:#f5f6fa; padding:0.5rem; border-radius:8px;"><div style="font-size:0.7rem; color:#8a8a8a;">日目標</div><div style="font-weight:700; color:#2d5a47;">' + dailyAppo + '件</div></div>';
+  html += '<div style="background:' + (appoGap > 0 ? '#fff3cd' : '#d4edda') + '; padding:0.5rem; border-radius:8px;"><div style="font-size:0.7rem; color:#8a8a8a;">残り</div><div style="font-weight:700; color:' + (appoGap > 0 ? '#856404' : '#155724') + ';">' + (appoGap > 0 ? appoGap + '件' : '達成!') + '</div></div>';
+  html += '</div>';
+  
+  // 転換率の実績
+  var actualBeta = appo > 0 ? Math.round((nego / appo) * 100) : 0;
+  var actualGamma = nego > 0 ? Math.round((prospect / nego) * 100) : 0;
+  var actualDelta = prospect > 0 ? Math.round((closed / prospect) * 100) : 0;
+  
+  html += '<div style="font-size:0.8rem; color:#5a5a5a;">';
+  html += '<div style="font-weight:600; margin-bottom:0.25rem;">📈 実績転換率</div>';
+  html += '<div style="display:flex; gap:1rem;">';
+  html += '<span>β: <strong style="color:' + (actualBeta >= 70 ? '#28a745' : '#dc3545') + ';">' + actualBeta + '%</strong></span>';
+  html += '<span>γ: <strong style="color:' + (actualGamma >= 50 ? '#28a745' : '#dc3545') + ';">' + actualGamma + '%</strong></span>';
+  html += '<span>δ: <strong style="color:' + (actualDelta >= 10 ? '#28a745' : '#dc3545') + ';">' + actualDelta + '%</strong></span>';
+  html += '</div></div>';
+  
+  container.innerHTML = html;
 }
 
 function updateFollowups() {
@@ -2160,7 +2260,7 @@ function getTempEmoji(temp) {
 }
 
 function getBadge(status) {
-  var map = { '未訪問': 'badge-gray', '訪問済み': 'badge-blue', '商談中': 'badge-yellow', '成約': 'badge-green', '見送り': 'badge-red' };
+  var map = { '未訪問': 'badge-gray', '訪問済み': 'badge-blue', '商談中': 'badge-yellow', '見込み': 'badge-yellow', '成約': 'badge-green', '見送り': 'badge-red' };
   return map[status] || 'badge-gray';
 }
 
@@ -2188,6 +2288,7 @@ function openProspectDetail(id) {
   html += '<option value="未訪問"' + (p.status === '未訪問' ? ' selected' : '') + '>未訪問</option>';
   html += '<option value="訪問済み"' + (p.status === '訪問済み' ? ' selected' : '') + '>訪問済み</option>';
   html += '<option value="商談中"' + (p.status === '商談中' ? ' selected' : '') + '>商談中</option>';
+  html += '<option value="見込み"' + (p.status === '見込み' ? ' selected' : '') + '>見込み</option>';
   html += '<option value="成約"' + (p.status === '成約' ? ' selected' : '') + '>成約</option>';
   html += '<option value="見送り"' + (p.status === '見送り' ? ' selected' : '') + '>見送り</option>';
   html += '</select>';
@@ -2294,20 +2395,51 @@ function toggleSchedule(id, done) {
 }
 
 function openGoalModal() {
-  document.getElementById('gVisit').value = myGoal ? myGoal.visit_goal : '';
-  document.getElementById('gNego').value = myGoal ? myGoal.negotiation_goal : '';
   document.getElementById('gClosed').value = myGoal ? myGoal.closed_goal : '';
+  calcKpiFromGoal();
   openModal('goalModal');
+}
+
+function calcKpiFromGoal() {
+  var closedGoal = parseInt(document.getElementById('gClosed').value) || 0;
+  var resultDiv = document.getElementById('goalCalcResult');
+  
+  if (closedGoal <= 0) {
+    resultDiv.style.display = 'none';
+    return;
+  }
+  
+  // 逆算
+  var prospectNeeded = Math.ceil(closedGoal / 0.10);  // δ10%
+  var negoNeeded = Math.ceil(prospectNeeded / 0.50);  // γ50%
+  var appoNeeded = Math.ceil(negoNeeded / 0.70);      // β70%
+  var weeklyAppo = Math.ceil(appoNeeded / 4);
+  var dailyAppo = Math.ceil(appoNeeded / 20);
+  
+  document.getElementById('calcProspect').textContent = prospectNeeded + '件';
+  document.getElementById('calcNego').textContent = negoNeeded + '件';
+  document.getElementById('calcAppo').textContent = appoNeeded + '件';
+  document.getElementById('calcWeekly').textContent = weeklyAppo + '件/週';
+  document.getElementById('calcDaily').textContent = dailyAppo + '件/日';
+  
+  resultDiv.style.display = 'block';
 }
 
 function saveGoal() {
   var month = new Date().toISOString().slice(0, 7);
+  var closedGoal = parseInt(document.getElementById('gClosed').value) || 0;
+  
+  // 逆算で他の目標も自動設定
+  var prospectGoal = Math.ceil(closedGoal / 0.10);
+  var negoGoal = Math.ceil(prospectGoal / 0.50);
+  var appoGoal = Math.ceil(negoGoal / 0.70);
+  
   var data = {
     member_id: currentUser.id,
     month: month,
-    visit_goal: parseInt(document.getElementById('gVisit').value) || 0,
-    negotiation_goal: parseInt(document.getElementById('gNego').value) || 0,
-    closed_goal: parseInt(document.getElementById('gClosed').value) || 0
+    visit_goal: appoGoal,           // アポ目標
+    negotiation_goal: negoGoal,     // 商談目標
+    closed_goal: closedGoal         // 受注目標
   };
   if (myGoal) {
     supabase.from('sales_goals').update(data).eq('id', myGoal.id).then(function() { closeModal('goalModal'); loadData(); });
