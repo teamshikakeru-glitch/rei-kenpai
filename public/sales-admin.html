@@ -543,10 +543,35 @@
           </div>
         </div>
 
-        <!-- 評価履歴 -->
+        <!-- メンバー振り返り一覧（自己申告） -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">📊 評価履歴</span>
+            <span class="card-title">📝 メンバーの振り返り（自己申告）</span>
+            <select class="form-input-dark" id="selfEvalFilter" style="width:auto; padding:0.4rem;" onchange="renderSelfEvalList()">
+              <option value="">全メンバー</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>日付</th>
+                  <th>メンバー</th>
+                  <th>商談先</th>
+                  <th>結果</th>
+                  <th>スコア</th>
+                  <th>詳細</th>
+                </tr>
+              </thead>
+              <tbody id="selfEvalListTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 管理者評価履歴 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📊 管理者評価履歴</span>
             <select class="form-input-dark" id="evalHistoryFilter" style="width:auto; padding:0.4rem;" onchange="renderEvalHistory()">
               <option value="">全メンバー</option>
             </select>
@@ -635,6 +660,7 @@
 <div class="modal-bg" id="postModal"><div class="modal-box"><div class="modal-head"><h3>投稿</h3><button class="modal-close" onclick="closeModal('postModal')">&times;</button></div><div class="modal-content"><div class="form-group"><label class="form-label">内容 *</label><textarea class="form-input-dark" id="postContent" rows="3"></textarea></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('postModal')">キャンセル</button><button class="btn btn-gold" onclick="savePost()">投稿</button></div></div></div>
 <div class="modal-bg" id="memberModal"><div class="modal-box"><div class="modal-head"><h3 id="memberModalTitle">メンバー</h3><button class="modal-close" onclick="closeModal('memberModal')">&times;</button></div><div class="modal-content"><div id="memberDetail"></div><hr style="border:none;border-top:1px solid #3d4559;margin:1rem 0;"><textarea class="form-input-dark" id="memberMessage" rows="2" placeholder="メッセージ..."></textarea><button class="btn btn-sm btn-gold" onclick="sendNotification()" style="margin-top:0.5rem;">送信</button></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('memberModal')">閉じる</button></div></div></div>
 <div class="modal-bg" id="goalEditModal"><div class="modal-box"><div class="modal-head"><h3>🎯 目標を設定</h3><button class="modal-close" onclick="closeModal('goalEditModal')">&times;</button></div><div class="modal-content"><input type="hidden" id="goalEditMemberId"><input type="hidden" id="goalEditId"><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; margin-bottom:1rem;"><div style="font-size:0.8rem; color:#8a8a9a;">対象メンバー</div><div style="font-weight:600; color:#c9a962;" id="goalEditMemberName">-</div></div><div class="form-group"><label class="form-label">🏆 月間受注目標（社）</label><input type="number" class="form-input-dark" id="goalEditClosed" placeholder="例：5" oninput="calcGoalPreview()"><div style="font-size:0.75rem; color:#8a8a9a; margin-top:0.25rem;">この数字から必要なアポ数を自動逆算します</div></div><div id="goalEditPreview" style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-top:1rem; display:none;"><div style="font-weight:600; margin-bottom:0.5rem; color:#c9a962;">📊 必要数の逆算</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;"><div style="color:#8a8a9a;">見込み数:</div><div id="goalPreviewProspect">-</div><div style="color:#8a8a9a;">商談数:</div><div id="goalPreviewNego">-</div><div style="color:#8a8a9a;">アポ数:</div><div style="color:#28a745; font-weight:600;" id="goalPreviewAppo">-</div></div><hr style="border:none;border-top:1px solid #3d4559;margin:0.75rem 0;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.85rem; color:#8a8a9a;"><div>週あたり:</div><div id="goalPreviewWeekly">-</div><div>日あたり:</div><div id="goalPreviewDaily">-</div></div></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('goalEditModal')">キャンセル</button><button class="btn btn-gold" onclick="saveGoalEdit()">保存</button></div></div></div>
+<div class="modal-bg" id="selfEvalDetailModal"><div class="modal-box" style="max-width:600px;"><div class="modal-head"><h3>📝 振り返り詳細</h3><button class="modal-close" onclick="closeModal('selfEvalDetailModal')">&times;</button></div><div class="modal-content" id="selfEvalDetailContent"></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('selfEvalDetailModal')">閉じる</button></div></div></div>
 <script>
 var supabase,members=[],prospects=[],expenses=[],todos=[],posts=[],schedules=[],goals=[],selectedMemberId=null,adminCalendarDate=new Date(),adminSelectedDate=null;
 var ADMIN_PASS='1123';
@@ -647,7 +673,7 @@ function updatePrefOptions(region,selectId,defaultText){var s=document.getElemen
 function doLogin(){if(document.getElementById('adminPass').value===ADMIN_PASS){localStorage.setItem('salesAdminLoggedIn','true');showMainApp();}else{document.getElementById('loginError').style.display='block';}}
 function doLogout(){localStorage.removeItem('salesAdminLoggedIn');document.getElementById('mainApp').style.display='none';document.getElementById('loginScreen').style.display='flex';}
 function showMainApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';loadData();}
-function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();updateScheduleMemberFilter();initEvaluation();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();renderGoalStats();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();renderExpenseHistory();updateExpenseSummary();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r){schedules=r.data||[];renderMemberActivity();renderAdminCalendar();renderScheduleList();});supabase.from('sales_goals').select('*').then(function(r){goals=r.data||[];initGoalMonthFilter();renderGoalStats();});}
+function loadData(){supabase.from('sales_members').select('*').then(function(r){members=r.data||[];renderMembers();updateTodoSelect();updateScheduleMemberFilter();initEvaluation();loadSelfEvaluations();});supabase.from('sales_prospects').select('*').order('created_at',{ascending:false}).then(function(r){prospects=r.data||[];updateStats();renderFunerals();renderGoalStats();});supabase.from('sales_expenses').select('*').order('created_at',{ascending:false}).then(function(r){expenses=r.data||[];updateStats();renderExpenses();renderExpenseHistory();updateExpenseSummary();});supabase.from('sales_todos').select('*').order('created_at',{ascending:false}).then(function(r){todos=r.data||[];renderTodos();});supabase.from('sales_posts').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){posts=r.data||[];renderPosts();});supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r){schedules=r.data||[];renderMemberActivity();renderAdminCalendar();renderScheduleList();});supabase.from('sales_goals').select('*').then(function(r){goals=r.data||[];initGoalMonthFilter();renderGoalStats();});}
 function switchPage(page){document.querySelectorAll('.nav-item').forEach(function(el){el.classList.toggle('active',el.dataset.page===page);});document.querySelectorAll('.page').forEach(function(el){el.classList.toggle('active',el.id==='page-'+page);});}
 function updateStats(){var pending=expenses.filter(function(e){return e.status==='申請中';}).length;var nego=prospects.filter(function(p){return p.status==='商談中';}).length;var closed=prospects.filter(function(p){return p.status==='成約';}).length;var approvedTotal=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('statTotal').textContent=prospects.length;document.getElementById('statNego').textContent=nego;document.getElementById('statClosed').textContent=closed;document.getElementById('statPending').textContent=pending;document.getElementById('statExpenseTotal').textContent='¥'+approvedTotal.toLocaleString();document.getElementById('funeralCount').textContent=prospects.length;var badge=document.getElementById('expenseBadge');badge.textContent=pending;badge.style.display=pending>0?'inline':'none';var rc={};Object.keys(REGIONS).forEach(function(r){rc[r]=0;});prospects.forEach(function(p){if(p.region&&rc[p.region]!==undefined)rc[p.region]++;});var rh='';Object.keys(rc).forEach(function(r){if(rc[r]>0)rh+='<div class="region-stat"><strong>'+r+'</strong> '+rc[r]+'社</div>';});document.getElementById('regionStats').innerHTML=rh||'<span style="color:#8a8a9a;">なし</span>';var mh='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var mn=mp.filter(function(p){return p.status==='商談中';}).length;var mc=mp.filter(function(p){return p.status==='成約';}).length;mh+='<tr><td>'+esc(m.name)+'</td><td>'+mp.length+'</td><td>'+mn+'</td><td>'+mc+'</td></tr>';});document.getElementById('memberStatsTable').innerHTML=mh||'<tr><td colspan="4" class="empty">なし</td></tr>';}
 function updateExpenseSummary(){var pendingAmount=expenses.filter(function(e){return e.status==='申請中';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var approvedAmount=expenses.filter(function(e){return e.status==='承認';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var rejectedAmount=expenses.filter(function(e){return e.status==='却下';}).reduce(function(sum,e){return sum+(e.amount||0);},0);var totalAmount=expenses.reduce(function(sum,e){return sum+(e.amount||0);},0);document.getElementById('expPending').textContent='¥'+pendingAmount.toLocaleString();document.getElementById('expApproved').textContent='¥'+approvedAmount.toLocaleString();document.getElementById('expRejected').textContent='¥'+rejectedAmount.toLocaleString();document.getElementById('expTotal').textContent='¥'+totalAmount.toLocaleString();}
@@ -867,6 +893,147 @@ function renderEvalHistory() {
   });
   
   tbody.innerHTML = html;
+}
+
+// メンバー自己振り返り一覧
+var selfEvaluations = [];
+
+function loadSelfEvaluations() {
+  supabase.from('sales_evaluations').select('*')
+    .eq('is_self_eval', true)
+    .order('eval_date', { ascending: false })
+    .limit(100)
+    .then(function(res) {
+      selfEvaluations = res.data || [];
+      renderSelfEvalList();
+      initSelfEvalFilter();
+    });
+}
+
+function initSelfEvalFilter() {
+  var filterSelect = document.getElementById('selfEvalFilter');
+  if (filterSelect) {
+    var html = '<option value="">全メンバー</option>';
+    members.forEach(function(m) {
+      html += '<option value="' + m.id + '">' + esc(m.name) + '</option>';
+    });
+    filterSelect.innerHTML = html;
+  }
+}
+
+function renderSelfEvalList() {
+  var filter = document.getElementById('selfEvalFilter').value;
+  var filtered = filter ? selfEvaluations.filter(function(e) { return e.member_id === filter; }) : selfEvaluations;
+  
+  var tbody = document.getElementById('selfEvalListTable');
+  if (!tbody) return;
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">振り返りがありません</td></tr>';
+    return;
+  }
+  
+  var html = '';
+  filtered.forEach(function(e, idx) {
+    var member = members.find(function(m) { return m.id === e.member_id; });
+    var memberName = member ? member.name : '-';
+    var score = e.total_score;
+    var gradeColor;
+    if (score >= 85) gradeColor = '#17a2b8';
+    else if (score >= 70) gradeColor = '#28a745';
+    else if (score >= 60) gradeColor = '#ffc107';
+    else gradeColor = '#dc3545';
+    
+    var resultIcon = '';
+    if (e.result === '受注') resultIcon = '🎉';
+    else if (e.result === '見込み') resultIcon = '🔥';
+    else if (e.result === '継続') resultIcon = '💼';
+    else if (e.result === '見送り') resultIcon = '😢';
+    
+    html += '<tr>';
+    html += '<td>' + e.eval_date + '</td>';
+    html += '<td>' + esc(memberName) + '</td>';
+    html += '<td>' + esc(e.company_name || '-') + '</td>';
+    html += '<td>' + resultIcon + ' ' + esc(e.result || '-') + '</td>';
+    html += '<td style="color:' + gradeColor + '; font-weight:600;">' + score + '点</td>';
+    html += '<td><button class="btn btn-sm btn-secondary" onclick="showSelfEvalDetail(' + idx + ')">詳細</button></td>';
+    html += '</tr>';
+  });
+  
+  tbody.innerHTML = html;
+}
+
+function showSelfEvalDetail(idx) {
+  var e = selfEvaluations[idx];
+  if (!e) return;
+  
+  var member = members.find(function(m) { return m.id === e.member_id; });
+  var memberName = member ? member.name : '-';
+  var scores = e.scores ? (typeof e.scores === 'string' ? JSON.parse(e.scores) : e.scores) : {};
+  
+  var questions = [
+    { key: 'q1', label: 'Q1. 「今日は判断の場」と伝えた？' },
+    { key: 'q2', label: 'Q2. 決裁者に直接質問した？' },
+    { key: 'q3', label: 'Q3. 30分以内に収めた？' },
+    { key: 'q4', label: 'Q4. 「判断軸ワード」を取れた？' },
+    { key: 'q5', label: 'Q5. その言葉を3回以上使った？' },
+    { key: 'q6', label: 'Q6. 「1件◯分」を聞けた？' },
+    { key: 'q7', label: 'Q7. 「月◯件分」に変換した？' },
+    { key: 'q8', label: 'Q8. 価格前に「見送る理由」を聞いた？' },
+    { key: 'q9', label: 'Q9. 最終クロージング質問をした？' },
+    { key: 'q10', label: 'Q10. 正しいタイミングで8%還元を出した？' }
+  ];
+  
+  var resultIcon = '';
+  if (e.result === '受注') resultIcon = '🎉';
+  else if (e.result === '見込み') resultIcon = '🔥';
+  else if (e.result === '継続') resultIcon = '💼';
+  else if (e.result === '見送り') resultIcon = '😢';
+  
+  var html = '';
+  html += '<div style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-bottom:1rem;">';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;">';
+  html += '<div><span style="color:#8a8a9a;">メンバー:</span> <strong>' + esc(memberName) + '</strong></div>';
+  html += '<div><span style="color:#8a8a9a;">日付:</span> ' + e.eval_date + '</div>';
+  html += '<div><span style="color:#8a8a9a;">商談先:</span> ' + esc(e.company_name || '-') + '</div>';
+  html += '<div><span style="color:#8a8a9a;">結果:</span> ' + resultIcon + ' ' + esc(e.result || '-') + '</div>';
+  html += '</div>';
+  if (e.keyword) {
+    html += '<div style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid #3d4559;">';
+    html += '<span style="color:#8a8a9a;">判断軸ワード:</span> <strong style="color:#c9a962;">' + esc(e.keyword) + '</strong>';
+    html += '</div>';
+  }
+  html += '</div>';
+  
+  html += '<div style="font-weight:600; margin-bottom:0.75rem; color:#c9a962;">回答内容</div>';
+  html += '<div style="display:grid; gap:0.5rem;">';
+  questions.forEach(function(q) {
+    var val = scores[q.key] || 0;
+    var icon, color;
+    if (val >= 10) { icon = '⭕'; color = '#28a745'; }
+    else if (val >= 5) { icon = '△'; color = '#ffc107'; }
+    else { icon = '❌'; color = '#dc3545'; }
+    html += '<div style="display:flex; justify-content:space-between; padding:0.5rem; background:#252b3d; border-radius:6px;">';
+    html += '<span style="font-size:0.85rem;">' + q.label + '</span>';
+    html += '<span style="color:' + color + '; font-weight:600;">' + icon + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  
+  html += '<div style="background:linear-gradient(135deg, #252b3d, #2d3548); padding:1rem; border-radius:8px; margin-top:1rem; text-align:center;">';
+  html += '<div style="font-size:0.8rem; color:#8a8a9a;">合計スコア</div>';
+  html += '<div style="font-size:2rem; font-weight:800; color:#c9a962;">' + e.total_score + '<span style="font-size:1rem; color:#8a8a9a;">/100</span></div>';
+  html += '</div>';
+  
+  if (e.comment) {
+    html += '<div style="margin-top:1rem; padding:1rem; background:#1a1f2e; border-radius:8px;">';
+    html += '<div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">コメント・改善点</div>';
+    html += '<div style="font-size:0.9rem;">' + esc(e.comment) + '</div>';
+    html += '</div>';
+  }
+  
+  document.getElementById('selfEvalDetailContent').innerHTML = html;
+  openModal('selfEvalDetailModal');
 }
 </script>
 </body>
