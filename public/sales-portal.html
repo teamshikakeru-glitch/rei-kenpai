@@ -2411,6 +2411,185 @@
         </div>
       </div>
 
+      <!-- 営業評価シート（新規追加） -->
+      <div class="card">
+        <div class="card-header" style="background:linear-gradient(135deg, #1a1f2e, #2d3548); color:white;">
+          <span class="card-title">📋 営業評価シート（100点満点）</span>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🧮</span>
+            <span>評価の考え方</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <div style="background:#e8f4fd; padding:1rem; border-radius:8px; margin-bottom:1rem;">
+              <p><strong>📌 基本方針</strong></p>
+              <p>・満点：<strong>100点</strong></p>
+              <p>・合否ライン：<strong>70点</strong></p>
+              <p>・受注＝高評価 ❌</p>
+              <p>・<strong>「正しい工程を踏めたか」が評価対象</strong> ⭕</p>
+            </div>
+            <p>👉 未受注でも80点は普通に出る設計</p>
+            <p>👉 精神論・根性論を排除する</p>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">①</span>
+            <span>商談設計スコア【30点】</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>Q1｜前提合わせができたか（10点）</strong></p>
+            <p>「今日は判断の場」と伝えた</p>
+            <p>☐ Yes（10点）　☐ No（0点）</p>
+            <br>
+            <p><strong>Q2｜決裁者を正しく扱えたか（10点）</strong></p>
+            <p>決裁者に直接質問している</p>
+            <p>☐ Yes（10点）　☐ No（0点）</p>
+            <br>
+            <p><strong>Q3｜時間配分を守れたか（10点）</strong></p>
+            <p>30分以内に収めている</p>
+            <p>☐ Yes（10点）　☐ No（5点）</p>
+            <div style="background:#fff3cd; padding:0.75rem; border-radius:8px; margin-top:1rem;">
+              👉 ここが低い営業は、何を売っても弱い
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">②</span>
+            <span>判断軸スコア【25点】</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>Q4｜決裁者の「判断軸ワード」を取れているか（15点）</strong></p>
+            <p>明確な言葉が記載されている</p>
+            <p>☐ Yes（15点）　☐ 曖昧（5点）　☐ なし（0点）</p>
+            <br>
+            <p><strong>Q5｜以降の説明で、その言葉を使っているか（10点）</strong></p>
+            <p>同じ言葉を3回以上使用</p>
+            <p>☐ Yes（10点）　☐ 1〜2回（5点）　☐ 使っていない（0点）</p>
+            <div style="background:#fff3cd; padding:0.75rem; border-radius:8px; margin-top:1rem;">
+              👉 ここが0点＝売れても再現しない営業
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">③</span>
+            <span>数値化スコア【20点】</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>Q6｜手間の分数を取れているか（10点）</strong></p>
+            <p>「1件◯分」を取得</p>
+            <p>☐ Yes（10点）　☐ No（0点）</p>
+            <br>
+            <p><strong>Q7｜削減後の件数まで言語化できたか（10点）</strong></p>
+            <p>「月◯件分」に変換</p>
+            <p>☐ Yes（10点）　☐ No（0点）</p>
+            <div style="background:#fff3cd; padding:0.75rem; border-radius:8px; margin-top:1rem;">
+              👉 ここが転換率①を上げる核心ポイント
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">④</span>
+            <span>クロージング工程スコア【15点】</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>Q8｜NO理由を価格前に出させたか（10点）</strong></p>
+            <p>価格前に「見送る理由」を聞いている</p>
+            <p>☐ Yes（10点）　☐ No（0点）</p>
+            <br>
+            <p><strong>Q9｜最終クロージング質問をしているか（5点）</strong></p>
+            <p>「見送るとしたら何が引っかかるか」</p>
+            <p>☐ Yes（5点）　☐ No（0点）</p>
+            <div style="background:#fff3cd; padding:0.75rem; border-radius:8px; margin-top:1rem;">
+              👉 価格で失注する営業は、だいたいここが0点
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">⑤</span>
+            <span>条件施策（8%還元）の使い方【10点】</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>Q10｜正しいタイミングで出せたか（10点）</strong></p>
+            <p>価格後＋迷いが出てから</p>
+            <p>☐ Yes（10点）　☐ 早出し／未使用（0点）</p>
+            <div style="background:#fff3cd; padding:0.75rem; border-radius:8px; margin-top:1rem;">
+              👉 乱用防止ポイント
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🧾</span>
+            <span>合計点数と判定基準</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <div style="background:#f5f6fa; padding:1rem; border-radius:8px; font-family:monospace; margin-bottom:1rem;">
+              商談設計　　：　　／30<br>
+              判断軸　　　：　　／25<br>
+              数値化　　　：　　／20<br>
+              クロージング：　　／15<br>
+              条件施策　　：　　／10<br>
+              ─────────────<br>
+              <strong>合計　　　　：　　／100</strong>
+            </div>
+            <p><strong>🎯 点数別の扱い</strong></p>
+            <div style="background:#f8d7da; padding:0.75rem; border-radius:8px; margin:0.5rem 0;">
+              <strong>🟥 〜59点</strong><br>
+              ・台本未遵守<br>
+              ・ロープレ必須<br>
+              ・実商談NG（同席必須）
+            </div>
+            <div style="background:#fff3cd; padding:0.75rem; border-radius:8px; margin:0.5rem 0;">
+              <strong>🟨 60〜69点</strong><br>
+              ・工程理解はあり<br>
+              ・弱点1つに集中修正<br>
+              ・次回も単独OK
+            </div>
+            <div style="background:#d4edda; padding:0.75rem; border-radius:8px; margin:0.5rem 0;">
+              <strong>🟩 70〜84点</strong><br>
+              ・標準合格<br>
+              ・再現性あり<br>
+              ・数を打たせてOK
+            </div>
+            <div style="background:#cce5ff; padding:0.75rem; border-radius:8px; margin:0.5rem 0;">
+              <strong>🟦 85点以上</strong><br>
+              ・上位営業<br>
+              ・トーク共有対象<br>
+              ・ロープレ講師候補
+            </div>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span class="faq-icon">🔁</span>
+            <span>運用ルール</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <p><strong>❌ やらないこと</strong></p>
+            <p>・点数で叱らない</p>
+            <p>・受注率と直結させない</p>
+            <br>
+            <p><strong>⭕ やること</strong></p>
+            <p>・「0点項目」を1つだけ直す</p>
+            <p>・次回商談で同項目を再評価</p>
+          </div>
+        </div>
+      </div>
+
       <!-- 問い合わせ対応 -->
       <div class="card">
         <div class="card-header">
