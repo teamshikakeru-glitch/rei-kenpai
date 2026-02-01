@@ -951,7 +951,8 @@
   <main class="main">
     <!-- ホーム -->
     <div class="page active" id="page-home">
-      <!-- プロフィールカード（ゲーミフィケーション） -->
+      
+      <!-- 1. ランキング（プロフィールカード内） -->
       <div class="profile-card">
         <div class="profile-header">
           <div class="profile-avatar" id="profileAvatar">👤</div>
@@ -962,12 +963,11 @@
               <span id="levelText">Lv.1 新人営業</span>
             </div>
           </div>
-        </div>
-        <!-- 売上高をメインに表示 -->
-        <div style="text-align:center; margin:1rem 0; padding:1rem; background:rgba(255,255,255,0.15); border-radius:12px;">
-          <div style="font-size:0.75rem; opacity:0.9;">今月の売上高</div>
-          <div style="font-size:2.2rem; font-weight:800;" id="profileSales">¥0</div>
-          <div style="font-size:0.7rem; opacity:0.8;">成約 <span id="profileClosedCount">0</span>社 × 500万円</div>
+          <!-- ランキングを目立つ位置に -->
+          <div style="text-align:center; background:rgba(255,255,255,0.2); padding:0.5rem 1rem; border-radius:12px;">
+            <div style="font-size:1.8rem; font-weight:800;" id="profileRank">-</div>
+            <div style="font-size:0.65rem; opacity:0.9;">ランキング</div>
+          </div>
         </div>
         <div class="profile-stats">
           <div class="profile-stat">
@@ -979,12 +979,21 @@
             <div class="profile-stat-label">商談中</div>
           </div>
           <div class="profile-stat">
-            <div class="profile-stat-value" id="profileRank">-</div>
-            <div class="profile-stat-label">ランキング</div>
+            <div class="profile-stat-value" id="profileProspect">0</div>
+            <div class="profile-stat-label">見込み</div>
           </div>
         </div>
         <div class="badge-collection" id="badgeCollection">
           <!-- バッジはJSで動的生成 -->
+        </div>
+      </div>
+
+      <!-- 2. 売上高 -->
+      <div class="card" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+        <div class="card-body" style="text-align:center; padding:1.5rem;">
+          <div style="font-size:0.85rem; opacity:0.9;">💰 今月の売上高</div>
+          <div style="font-size:2.5rem; font-weight:800;" id="profileSales">¥0</div>
+          <div style="font-size:0.8rem; opacity:0.8;">成約 <span id="profileClosedCount">0</span>社 × 500万円</div>
         </div>
       </div>
 
@@ -997,6 +1006,7 @@
         </div>
       </div>
 
+      <!-- 通知カード（条件付き表示） -->
       <div class="card" id="newNotifCard" style="display:none; background:linear-gradient(135deg, #ff6b6b, #ee5a5a); color:white;">
         <div class="card-body" onclick="switchPage('notifications')" style="cursor:pointer;">
           <div style="display:flex; align-items:center; gap:0.75rem;">
@@ -1010,20 +1020,33 @@
         </div>
       </div>
 
-      <div class="card" id="newTodoCard" style="display:none; background:linear-gradient(135deg, #ffc107, #e0a800); color:#1a1f2e;">
-        <div class="card-body" onclick="switchPage('mytodos')" style="cursor:pointer;">
-          <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div style="font-size:1.5rem;">📋</div>
-            <div style="flex:1;">
-              <div style="font-weight:600;" id="newTodoTitle">未完了のTODOがあります</div>
-              <div style="font-size:0.8rem; opacity:0.9;" id="newTodoPreview"></div>
-            </div>
-            <div style="font-size:1.2rem;">→</div>
+      <!-- 3. 進捗サマリー -->
+      <div class="card" id="kpiCalcCard">
+        <div class="card-header">
+          <span class="card-title">📊 進捗サマリー</span>
+        </div>
+        <div class="card-body" style="font-size:0.85rem;">
+          <div id="kpiCalcContent">
+            <div style="color:#8a8a8a; text-align:center;">目標を設定すると計算結果が表示されます</div>
           </div>
         </div>
       </div>
 
-      <!-- 今月の目標（改善版） -->
+      <!-- フォローアップアラート -->
+      <div class="alert-card" id="followupAlert" style="display:none;">
+        <div class="alert-card-title">⚠️ フォローが必要な案件</div>
+        <div id="followupList"></div>
+      </div>
+
+      <!-- 4. 今日の予定 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📅 今日の予定</span>
+        </div>
+        <div id="todaySchedule"></div>
+      </div>
+
+      <!-- 5. 月の目標 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">🎯 今月の目標</span>
@@ -1085,59 +1108,27 @@
         </div>
       </div>
 
-      <!-- KPI計算ロジック表示（改善版） -->
-      <div class="card" id="kpiCalcCard">
-        <div class="card-header">
-          <span class="card-title">📊 進捗サマリー</span>
-        </div>
-        <div class="card-body" style="font-size:0.85rem;">
-          <div id="kpiCalcContent">
-            <div style="color:#8a8a8a; text-align:center;">目標を設定すると計算結果が表示されます</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="alert-card" id="followupAlert" style="display:none;">
-        <div class="alert-card-title">⚠️ フォローが必要な案件</div>
-        <div id="followupList"></div>
-      </div>
-
-      <!-- 実績サマリー（改善版） -->
-      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.75rem; margin-bottom:1rem;">
-        <div class="stat-card" style="text-align:center;">
-          <div style="font-size:2rem; font-weight:800; color:#2d5a47;" id="statMyVisits">0</div>
-          <div class="stat-label">今月の訪問</div>
-        </div>
-        <div class="stat-card" style="text-align:center;">
-          <div style="font-size:2rem; font-weight:800; color:#2d5a47;" id="statClosed">0</div>
-          <div class="stat-label">成約</div>
-        </div>
-      </div>
-      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.75rem;">
-        <div class="stat-card" style="text-align:center;">
-          <div style="font-size:2rem; font-weight:800; color:#ffc107;" id="statNegotiating">0</div>
-          <div class="stat-label">商談中</div>
-        </div>
-        <div class="stat-card" style="text-align:center;">
-          <div style="font-size:1.5rem; font-weight:700; color:#2d5a47;" id="statExpense">¥0</div>
-          <div class="stat-label">今月の経費</div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:1rem;">
-        <div class="card-header">
-          <span class="card-title">📅 今日の予定</span>
-        </div>
-        <div id="todaySchedule"></div>
-      </div>
-
-      <!-- 担当会社一覧（新規追加） -->
+      <!-- 6. 担当会社 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">🏢 担当会社</span>
           <button class="btn btn-sm btn-secondary" onclick="switchPage('prospects')">すべて見る</button>
         </div>
         <div id="myProspectsList"></div>
+      </div>
+
+      <!-- 7. TODO -->
+      <div class="card" id="newTodoCard" style="display:none; background:linear-gradient(135deg, #ffc107, #e0a800); color:#1a1f2e;">
+        <div class="card-body" onclick="switchPage('mytodos')" style="cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="font-size:1.5rem;">📋</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;" id="newTodoTitle">未完了のTODOがあります</div>
+              <div style="font-size:0.8rem; opacity:0.9;" id="newTodoPreview"></div>
+            </div>
+            <div style="font-size:1.2rem;">→</div>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -3735,10 +3726,13 @@ function setBarColor(barId, pct, isOver) {
 function updateProfileCard() {
   var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
   var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
-  var nego = myProspects.filter(function(p) { return p.status === '商談中' || p.status === '見込み'; }).length;
+  var nego = myProspects.filter(function(p) { return p.status === '商談中'; }).length;
+  var prospect = myProspects.filter(function(p) { return p.status === '見込み'; }).length;
   
   document.getElementById('profileClosed').textContent = closed;
   document.getElementById('profileNego').textContent = nego;
+  var prospectEl = document.getElementById('profileProspect');
+  if (prospectEl) prospectEl.textContent = prospect;
   
   // 売上高を計算・表示（成約数 × 500万円）
   var sales = closed * 5000000;
@@ -3761,7 +3755,7 @@ function updateProfileCard() {
   document.getElementById('profileRank').textContent = myRank > 0 ? myRank + '位' : '-';
   
   // バッジ生成
-  updateBadges(closed, nego, myProspects.length);
+  updateBadges(closed, nego + prospect, myProspects.length);
 }
 
 function getLevelInfo(closedCount) {
