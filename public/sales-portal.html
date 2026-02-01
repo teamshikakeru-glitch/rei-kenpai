@@ -1314,45 +1314,115 @@
     <!-- 週報・月報 -->
     <div class="page" id="page-report">
       <button class="btn btn-secondary btn-sm" onclick="switchPage('more')" style="margin-bottom:1rem;">← 戻る</button>
+      
+      <!-- KPIサマリーカード -->
+      <div class="card" style="background: linear-gradient(135deg, #2d5a47, #3d7a5f); color: white; margin-bottom: 1rem;">
+        <div class="card-body">
+          <div style="text-align:center; margin-bottom:1rem;">
+            <div style="font-size:0.85rem; opacity:0.9;">今月の成績</div>
+            <div style="font-size:2rem; font-weight:700;" id="reportMainClosed">0</div>
+            <div style="font-size:0.85rem;">社 成約</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; text-align:center;">
+            <div style="background:rgba(255,255,255,0.1); padding:0.5rem; border-radius:8px;">
+              <div style="font-size:1.2rem; font-weight:700;" id="reportMainProspect">0</div>
+              <div style="font-size:0.7rem; opacity:0.8;">見込み</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.1); padding:0.5rem; border-radius:8px;">
+              <div style="font-size:1.2rem; font-weight:700;" id="reportMainNego">0</div>
+              <div style="font-size:0.7rem; opacity:0.8;">商談</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.1); padding:0.5rem; border-radius:8px;">
+              <div style="font-size:1.2rem; font-weight:700;" id="reportMainAppo">0</div>
+              <div style="font-size:0.7rem; opacity:0.8;">アポ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 転換率カード -->
       <div class="card">
         <div class="card-header">
-          <span class="card-title">📊 今月のレポート</span>
+          <span class="card-title">📈 転換率分析</span>
         </div>
         <div class="card-body">
-          <div class="report-section">
-            <div class="report-title">営業活動</div>
-            <div class="report-grid">
-              <div class="report-item">
-                <div class="report-value" id="reportVisits">0</div>
-                <div class="report-label">訪問</div>
-              </div>
-              <div class="report-item">
-                <div class="report-value" id="reportNego">0</div>
-                <div class="report-label">商談</div>
-              </div>
-              <div class="report-item">
-                <div class="report-value" id="reportClosed">0</div>
-                <div class="report-label">成約</div>
-              </div>
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="font-size:0.85rem;">β アポ → 商談</span>
+              <span style="font-weight:600;" id="reportBetaRate">0%</span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" id="reportBetaBar" style="width:0%"></div></div>
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#8a8a8a; margin-top:0.25rem;">
+              <span>目標: 70%</span>
+              <span id="reportBetaStatus">-</span>
             </div>
           </div>
-          <div class="report-section">
-            <div class="report-title">経費</div>
-            <div class="report-grid">
-              <div class="report-item">
-                <div class="report-value" id="reportExpense">¥0</div>
-                <div class="report-label">合計</div>
-              </div>
-              <div class="report-item">
-                <div class="report-value" id="reportExpenseCount">0</div>
-                <div class="report-label">件数</div>
-              </div>
-              <div class="report-item">
-                <div class="report-value" id="reportTransport">¥0</div>
-                <div class="report-label">交通費</div>
-              </div>
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="font-size:0.85rem;">γ 商談 → 見込み</span>
+              <span style="font-weight:600;" id="reportGammaRate">0%</span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" id="reportGammaBar" style="width:0%"></div></div>
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#8a8a8a; margin-top:0.25rem;">
+              <span>目標: 50%</span>
+              <span id="reportGammaStatus">-</span>
             </div>
           </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="font-size:0.85rem;">δ 見込み → 受注</span>
+              <span style="font-weight:600;" id="reportDeltaRate">0%</span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" id="reportDeltaBar" style="width:0%"></div></div>
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#8a8a8a; margin-top:0.25rem;">
+              <span>目標: 10%</span>
+              <span id="reportDeltaStatus">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ファネル分析 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🔻 ファネル分析</span>
+        </div>
+        <div class="card-body" id="funnelAnalysis">
+          <!-- JSで動的生成 -->
+        </div>
+      </div>
+
+      <!-- 目標達成状況 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🎯 目標達成状況</span>
+        </div>
+        <div class="card-body" id="goalAchievement">
+          <!-- JSで動的生成 -->
+        </div>
+      </div>
+
+      <!-- 経費サマリー -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">💰 経費サマリー</span>
+        </div>
+        <div class="card-body">
+          <div class="report-grid">
+            <div class="report-item">
+              <div class="report-value" id="reportExpense">¥0</div>
+              <div class="report-label">合計</div>
+            </div>
+            <div class="report-item">
+              <div class="report-value" id="reportExpenseCount">0</div>
+              <div class="report-label">件数</div>
+            </div>
+            <div class="report-item">
+              <div class="report-value" id="reportTransport">¥0</div>
+              <div class="report-label">交通費</div>
+            </div>
+          </div>
+          <div id="expenseBreakdown" style="margin-top:1rem;"></div>
         </div>
       </div>
     </div>
@@ -2843,13 +2913,60 @@ function renderRanking() {
 
 function updateReport() {
   var myProspects = prospects.filter(function(p) { return p.assigned_to === currentUser.id; });
-  var visits = myProspects.filter(function(p) { return p.status !== '未訪問'; }).length;
-  var nego = myProspects.filter(function(p) { return p.status === '商談中'; }).length;
+  
+  // 各ステータスの件数を計算
+  var appo = myProspects.filter(function(p) { return p.status === '訪問済み' || p.status === '商談中' || p.status === '見込み' || p.status === '成約'; }).length;
+  var nego = myProspects.filter(function(p) { return p.status === '商談中' || p.status === '見込み' || p.status === '成約'; }).length;
+  var prospect = myProspects.filter(function(p) { return p.status === '見込み' || p.status === '成約'; }).length;
   var closed = myProspects.filter(function(p) { return p.status === '成約'; }).length;
+  
+  // メイン数値を更新
+  document.getElementById('reportMainClosed').textContent = closed;
+  document.getElementById('reportMainProspect').textContent = prospect;
+  document.getElementById('reportMainNego').textContent = nego;
+  document.getElementById('reportMainAppo').textContent = appo;
+  
+  // 転換率を計算
+  var betaRate = appo > 0 ? Math.round((nego / appo) * 100) : 0;
+  var gammaRate = nego > 0 ? Math.round((prospect / nego) * 100) : 0;
+  var deltaRate = prospect > 0 ? Math.round((closed / prospect) * 100) : 0;
+  
+  // 転換率を表示
+  document.getElementById('reportBetaRate').textContent = betaRate + '%';
+  document.getElementById('reportGammaRate').textContent = gammaRate + '%';
+  document.getElementById('reportDeltaRate').textContent = deltaRate + '%';
+  
+  // バーの幅と色を設定
+  var betaBar = document.getElementById('reportBetaBar');
+  var gammaBar = document.getElementById('reportGammaBar');
+  var deltaBar = document.getElementById('reportDeltaBar');
+  
+  betaBar.style.width = Math.min(100, betaRate) + '%';
+  gammaBar.style.width = Math.min(100, gammaRate) + '%';
+  deltaBar.style.width = Math.min(100, deltaRate * 5) + '%'; // δは10%が100%になるようスケール
+  
+  // 色の設定
+  setBarColor('reportBetaBar', betaRate >= 70 ? 100 : betaRate * 100 / 70, betaRate >= 70);
+  setBarColor('reportGammaBar', gammaRate >= 50 ? 100 : gammaRate * 100 / 50, gammaRate >= 50);
+  setBarColor('reportDeltaBar', deltaRate >= 10 ? 100 : deltaRate * 100 / 10, deltaRate >= 10);
+  
+  // ステータス表示
+  document.getElementById('reportBetaStatus').innerHTML = betaRate >= 70 ? '<span style="color:#28a745;">✓ 達成</span>' : '<span style="color:#dc3545;">あと' + (70 - betaRate) + 'pt</span>';
+  document.getElementById('reportGammaStatus').innerHTML = gammaRate >= 50 ? '<span style="color:#28a745;">✓ 達成</span>' : '<span style="color:#dc3545;">あと' + (50 - gammaRate) + 'pt</span>';
+  document.getElementById('reportDeltaStatus').innerHTML = deltaRate >= 10 ? '<span style="color:#28a745;">✓ 達成</span>' : '<span style="color:#dc3545;">あと' + (10 - deltaRate) + 'pt</span>';
+  
+  // ファネル分析
+  renderFunnelAnalysis(appo, nego, prospect, closed);
+  
+  // 目標達成状況
+  renderGoalAchievement(appo, nego, prospect, closed);
+  
+  // 経費計算
   var now = new Date();
   var thisMonth = now.getMonth();
   var thisYear = now.getFullYear();
   var monthExp = 0, expCount = 0, transport = 0;
+  var categoryTotals = {};
   for (var i = 0; i < expenses.length; i++) {
     var e = expenses[i];
     var d = new Date(e.expense_date);
@@ -2857,14 +2974,111 @@ function updateReport() {
       monthExp += e.amount;
       expCount++;
       if (e.category === '交通費' || e.category === 'ガソリン代') transport += e.amount;
+      categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.amount;
     }
   }
-  document.getElementById('reportVisits').textContent = visits;
-  document.getElementById('reportNego').textContent = nego;
-  document.getElementById('reportClosed').textContent = closed;
   document.getElementById('reportExpense').textContent = '¥' + monthExp.toLocaleString();
   document.getElementById('reportExpenseCount').textContent = expCount;
   document.getElementById('reportTransport').textContent = '¥' + transport.toLocaleString();
+  
+  // 経費内訳
+  var breakdownHtml = '';
+  Object.keys(categoryTotals).forEach(function(cat) {
+    var pct = monthExp > 0 ? Math.round((categoryTotals[cat] / monthExp) * 100) : 0;
+    breakdownHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0; border-bottom:1px solid #f0f0f0;">';
+    breakdownHtml += '<span style="font-size:0.85rem;">' + cat + '</span>';
+    breakdownHtml += '<span style="font-weight:600;">¥' + categoryTotals[cat].toLocaleString() + ' <span style="font-size:0.7rem; color:#8a8a8a;">(' + pct + '%)</span></span>';
+    breakdownHtml += '</div>';
+  });
+  document.getElementById('expenseBreakdown').innerHTML = breakdownHtml;
+}
+
+function renderFunnelAnalysis(appo, nego, prospect, closed) {
+  var maxWidth = appo || 1;
+  var html = '';
+  
+  var stages = [
+    { label: 'アポ（訪問済み〜）', value: appo, color: '#17a2b8' },
+    { label: '商談（商談中〜）', value: nego, color: '#ffc107' },
+    { label: '見込み（見込み〜）', value: prospect, color: '#fd7e14' },
+    { label: '成約', value: closed, color: '#28a745' }
+  ];
+  
+  stages.forEach(function(s, i) {
+    var width = maxWidth > 0 ? Math.max(20, (s.value / maxWidth) * 100) : 20;
+    var dropRate = i > 0 && stages[i-1].value > 0 ? Math.round(((stages[i-1].value - s.value) / stages[i-1].value) * 100) : 0;
+    
+    html += '<div style="margin-bottom:0.75rem;">';
+    html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">';
+    html += '<span style="font-size:0.8rem;">' + s.label + '</span>';
+    html += '<span style="font-weight:600;">' + s.value + '件</span>';
+    html += '</div>';
+    html += '<div style="background:#e5e2dd; border-radius:4px; overflow:hidden;">';
+    html += '<div style="width:' + width + '%; height:24px; background:' + s.color + '; border-radius:4px; transition:width 0.5s;"></div>';
+    html += '</div>';
+    if (i > 0 && dropRate > 0) {
+      html += '<div style="font-size:0.7rem; color:#dc3545; text-align:right; margin-top:0.15rem;">↓ ' + dropRate + '% 離脱</div>';
+    }
+    html += '</div>';
+  });
+  
+  document.getElementById('funnelAnalysis').innerHTML = html;
+}
+
+function renderGoalAchievement(appo, nego, prospect, closed) {
+  var closedTarget = myGoal ? myGoal.closed_goal : 0;
+  var prospectTarget = Math.ceil(closedTarget / 0.10);
+  var negoTarget = Math.ceil(prospectTarget / 0.50);
+  var appoTarget = Math.ceil(negoTarget / 0.70);
+  
+  if (!closedTarget) {
+    document.getElementById('goalAchievement').innerHTML = '<div style="text-align:center; color:#8a8a8a; padding:1rem;">目標を設定すると達成状況が表示されます</div>';
+    return;
+  }
+  
+  var items = [
+    { label: '受注', current: closed, target: closedTarget, icon: '🏆' },
+    { label: '見込み', current: prospect, target: prospectTarget, icon: '🔥' },
+    { label: '商談', current: nego, target: negoTarget, icon: '💼' },
+    { label: 'アポ', current: appo, target: appoTarget, icon: '📞' }
+  ];
+  
+  var html = '';
+  items.forEach(function(item) {
+    var pct = item.target > 0 ? Math.round((item.current / item.target) * 100) : 0;
+    var isAchieved = item.current >= item.target;
+    var color = isAchieved ? '#28a745' : (pct >= 50 ? '#ffc107' : '#dc3545');
+    
+    html += '<div style="display:flex; align-items:center; gap:0.75rem; padding:0.75rem 0; border-bottom:1px solid #f0f0f0;">';
+    html += '<div style="font-size:1.2rem;">' + item.icon + '</div>';
+    html += '<div style="flex:1;">';
+    html += '<div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">';
+    html += '<span style="font-size:0.85rem;">' + item.label + '</span>';
+    html += '<span style="font-weight:600;">' + item.current + ' / ' + item.target + '</span>';
+    html += '</div>';
+    html += '<div class="goal-bar" style="height:8px;"><div class="goal-fill" style="width:' + Math.min(100, pct) + '%; background:' + color + ';"></div></div>';
+    html += '</div>';
+    html += '<div style="font-weight:700; color:' + color + '; min-width:50px; text-align:right;">' + pct + '%</div>';
+    html += '</div>';
+  });
+  
+  // 残り日数と必要ペース
+  var now = new Date();
+  var lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  var remainingDays = lastDay - now.getDate();
+  var remainingWorkDays = Math.ceil(remainingDays * 5 / 7); // 営業日概算
+  var remainingAppo = Math.max(0, appoTarget - appo);
+  var dailyPace = remainingWorkDays > 0 ? Math.ceil(remainingAppo / remainingWorkDays) : remainingAppo;
+  
+  html += '<div style="margin-top:1rem; padding:1rem; background:#f5f6fa; border-radius:8px;">';
+  html += '<div style="font-weight:600; margin-bottom:0.5rem;">📅 残り期間</div>';
+  html += '<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; text-align:center;">';
+  html += '<div><div style="font-size:1.2rem; font-weight:700;">' + remainingDays + '</div><div style="font-size:0.7rem; color:#8a8a8a;">残り日数</div></div>';
+  html += '<div><div style="font-size:1.2rem; font-weight:700;">' + remainingAppo + '</div><div style="font-size:0.7rem; color:#8a8a8a;">残りアポ</div></div>';
+  html += '<div><div style="font-size:1.2rem; font-weight:700; color:' + (dailyPace > 10 ? '#dc3545' : '#28a745') + ';">' + dailyPace + '</div><div style="font-size:0.7rem; color:#8a8a8a;">件/日</div></div>';
+  html += '</div></div>';
+  
+  document.getElementById('goalAchievement').innerHTML = html;
 }
 
 function renderNotifications() {
