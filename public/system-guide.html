@@ -32,6 +32,7 @@
       --color-primary-pale: #e8f0ec;
       --color-accent: #c9a962;
       --color-accent-light: #f5f0e0;
+      --color-accent-dark: #8b7355;
       --color-text: #2c2c2c;
       --color-text-light: #5a5a5a;
       --color-text-muted: #8a8a8a;
@@ -236,19 +237,20 @@
       font-weight: 700;
       font-size: 0.95rem;
       margin-bottom: 0.5rem;
+      color: #ffffff;
     }
     .point-box p {
-      color: var(--color-white);
+      color: #ffffff;
       opacity: 0.95;
       margin: 0;
       font-size: 0.9rem;
       line-height: 1.7;
     }
 
-    /* Accent Box */
+    /* Accent Box - 修正：背景を濃くして文字を見やすく */
     .accent-box {
-      background: linear-gradient(135deg, var(--color-accent) 0%, #d4b56a 100%);
-      color: var(--color-white);
+      background: linear-gradient(135deg, #8b6914 0%, #a67c00 100%);
+      color: #ffffff;
       border-radius: 10px;
       padding: 1.25rem;
       margin: 1.25rem 0;
@@ -257,12 +259,16 @@
       font-weight: 700;
       font-size: 1rem;
       margin-bottom: 0.75rem;
+      color: #ffffff;
     }
     .accent-box p {
-      color: var(--color-white);
+      color: #ffffff;
       margin: 0;
       line-height: 1.7;
       font-size: 0.9rem;
+    }
+    .accent-box strong {
+      color: #ffffff;
     }
 
     /* Flow - Vertical for mobile */
@@ -456,7 +462,7 @@
       border-bottom: none;
     }
     .fee-row.highlight .fee-percent {
-      color: var(--color-accent);
+      color: #8b6914;
       font-weight: 700;
       font-size: 1.2rem;
     }
@@ -611,16 +617,18 @@
       font-family: 'Shippori Mincho', serif;
       font-size: 1.2rem;
       margin-bottom: 0.75rem;
+      color: #ffffff;
     }
     .cta p {
       opacity: 0.9;
       margin-bottom: 1.25rem;
       font-size: 0.9rem;
+      color: #ffffff;
     }
     .cta-btn {
       display: block;
       background: var(--color-accent);
-      color: var(--color-white);
+      color: #ffffff;
       padding: 1rem 2rem;
       border-radius: 100px;
       text-decoration: none;
@@ -640,7 +648,7 @@
       font-size: 0.8rem;
     }
 
-    /* Try Box - 体験セクション */
+    /* Try Box - 体験セクション - 修正：すべてのテキストを白に */
     .try-box {
       background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
       border-radius: 12px;
@@ -729,6 +737,9 @@
     .try-example span:last-child {
       margin-bottom: 0;
     }
+    .try-example strong {
+      color: #ffffff;
+    }
     .try-note {
       background: var(--color-accent-light);
       border-radius: 10px;
@@ -737,6 +748,9 @@
       color: var(--color-text);
       margin-top: 1rem;
       line-height: 1.6;
+    }
+    .try-note strong {
+      color: var(--color-text);
     }
     .try-warning {
       background: #fff5f5;
@@ -747,6 +761,9 @@
       color: #dc3545;
       margin-top: 1rem;
       line-height: 1.6;
+    }
+    .try-warning strong {
+      color: #dc3545;
     }
   </style>
 </head>
@@ -1032,8 +1049,8 @@
       <div class="price-section">
         <div class="price-item">
           <div class="price-label">初期導入費用</div>
-          <div class="price-value">500万円</div>
-          <div class="price-note">システム利用開始時に1回のみ</div>
+          <div class="price-value">0円</div>
+          <div class="price-note">初期費用は一切かかりません</div>
         </div>
         <div class="price-item">
           <div class="price-label">月額費用</div>
@@ -1076,8 +1093,8 @@
       <h3>導入の流れ</h3>
       <div class="flow">
         <div class="flow-item"><div class="flow-number">1</div><div class="flow-content"><h4>お問い合わせ</h4><p>システムのご説明</p></div></div>
-        <div class="flow-item"><div class="flow-number">2</div><div class="flow-content"><h4>ご契約・お支払い</h4><p>契約書締結、初期費用お支払い</p></div></div>
-        <div class="flow-item"><div class="flow-number">3</div><div class="flow-content"><h4>利用開始</h4><p><strong>入金確認後、即日利用可能</strong></p></div></div>
+        <div class="flow-item"><div class="flow-number">2</div><div class="flow-content"><h4>ご契約</h4><p>契約書締結</p></div></div>
+        <div class="flow-item"><div class="flow-number">3</div><div class="flow-content"><h4>利用開始</h4><p><strong>契約後、即日利用可能</strong></p></div></div>
       </div>
 
       <h3>よくある質問</h3>
@@ -1108,19 +1125,13 @@
         <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p><strong>献杯するのは「参列できない方」</strong>です。遠方の方、仕事で忙しい方が中心。比較的若い世代が多いです。<br><br>ご遺族は「見るだけ」なので複雑な操作は不要です。</p></div>
       </div>
 
-      <h3>③「500万円は高い」</h3>
-      <div class="talk-script">
-        <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「初期費用500万円は高いです…」</p></div>
-        <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p>ポイントは<strong>「月額費用が無料」</strong>という点です。<br><br>多くのシステムは月額費用がかかり、総コストが増えます。Reiは初期費用のみなので、長く使うほどメリットが出ます。<br><br>88.4%還元を実現するため、利益を最小限に抑えています。</p></div>
-      </div>
-
-      <h3>④「従来のやり方で十分」</h3>
+      <h3>③「従来のやり方で十分」</h3>
       <div class="talk-script">
         <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「今のやり方で十分です…」</p></div>
         <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p>Reiは従来を<strong>「置き換える」のではなく「選択肢を増やす」</strong>ものです。<br><br>参列できる方は従来通り。できない方にはReiという選択肢を。<br><br><strong>何より「他社見積もりに勝ちやすくなる」</strong>メリットがあります。</p></div>
       </div>
 
-      <h3>⑤「セキュリティが心配」</h3>
+      <h3>④「セキュリティが心配」</h3>
       <div class="talk-script">
         <div class="talk-question"><div class="talk-question-label">👤 葬儀社様</div><p>「個人情報の漏洩が心配です…」</p></div>
         <div class="talk-answer"><div class="talk-answer-label">💬 回答例</div><p><strong>①葬儀社ごとの完全データ分離</strong><br>他社データは一切見えません。<br><br><strong>②ご遺族ポータルのパスワード保護</strong><br>設定したパスワードで保護。<br><br><strong>③決済はStripe</strong><br>カード情報はReiに保存されません。</p></div>
