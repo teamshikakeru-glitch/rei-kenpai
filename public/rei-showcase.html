@@ -440,6 +440,7 @@ body::before {
   gap: 10px;
   font-size: 0.82rem;
   color: var(--t2);
+  flex: 1;
 }
 
 .demo-feature-dot {
@@ -471,6 +472,37 @@ body::before {
 
 .demo-card:hover .demo-card-btn-arrow {
   transform: translateX(4px);
+}
+
+.demo-feature-pt {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--gold);
+  opacity: 0.7;
+  flex-shrink: 0;
+  padding-left: 8px;
+}
+
+.demo-card-total {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gold);
+  background: var(--gold-g);
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  letter-spacing: 0.3px;
+}
+
+.demo-card-notice {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(37,43,61,0.5);
+  font-size: 0.7rem;
+  color: var(--t3);
+  line-height: 1.6;
+  letter-spacing: 0.3px;
 }
 
 /* ============ FEATURES GRID ============ */
@@ -1118,14 +1150,16 @@ body::before {
         数字に基づいた経営判断を支えます。
       </div>
       <div class="demo-card-features">
-        <div class="demo-feature"><div class="demo-feature-dot"></div>見積もり自動作成（プラン選択式）</div>
-        <div class="demo-feature"><div class="demo-feature-dot"></div>施主・故人の一元管理</div>
-        <div class="demo-feature"><div class="demo-feature-dot"></div>月別・年別の施行件数推移</div>
-        <div class="demo-feature"><div class="demo-feature-dot"></div>担当者別 売上・件数の可視化</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>見積もり自動作成（プラン選択式）<span class="demo-feature-pt">4pt</span></div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>施主・故人情報の一元管理<span class="demo-feature-pt">2pt</span></div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>月別・年別の施行件数表示<span class="demo-feature-pt">2pt</span></div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>担当者別の売上・件数集計<span class="demo-feature-pt">2pt</span></div>
       </div>
+      <div class="demo-card-total">搭載機能：4機能 / 合計 10pt</div>
       <div class="demo-card-btn">
         経営者デモを見る <span class="demo-card-btn-arrow">→</span>
       </div>
+      <div class="demo-card-notice">※ これはデモ画面です。実際の導入時は御社の情報に合わせてカスタマイズします。</div>
     </a>
 
     <!-- Staff Demo -->
@@ -1138,14 +1172,16 @@ body::before {
         移動中でも案件確認・見積作成が可能です。
       </div>
       <div class="demo-card-features">
-        <div class="demo-feature"><div class="demo-feature-dot"></div>担当案件の一覧・進捗管理</div>
-        <div class="demo-feature"><div class="demo-feature-dot"></div>ワンタップ見積作成</div>
-        <div class="demo-feature"><div class="demo-feature-dot"></div>本日のスケジュール管理</div>
-        <div class="demo-feature"><div class="demo-feature-dot"></div>顧客情報の登録・編集・検索</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>担当案件の一覧・進捗管理<span class="demo-feature-pt">—</span></div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>ワンタップ見積作成<span class="demo-feature-pt">—</span></div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>本日のスケジュール管理<span class="demo-feature-pt">—</span></div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>顧客情報の登録・編集・検索<span class="demo-feature-pt">—</span></div>
       </div>
+      <div class="demo-card-total">※ 経営者画面の機能がスタッフ目線で使えます</div>
       <div class="demo-card-btn">
         スタッフデモを見る <span class="demo-card-btn-arrow">→</span>
       </div>
+      <div class="demo-card-notice">※ これはデモ画面です。実際の導入時は御社の情報に合わせてカスタマイズします。</div>
     </a>
   </div>
 </section>
