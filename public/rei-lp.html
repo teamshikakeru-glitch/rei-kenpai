@@ -621,9 +621,14 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 </footer>
 
 <script>
-// Scroll to top on page load
+// Force scroll to top on page load (override anchor hash)
 if('scrollRestoration' in history) history.scrollRestoration='manual';
 window.scrollTo(0,0);
+if(window.location.hash){
+  history.replaceState(null,null,' ');
+  window.scrollTo(0,0);
+}
+window.addEventListener('load',function(){window.scrollTo(0,0)});
 
 // Reveal animations
 const els=document.querySelectorAll('.reveal');
