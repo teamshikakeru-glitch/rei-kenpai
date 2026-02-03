@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>礼カスタム — 葬儀社業務システム デモ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & VARIABLES ============ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg-primary: #0f1117;
+  --bg-secondary: #181b25;
+  --bg-card: #1e2230;
+  --bg-card-hover: #252a3a;
+  --border: #2a2f42;
+  --border-light: #353b52;
+  --text-primary: #e8eaf0;
+  --text-secondary: #9399ad;
+  --text-muted: #5f6580;
+  --accent: #c9a96e;
+  --accent-light: #dfc48e;
+  --accent-dark: #a6863f;
+  --accent-glow: rgba(201,169,110,0.15);
+  --success: #5cb87a;
+  --danger: #e05c5c;
+  --info: #5c9de0;
+  --warning: #e0a85c;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============ LAYOUT ============ */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  transition: transform var(--transition);
+}
+
+.sidebar-header {
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f1117;
+  letter-spacing: -1px;
+}
+
+.logo-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.logo-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 12px 12px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 400;
+  transition: all var(--transition);
+  margin-bottom: 2px;
+  border: 1px solid transparent;
+}
+
+.nav-item:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-color: rgba(201,169,110,0.2);
+  font-weight: 500;
+}
+
+.nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(201,169,110,0.1);
+  color: var(--accent);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.demo-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+.main-header {
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-secondary);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.main-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.main-title-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-company {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.header-avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f1117;
+}
+
+.main-body {
+  padding: 28px 32px;
+}
+
+/* Page sections */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.35s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ CARDS ============ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: border-color var(--transition);
+}
+
+.card:hover {
+  border-color: var(--border-light);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+.card-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ============ STATS GRID ============ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--stat-color, var(--accent));
+}
+
+.stat-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+}
+
+.stat-label {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 8px;
+  line-height: 1;
+}
+
+.stat-unit {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.stat-change {
+  font-size: 0.72rem;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.stat-change.up { color: var(--success); }
+.stat-change.down { color: var(--danger); }
+
+/* ============ TABLE ============ */
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px;
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(42,47,66,0.5);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+tr:hover td {
+  background: rgba(30,34,48,0.5);
+  color: var(--text-primary);
+}
+
+/* ============ BUTTONS ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  font-family: inherit;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #0f1117;
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 20px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.78rem;
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-icon:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ============ FORM ELEMENTS ============ */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: inherit;
+  transition: border-color var(--transition);
+  outline: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent);
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239399ad' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ============ TAGS & BADGES ============ */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.tag-success { background: rgba(92,184,122,0.15); color: var(--success); }
+.tag-danger { background: rgba(224,92,92,0.15); color: var(--danger); }
+.tag-info { background: rgba(92,157,224,0.15); color: var(--info); }
+.tag-warning { background: rgba(224,168,92,0.15); color: var(--warning); }
+.tag-accent { background: var(--accent-glow); color: var(--accent); }
+
+/* ============ CHARTS (CSS only) ============ */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 200px;
+  padding-top: 20px;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 100%;
+  max-width: 40px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+  transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  min-height: 4px;
+}
+
+.bar:hover {
+  filter: brightness(1.2);
+}
+
+.bar-value {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.bar-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.bar-chart-secondary .bar {
+  background: linear-gradient(180deg, var(--info), #3a6fad);
+}
+
+/* Horizontal bar chart */
+.h-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.h-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.h-bar-name {
+  width: 80px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.h-bar-track {
+  flex: 1;
+  height: 28px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.h-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.h-bar-val {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0f1117;
+}
+
+.h-bar-amount {
+  width: 90px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ============ ESTIMATE BUILDER ============ */
+.estimate-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+}
+
+.plan-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.plan-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+  position: relative;
+}
+
+.plan-card:hover {
+  border-color: var(--border-light);
+}
+
+.plan-card.selected {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.plan-card.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.plan-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.plan-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.plan-price-unit {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.plan-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.option-item:hover {
+  border-color: var(--border-light);
+}
+
+.option-item.on {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.option-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.option-toggle {
+  width: 36px;
+  height: 20px;
+  background: var(--border);
+  border-radius: 10px;
+  position: relative;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+
+.option-toggle::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: all var(--transition);
+}
+
+.option-item.on .option-toggle {
+  background: var(--accent);
+}
+
+.option-item.on .option-toggle::after {
+  left: 18px;
+  background: #0f1117;
+}
+
+.option-name {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.option-item.on .option-name {
+  color: var(--text-primary);
+}
+
+.option-price {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.option-item.on .option-price {
+  color: var(--accent);
+}
+
+/* Estimate summary panel */
+.estimate-summary {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: sticky;
+  top: 100px;
+}
+
+.summary-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.summary-item-name {
+  color: var(--text-secondary);
+}
+
+.summary-item-price {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.summary-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 16px 0;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.summary-total-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.summary-total-price {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.summary-total-tax {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+.summary-actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ============ CUSTOMER PAGE ============ */
+.search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-input-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+
+.search-input-wrap .form-input {
+  padding-left: 36px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Customer detail modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.show {
+  display: flex;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 640px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all var(--transition);
+}
+
+.modal-close:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.detail-item {
+  padding: 12px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+}
+
+.detail-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.detail-full {
+  grid-column: 1 / -1;
+}
+
+/* ============ GRID HELPERS ============ */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ============ RESPONSIVE ============ */
+.mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 150;
+  width: 40px;
+  height: 40px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .estimate-layout {
+    grid-template-columns: 1fr;
+  }
+  .estimate-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-toggle { display: flex; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .main-header { padding: 16px 16px 16px 60px; }
+  .main-body { padding: 16px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .plan-cards { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .modal { width: 95%; margin: 16px; }
+}
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
+
+/* ============ PRINT ESTIMATE ============ */
+.print-only { display: none; }
+
+@media print {
+  .sidebar, .main-header, .mobile-toggle, .btn, .nav-item { display: none !important; }
+  .main { margin-left: 0 !important; }
+  .main-body { padding: 0 !important; }
+  .page { display: none !important; }
+  .page.print-target { display: block !important; }
+  .print-only { display: block !important; }
+  .card { border: 1px solid #ccc !important; break-inside: avoid; }
+  body { background: #fff; color: #111; }
+  .stat-card::before { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Mobile toggle -->
+  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-mark">礼</div>
+        <div>
+          <div class="logo-text">礼 カスタム</div>
+          <div class="logo-sub">Funeral Management System</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">メイン</div>
+      <div class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">📊</span>
+        <span>ダッシュボード</span>
+      </div>
+
+      <div class="nav-section-label">業務</div>
+      <div class="nav-item" data-page="estimate">
+        <span class="nav-icon">📋</span>
+        <span>見積作成</span>
+      </div>
+      <div class="nav-item" data-page="customer">
+        <span class="nav-icon">👤</span>
+        <span>顧客管理</span>
+      </div>
+
+      <div class="nav-section-label">分析</div>
+      <div class="nav-item" data-page="cases">
+        <span class="nav-icon">📈</span>
+        <span>施行件数</span>
+      </div>
+      <div class="nav-item" data-page="sales">
+        <span class="nav-icon">💰</span>
+        <span>担当者別売上</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="demo-badge">DEMO MODE</div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+    <header class="main-header">
+      <div>
+        <div class="main-title" id="pageTitle">ダッシュボード</div>
+        <div class="main-title-sub" id="pageSubtitle">経営状況をひと目で把握</div>
+      </div>
+      <div class="header-right">
+        <span class="header-company">サンプル葬儀社</span>
+        <div class="header-avatar">社</div>
+      </div>
+    </header>
+
+    <div class="main-body">
+
+      <!-- ===== DASHBOARD ===== -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card" style="--stat-color: var(--accent);">
+            <div class="stat-label">今月の施行件数</div>
+            <div class="stat-value">24<span class="stat-unit">件</span></div>
+            <div class="stat-change up">↑ 12% 前月比</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--info);">
+            <div class="stat-label">今月の売上</div>
+            <div class="stat-value">3,840<span class="stat-unit">万円</span></div>
+            <div class="stat-change up">↑ 8% 前月比</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--success);">
+            <div class="stat-label">平均単価</div>
+            <div class="stat-value">160<span class="stat-unit">万円</span></div>
+            <div class="stat-change down">↓ 3% 前月比</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--warning);">
+            <div class="stat-label">礼（献杯）件数</div>
+            <div class="stat-value">87<span class="stat-unit">件</span></div>
+            <div class="stat-change up">↑ 25% 前月比</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">月別施行件数</div>
+                <div class="card-subtitle">2025年度</div>
+              </div>
+            </div>
+            <div class="bar-chart" id="dashboardChart"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">担当者別 売上ランキング</div>
+                <div class="card-subtitle">今月</div>
+              </div>
+            </div>
+            <div class="h-bar-chart" id="dashboardRanking"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">直近の施行</div>
+              <div class="card-subtitle">最新10件</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>日付</th>
+                  <th>故人名</th>
+                  <th>施主名</th>
+                  <th>プラン</th>
+                  <th>金額</th>
+                  <th>担当</th>
+                  <th>ステータス</th>
+                </tr>
+              </thead>
+              <tbody id="recentCasesTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ESTIMATE ===== -->
+      <div class="page" id="page-estimate">
+        <div class="estimate-layout">
+          <div>
+            <!-- Step 1: Plan selection -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">STEP 1 — プラン選択</div>
+                  <div class="card-subtitle">ベースとなるプランを選んでください</div>
+                </div>
+              </div>
+              <div class="plan-cards" id="planCards"></div>
+            </div>
+
+            <!-- Step 2: Options -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">STEP 2 — オプション選択</div>
+                  <div class="card-subtitle">ON/OFFで金額が自動反映されます</div>
+                </div>
+              </div>
+              <div class="option-list" id="optionList"></div>
+            </div>
+
+            <!-- Step 3: Customer info -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">STEP 3 — 施主情報</div>
+                  <div class="card-subtitle">見積書に記載する情報</div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">施主名</label>
+                  <input class="form-input" id="estClientName" placeholder="例：山田 太郎" value="山田 太郎">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">故人名</label>
+                  <input class="form-input" id="estDeceasedName" placeholder="例：山田 花子" value="山田 花子">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">電話番号</label>
+                  <input class="form-input" id="estPhone" placeholder="090-xxxx-xxxx" value="090-1234-5678">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">施行予定日</label>
+                  <input class="form-input" type="date" id="estDate" value="2026-02-10">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">備考</label>
+                <textarea class="form-textarea" id="estNote" placeholder="特記事項があればご入力ください">家族葬を希望。参列者30名程度の見込み。</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary panel -->
+          <div>
+            <div class="estimate-summary">
+              <div class="summary-title">見積サマリー</div>
+              <div class="summary-items" id="summaryItems"></div>
+              <hr class="summary-divider">
+              <div class="summary-total">
+                <div class="summary-total-label">合計（税込）</div>
+                <div class="summary-total-price" id="summaryTotal">¥0</div>
+              </div>
+              <div class="summary-total-tax" id="summaryTax">（税抜: ¥0）</div>
+              <div class="summary-actions">
+                <button class="btn btn-primary" onclick="saveEstimate()" style="width:100%;justify-content:center;">
+                  💾 見積を保存
+                </button>
+                <button class="btn btn-secondary" onclick="printEstimate()" style="width:100%;justify-content:center;">
+                  🖨 印刷プレビュー
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CUSTOMER ===== -->
+      <div class="page" id="page-customer">
+        <div class="search-bar">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input class="form-input" id="customerSearch" placeholder="施主名・故人名で検索..." oninput="filterCustomers()">
+          </div>
+          <select class="form-select" id="customerAreaFilter" onchange="filterCustomers()" style="width:160px;">
+            <option value="">全エリア</option>
+            <option value="東京都">東京都</option>
+            <option value="神奈川県">神奈川県</option>
+            <option value="埼玉県">埼玉県</option>
+            <option value="千葉県">千葉県</option>
+          </select>
+          <select class="form-select" id="customerYearFilter" onchange="filterCustomers()" style="width:140px;">
+            <option value="">全期間</option>
+            <option value="2026">2026年</option>
+            <option value="2025">2025年</option>
+            <option value="2024">2024年</option>
+          </select>
+          <button class="btn btn-primary" onclick="showAddCustomerModal()">
+            ＋ 新規登録
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">顧客一覧</div>
+              <div class="card-subtitle" id="customerCount">全 0 件</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>施主名</th>
+                  <th>故人名</th>
+                  <th>施行日</th>
+                  <th>エリア</th>
+                  <th>プラン</th>
+                  <th>金額</th>
+                  <th>担当</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="customerTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CASES (施行件数) ===== -->
+      <div class="page" id="page-cases">
+        <div class="stats-grid">
+          <div class="stat-card" style="--stat-color: var(--accent);">
+            <div class="stat-label">年間施行件数</div>
+            <div class="stat-value">278<span class="stat-unit">件</span></div>
+            <div class="stat-change up">↑ 6% 前年比</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--info);">
+            <div class="stat-label">年間売上</div>
+            <div class="stat-value">4.45<span class="stat-unit">億円</span></div>
+            <div class="stat-change up">↑ 9% 前年比</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--success);">
+            <div class="stat-label">月間平均</div>
+            <div class="stat-value">23.2<span class="stat-unit">件</span></div>
+            <div class="stat-change">± 0%</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--warning);">
+            <div class="stat-label">最多月</div>
+            <div class="stat-value">1月<span class="stat-unit">32件</span></div>
+            <div class="stat-change up">繁忙期</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">月別施行件数推移</div>
+              <div class="card-subtitle">年度比較</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-sm btn-secondary year-btn active" data-year="2025" onclick="switchCaseYear(this)">2025年度</button>
+              <button class="btn btn-sm btn-secondary year-btn" data-year="2024" onclick="switchCaseYear(this)">2024年度</button>
+            </div>
+          </div>
+          <div class="bar-chart" id="casesChart" style="height:240px;"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">月別詳細データ</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>月</th>
+                  <th>施行件数</th>
+                  <th>売上</th>
+                  <th>平均単価</th>
+                  <th>前月比</th>
+                  <th>前年比</th>
+                </tr>
+              </thead>
+              <tbody id="casesTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SALES (担当者別売上) ===== -->
+      <div class="page" id="page-sales">
+        <div class="stats-grid">
+          <div class="stat-card" style="--stat-color: var(--accent);">
+            <div class="stat-label">担当者数</div>
+            <div class="stat-value">6<span class="stat-unit">名</span></div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--info);">
+            <div class="stat-label">今月トップ</div>
+            <div class="stat-value" style="font-size:1.3rem;">佐藤<span class="stat-unit">主任</span></div>
+            <div class="stat-change up">920万円</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--success);">
+            <div class="stat-label">チーム目標達成率</div>
+            <div class="stat-value">96<span class="stat-unit">%</span></div>
+            <div class="stat-change up">↑ 残り160万円</div>
+          </div>
+          <div class="stat-card" style="--stat-color: var(--warning);">
+            <div class="stat-label">平均件数/人</div>
+            <div class="stat-value">4.0<span class="stat-unit">件/月</span></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">担当者別 売上グラフ</div>
+                <div class="card-subtitle">今月</div>
+              </div>
+            </div>
+            <div class="h-bar-chart" id="salesChart"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">担当者別 件数グラフ</div>
+                <div class="card-subtitle">今月</div>
+              </div>
+            </div>
+            <div class="h-bar-chart" id="salesCaseChart"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">担当者別 詳細データ</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>担当者</th>
+                  <th>役職</th>
+                  <th>施行件数</th>
+                  <th>売上</th>
+                  <th>平均単価</th>
+                  <th>目標</th>
+                  <th>達成率</th>
+                </tr>
+              </thead>
+              <tbody id="salesTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Customer Detail Modal -->
+<div class="modal-overlay" id="customerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">顧客詳細</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// DATA
+// ================================================================
+
+const PLANS = [
+  { id: 'family', name: '家族葬プラン', price: 580000, desc: '少人数での温かなお見送り\n〜30名程度' },
+  { id: 'general', name: '一般葬プラン', price: 1200000, desc: '伝統的な形式の葬儀\n30〜100名程度' },
+  { id: 'premium', name: '特別葬プラン', price: 2200000, desc: '格式ある大規模葬儀\n100名以上対応' },
+];
+
+const OPTIONS = [
+  { id: 'flower', name: '祭壇生花グレードアップ', price: 88000 },
+  { id: 'photo', name: '遺影写真加工', price: 33000 },
+  { id: 'movie', name: 'メモリアルムービー制作', price: 55000 },
+  { id: 'food', name: '通夜振る舞い（30名分）', price: 120000 },
+  { id: 'return', name: '香典返し手配（50個）', price: 150000 },
+  { id: 'car', name: '霊柩車グレードアップ', price: 44000 },
+  { id: 'priest', name: '僧侶手配', price: 200000 },
+  { id: 'kenpai', name: '礼（遠隔献杯）システム導入', price: 0 },
+];
+
+const STAFF = [
+  { name: '佐藤', role: '主任', cases: 6, sales: 9200000, target: 10000000 },
+  { name: '田中', role: '一般', cases: 5, sales: 7500000, target: 8000000 },
+  { name: '鈴木', role: '主任', cases: 4, sales: 7200000, target: 8000000 },
+  { name: '高橋', role: '一般', cases: 4, sales: 6400000, target: 7000000 },
+  { name: '伊藤', role: '新人', cases: 3, sales: 4800000, target: 5000000 },
+  { name: '渡辺', role: '一般', cases: 2, sales: 3300000, target: 5000000 },
+];
+
+const MONTHLY_DATA = {
+  2025: [
+    { m:'4月', cases:22, sales:3520 }, { m:'5月', cases:18, sales:2880 },
+    { m:'6月', cases:20, sales:3200 }, { m:'7月', cases:19, sales:3040 },
+    { m:'8月', cases:21, sales:3360 }, { m:'9月', cases:25, sales:4000 },
+    { m:'10月', cases:23, sales:3680 }, { m:'11月', cases:26, sales:4160 },
+    { m:'12月', cases:30, sales:4800 }, { m:'1月', cases:32, sales:5120 },
+    { m:'2月', cases:24, sales:3840 }, { m:'3月', cases:0, sales:0 },
+  ],
+  2024: [
+    { m:'4月', cases:20, sales:3000 }, { m:'5月', cases:17, sales:2550 },
+    { m:'6月', cases:19, sales:2850 }, { m:'7月', cases:18, sales:2700 },
+    { m:'8月', cases:20, sales:3000 }, { m:'9月', cases:22, sales:3300 },
+    { m:'10月', cases:21, sales:3150 }, { m:'11月', cases:24, sales:3600 },
+    { m:'12月', cases:28, sales:4200 }, { m:'1月', cases:30, sales:4500 },
+    { m:'2月', cases:22, sales:3300 }, { m:'3月', cases:21, sales:3150 },
+  ],
+};
+
+const CUSTOMERS = [
+  { id:1, client:'山田 太郎', deceased:'山田 花子', date:'2026-01-28', area:'東京都', plan:'家族葬', amount:710000, staff:'佐藤', phone:'090-1234-5678', address:'東京都世田谷区成城1-2-3', relationship:'配偶者', note:'家族葬。参列者25名。生花グレードアップ希望。' },
+  { id:2, client:'佐々木 一郎', deceased:'佐々木 節子', date:'2026-01-25', area:'神奈川県', plan:'一般葬', amount:1450000, staff:'田中', phone:'080-2345-6789', address:'横浜市青葉区あざみ野2-3-4', relationship:'長男', note:'一般葬。参列者約80名。メモリアルムービー希望。' },
+  { id:3, client:'中村 健二', deceased:'中村 正雄', date:'2026-01-22', area:'東京都', plan:'特別葬', amount:2500000, staff:'鈴木', phone:'070-3456-7890', address:'東京都港区赤坂3-4-5', relationship:'長男', note:'企業葬に近い規模。社葬対応必要。参列者200名以上。' },
+  { id:4, client:'小林 美咲', deceased:'小林 勝', date:'2026-01-18', area:'埼玉県', plan:'家族葬', amount:630000, staff:'高橋', phone:'090-4567-8901', address:'さいたま市浦和区仲町4-5-6', relationship:'長女', note:'コンパクトな家族葬を希望。' },
+  { id:5, client:'加藤 誠', deceased:'加藤 ハル', date:'2026-01-15', area:'千葉県', plan:'一般葬', amount:1350000, staff:'佐藤', phone:'080-5678-9012', address:'船橋市本町5-6-7', relationship:'長男', note:'通夜振る舞い50名分。香典返し手配。' },
+  { id:6, client:'吉田 修', deceased:'吉田 美代子', date:'2026-01-10', area:'東京都', plan:'家族葬', amount:680000, staff:'伊藤', phone:'070-6789-0123', address:'東京都杉並区高円寺南6-7-8', relationship:'夫', note:'少人数。遺影写真加工希望。' },
+  { id:7, client:'松本 隆', deceased:'松本 信一', date:'2025-12-28', area:'神奈川県', plan:'一般葬', amount:1280000, staff:'田中', phone:'090-7890-1234', address:'川崎市中原区上小田中7-8-9', relationship:'長男', note:'年末対応。霊柩車グレードアップ。' },
+  { id:8, client:'井上 直美', deceased:'井上 三郎', date:'2025-12-20', area:'東京都', plan:'特別葬', amount:2350000, staff:'鈴木', phone:'080-8901-2345', address:'東京都文京区本郷8-9-10', relationship:'長女', note:'大規模。僧侶手配込み。' },
+  { id:9, client:'木村 浩二', deceased:'木村 ヨシ', date:'2025-12-15', area:'埼玉県', plan:'家族葬', amount:620000, staff:'渡辺', phone:'070-9012-3456', address:'川口市栄町9-10-11', relationship:'長男', note:'シンプルなお見送りを希望。' },
+  { id:10, client:'林 正樹', deceased:'林 千代', date:'2025-12-10', area:'千葉県', plan:'一般葬', amount:1150000, staff:'高橋', phone:'090-0123-4567', address:'柏市柏10-11-12', relationship:'長男', note:'通夜振る舞い30名。' },
+  { id:11, client:'斉藤 裕子', deceased:'斉藤 武男', date:'2025-12-05', area:'東京都', plan:'家族葬', amount:750000, staff:'佐藤', phone:'080-1111-2222', address:'東京都中野区新井1-1-1', relationship:'配偶者', note:'生花グレードアップ。ムービー制作。' },
+  { id:12, client:'石川 大介', deceased:'石川 キヨ', date:'2025-11-28', area:'神奈川県', plan:'一般葬', amount:1400000, staff:'田中', phone:'070-2222-3333', address:'横浜市西区みなとみらい2-2-2', relationship:'長男', note:'参列者70名程度。' },
+];
+
+// ================================================================
+// STATE
+// ================================================================
+
+let selectedPlan = null;
+let optionStates = {};
+OPTIONS.forEach(o => { optionStates[o.id] = o.id === 'kenpai'; }); // 礼 is ON by default
+
+let currentCaseYear = '2025';
+
+// ================================================================
+// NAVIGATION
+// ================================================================
+
+const PAGE_TITLES = {
+  dashboard: ['ダッシュボード', '経営状況をひと目で把握'],
+  estimate: ['見積作成', 'プラン選択 → オプション → 自動算出'],
+  customer: ['顧客管理', '施主・故人の一元管理'],
+  cases: ['施行件数', '月別・年別の推移分析'],
+  sales: ['担当者別売上', '個人パフォーマンス集計'],
+};
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', function () {
+    const page = this.dataset.page;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    const [title, sub] = PAGE_TITLES[page] || ['', ''];
+    document.getElementById('pageTitle').textContent = title;
+    document.getElementById('pageSubtitle').textContent = sub;
+    // Close mobile sidebar
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+
+// ================================================================
+// FORMATTERS
+// ================================================================
+
+function yen(n) {
+  return '¥' + n.toLocaleString();
+}
+
+function manyen(n) {
+  return (n / 10000).toFixed(0) + '万円';
+}
+
+// ================================================================
+// DASHBOARD
+// ================================================================
+
+function renderDashboard() {
+  // Bar chart
+  const data = MONTHLY_DATA[2025];
+  const maxCases = Math.max(...data.map(d => d.cases));
+  const chartEl = document.getElementById('dashboardChart');
+  chartEl.innerHTML = data.map(d => {
+    const h = d.cases > 0 ? (d.cases / maxCases * 100) : 0;
+    return `<div class="bar-col">
+      <div class="bar-value">${d.cases || '-'}</div>
+      <div class="bar" style="height:${h}%"></div>
+      <div class="bar-label">${d.m}</div>
+    </div>`;
+  }).join('');
+
+  // Ranking
+  const sorted = [...STAFF].sort((a, b) => b.sales - a.sales);
+  const maxSales = sorted[0].sales;
+  document.getElementById('dashboardRanking').innerHTML = sorted.map(s => {
+    const pct = (s.sales / maxSales * 100).toFixed(0);
+    return `<div class="h-bar-row">
+      <div class="h-bar-name">${s.name}</div>
+      <div class="h-bar-track">
+        <div class="h-bar-fill" style="width:${pct}%">
+          <span class="h-bar-val">${s.cases}件</span>
+        </div>
+      </div>
+      <div class="h-bar-amount">${manyen(s.sales)}</div>
+    </div>`;
+  }).join('');
+
+  // Recent cases table
+  const recent = [...CUSTOMERS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 7);
+  document.getElementById('recentCasesTable').innerHTML = recent.map(c => {
+    const statusTag = new Date(c.date) > new Date() ?
+      '<span class="tag tag-warning">予定</span>' :
+      '<span class="tag tag-success">完了</span>';
+    return `<tr>
+      <td>${c.date}</td>
+      <td style="color:var(--text-primary);font-weight:500;">${c.deceased}</td>
+      <td>${c.client}</td>
+      <td><span class="tag tag-accent">${c.plan}</span></td>
+      <td style="font-weight:600;color:var(--text-primary);">${yen(c.amount)}</td>
+      <td>${c.staff}</td>
+      <td>${statusTag}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ================================================================
+// ESTIMATE
+// ================================================================
+
+function renderEstimate() {
+  // Plans
+  document.getElementById('planCards').innerHTML = PLANS.map(p => {
+    const sel = selectedPlan === p.id ? 'selected' : '';
+    return `<div class="plan-card ${sel}" onclick="selectPlan('${p.id}')">
+      <div class="plan-name">${p.name}</div>
+      <div class="plan-price">${yen(p.price)}<span class="plan-price-unit">（税込）</span></div>
+      <div class="plan-desc">${p.desc.replace('\n', '<br>')}</div>
+    </div>`;
+  }).join('');
+
+  // Options
+  document.getElementById('optionList').innerHTML = OPTIONS.map(o => {
+    const on = optionStates[o.id] ? 'on' : '';
+    const priceText = o.price === 0 ? '無料' : '+' + yen(o.price);
+    return `<div class="option-item ${on}" onclick="toggleOption('${o.id}')">
+      <div class="option-left">
+        <div class="option-toggle"></div>
+        <div class="option-name">${o.name}</div>
+      </div>
+      <div class="option-price">${priceText}</div>
+    </div>`;
+  }).join('');
+
+  updateSummary();
+}
+
+function selectPlan(id) {
+  selectedPlan = id;
+  renderEstimate();
+}
+
+function toggleOption(id) {
+  optionStates[id] = !optionStates[id];
+  renderEstimate();
+}
+
+function updateSummary() {
+  const items = [];
+  let subtotal = 0;
+
+  if (selectedPlan) {
+    const plan = PLANS.find(p => p.id === selectedPlan);
+    items.push({ name: plan.name, price: plan.price });
+    subtotal += plan.price;
+  }
+
+  OPTIONS.forEach(o => {
+    if (optionStates[o.id] && o.price > 0) {
+      items.push({ name: o.name, price: o.price });
+      subtotal += o.price;
+    }
+    if (optionStates[o.id] && o.price === 0) {
+      items.push({ name: o.name + '（無料）', price: 0 });
+    }
+  });
+
+  document.getElementById('summaryItems').innerHTML = items.length > 0 ?
+    items.map(i => `<div class="summary-item">
+      <span class="summary-item-name">${i.name}</span>
+      <span class="summary-item-price">${i.price > 0 ? yen(i.price) : '¥0'}</span>
+    </div>`).join('') :
+    '<div style="color:var(--text-muted);font-size:0.82rem;text-align:center;padding:12px 0;">プランを選択してください</div>';
+
+  const tax = Math.round(subtotal * 0.1);
+  const total = subtotal + tax;
+  document.getElementById('summaryTotal').textContent = yen(total);
+  document.getElementById('summaryTax').textContent = `（税抜: ${yen(subtotal)}  /  消費税: ${yen(tax)}）`;
+}
+
+function saveEstimate() {
+  if (!selectedPlan) {
+    alert('プランを選択してください。');
+    return;
+  }
+  alert('✅ 見積を保存しました！\n\n施主: ' + (document.getElementById('estClientName').value || '未入力') + '\n故人: ' + (document.getElementById('estDeceasedName').value || '未入力'));
+}
+
+function printEstimate() {
+  if (!selectedPlan) {
+    alert('プランを選択してください。');
+    return;
+  }
+  alert('🖨 印刷プレビューを表示します（デモ）');
+}
+
+// ================================================================
+// CUSTOMER
+// ================================================================
+
+function renderCustomers(list) {
+  const tbl = document.getElementById('customerTable');
+  document.getElementById('customerCount').textContent = '全 ' + list.length + ' 件';
+  tbl.innerHTML = list.map(c => `<tr>
+    <td style="color:var(--text-primary);font-weight:500;">${c.client}</td>
+    <td>${c.deceased}</td>
+    <td>${c.date}</td>
+    <td>${c.area}</td>
+    <td><span class="tag tag-accent">${c.plan}</span></td>
+    <td style="font-weight:600;color:var(--text-primary);">${yen(c.amount)}</td>
+    <td>${c.staff}</td>
+    <td><button class="btn-icon" onclick="showCustomerDetail(${c.id})" title="詳細">📋</button></td>
+  </tr>`).join('');
+}
+
+function filterCustomers() {
+  const q = document.getElementById('customerSearch').value.toLowerCase();
+  const area = document.getElementById('customerAreaFilter').value;
+  const year = document.getElementById('customerYearFilter').value;
+
+  let filtered = CUSTOMERS.filter(c => {
+    const matchQ = !q || c.client.toLowerCase().includes(q) || c.deceased.toLowerCase().includes(q);
+    const matchArea = !area || c.area === area;
+    const matchYear = !year || c.date.startsWith(year);
+    return matchQ && matchArea && matchYear;
+  });
+
+  renderCustomers(filtered);
+}
+
+function showCustomerDetail(id) {
+  const c = CUSTOMERS.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('modalTitle').textContent = c.deceased + ' 様 — 顧客詳細';
+  document.getElementById('modalContent').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item"><div class="detail-label">施主名</div><div class="detail-value">${c.client}</div></div>
+      <div class="detail-item"><div class="detail-label">故人名</div><div class="detail-value">${c.deceased}</div></div>
+      <div class="detail-item"><div class="detail-label">施行日</div><div class="detail-value">${c.date}</div></div>
+      <div class="detail-item"><div class="detail-label">エリア</div><div class="detail-value">${c.area}</div></div>
+      <div class="detail-item"><div class="detail-label">電話番号</div><div class="detail-value">${c.phone}</div></div>
+      <div class="detail-item"><div class="detail-label">プラン</div><div class="detail-value">${c.plan}</div></div>
+      <div class="detail-item"><div class="detail-label">金額</div><div class="detail-value" style="color:var(--accent);font-size:1.1rem;">${yen(c.amount)}</div></div>
+      <div class="detail-item"><div class="detail-label">担当</div><div class="detail-value">${c.staff}</div></div>
+      <div class="detail-item detail-full"><div class="detail-label">住所</div><div class="detail-value">${c.address}</div></div>
+      <div class="detail-item"><div class="detail-label">続柄</div><div class="detail-value">${c.relationship}</div></div>
+      <div class="detail-item detail-full"><div class="detail-label">備考・注意事項</div><div class="detail-value">${c.note}</div></div>
+    </div>
+  `;
+  document.getElementById('customerModal').classList.add('show');
+}
+
+function showAddCustomerModal() {
+  alert('新規顧客登録フォームを表示します（デモ）');
+}
+
+function closeModal() {
+  document.getElementById('customerModal').classList.remove('show');
+}
+
+document.getElementById('customerModal').addEventListener('click', function (e) {
+  if (e.target === this) closeModal();
+});
+
+// ================================================================
+// CASES (施行件数)
+// ================================================================
+
+function renderCases() {
+  const data = MONTHLY_DATA[currentCaseYear];
+  const prevData = MONTHLY_DATA[currentCaseYear === '2025' ? '2024' : '2025'];
+  const maxCases = Math.max(...data.map(d => d.cases), 1);
+
+  document.getElementById('casesChart').innerHTML = data.map(d => {
+    const h = d.cases > 0 ? (d.cases / maxCases * 100) : 0;
+    return `<div class="bar-col">
+      <div class="bar-value">${d.cases || '-'}</div>
+      <div class="bar" style="height:${h}%"></div>
+      <div class="bar-label">${d.m}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('casesTable').innerHTML = data.map((d, i) => {
+    if (d.cases === 0) return '';
+    const avg = d.cases > 0 ? Math.round(d.sales / d.cases) : 0;
+    const prevMonth = i > 0 && data[i - 1].cases > 0 ?
+      ((d.cases - data[i - 1].cases) / data[i - 1].cases * 100).toFixed(1) : '-';
+    const prevYear = prevData[i] && prevData[i].cases > 0 ?
+      ((d.cases - prevData[i].cases) / prevData[i].cases * 100).toFixed(1) : '-';
+    const pmClass = prevMonth > 0 ? 'up' : prevMonth < 0 ? 'down' : '';
+    const pyClass = prevYear > 0 ? 'up' : prevYear < 0 ? 'down' : '';
+    return `<tr>
+      <td style="font-weight:500;color:var(--text-primary);">${d.m}</td>
+      <td>${d.cases}件</td>
+      <td>${d.sales.toLocaleString()}万円</td>
+      <td>${avg}万円</td>
+      <td><span class="stat-change ${pmClass}">${prevMonth === '-' ? '-' : (prevMonth > 0 ? '↑' : '↓') + ' ' + Math.abs(prevMonth) + '%'}</span></td>
+      <td><span class="stat-change ${pyClass}">${prevYear === '-' ? '-' : (prevYear > 0 ? '↑' : '↓') + ' ' + Math.abs(prevYear) + '%'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function switchCaseYear(btn) {
+  document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCaseYear = btn.dataset.year;
+  renderCases();
+}
+
+// ================================================================
+// SALES (担当者別)
+// ================================================================
+
+function renderSales() {
+  const sorted = [...STAFF].sort((a, b) => b.sales - a.sales);
+  const maxSales = sorted[0].sales;
+  const maxCases = Math.max(...sorted.map(s => s.cases));
+
+  // Sales chart
+  document.getElementById('salesChart').innerHTML = sorted.map(s => {
+    const pct = (s.sales / maxSales * 100).toFixed(0);
+    return `<div class="h-bar-row">
+      <div class="h-bar-name">${s.name}</div>
+      <div class="h-bar-track">
+        <div class="h-bar-fill" style="width:${pct}%">
+          <span class="h-bar-val">${manyen(s.sales)}</span>
+        </div>
+      </div>
+      <div class="h-bar-amount">${manyen(s.sales)}</div>
+    </div>`;
+  }).join('');
+
+  // Cases chart
+  const cSorted = [...STAFF].sort((a, b) => b.cases - a.cases);
+  document.getElementById('salesCaseChart').innerHTML = cSorted.map(s => {
+    const pct = (s.cases / maxCases * 100).toFixed(0);
+    return `<div class="h-bar-row">
+      <div class="h-bar-name">${s.name}</div>
+      <div class="h-bar-track">
+        <div class="h-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,#3a6fad,var(--info));">
+          <span class="h-bar-val">${s.cases}件</span>
+        </div>
+      </div>
+      <div class="h-bar-amount">${s.cases}件</div>
+    </div>`;
+  }).join('');
+
+  // Table
+  document.getElementById('salesTable').innerHTML = sorted.map(s => {
+    const avg = s.cases > 0 ? Math.round(s.sales / s.cases) : 0;
+    const rate = (s.sales / s.target * 100).toFixed(0);
+    const rateClass = rate >= 100 ? 'tag-success' : rate >= 80 ? 'tag-warning' : 'tag-danger';
+    return `<tr>
+      <td style="color:var(--text-primary);font-weight:500;">${s.name}</td>
+      <td><span class="tag tag-info">${s.role}</span></td>
+      <td>${s.cases}件</td>
+      <td style="font-weight:600;color:var(--text-primary);">${manyen(s.sales)}</td>
+      <td>${manyen(avg)}</td>
+      <td>${manyen(s.target)}</td>
+      <td><span class="tag ${rateClass}">${rate}%</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ================================================================
+// INIT
+// ================================================================
+
+function init() {
+  renderDashboard();
+  renderEstimate();
+  renderCustomers(CUSTOMERS);
+  renderCases();
+  renderSales();
+
+  // Animate bars on load
+  setTimeout(() => {
+    document.querySelectorAll('.bar, .h-bar-fill').forEach(el => {
+      el.style.transition = 'width 1s cubic-bezier(0.34,1.56,0.64,1), height 0.8s cubic-bezier(0.34,1.56,0.64,1)';
+    });
+  }, 100);
+}
+
+init();
+</script>
+</body>
+</html>
