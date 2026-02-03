@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>礼カスタム — 葬儀社専用 業務システム</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg: #0b0d12;
+  --bg2: #12151d;
+  --bg3: #1a1e2a;
+  --bg4: #222838;
+  --border: #252b3d;
+  --border2: #333a50;
+  --t1: #eaedf3;
+  --t2: #99a0b8;
+  --t3: #5c6380;
+  --gold: #c9a96e;
+  --gold-l: #e0ca94;
+  --gold-d: #a6863f;
+  --gold-g: rgba(201,169,110,0.10);
+  --gold-g2: rgba(201,169,110,0.06);
+  --green: #5cb87a;
+  --blue: #5c9de0;
+  --serif: 'Shippori Mincho', serif;
+  --sans: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--t1);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ NOISE TEXTURE ============ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+
+/* ============ LAYOUT ============ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ HEADER NAV ============ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 0;
+  background: rgba(11,13,18,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(37,43,61,0.5);
+  transition: all 0.3s ease;
+}
+
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b0d12;
+}
+
+.nav-brand {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--t1);
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link {
+  font-size: 0.82rem;
+  color: var(--t2);
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.25s ease;
+}
+
+.nav-link:hover { color: var(--gold); }
+
+/* ============ HERO ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: 120px 24px 80px;
+}
+
+/* Radial glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(201,169,110,0.08) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  pointer-events: none;
+}
+
+/* Decorative lines */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  opacity: 0.3;
+  animation: heroLine 3s ease infinite;
+}
+
+@keyframes heroLine {
+  0%, 100% { opacity: 0.15; height: 60px; }
+  50% { opacity: 0.4; height: 90px; }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-g);
+  border: 1px solid rgba(201,169,110,0.2);
+  border-radius: 28px;
+  padding: 8px 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+
+.hero-title .accent {
+  background: linear-gradient(135deg, var(--gold-l), var(--gold), var(--gold-d));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--t2);
+  line-height: 1.8;
+  max-width: 560px;
+  margin: 0 auto 48px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.45s ease both;
+}
+
+/* ============ BUTTONS ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-family: var(--sans);
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  color: #0b0d12;
+  border-color: var(--gold);
+}
+
+.btn-gold:hover {
+  box-shadow: 0 0 40px rgba(201,169,110,0.3);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--t2);
+}
+
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.btn-sm {
+  padding: 12px 24px;
+  font-size: 0.85rem;
+}
+
+/* ============ SECTION ============ */
+.section {
+  padding: 100px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.section-desc {
+  font-size: 0.95rem;
+  color: var(--t2);
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+/* ============ DEMO CARDS (MAIN FEATURE) ============ */
+.demo-section {
+  padding: 80px 0 100px;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.demo-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.demo-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--card-accent, var(--gold)), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.demo-card::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(ellipse, var(--card-glow, rgba(201,169,110,0.04)) 0%, transparent 70%);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  opacity: 0;
+}
+
+.demo-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-4px);
+}
+
+.demo-card:hover::before { opacity: 1; }
+.demo-card:hover::after { opacity: 1; }
+
+.demo-card-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--gold-g);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  transition: transform 0.3s ease;
+}
+
+.demo-card:hover .demo-card-icon {
+  transform: scale(1.08);
+}
+
+.demo-card-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.demo-card-title {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--t1);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.demo-card-desc {
+  font-size: 0.88rem;
+  color: var(--t2);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.demo-card-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.demo-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--t2);
+}
+
+.demo-feature-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.demo-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  transition: gap 0.3s ease;
+}
+
+.demo-card:hover .demo-card-btn {
+  gap: 14px;
+}
+
+.demo-card-btn-arrow {
+  transition: transform 0.3s ease;
+}
+
+.demo-card:hover .demo-card-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* ============ FEATURES GRID ============ */
+.features-section {
+  padding: 80px 0 100px;
+  border-top: 1px solid var(--border);
+}
+
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.feat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  transition: all 0.3s ease;
+}
+
+.feat-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+}
+
+.feat-icon {
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+}
+
+.feat-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--t1);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.feat-desc {
+  font-size: 0.78rem;
+  color: var(--t3);
+  line-height: 1.6;
+}
+
+.feat-pt {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+  padding: 3px 10px;
+  background: var(--gold-g);
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+
+/* ============ CTA SECTION ============ */
+.cta-section {
+  padding: 80px 0 120px;
+  text-align: center;
+}
+
+.cta-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 64px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(201,169,110,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-title {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 16px;
+  position: relative;
+  letter-spacing: 1px;
+}
+
+.cta-desc {
+  font-size: 0.95rem;
+  color: var(--t2);
+  line-height: 1.8;
+  margin-bottom: 36px;
+  position: relative;
+}
+
+/* ============ FOOTER ============ */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  text-align: center;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.footer-mark {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 700;
+  color: #0b0d12;
+}
+
+.footer-brand {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  color: var(--t2);
+  letter-spacing: 2px;
+}
+
+.footer-copy {
+  font-size: 0.72rem;
+  color: var(--t3);
+  letter-spacing: 0.5px;
+}
+
+/* ============ ANIMATIONS ON SCROLL ============ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero { padding: 100px 20px 60px; min-height: auto; min-height: 90vh; }
+  .hero-cta { flex-direction: column; align-items: center; }
+  .btn { width: 100%; max-width: 320px; justify-content: center; }
+  .demo-grid { grid-template-columns: 1fr; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .demo-card { padding: 28px 24px; }
+  .section { padding: 60px 0; }
+  .cta-box { padding: 40px 24px; }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 15px; }
+}
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="nav-mark">礼</div>
+      <div class="nav-brand">礼 カスタム</div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#demo">デモを見る</a>
+      <a class="nav-link" href="#features">機能一覧</a>
+      <a class="nav-link" href="#contact">お問い合わせ</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">SYSTEM DEMO</div>
+    <h1 class="hero-title">
+      御社の業務が、<br>
+      <span class="accent">まるごと変わる。</span>
+    </h1>
+    <p class="hero-desc">
+      葬儀業界に特化したシステム開発会社が作る、<br>
+      御社だけのオーダーメイド業務システム。<br>
+      まずは、デモをご覧ください。
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-gold" href="#demo">デモを体験する →</a>
+      <a class="btn btn-outline" href="#features">機能一覧を見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- Demo Section -->
+<section class="demo-section container" id="demo">
+  <div class="reveal">
+    <div class="section-label">LIVE DEMO</div>
+    <div class="section-title">2つの画面で、現場が変わる</div>
+    <div class="section-desc">
+      経営者と現場スタッフ、それぞれに最適化された画面を用意。
+      今すぐ触って、操作感をお確かめください。
+    </div>
+  </div>
+
+  <div class="demo-grid reveal">
+    <!-- Owner Demo -->
+    <a class="demo-card" href="rei-custom-demo.html" style="--card-accent:var(--gold);--card-glow:rgba(201,169,110,0.05);">
+      <div class="demo-card-icon">👔</div>
+      <div class="demo-card-label">FOR OWNER</div>
+      <div class="demo-card-title">経営者ダッシュボード</div>
+      <div class="demo-card-desc">
+        施行件数・売上・担当者別の実績がひと目でわかる。
+        数字に基づいた経営判断を支えます。
+      </div>
+      <div class="demo-card-features">
+        <div class="demo-feature"><div class="demo-feature-dot"></div>見積もり自動作成（プラン選択式）</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>施主・故人の一元管理</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>月別・年別の施行件数推移</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>担当者別 売上・件数の可視化</div>
+      </div>
+      <div class="demo-card-btn">
+        経営者デモを見る <span class="demo-card-btn-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Staff Demo -->
+    <a class="demo-card" href="rei-staff-demo.html" style="--card-accent:var(--blue);--card-glow:rgba(92,157,224,0.05);">
+      <div class="demo-card-icon">📱</div>
+      <div class="demo-card-label">FOR STAFF</div>
+      <div class="demo-card-title">スタッフ用アプリ</div>
+      <div class="demo-card-desc">
+        現場で使うことを第一に設計。スマートフォン最適化で、
+        移動中でも案件確認・見積作成が可能です。
+      </div>
+      <div class="demo-card-features">
+        <div class="demo-feature"><div class="demo-feature-dot"></div>担当案件の一覧・進捗管理</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>ワンタップ見積作成</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>本日のスケジュール管理</div>
+        <div class="demo-feature"><div class="demo-feature-dot"></div>顧客情報の登録・編集・検索</div>
+      </div>
+      <div class="demo-card-btn">
+        スタッフデモを見る <span class="demo-card-btn-arrow">→</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features-section container" id="features">
+  <div class="reveal">
+    <div class="section-label">FEATURE MENU</div>
+    <div class="section-title">35の機能から、御社に合わせて選べます</div>
+    <div class="section-desc">
+      7カテゴリ・全35機能のメニューから、12ポイント分を自由に組み合わせ。
+      必要な機能だけを、必要なだけ。
+    </div>
+  </div>
+
+  <div class="feat-grid reveal">
+    <div class="feat-card">
+      <div class="feat-icon">📋</div>
+      <div class="feat-name">見積・売上まわり</div>
+      <div class="feat-desc">プラン選択式の自動見積、オプションON/OFFで金額反映、原価・粗利管理、見積履歴の保存・再利用</div>
+      <div class="feat-pt">5機能 / 1〜4pt</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">👤</div>
+      <div class="feat-name">顧客・施主管理</div>
+      <div class="feat-desc">施主・故人の一元管理、施行履歴の紐付け、引き継ぎメモ、クレーム共有、多条件検索</div>
+      <div class="feat-pt">5機能 / 1〜2pt</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔧</div>
+      <div class="feat-name">現場オペレーション</div>
+      <div class="feat-desc">当番表の自動作成、急な欠勤アラート、スタッフ配置管理、チェックリスト管理</div>
+      <div class="feat-pt">5機能 / 2〜6pt</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🕊</div>
+      <div class="feat-name">法要・アフターフォロー</div>
+      <div class="feat-desc">四十九日・一周忌の自動リマインド、案内状履歴管理、フォロー漏れ防止アラート</div>
+      <div class="feat-pt">5機能 / 2〜4pt</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <div class="feat-name">社長・管理者向け</div>
+      <div class="feat-desc">施行件数・売上の可視化、担当者別集計、値引き率分析、社長専用ダッシュボード</div>
+      <div class="feat-pt">5機能 / 2〜4pt</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔗</div>
+      <div class="feat-name">礼との連携</div>
+      <div class="feat-desc">献杯データの自動反映、入金管理、献杯者リストPDF出力、想いの可視化</div>
+      <div class="feat-pt">5機能 / 1〜4pt</div>
+    </div>
+    <div class="feat-card" style="grid-column:1/-1;max-width:380px;">
+      <div class="feat-icon">💡</div>
+      <div class="feat-name">現場が地味に助かる系</div>
+      <div class="feat-desc">スマホ対応、写真アップロード、テンプレ文言、操作ログ、入力チェック</div>
+      <div class="feat-pt">5機能 / 1〜4pt</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section container" id="contact">
+  <div class="cta-box reveal">
+    <div class="cta-title">まずは、デモを触ってみてください</div>
+    <div class="cta-desc">
+      「こんなことできるんだ」を感じていただけたら、<br>
+      御社の課題に合わせた具体的なご提案をいたします。
+    </div>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;">
+      <a class="btn btn-gold" href="rei-custom-demo.html">👔 経営者デモ</a>
+      <a class="btn btn-outline" href="rei-staff-demo.html">📱 スタッフデモ</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">
+      <div class="footer-mark">礼</div>
+      <div class="footer-brand">礼 カスタム</div>
+    </div>
+    <div class="footer-copy">© 2026 Rei Custom — 葬儀社専用 業務システム開発</div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
