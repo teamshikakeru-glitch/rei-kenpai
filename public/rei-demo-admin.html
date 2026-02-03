@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>礼 Rei - 管理画面デモ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{
+  min-height:100vh;
+  background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%);
+  font-family:"Noto Serif JP",serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .5s ease-out}
+.fade-in-up{animation:fadeInUp .6s ease-out}
+
+/* DEMO BAR */
+.demo-bar{position:fixed;top:0;left:0;right:0;z-index:300;background:#c9a227;color:white;text-align:center;padding:7px 16px;font-size:12px;font-weight:600;letter-spacing:.5px}
+.demo-bar a{color:white;margin-left:12px;text-decoration:underline}
+
+/* SIDEBAR - matches real */
+.sidebar{
+  width:240px;
+  background:linear-gradient(180deg,#1a1a1a 0%,#2d2d2d 100%);
+  position:fixed;top:31px;left:0;bottom:0;
+  padding:20px 14px;display:flex;flex-direction:column;z-index:100;
+}
+.sb-top{
+  display:flex;align-items:center;gap:10px;
+  padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:20px;
+}
+.sb-logo{
+  width:40px;height:40px;
+  background:linear-gradient(135deg,#c9a227 0%,#d4af37 100%);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:18px;font-weight:600;
+}
+.sb-brand{color:white;font-size:16px;font-weight:600;letter-spacing:.1em}
+.sb-sub{color:rgba(255,255,255,.5);font-size:10px}
+
+.sb-menu-label{color:rgba(255,255,255,.4);font-size:10px;letter-spacing:.15em;padding:0 16px;margin-bottom:8px}
+
+.sb-link{
+  display:block;padding:14px 16px;color:rgba(255,255,255,.7);
+  text-decoration:none;border-radius:10px;font-size:14px;
+  transition:all .3s ease;margin-bottom:4px;cursor:pointer;
+}
+.sb-link:hover{background:rgba(255,255,255,.08);color:white}
+.sb-link.active{background:rgba(201,162,39,.15);color:#c9a227}
+
+.sb-bottom{
+  margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);
+}
+.sb-user{
+  padding:12px;background:rgba(255,255,255,.05);border-radius:8px;margin-bottom:10px;
+}
+.sb-user-label{color:rgba(255,255,255,.5);font-size:10px;margin-bottom:2px}
+.sb-user-name{color:white;font-size:13px;font-weight:500}
+.sb-logout{
+  width:100%;padding:10px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;font-family:inherit;
+}
+.sb-logout:hover{color:#f87171;border-color:rgba(248,113,113,.3)}
+
+/* MOBILE HEADER */
+.mobile-header{
+  display:none;position:fixed;top:31px;left:0;right:0;height:56px;
+  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+  z-index:1000;align-items:center;justify-content:space-between;
+  padding:0 16px;box-shadow:0 2px 20px rgba(0,0,0,.1);
+}
+.mh-left{display:flex;align-items:center;gap:10px}
+.mh-logo{
+  width:32px;height:32px;
+  background:linear-gradient(135deg,#c9a227 0%,#d4af37 100%);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:14px;font-weight:600;
+}
+.mh-brand{color:white;font-size:15px;font-weight:500}
+.mh-menu{background:none;border:none;color:white;font-size:20px;cursor:pointer;padding:8px}
+
+/* MAIN CONTENT */
+.main{margin-left:240px;padding:24px;padding-top:55px}
+
+/* PAGE HEADER */
+.pg-header{margin-bottom:24px}
+.pg-header h1{font-size:24px;font-weight:500;margin-bottom:4px}
+.pg-header p{color:#888;font-size:13px}
+
+/* STAT CARDS - matches real */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.stat-card{
+  background:white;border-radius:16px;padding:20px;
+  box-shadow:0 4px 20px rgba(0,0,0,.05);transition:all .3s ease;
+}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.1)}
+.sc-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.icon-box{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:600;flex-shrink:0;color:white;
+}
+.icon-box.gold{background:linear-gradient(135deg,#c9a227 0%,#d4af37 100%)}
+.icon-box.blue{background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%)}
+.icon-box.green{background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%)}
+.sc-label{color:#888;font-size:13px}
+.sc-value{font-size:32px;font-weight:600}
+.sc-unit{font-size:14px;color:#888;margin-left:2px}
+.stat-card.green-bg{background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)}
+.stat-card.green-bg .sc-label{color:#166534}
+.stat-card.green-bg .sc-value{color:#166534}
+
+/* CONTENT GRID - matches real */
+.content-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+
+/* CARD - matches real */
+.card{
+  background:white;border-radius:20px;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);transition:all .3s ease;
+}
+.card:hover{box-shadow:0 8px 32px rgba(0,0,0,.1)}
+.card-header{padding:20px 24px;border-bottom:1px solid #f0ebe3}
+.card-header h2{font-size:16px;font-weight:500}
+
+/* FORM - matches real */
+.form-body{padding:24px}
+.form-section-label{font-size:12px;color:#888;margin-bottom:12px;letter-spacing:.1em}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-label{display:block;font-size:13px;font-weight:500;color:#666;margin-bottom:6px}
+.form-req{color:#c9a227}
+.input-field{
+  width:100%;padding:14px 16px;border:2px solid #e8e4dc;border-radius:12px;
+  font-size:16px;transition:all .3s ease;box-sizing:border-box;font-family:inherit;
+}
+.input-field:focus{outline:none;border-color:#c9a227;box-shadow:0 0 0 4px rgba(201,162,39,.1)}
+.input-field::placeholder{color:#bbb}
+.input-hint{margin-top:6px;font-size:11px;color:#888}
+.input-slug{color:#c9a227}
+
+/* PHOTO UPLOAD - matches real */
+.photo-area{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.photo-placeholder{
+  width:100px;height:125px;border-radius:10px;
+  border:2px dashed #d4cfc4;display:flex;align-items:center;justify-content:center;
+  color:#888;font-size:12px;
+}
+.btn-secondary{
+  padding:12px 20px;background:white;color:#666;border:2px solid #e8e4dc;
+  border-radius:10px;font-size:14px;cursor:pointer;transition:all .3s ease;font-family:inherit;
+}
+.btn-secondary:hover{border-color:#c9a227;color:#c9a227}
+
+/* MESSAGE RADIO - matches real */
+.msg-options{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.msg-option{
+  display:flex;align-items:center;gap:6px;cursor:pointer;
+  padding:10px 14px;border-radius:8px;font-size:13px;border:2px solid transparent;
+}
+.msg-option.off{background:#f8f6f2}
+.msg-option.on{background:#fffbf0;border-color:#c9a227}
+
+/* SUBMIT BTN - matches real */
+.btn-primary{
+  width:100%;padding:16px 24px;
+  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+  color:white;border:none;border-radius:12px;font-size:15px;font-weight:500;
+  cursor:pointer;transition:all .3s ease;font-family:inherit;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+/* RECENT PROJECTS - matches real */
+.rp-header{
+  padding:16px 20px;border-bottom:1px solid #f0ebe3;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.rp-header h3{font-size:14px;font-weight:500}
+.rp-count{font-size:11px;color:#888}
+
+.rp-item{padding:14px 20px;border-bottom:1px solid #f0ebe3}
+.rp-item:last-child{border:none}
+.rp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.rp-name{font-size:14px;font-weight:500}
+.status-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:100px;font-size:11px;font-weight:500;
+}
+.status-active{background:rgba(34,197,94,.1);color:#16a34a}
+.status-draft{background:rgba(251,191,36,.1);color:#d97706}
+.status-closed{background:rgba(107,114,128,.1);color:#6b7280}
+.rp-bottom{display:flex;justify-content:space-between;align-items:center}
+.rp-date{font-size:11px;color:#888}
+.rp-link{font-size:11px;color:#c9a227;text-decoration:none}
+.rp-link:hover{text-decoration:underline}
+
+/* MODAL - matches real */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.6);align-items:center;justify-content:center;
+  padding:16px;backdrop-filter:blur(4px);
+}
+.modal-overlay.show{display:flex}
+.modal-content{background:white;border-radius:20px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto}
+.modal-success{
+  background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);
+  color:white;padding:32px 20px;text-align:center;border-radius:20px 20px 0 0;
+}
+.modal-check{
+  width:56px;height:56px;background:rgba(255,255,255,.2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 12px;font-size:24px;
+}
+.modal-success h3{font-size:18px;margin-bottom:6px;font-weight:500}
+.modal-success p{opacity:.9;font-size:14px}
+.modal-body{padding:24px 20px}
+.modal-info{
+  background:#f8f6f2;border:1px solid #e8e4dc;border-radius:10px;
+  padding:14px;margin-bottom:14px;
+}
+.modal-info .label{font-size:10px;color:#888;margin-bottom:4px;letter-spacing:.1em}
+.modal-info .value{font-size:13px;font-weight:500;word-break:break-all}
+.modal-copy{
+  width:100%;padding:12px;background:#1a1a1a;color:white;
+  border:none;border-radius:10px;font-size:14px;cursor:pointer;margin-bottom:16px;font-family:inherit;
+}
+.modal-qr{text-align:center;padding:16px;background:#f8f6f2;border-radius:10px;margin-bottom:14px}
+.modal-qr .label{font-size:10px;color:#888;margin-bottom:10px}
+.modal-pw{
+  background:#fffbf0;border:1px solid #f0e6c8;border-radius:10px;
+  padding:14px;margin-bottom:16px;
+}
+.modal-pw .label{font-size:10px;color:#92400e;margin-bottom:4px;letter-spacing:.1em}
+.modal-pw .value{font-size:20px;font-weight:600;font-family:monospace;letter-spacing:.1em}
+.modal-close{
+  width:100%;padding:12px;background:#f1f1f1;color:#666;
+  border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit;
+}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .mobile-header{display:flex}
+  .main{margin-left:0!important;padding:16px!important;padding-top:103px!important}
+  .stats-grid{grid-template-columns:1fr 1fr!important;gap:12px!important}
+  .content-grid{grid-template-columns:1fr!important}
+  .form-grid{grid-template-columns:1fr!important;gap:12px!important}
+  .stat-card{padding:16px}
+  .sc-value{font-size:24px!important}
+  .form-body{padding:20px!important}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr!important}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">デモ画面 — 実際のデータではありません <a href="rei-lp.html">← LPに戻る</a></div>
+
+<!-- MOBILE HEADER -->
+<div class="mobile-header">
+  <div class="mh-left">
+    <div class="mh-logo">礼</div>
+    <span class="mh-brand">Rei</span>
+  </div>
+  <button class="mh-menu">☰</button>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-top">
+    <div class="sb-logo">礼</div>
+    <div>
+      <p class="sb-brand">Rei</p>
+      <p class="sb-sub">献杯管理システム</p>
+    </div>
+  </div>
+
+  <p class="sb-menu-label">MENU</p>
+  <nav>
+    <a class="sb-link active">ホーム</a>
+    <a class="sb-link">ご入金管理</a>
+    <a class="sb-link">入金口座連携</a>
+  </nav>
+
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <p class="sb-user-label">ログイン中</p>
+      <p class="sb-user-name">テストA社</p>
+    </div>
+    <button class="sb-logout">ログアウト</button>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <!-- Header -->
+  <div class="pg-header fade-in">
+    <h1>ダッシュボード</h1>
+    <p id="todayDate"></p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid fade-in-up">
+    <div class="stat-card">
+      <div class="sc-top">
+        <div class="icon-box gold">P</div>
+        <span class="sc-label">稼働中</span>
+      </div>
+      <p class="sc-value">3<span class="sc-unit">件</span></p>
+    </div>
+    <div class="stat-card">
+      <div class="sc-top">
+        <div class="icon-box blue">K</div>
+        <span class="sc-label">献杯数</span>
+      </div>
+      <p class="sc-value">23<span class="sc-unit">件</span></p>
+    </div>
+    <div class="stat-card green-bg">
+      <div class="sc-top">
+        <div class="icon-box green">¥</div>
+        <span class="sc-label">総金額</span>
+      </div>
+      <p class="sc-value">¥287,000</p>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-grid">
+    <!-- Form Card -->
+    <div class="card fade-in-up">
+      <div class="card-header">
+        <h2>新規献杯ページ作成</h2>
+      </div>
+      <div class="form-body">
+        <div style="margin-bottom:24px">
+          <p class="form-section-label">基本情報</p>
+          <div class="form-grid">
+            <div>
+              <label class="form-label">故人様のお名前 <span class="form-req">*</span></label>
+              <input class="input-field" placeholder="山田 太郎">
+            </div>
+            <div>
+              <label class="form-label">URL用ID <span class="form-req">*</span></label>
+              <input class="input-field" placeholder="yamada-taro" id="slugInput" oninput="updateSlugPreview()">
+            </div>
+          </div>
+          <p class="input-hint" id="slugPreview"></p>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <label class="form-label">ご遺族様用パスワード <span class="form-req">*</span></label>
+          <input class="input-field" placeholder="1234" style="font-family:monospace;letter-spacing:.1em;max-width:180px">
+          <p class="input-hint">入金状況確認用（4文字以上）</p>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <p class="form-section-label">ご遺影（任意）</p>
+          <div class="photo-area">
+            <div class="photo-placeholder">未選択</div>
+            <button class="btn-secondary">選択</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <p class="form-section-label">メッセージ</p>
+          <div class="msg-options">
+            <label class="msg-option on" id="msgDefault" onclick="setMsgType('default')">
+              <input type="radio" name="msgType" checked style="accent-color:#c9a227"> 定型文
+            </label>
+            <label class="msg-option off" id="msgCustom" onclick="setMsgType('custom')">
+              <input type="radio" name="msgType" style="accent-color:#c9a227"> カスタム
+            </label>
+          </div>
+          <textarea class="input-field" id="customMsg" style="min-height:80px;resize:vertical;display:none" placeholder="メッセージを入力..."></textarea>
+        </div>
+
+        <button class="btn-primary" onclick="showCreatedModal()">献杯ページを作成</button>
+      </div>
+    </div>
+
+    <!-- Recent Projects -->
+    <div class="card fade-in-up">
+      <div class="rp-header">
+        <h3>最近の案件</h3>
+        <span class="rp-count">5件</span>
+      </div>
+      <div>
+        <div class="rp-item">
+          <div class="rp-top">
+            <p class="rp-name">故 中川 孝一 様</p>
+            <span class="status-badge status-active">公開中</span>
+          </div>
+          <div class="rp-bottom">
+            <p class="rp-date">2/3</p>
+            <a class="rp-link" href="rei-demo-kenpai.html">開く →</a>
+          </div>
+        </div>
+        <div class="rp-item">
+          <div class="rp-top">
+            <p class="rp-name">故 佐々木 花江 様</p>
+            <span class="status-badge status-active">公開中</span>
+          </div>
+          <div class="rp-bottom">
+            <p class="rp-date">2/1</p>
+            <a class="rp-link" href="#">開く →</a>
+          </div>
+        </div>
+        <div class="rp-item">
+          <div class="rp-top">
+            <p class="rp-name">故 伊藤 正雄 様</p>
+            <span class="status-badge status-active">公開中</span>
+          </div>
+          <div class="rp-bottom">
+            <p class="rp-date">1/28</p>
+            <a class="rp-link" href="#">開く →</a>
+          </div>
+        </div>
+        <div class="rp-item">
+          <div class="rp-top">
+            <p class="rp-name">故 鈴木 清 様</p>
+            <span class="status-badge status-closed">終了</span>
+          </div>
+          <div class="rp-bottom">
+            <p class="rp-date">1/15</p>
+            <a class="rp-link" href="#">開く →</a>
+          </div>
+        </div>
+        <div class="rp-item">
+          <div class="rp-top">
+            <p class="rp-name">故 田中 博 様</p>
+            <span class="status-badge status-closed">終了</span>
+          </div>
+          <div class="rp-bottom">
+            <p class="rp-date">12/22</p>
+            <a class="rp-link" href="#">開く →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATED MODAL - matches real -->
+<div class="modal-overlay" id="createdModal">
+  <div class="modal-content">
+    <div class="modal-success">
+      <div class="modal-check">✓</div>
+      <h3>作成完了</h3>
+      <p>故 中川 孝一 様</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">
+        <p class="label">献杯ページURL</p>
+        <p class="value">https://rei-kenpai.vercel.app/nakagawa-koichi</p>
+      </div>
+      <button class="modal-copy" onclick="this.textContent='コピーしました'">URLをコピー</button>
+      <div class="modal-qr">
+        <p class="label">QRコード</p>
+        <div style="width:120px;height:120px;background:#e8e4dc;margin:0 auto;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#888;font-size:11px">QR Code</div>
+      </div>
+      <div class="modal-pw">
+        <p class="label">ご遺族様用パスワード</p>
+        <p class="value">1234</p>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('createdModal').classList.remove('show')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Today's date
+var d=new Date();
+document.getElementById('todayDate').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+['日','月','火','水','木','金','土'][d.getDay()]+'）';
+
+function updateSlugPreview(){
+  var v=document.getElementById('slugInput').value;
+  if(v){
+    document.getElementById('slugPreview').innerHTML='https://rei-kenpai.vercel.app/<span class="input-slug">'+v+'</span>';
+  } else {
+    document.getElementById('slugPreview').textContent='';
+  }
+}
+function setMsgType(t){
+  if(t==='default'){
+    document.getElementById('msgDefault').className='msg-option on';
+    document.getElementById('msgCustom').className='msg-option off';
+    document.getElementById('customMsg').style.display='none';
+  } else {
+    document.getElementById('msgDefault').className='msg-option off';
+    document.getElementById('msgCustom').className='msg-option on';
+    document.getElementById('customMsg').style.display='block';
+  }
+}
+function showCreatedModal(){
+  document.getElementById('createdModal').classList.add('show');
+}
+</script>
+</body>
+</html>

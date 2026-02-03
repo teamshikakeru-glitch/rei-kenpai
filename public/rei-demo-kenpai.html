@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>中川様への献杯 | Rei</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{
+  min-height:100vh;
+  background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%);
+  font-family:"Noto Serif JP","Hiragino Mincho ProN",serif;
+  color:#1a1a1a;-webkit-font-smoothing:antialiased;
+}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.fade-in-up{animation:fadeInUp .6s ease-out}
+
+/* DEMO BAR */
+.demo-bar{position:sticky;top:0;z-index:200;background:#c9a227;color:white;text-align:center;padding:7px 16px;font-size:12px;font-weight:600;letter-spacing:.5px}
+.demo-bar a{color:white;margin-left:12px;text-decoration:underline}
+
+/* HEADER - matches real */
+header{
+  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:31px;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.1);
+}
+.h-logo{
+  width:40px;height:40px;
+  background:linear-gradient(135deg,#c9a227 0%,#d4af37 100%);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:18px;font-weight:600;
+  box-shadow:0 4px 12px rgba(201,162,39,.3);
+}
+.h-left{display:flex;align-items:center;gap:12px}
+.h-brand{color:white;font-size:18px;font-weight:500;letter-spacing:.1em}
+.h-tag{color:rgba(255,255,255,.6);font-size:12px;letter-spacing:.15em}
+
+main{max-width:520px;margin:0 auto;padding:24px 16px 40px}
+
+/* PROFILE CARD - matches real */
+.profile-card{
+  background:white;border-radius:24px;padding:36px 24px;margin-bottom:24px;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);text-align:center;
+}
+.photo-wrap{
+  width:160px;height:200px;margin:0 auto 24px;position:relative;
+  animation:float 6s ease-in-out infinite;
+}
+.photo-border{
+  position:absolute;inset:-4px;
+  background:linear-gradient(135deg,#c9a227,#d4af37);
+  border-radius:14px;box-shadow:0 8px 32px rgba(201,162,39,.25);
+}
+.photo-inner{
+  position:relative;width:100%;height:100%;border-radius:12px;overflow:hidden;z-index:1;
+  background:#f0ebe3;display:flex;align-items:center;justify-content:center;
+  color:#c9a227;font-size:48px;
+}
+.追悼{font-size:12px;color:#c9a227;letter-spacing:.3em;margin-bottom:12px}
+.deceased-name{font-size:32px;font-weight:500;letter-spacing:.1em;margin-bottom:20px}
+.family-msg{
+  font-size:15px;color:#666;line-height:2.2;padding:20px 0;
+  border-top:1px solid #f0ebe3;white-space:pre-line;
+}
+.family-from{font-size:13px;color:#c9a227}
+
+/* KENPAI TOWA - matches real */
+.kenpai-about{
+  background:linear-gradient(135deg,#f8f6f2 0%,#f0ebe3 100%);
+  border-radius:16px;padding:20px 24px;margin-bottom:24px;
+  border:1px solid #e8e4dc;text-align:center;
+}
+.kenpai-about p{font-size:14px;color:#666;line-height:2;margin:0}
+.kenpai-about .title{font-weight:500;color:#1a1a1a}
+.kenpai-about .star{color:#c9a227;font-size:16px}
+
+/* SUMMARY BAR - matches real */
+.summary-bar{
+  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+  border-radius:16px;padding:20px 24px;margin-bottom:24px;
+  display:flex;justify-content:space-between;align-items:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.15);
+}
+.sb-left p:first-child{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:4px}
+.sb-left p:last-child{font-size:13px;color:rgba(255,255,255,.8)}
+.sb-amount{font-size:28px;font-weight:600;color:#c9a227;letter-spacing:.02em}
+
+/* TABS - matches real */
+.tabs{
+  display:flex;gap:0;margin-bottom:24px;border-radius:16px;overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+.tab{
+  flex:1;padding:18px 16px;border:none;font-weight:600;font-size:15px;
+  cursor:pointer;transition:all .3s ease;font-family:inherit;
+}
+.tab.on-donation{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);color:white}
+.tab.off{background:white;color:#666}
+.tab.on-message{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white}
+
+/* STEP INDICATOR - matches real */
+.steps{display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:24px}
+.step-dot{
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:600;transition:all .3s ease;
+}
+.step-dot.on{
+  background:linear-gradient(135deg,#c9a227 0%,#d4af37 100%);color:white;
+  box-shadow:0 4px 12px rgba(201,162,39,.3);
+}
+.step-dot.off{background:#e8e4dc;color:#999}
+.step-line{width:48px;height:2px;transition:all .3s ease}
+.step-line.on{background:#c9a227}
+.step-line.off{background:#e8e4dc}
+
+/* FORM CARD - matches real */
+.form-card{
+  background:white;border-radius:24px;padding:32px 24px;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);margin-bottom:24px;
+}
+.form-card h2{font-size:20px;font-weight:500;text-align:center;margin-bottom:8px}
+.form-card .sub{font-size:13px;color:#888;text-align:center;margin-bottom:28px}
+
+/* AMOUNT GRID - matches real */
+.amt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.amt-btn{
+  position:relative;padding:24px 16px;
+  border:2px solid #e8e4dc;border-radius:16px;background:white;
+  cursor:pointer;transition:all .3s ease;text-align:center;font-family:inherit;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+.amt-btn:hover{transform:translateY(-2px)}
+.amt-btn.on{
+  border-color:#c9a227;
+  background:linear-gradient(135deg,#fffbf0 0%,#fff8e7 100%);
+  transform:scale(1.02);
+  box-shadow:0 8px 24px rgba(201,162,39,.15);
+}
+.amt-btn span{font-size:24px;font-weight:600}
+.amt-btn.on span{color:#c9a227}
+
+.custom-trigger{
+  width:100%;padding:18px;border:2px dashed #d4cfc4;border-radius:14px;
+  background:transparent;cursor:pointer;color:#888;font-size:14px;
+  transition:all .3s ease;margin-top:16px;font-family:inherit;
+}
+
+/* BUTTONS - matches real */
+.btn-next{
+  width:100%;margin-top:28px;padding:20px;
+  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+  color:white;border:none;border-radius:14px;font-size:17px;font-weight:500;
+  cursor:pointer;transition:all .3s ease;font-family:inherit;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+}
+.btn-next:hover{transform:translateY(-2px)}
+.btn-next:disabled{background:#e8e4dc;color:#999;box-shadow:none;cursor:not-allowed;transform:none}
+
+.btn-back{
+  flex:1;padding:18px;background:white;color:#666;
+  border:2px solid #e8e4dc;border-radius:14px;font-size:16px;
+  cursor:pointer;transition:all .3s ease;font-family:inherit;
+}
+
+.btn-gold{
+  flex:2;padding:20px;
+  background:linear-gradient(135deg,#c9a227 0%,#d4af37 100%);
+  color:white;border:none;border-radius:14px;font-size:17px;font-weight:600;
+  cursor:pointer;box-shadow:0 8px 24px rgba(201,162,39,.3);
+  transition:all .3s ease;font-family:inherit;
+}
+.btn-gold:hover{transform:translateY(-2px)}
+
+/* INPUT - matches real */
+.field{
+  width:100%;padding:18px;border:2px solid #e8e4dc;border-radius:14px;
+  font-size:17px;font-family:inherit;box-sizing:border-box;transition:all .3s ease;
+}
+.field:focus{outline:none;border-color:#c9a227;box-shadow:0 0 0 4px rgba(201,162,39,.1)}
+.field::placeholder{color:#bbb}
+textarea.field{resize:none;line-height:1.8}
+
+.label{display:block;font-size:14px;font-weight:500;color:#666;margin-bottom:10px}
+.req{color:#c9a227}
+
+/* ANON CHECK - matches real */
+.anon-label{
+  display:flex;align-items:center;gap:14px;padding:18px;
+  border-radius:14px;cursor:pointer;margin-bottom:24px;
+  transition:all .3s ease;
+}
+.anon-label.off{background:#f8f6f2;border:2px solid transparent}
+.anon-label.on{
+  background:linear-gradient(135deg,#fffbf0 0%,#fff8e7 100%);
+  border:2px solid #c9a227;
+}
+.anon-box{
+  width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  transition:all .3s ease;flex-shrink:0;
+}
+.anon-box.off{border:2px solid #ccc;background:white}
+.anon-box.on{border:2px solid #c9a227;background:#c9a227;color:white;font-size:16px}
+
+/* ADDRESS SECTION - matches real */
+.address-box{background:#f8f6f2;border-radius:16px;padding:20px;margin-bottom:24px}
+.address-box .header{font-size:13px;color:#666;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.address-box .header span{color:#c9a227}
+.addr-label{display:block;font-size:13px;color:#888;margin-bottom:8px}
+.addr-input{
+  width:100%;padding:14px;border:2px solid #e8e4dc;border-radius:10px;
+  font-size:16px;box-sizing:border-box;background:white;font-family:inherit;
+}
+.addr-input:focus{outline:none;border-color:#c9a227;box-shadow:0 0 0 4px rgba(201,162,39,.1)}
+
+/* CONFIRM - matches real */
+.confirm-box{
+  background:#f8f6f2;border-radius:18px;padding:24px;margin-bottom:24px;
+}
+.confirm-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:18px;border-bottom:1px solid #e8e4dc;margin-bottom:18px;
+}
+.confirm-row .label{color:#666;font-size:15px;margin:0}
+.confirm-row .value{font-size:28px;font-weight:600;color:#c9a227}
+.confirm-detail{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.confirm-detail .label{color:#666;font-size:15px;margin:0}
+.confirm-detail .value{font-size:16px;font-weight:500}
+
+.notice-box{
+  background:#fffbf0;border:1px solid #f0e6c8;border-radius:14px;
+  padding:18px;margin-bottom:28px;
+}
+.notice-box p{font-size:13px;color:#92400e;line-height:1.9;margin:0}
+
+/* SUCCESS - matches real */
+.success-card{
+  background:white;border-radius:24px;padding:48px 24px;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);text-align:center;margin-bottom:24px;
+}
+.success-icon{
+  width:80px;height:80px;margin:0 auto 24px;
+  background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(34,197,94,.3);color:white;font-size:36px;
+}
+.success-card h2{font-size:22px;font-weight:500;margin-bottom:12px}
+.success-card .msg{color:#666;font-size:15px;line-height:1.9;margin-bottom:24px}
+.thanks-box{
+  background:linear-gradient(135deg,#fffbf0 0%,#fff8e7 100%);
+  border:1px solid #f0e6c8;border-radius:16px;padding:20px;margin-bottom:24px;
+}
+.thanks-box .from{font-size:13px;color:#c9a227;margin-bottom:8px;font-weight:500}
+.thanks-box .body{font-size:15px;line-height:2;margin:0}
+
+/* KENPAI LIST - matches real */
+.list-card{
+  background:white;border-radius:24px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);
+}
+.list-header{
+  background:linear-gradient(135deg,#f8f6f2 0%,#f0ebe3 100%);
+  padding:20px 24px;border-bottom:1px solid #e8e4dc;
+  display:flex;align-items:center;gap:10px;
+}
+.list-header h3{font-size:16px;font-weight:500;margin:0;flex:1;display:flex;align-items:center;gap:10px}
+.list-header .star{color:#c9a227}
+.list-header .count{margin-left:auto;font-size:13px;color:#888;font-weight:400}
+
+.ki{padding:20px 24px;border-bottom:1px solid #f0ebe3}
+.ki:last-child{border:none}
+.ki-top{display:flex;justify-content:space-between;align-items:flex-start}
+.ki-name{font-size:16px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.ki-avatar{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:50%;
+  font-size:12px;font-weight:600;flex-shrink:0;
+}
+.ki-avatar.gold{background:linear-gradient(135deg,#c9a227 0%,#d4af37 100%);color:white}
+.ki-avatar.anon{background:#e8e4dc;color:#888}
+.ki-avatar.msg{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white}
+.ki-date{font-size:12px;color:#999}
+.ki-amount{font-size:18px;font-weight:600;color:#c9a227}
+.ki-msg-badge{
+  font-size:12px;padding:4px 10px;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:white;border-radius:12px;
+}
+.ki-msg{background:#faf9f7;border-radius:12px;padding:14px 16px;margin-top:8px}
+.ki-msg p{font-size:14px;color:#555;line-height:1.8;margin:0}
+
+/* FOOTER - matches real */
+footer{text-align:center;padding:32px 16px}
+footer a{font-size:13px;color:#888;text-decoration:none}
+footer .powered{margin-top:20px;font-size:11px;color:#ccc}
+
+/* PAGE MANAGEMENT */
+.page{display:none}.page.show{display:block}
+.btn-row{display:flex;gap:12px}
+
+@media(max-width:400px){
+  .amt-grid{gap:10px}
+  .amt-btn{padding:18px 12px}
+  .amt-btn span{font-size:20px}
+  .deceased-name{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">デモ画面 — 実際の決済は発生しません <a href="rei-lp.html">← LPに戻る</a></div>
+
+<header>
+  <div class="h-left">
+    <div class="h-logo">礼</div>
+    <span class="h-brand">Rei</span>
+  </div>
+  <span class="h-tag">KENPAI</span>
+</header>
+
+<main>
+
+  <!-- 故人情報カード -->
+  <div class="profile-card fade-in-up">
+    <div class="photo-wrap">
+      <div class="photo-border"></div>
+      <div class="photo-inner">遺影</div>
+    </div>
+    <p class="追悼">✦ 追 悼 ✦</p>
+    <h1 class="deceased-name">故 中川 孝一 様</h1>
+    <p class="family-msg">故人様のご生前は格別のご厚情を賜り
+心より御礼申し上げます</p>
+    <p class="family-from">— ご遺族より</p>
+  </div>
+
+  <!-- 献杯とは -->
+  <div class="kenpai-about">
+    <p>
+      <span class="star">✦</span><br>
+      <span class="title">献杯とは</span><br>
+      直接お会いできなくても、<br>
+      故人を想う気持ちを静かに届けるための形です。
+    </p>
+  </div>
+
+  <!-- 総額サマリー -->
+  <div class="summary-bar">
+    <div class="sb-left">
+      <p>皆様からのお気持ち</p>
+      <p>7名の方々より</p>
+    </div>
+    <div><p class="sb-amount">¥83,000</p></div>
+  </div>
+
+  <!-- タブ -->
+  <div class="tabs">
+    <button class="tab on-donation" id="tab-donation" onclick="switchTab('donation')">🙏 献杯する</button>
+    <button class="tab off" id="tab-message" onclick="switchTab('message')">💌 メッセージのみ</button>
+  </div>
+
+  <!-- ====== 献杯タブ ====== -->
+  <div id="donation-tab">
+    <!-- ステップインジケーター -->
+    <div class="steps" id="stepIndicator">
+      <div class="step-dot on" id="sd1">1</div>
+      <div class="step-line on" id="sl1"></div>
+      <div class="step-dot off" id="sd2">2</div>
+      <div class="step-line off" id="sl2"></div>
+      <div class="step-dot off" id="sd3">3</div>
+    </div>
+
+    <!-- STEP 1: 金額選択 -->
+    <div class="page show" id="step1">
+      <div class="form-card">
+        <h2>献杯金額をお選びください</h2>
+        <p class="sub">故人様への想いをお届けします</p>
+        <div class="amt-grid">
+          <button class="amt-btn" onclick="pickAmt(this,3000)"><span>3,000円</span></button>
+          <button class="amt-btn on" onclick="pickAmt(this,5000)"><span>5,000円</span></button>
+          <button class="amt-btn" onclick="pickAmt(this,10000)"><span>10,000円</span></button>
+          <button class="amt-btn" onclick="pickAmt(this,30000)"><span>30,000円</span></button>
+        </div>
+        <button class="custom-trigger">その他の金額を入力</button>
+        <button class="btn-next" onclick="goStep(2)">次へ進む →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: お名前・連絡先 -->
+    <div class="page" id="step2">
+      <div class="form-card">
+        <h2>お名前とご連絡先</h2>
+
+        <label class="anon-label off" id="anonLabel" onclick="toggleAnon()">
+          <div class="anon-box off" id="anonBox"></div>
+          <input type="checkbox" id="anonCheck" style="display:none">
+          <span style="font-size:16px">匿名で献杯する</span>
+        </label>
+
+        <div id="nameField">
+          <label class="label">お名前 <span class="req">必須</span></label>
+          <input class="field" placeholder="山田 花子" value="佐藤 花子" id="donorName">
+        </div>
+
+        <div class="address-box" style="margin-top:24px">
+          <p class="header"><span>📮</span> お返し送付用（任意）</p>
+          <div style="margin-bottom:16px">
+            <label class="addr-label">郵便番号</label>
+            <input class="addr-input" placeholder="123-4567" style="width:50%" id="postalCode">
+            <span style="font-size:12px;color:#999;margin-left:10px">※自動で住所入力</span>
+          </div>
+          <div style="margin-bottom:16px">
+            <label class="addr-label">ご住所</label>
+            <input class="addr-input" placeholder="東京都渋谷区..." id="addrField">
+          </div>
+          <div>
+            <label class="addr-label">電話番号</label>
+            <input class="addr-input" placeholder="090-1234-5678" type="tel" id="phoneField">
+          </div>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <label class="label">メッセージ <span style="color:#888">任意</span></label>
+          <textarea class="field" rows="4" placeholder="ご冥福をお祈りいたします..." id="msgField">孝一さんとの思い出は、いつまでも忘れません。安らかにお眠りください。</textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="goStep(1)">← 戻る</button>
+          <button class="btn-next" style="flex:2;margin-top:0" onclick="goStep(3)">確認画面へ →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: 確認 -->
+    <div class="page" id="step3">
+      <div class="form-card">
+        <h2>内容のご確認</h2>
+        <div class="confirm-box">
+          <div class="confirm-row">
+            <span class="label">献杯金額</span>
+            <span class="value" id="confirmAmt">¥5,000</span>
+          </div>
+          <div class="confirm-detail">
+            <span class="label">お名前</span>
+            <span class="value" id="confirmName">佐藤 花子</span>
+          </div>
+        </div>
+        <div class="notice-box">
+          <p>※ 決済はStripe（クレジットカード）で安全に処理されます<br>※ 献杯後のキャンセルはできません</p>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goStep(2)">← 戻る</button>
+          <button class="btn-gold" onclick="doSubmit()">献杯する</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="page" id="stepSuccess">
+      <div class="success-card">
+        <div class="success-icon">✓</div>
+        <h2>ありがとうございます</h2>
+        <p class="msg">ご厚志を賜り<br>心より御礼申し上げます</p>
+        <div class="thanks-box">
+          <p class="from">ご遺族からのメッセージ</p>
+          <p class="body">温かいお気持ちをありがとうございました。<br>家族一同、心より感謝申し上げます。</p>
+        </div>
+        <p style="font-size:11px;color:#999;margin-bottom:16px">※ デモのため実際の決済は発生していません</p>
+        <button class="btn-back" onclick="resetForm()" style="width:auto;padding:16px 32px">続けてお申し込み</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== メッセージのみタブ ====== -->
+  <div id="message-tab" style="display:none">
+    <div class="form-card" id="msgFormCard">
+      <div style="background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);padding:16px;border-radius:14px;margin-bottom:24px;text-align:center;border:1px solid #ddd6fe">
+        <p style="margin:0;color:#6d28d9;font-size:14px;font-weight:500">💌 お金は送らず、メッセージのみをお届けします</p>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <label class="label">お名前 <span style="color:#8b5cf6">必須</span></label>
+        <input class="field" placeholder="山田 太郎" value="佐藤 花子">
+      </div>
+      <div style="margin-bottom:20px">
+        <label class="label">故人との関係 <span style="color:#999;font-weight:400">任意</span></label>
+        <select class="field" style="background:white">
+          <option>選択してください</option><option selected>友人</option><option>同僚</option><option>親族</option><option>知人</option><option>ご近所</option>
+        </select>
+      </div>
+      <div style="margin-bottom:24px">
+        <label class="label">メッセージ <span style="color:#8b5cf6">必須</span></label>
+        <textarea class="field" rows="5" placeholder="ご冥福をお祈りいたします...">孝一さんの笑顔を忘れません。天国でもどうかお元気で。</textarea>
+      </div>
+      <button onclick="sendMessage()" style="width:100%;padding:20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:14px;font-size:17px;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(102,126,234,.3);font-family:inherit">
+        💌 メッセージを送る
+      </button>
+    </div>
+
+    <!-- メッセージ送信完了 -->
+    <div id="msgSentCard" style="display:none">
+      <div class="form-card" style="text-align:center;padding:48px 24px">
+        <div style="width:80px;height:80px;margin:0 auto 24px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(102,126,234,.3);font-size:36px">💐</div>
+        <h3 style="margin-bottom:12px;font-size:20px;font-weight:500">メッセージを送信しました</h3>
+        <p style="color:#666;margin-bottom:20px;font-size:14px;line-height:1.8">ご遺族にあなたの想いが届きます</p>
+        <div style="background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);border:1px solid #ddd6fe;border-radius:16px;padding:20px;margin-bottom:24px;text-align:left">
+          <p style="font-size:13px;color:#7c3aed;margin-bottom:8px;font-weight:500">ご遺族からのメッセージ</p>
+          <p style="font-size:15px;line-height:2;margin:0">温かいお気持ちをありがとうございました。<br>家族一同、心より感謝申し上げます。</p>
+        </div>
+        <p style="font-size:11px;color:#999;margin-bottom:16px">※ デモのため実際の送信は発生していません</p>
+        <button onclick="resetMessage()" style="padding:14px 32px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:12px;cursor:pointer;font-size:15px;font-weight:500;font-family:inherit">別のメッセージを送る</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 献杯履歴 -->
+  <div class="list-card fade-in-up">
+    <div class="list-header">
+      <h3><span class="star">✦</span> 皆様からのお気持ち <span class="count">全7件</span></h3>
+    </div>
+    <div style="max-height:400px;overflow-y:auto">
+      <div class="ki">
+        <div class="ki-top"><div><p class="ki-name"><span class="ki-avatar gold">鈴</span>鈴木 一郎 様</p><p class="ki-date">2026年2月3日</p></div><p class="ki-amount">¥30,000</p></div>
+        <div class="ki-msg"><p>孝一さんには大変お世話になりました。ご冥福をお祈りいたします。</p></div>
+      </div>
+      <div class="ki">
+        <div class="ki-top"><div><p class="ki-name"><span class="ki-avatar gold">田</span>田中 美咲 様</p><p class="ki-date">2026年2月3日</p></div><p class="ki-amount">¥10,000</p></div>
+        <div class="ki-msg"><p>学生時代からの思い出がたくさんあります。安らかにお休みください。</p></div>
+      </div>
+      <div class="ki">
+        <div class="ki-top"><div><p class="ki-name"><span class="ki-avatar gold">高</span>高橋 健太 様</p><p class="ki-date">2026年2月2日</p></div><p class="ki-amount">¥10,000</p></div>
+        <div class="ki-msg"><p>遠方で駆けつけられず申し訳ありません。心よりお悔やみ申し上げます。</p></div>
+      </div>
+      <div class="ki">
+        <div class="ki-top"><div><p class="ki-name"><span class="ki-avatar anon">匿</span>匿名の方</p><p class="ki-date">2026年2月2日</p></div><p class="ki-amount">¥10,000</p></div>
+        <div class="ki-msg"><p>ご冥福をお祈りいたします。</p></div>
+      </div>
+      <div class="ki">
+        <div class="ki-top"><div><p class="ki-name"><span class="ki-avatar msg">💌</span>渡辺 裕子 様</p><p class="ki-date">2026年2月2日</p></div><span class="ki-msg-badge">メッセージ</span></div>
+        <div class="ki-msg"><p>いつも優しく声をかけてくださいました。ありがとうございました。</p></div>
+      </div>
+      <div class="ki">
+        <div class="ki-top"><div><p class="ki-name"><span class="ki-avatar gold">中</span>中村 大輔 様</p><p class="ki-date">2026年2月2日</p></div><p class="ki-amount">¥10,000</p></div>
+        <div class="ki-msg"><p>一緒に仕事ができた日々を忘れません。心からご冥福を祈ります。</p></div>
+      </div>
+      <div class="ki">
+        <div class="ki-top"><div><p class="ki-name"><span class="ki-avatar gold">小</span>小林 恵 様</p><p class="ki-date">2026年2月1日</p></div><p class="ki-amount">¥8,000</p></div>
+        <div class="ki-msg"><p>孝一さんの笑顔が大好きでした。天国でもお元気で。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="#">ご遺族様専用ページ →</a>
+    <p style="margin-top:16px;font-size:12px;color:#aaa">ご不明な点は葬儀社まで</p>
+    <p class="powered">Powered by Rei © 2026 SHIKAKERU Inc.</p>
+  </footer>
+
+</main>
+
+<script>
+var amt=5000;
+function pickAmt(el,v){
+  document.querySelectorAll('.amt-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');amt=v;
+}
+function goStep(s){
+  document.querySelectorAll('#donation-tab .page').forEach(p=>p.classList.remove('show'));
+  document.getElementById('step'+s).classList.add('show');
+  [1,2,3].forEach(i=>{
+    document.getElementById('sd'+i).className='step-dot '+(i<=s?'on':'off');
+    if(i<3)document.getElementById('sl'+i).className='step-line '+(i<s?'on':'off');
+  });
+  if(s===3){
+    document.getElementById('confirmAmt').textContent='¥'+amt.toLocaleString();
+    var name=document.getElementById('anonCheck').checked?'匿名':(document.getElementById('donorName').value||'佐藤 花子');
+    document.getElementById('confirmName').textContent=name;
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleAnon(){
+  var c=document.getElementById('anonCheck');c.checked=!c.checked;
+  var on=c.checked;
+  document.getElementById('anonLabel').className='anon-label '+(on?'on':'off');
+  document.getElementById('anonBox').className='anon-box '+(on?'on':'off');
+  document.getElementById('anonBox').textContent=on?'✓':'';
+  document.getElementById('nameField').style.display=on?'none':'block';
+}
+function doSubmit(){
+  document.querySelectorAll('#donation-tab .page').forEach(p=>p.classList.remove('show'));
+  document.getElementById('stepSuccess').classList.add('show');
+  document.querySelector('.steps').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetForm(){
+  document.querySelector('.steps').style.display='flex';
+  goStep(1);
+}
+function switchTab(t){
+  if(t==='donation'){
+    document.getElementById('donation-tab').style.display='block';
+    document.getElementById('message-tab').style.display='none';
+    document.getElementById('tab-donation').className='tab on-donation';
+    document.getElementById('tab-message').className='tab off';
+  } else {
+    document.getElementById('donation-tab').style.display='none';
+    document.getElementById('message-tab').style.display='block';
+    document.getElementById('tab-donation').className='tab off';
+    document.getElementById('tab-message').className='tab on-message';
+  }
+}
+function sendMessage(){
+  document.getElementById('msgFormCard').style.display='none';
+  document.getElementById('msgSentCard').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetMessage(){
+  document.getElementById('msgFormCard').style.display='block';
+  document.getElementById('msgSentCard').style.display='none';
+}
+</script>
+</body>
+</html>

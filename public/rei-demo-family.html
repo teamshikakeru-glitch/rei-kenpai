@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ご遺族様専用ページ | Rei</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{min-height:100vh;background:#faf9f7;font-family:"Noto Serif JP",serif;color:#1a1a1a;-webkit-font-smoothing:antialiased}
+
+/* DEMO BAR */
+.demo-bar{position:sticky;top:0;z-index:200;background:#c9a227;color:white;text-align:center;padding:7px 16px;font-size:12px;font-weight:600;letter-spacing:.5px}
+.demo-bar a{color:white;margin-left:12px;text-decoration:underline}
+
+/* HEADER - matches real */
+.hdr{padding:1rem 1.5rem;border-bottom:1px solid #e8e8e8;display:flex;align-items:center;gap:.75rem}
+.hdr-logo{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,#b8860b,#d4a84b);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1.1rem;
+}
+.hdr-brand{font-size:1rem;letter-spacing:.1em}
+
+main{padding:3rem 1.5rem;max-width:600px;margin:0 auto}
+
+/* LOGIN PAGE */
+.login-title{text-align:center;margin-bottom:2rem}
+.login-title h1{font-size:1.5rem;margin-bottom:.5rem}
+.login-title p{color:#666;font-size:.9rem}
+
+.login-card{
+  background:white;border-radius:12px;padding:2rem;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);
+}
+.login-card label{display:block;margin-bottom:.5rem;font-weight:500}
+.login-card input{
+  width:100%;padding:1rem;border:1px solid #d4d4d4;border-radius:8px;
+  font-size:1rem;box-sizing:border-box;margin-bottom:1.5rem;font-family:inherit;
+}
+.login-card input:focus{outline:none;border-color:#c9a227;box-shadow:0 0 0 3px rgba(201,162,39,.1)}
+.login-card input[type=password]{font-family:monospace}
+.login-btn{
+  width:100%;padding:1rem;background:#1a1a1a;color:white;border:none;
+  border-radius:8px;font-size:1rem;cursor:pointer;font-family:inherit;
+}
+.login-btn:hover{opacity:.9}
+
+.error-box{
+  margin-bottom:1.5rem;padding:1rem;background:#fef2f2;
+  border:1px solid #fecaca;border-radius:8px;color:#dc2626;font-size:.9rem;
+  display:none;
+}
+
+/* AUTHENTICATED VIEW */
+.auth-view{display:none}
+
+.追悼-label{font-size:.85rem;color:#8a8a8a;margin-bottom:.5rem}
+.deceased-name{font-size:1.5rem;margin-bottom:2rem}
+
+/* STATS GRID - matches real */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.stat-card{
+  background:white;border-radius:12px;padding:1.5rem;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);text-align:center;
+}
+.stat-card.green{background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%)}
+.stat-card p.label{font-size:.85rem;color:#666;margin-bottom:.5rem}
+.stat-card p.value{font-size:1.75rem;font-weight:600}
+.stat-card.green p.value{color:#2e7d32}
+.stat-card .note{font-size:.7rem;color:#666;margin-top:.25rem}
+
+/* KENPAI LIST - matches real */
+.list-card{
+  background:white;border-radius:12px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);
+}
+.list-header{
+  padding:1rem 1.5rem;background:#f7f5f2;border-bottom:1px solid #e8e8e8;
+}
+.list-header h3{font-size:1rem;margin:0}
+
+.ki{padding:1rem 1.5rem;border-bottom:1px solid #f0f0f0}
+.ki:last-child{border:none}
+.ki-top{display:flex;justify-content:space-between;align-items:flex-start}
+.ki-name{font-weight:500}
+.ki-date{font-size:.75rem;color:#999}
+.ki-amount{font-weight:600;font-size:1.1rem}
+.ki-msg{
+  padding:.75rem;background:#faf9f7;border-radius:6px;
+  font-size:.9rem;color:#555;line-height:1.6;margin-top:.75rem;
+}
+
+.logout-btn{
+  display:block;margin:2rem auto 0;padding:.75rem 2rem;
+  background:white;border:1px solid #d4d4d4;border-radius:8px;
+  cursor:pointer;font-size:.9rem;font-family:inherit;
+}
+.logout-btn:hover{border-color:#c9a227}
+
+.page{display:none}.page.show{display:block}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">デモ画面 — 実際のデータではありません <a href="rei-lp.html">← LPに戻る</a></div>
+
+<div class="hdr">
+  <div class="hdr-logo">礼</div>
+  <span class="hdr-brand">Rei</span>
+</div>
+
+<main>
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="page show">
+    <div class="login-title">
+      <h1>ご遺族様専用ページ</h1>
+      <p>入金状況をご確認いただけます</p>
+    </div>
+    <div class="login-card">
+      <div class="error-box" id="errorBox">故人様のお名前またはパスワードが正しくありません</div>
+      <label>故人様のお名前</label>
+      <input type="text" placeholder="例：山田 太郎" id="loginName">
+      <label>パスワード</label>
+      <input type="password" placeholder="葬儀社よりお知らせしたパスワード" id="loginPw">
+      <button class="login-btn" onclick="doLogin()">確認する</button>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATED VIEW -->
+  <div id="authView" class="page">
+    <div style="text-align:center;margin-bottom:2rem">
+      <p class="追悼-label">追悼</p>
+      <h1 class="deceased-name">故 中川 孝一 様</h1>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="label">お預かり総額</p>
+        <p class="value">¥83,000</p>
+      </div>
+      <div class="stat-card green">
+        <p class="label">お振込予定額</p>
+        <p class="value">¥80,012</p>
+        <p class="note">手数料3.6%差引後</p>
+      </div>
+    </div>
+
+    <div class="list-card">
+      <div class="list-header">
+        <h3>献杯いただいた皆様（7名）</h3>
+      </div>
+      <div style="max-height:400px;overflow-y:auto">
+        <div class="ki">
+          <div class="ki-top"><div><p class="ki-name">鈴木 一郎 様</p><p class="ki-date">2026年2月3日 10:24</p></div><p class="ki-amount">¥30,000</p></div>
+          <div class="ki-msg">孝一さんには大変お世話になりました。ご冥福をお祈りいたします。</div>
+        </div>
+        <div class="ki">
+          <div class="ki-top"><div><p class="ki-name">田中 美咲 様</p><p class="ki-date">2026年2月3日 9:15</p></div><p class="ki-amount">¥10,000</p></div>
+          <div class="ki-msg">学生時代からの思い出がたくさんあります。安らかにお休みください。</div>
+        </div>
+        <div class="ki">
+          <div class="ki-top"><div><p class="ki-name">高橋 健太 様</p><p class="ki-date">2026年2月2日 21:38</p></div><p class="ki-amount">¥10,000</p></div>
+          <div class="ki-msg">遠方で駆けつけられず申し訳ありません。心よりお悔やみ申し上げます。</div>
+        </div>
+        <div class="ki">
+          <div class="ki-top"><div><p class="ki-name">匿名の方</p><p class="ki-date">2026年2月2日 18:05</p></div><p class="ki-amount">¥10,000</p></div>
+          <div class="ki-msg">ご冥福をお祈りいたします。</div>
+        </div>
+        <div class="ki">
+          <div class="ki-top"><div><p class="ki-name">渡辺 裕子 様</p><p class="ki-date">2026年2月2日 14:22</p></div><p class="ki-amount">¥5,000</p></div>
+          <div class="ki-msg">いつも優しく声をかけてくださいました。ありがとうございました。</div>
+        </div>
+        <div class="ki">
+          <div class="ki-top"><div><p class="ki-name">中村 大輔 様</p><p class="ki-date">2026年2月2日 11:47</p></div><p class="ki-amount">¥10,000</p></div>
+          <div class="ki-msg">一緒に仕事ができた日々を忘れません。心からご冥福を祈ります。</div>
+        </div>
+        <div class="ki">
+          <div class="ki-top"><div><p class="ki-name">小林 恵 様</p><p class="ki-date">2026年2月1日 22:10</p></div><p class="ki-amount">¥8,000</p></div>
+          <div class="ki-msg">孝一さんの笑顔が大好きでした。天国でもお元気で。</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="logout-btn" onclick="doLogout()">ログアウト</button>
+  </div>
+</main>
+
+<script>
+function doLogin(){
+  document.getElementById('loginView').classList.remove('show');
+  document.getElementById('authView').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function doLogout(){
+  document.getElementById('authView').classList.remove('show');
+  document.getElementById('loginView').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
