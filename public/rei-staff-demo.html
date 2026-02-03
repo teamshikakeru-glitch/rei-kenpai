@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>礼カスタム — スタッフ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg: #0f1117;
+  --bg2: #181b25;
+  --bg3: #1e2230;
+  --bg4: #252a3a;
+  --border: #2a2f42;
+  --border2: #353b52;
+  --t1: #e8eaf0;
+  --t2: #9399ad;
+  --t3: #5f6580;
+  --gold: #c9a96e;
+  --gold-l: #dfc48e;
+  --gold-d: #a6863f;
+  --gold-g: rgba(201,169,110,0.12);
+  --green: #5cb87a;
+  --red: #e05c5c;
+  --blue: #5c9de0;
+  --orange: #e0a85c;
+  --r: 12px;
+  --rs: 8px;
+  --rl: 18px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+html { font-size: 15px; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-bottom: calc(72px + var(--safe-b));
+}
+
+/* ============ TOP HEADER ============ */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-logo {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f1117;
+}
+
+.top-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-company {
+  font-size: 0.72rem;
+  color: var(--t3);
+  letter-spacing: 0.5px;
+}
+
+.top-user {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--t1);
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notif-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  color: var(--t2);
+  transition: all 0.2s var(--ease);
+}
+
+.notif-btn:active { transform: scale(0.92); }
+
+.notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 16px;
+  height: 16px;
+  background: var(--red);
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg2);
+}
+
+/* ============ PAGES ============ */
+.page {
+  display: none;
+  padding: 16px;
+  animation: pageIn 0.3s var(--ease);
+}
+
+.page.active { display: block; }
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ BOTTOM NAV ============ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding: 6px 8px calc(6px + var(--safe-b));
+  gap: 4px;
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  border-radius: var(--rs);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  border: none;
+  background: none;
+  -webkit-appearance: none;
+}
+
+.nav-tab:active { transform: scale(0.92); }
+
+.nav-tab-icon {
+  font-size: 1.2rem;
+  transition: transform 0.2s var(--ease);
+}
+
+.nav-tab-label {
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--t3);
+  letter-spacing: 0.3px;
+  transition: color 0.2s var(--ease);
+  font-family: inherit;
+}
+
+.nav-tab.active {
+  background: var(--gold-g);
+}
+
+.nav-tab.active .nav-tab-icon {
+  transform: scale(1.15);
+}
+
+.nav-tab.active .nav-tab-label {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ============ SECTION HEADER ============ */
+.sec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.sec-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: 0.3px;
+}
+
+.sec-sub {
+  font-size: 0.72rem;
+  color: var(--t3);
+  margin-top: 2px;
+}
+
+/* ============ CARDS ============ */
+.card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--rl);
+  padding: 18px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s var(--ease);
+}
+
+.card:active { border-color: var(--border2); }
+
+.card-sm {
+  padding: 14px;
+  border-radius: var(--r);
+}
+
+/* ============ STAT ROW ============ */
+.stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stat-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2.5px;
+  background: var(--sc, var(--gold));
+}
+
+.stat-label {
+  font-size: 0.68rem;
+  color: var(--t3);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.stat-val {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--t1);
+  margin-top: 4px;
+  line-height: 1;
+}
+
+.stat-unit {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--t2);
+}
+
+/* ============ CASE LIST ============ */
+.case-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.case-item:active {
+  background: var(--bg4);
+  transform: scale(0.98);
+}
+
+.case-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--gold-g);
+  border-radius: var(--r);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.case-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.case-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--t1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.case-meta {
+  font-size: 0.72rem;
+  color: var(--t3);
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.case-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.case-amount {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.case-date {
+  font-size: 0.68rem;
+  color: var(--t3);
+  margin-top: 3px;
+}
+
+/* ============ TAGS ============ */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.tag-green { background: rgba(92,184,122,0.15); color: var(--green); }
+.tag-orange { background: rgba(224,168,92,0.15); color: var(--orange); }
+.tag-blue { background: rgba(92,157,224,0.15); color: var(--blue); }
+.tag-red { background: rgba(224,92,92,0.15); color: var(--red); }
+.tag-gold { background: var(--gold-g); color: var(--gold); }
+
+/* ============ SCHEDULE ============ */
+.sched-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(42,47,66,0.5);
+}
+
+.sched-item:last-child { border-bottom: none; }
+
+.sched-time {
+  width: 52px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sched-hour {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.sched-min {
+  font-size: 0.68rem;
+  color: var(--t3);
+}
+
+.sched-line {
+  width: 3px;
+  background: var(--sl, var(--gold));
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.sched-body {
+  flex: 1;
+}
+
+.sched-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--t1);
+}
+
+.sched-detail {
+  font-size: 0.75rem;
+  color: var(--t3);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.sched-tag {
+  margin-top: 6px;
+}
+
+/* ============ BUTTONS ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--r);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-family: inherit;
+  transition: all 0.2s var(--ease);
+  letter-spacing: 0.3px;
+  width: 100%;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  color: #0f1117;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--t2);
+}
+
+.btn-outline:active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  width: auto;
+  border-radius: var(--rs);
+}
+
+/* ============ FORMS ============ */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--t2);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--rs);
+  color: var(--t1);
+  font-size: 16px; /* prevent iOS zoom */
+  font-family: inherit;
+  transition: border-color 0.2s var(--ease);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--gold);
+}
+
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239399ad' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ============ PLAN SELECTOR (MOBILE) ============ */
+.plan-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  margin: 0 -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.plan-scroll::-webkit-scrollbar { display: none; }
+
+.plan-chip {
+  flex: 0 0 auto;
+  width: calc(50vw - 24px);
+  max-width: 200px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: all 0.2s var(--ease);
+  text-align: center;
+}
+
+.plan-chip:active { transform: scale(0.96); }
+
+.plan-chip.selected {
+  border-color: var(--gold);
+  background: var(--gold-g);
+}
+
+.plan-chip-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--t1);
+  margin-bottom: 4px;
+}
+
+.plan-chip-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.plan-chip-desc {
+  font-size: 0.65rem;
+  color: var(--t3);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ============ OPTION TOGGLE (MOBILE) ============ */
+.opt-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--rs);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.opt-item:active { background: var(--bg4); }
+
+.opt-item.on {
+  border-color: var(--gold);
+  background: var(--gold-g);
+}
+
+.opt-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.opt-switch {
+  width: 40px;
+  height: 22px;
+  background: var(--border);
+  border-radius: 11px;
+  position: relative;
+  transition: background 0.25s var(--ease);
+  flex-shrink: 0;
+}
+
+.opt-switch::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: var(--t3);
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: all 0.25s var(--ease);
+}
+
+.opt-item.on .opt-switch {
+  background: var(--gold);
+}
+
+.opt-item.on .opt-switch::after {
+  left: 20px;
+  background: #0f1117;
+}
+
+.opt-name {
+  font-size: 0.85rem;
+  color: var(--t2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.opt-item.on .opt-name { color: var(--t1); }
+
+.opt-price {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--t3);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.opt-item.on .opt-price { color: var(--gold); }
+
+/* ============ SUMMARY BAR (MOBILE) ============ */
+.summary-bar {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--rl);
+  padding: 18px;
+  margin-top: 16px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--t2);
+  padding: 4px 0;
+}
+
+.summary-line-val { color: var(--t1); font-weight: 500; }
+
+.summary-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 12px 0;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.summary-total-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.summary-total-val {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.summary-tax {
+  text-align: right;
+  font-size: 0.68rem;
+  color: var(--t3);
+  margin-top: 3px;
+}
+
+/* ============ MODAL / SHEET ============ */
+.sheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 200;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.sheet-overlay.show {
+  display: block;
+  animation: fadeIn 0.2s var(--ease);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 210;
+  background: var(--bg3);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px calc(20px + var(--safe-b));
+  max-height: 85vh;
+  overflow-y: auto;
+  display: none;
+  transform: translateY(100%);
+  transition: transform 0.35s var(--ease);
+}
+
+.sheet.show {
+  display: block;
+  transform: translateY(0);
+  animation: sheetUp 0.35s var(--ease);
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.sheet-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--t1);
+  margin-bottom: 18px;
+}
+
+/* ============ DETAIL SHEET ============ */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.detail-box {
+  background: var(--bg);
+  border-radius: var(--rs);
+  padding: 12px;
+}
+
+.detail-label {
+  font-size: 0.65rem;
+  color: var(--t3);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.detail-val {
+  font-size: 0.88rem;
+  color: var(--t1);
+  font-weight: 500;
+}
+
+.detail-full { grid-column: 1 / -1; }
+
+/* ============ EMPTY STATE ============ */
+.empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--t3);
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* ============ FILTER CHIPS ============ */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 14px;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter-row::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--t2);
+  transition: all 0.2s var(--ease);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.filter-chip:active { transform: scale(0.94); }
+
+.filter-chip.active {
+  background: var(--gold-g);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ============ SEARCH ============ */
+.search-wrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.search-wrap input {
+  padding-left: 38px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--t3);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+/* ============ FAB ============ */
+.fab {
+  position: fixed;
+  bottom: calc(84px + var(--safe-b));
+  right: 20px;
+  z-index: 70;
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-d));
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #0f1117;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(201,169,110,0.35);
+  transition: all 0.2s var(--ease);
+}
+
+.fab:active { transform: scale(0.88); }
+
+.fab.hidden { display: none; }
+
+/* ============ TOAST ============ */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--bg3);
+  border: 1px solid var(--green);
+  border-radius: var(--r);
+  padding: 12px 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--green);
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.3s var(--ease);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar { width: 0; height: 0; }
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Top Bar -->
+<header class="top-bar">
+  <div class="top-left">
+    <div class="top-logo">礼</div>
+    <div class="top-info">
+      <div class="top-company">テストA社</div>
+      <div class="top-user">佐藤 主任</div>
+    </div>
+  </div>
+  <div class="top-right">
+    <button class="notif-btn" onclick="showToast('📢 新しいお知らせはありません')">
+      🔔
+      <span class="notif-badge">2</span>
+    </button>
+  </div>
+</header>
+
+<!-- ===== PAGE: HOME ===== -->
+<div class="page active" id="page-home">
+  <div class="sec-header">
+    <div>
+      <div class="sec-title">おはようございます 👋</div>
+      <div class="sec-sub">2026年2月3日（火）</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-box" style="--sc:var(--gold)">
+      <div class="stat-label">担当案件数</div>
+      <div class="stat-val">6<span class="stat-unit">件</span></div>
+    </div>
+    <div class="stat-box" style="--sc:var(--blue)">
+      <div class="stat-label">今月の売上</div>
+      <div class="stat-val">920<span class="stat-unit">万</span></div>
+    </div>
+    <div class="stat-box" style="--sc:var(--green)">
+      <div class="stat-label">今日の予定</div>
+      <div class="stat-val">3<span class="stat-unit">件</span></div>
+    </div>
+    <div class="stat-box" style="--sc:var(--orange)">
+      <div class="stat-label">未完了タスク</div>
+      <div class="stat-val">2<span class="stat-unit">件</span></div>
+    </div>
+  </div>
+
+  <!-- Today's Schedule -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div style="font-size:0.9rem;font-weight:600;color:var(--t1);">本日のスケジュール</div>
+      <button class="btn-sm btn btn-outline" onclick="switchTab('schedule')">全て見る →</button>
+    </div>
+    <div id="todaySchedule"></div>
+  </div>
+
+  <!-- Recent Cases -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+    <div style="font-size:0.9rem;font-weight:600;">直近の担当案件</div>
+    <button class="btn-sm btn btn-outline" onclick="switchTab('cases')">全て見る →</button>
+  </div>
+  <div id="homeCases"></div>
+</div>
+
+<!-- ===== PAGE: CASES ===== -->
+<div class="page" id="page-cases">
+  <div class="sec-header">
+    <div>
+      <div class="sec-title">担当案件</div>
+      <div class="sec-sub" id="caseCount">全 0 件</div>
+    </div>
+  </div>
+
+  <div class="filter-row" id="caseFilters"></div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="form-input" id="caseSearch" placeholder="施主名・故人名で検索" oninput="renderCases()">
+  </div>
+  <div id="caseList"></div>
+</div>
+
+<!-- ===== PAGE: ESTIMATE ===== -->
+<div class="page" id="page-estimate">
+  <div class="sec-header">
+    <div>
+      <div class="sec-title">見積作成</div>
+      <div class="sec-sub">プラン選択 → オプション → 確認</div>
+    </div>
+  </div>
+
+  <!-- Step 1 -->
+  <div style="font-size:0.78rem;font-weight:600;color:var(--gold);margin-bottom:8px;letter-spacing:1px;">STEP 1 — プラン</div>
+  <div class="plan-scroll" id="planScroll"></div>
+
+  <!-- Step 2 -->
+  <div style="font-size:0.78rem;font-weight:600;color:var(--gold);margin:18px 0 8px;letter-spacing:1px;">STEP 2 — オプション</div>
+  <div id="optList"></div>
+
+  <!-- Step 3 -->
+  <div style="font-size:0.78rem;font-weight:600;color:var(--gold);margin:18px 0 8px;letter-spacing:1px;">STEP 3 — 施主情報</div>
+  <div class="card card-sm">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">施主名</label>
+        <input class="form-input" id="eClient" placeholder="山田 太郎">
+      </div>
+      <div class="form-group">
+        <label class="form-label">故人名</label>
+        <input class="form-input" id="eDeceased" placeholder="山田 花子">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">電話番号</label>
+        <input class="form-input" type="tel" id="ePhone" placeholder="090-xxxx-xxxx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">施行予定日</label>
+        <input class="form-input" type="date" id="eDate">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">備考</label>
+      <textarea class="form-textarea" id="eNote" placeholder="特記事項"></textarea>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-bar" id="estSummary"></div>
+
+  <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+    <button class="btn btn-gold" onclick="saveEst()">💾 見積を保存</button>
+    <button class="btn btn-outline" onclick="showToast('🖨 印刷プレビュー（デモ）')">🖨 印刷プレビュー</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: SCHEDULE ===== -->
+<div class="page" id="page-schedule">
+  <div class="sec-header">
+    <div>
+      <div class="sec-title">スケジュール</div>
+      <div class="sec-sub">2026年2月3日（火）</div>
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-chip active" onclick="setDayFilter(this,'today')">今日</button>
+    <button class="filter-chip" onclick="setDayFilter(this,'tomorrow')">明日</button>
+    <button class="filter-chip" onclick="setDayFilter(this,'week')">今週</button>
+  </div>
+
+  <div class="card" id="scheduleList"></div>
+
+  <button class="fab" id="fabSchedule" onclick="openAddSchedule()">＋</button>
+</div>
+
+<!-- ===== PAGE: CUSTOMER ===== -->
+<div class="page" id="page-customer">
+  <div class="sec-header">
+    <div>
+      <div class="sec-title">顧客登録・編集</div>
+      <div class="sec-sub">施主・故人情報の管理</div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="form-input" id="custSearch" placeholder="施主名・故人名で検索" oninput="renderCustomers()">
+  </div>
+
+  <div id="custList"></div>
+
+  <button class="fab" id="fabCustomer" onclick="openAddCustomer()">＋</button>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <button class="nav-tab active" data-page="home">
+    <span class="nav-tab-icon">🏠</span>
+    <span class="nav-tab-label">ホーム</span>
+  </button>
+  <button class="nav-tab" data-page="cases">
+    <span class="nav-tab-icon">📁</span>
+    <span class="nav-tab-label">案件</span>
+  </button>
+  <button class="nav-tab" data-page="estimate">
+    <span class="nav-tab-icon">📋</span>
+    <span class="nav-tab-label">見積</span>
+  </button>
+  <button class="nav-tab" data-page="schedule">
+    <span class="nav-tab-icon">📅</span>
+    <span class="nav-tab-label">予定</span>
+  </button>
+  <button class="nav-tab" data-page="customer">
+    <span class="nav-tab-icon">👤</span>
+    <span class="nav-tab-label">顧客</span>
+  </button>
+</nav>
+
+<!-- Bottom Sheet (Detail / Add) -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title" id="sheetTitle"></div>
+  <div id="sheetContent"></div>
+</div>
+
+<script>
+// ================================================================
+// DATA
+// ================================================================
+
+const PLANS = [
+  { id:'family', name:'家族葬', price:580000, desc:'〜30名' },
+  { id:'general', name:'一般葬', price:1200000, desc:'30〜100名' },
+  { id:'premium', name:'特別葬', price:2200000, desc:'100名〜' },
+];
+
+const OPTIONS = [
+  { id:'flower', name:'祭壇生花グレードアップ', price:88000 },
+  { id:'photo', name:'遺影写真加工', price:33000 },
+  { id:'movie', name:'メモリアルムービー', price:55000 },
+  { id:'food', name:'通夜振る舞い（30名）', price:120000 },
+  { id:'return', name:'香典返し（50個）', price:150000 },
+  { id:'car', name:'霊柩車グレードアップ', price:44000 },
+  { id:'priest', name:'僧侶手配', price:200000 },
+  { id:'kenpai', name:'礼（遠隔献杯）導入', price:0 },
+];
+
+const MY_CASES = [
+  { id:1, client:'山田 太郎', deceased:'山田 花子', date:'2026-02-10', area:'東京都', plan:'家族葬', amount:710000, status:'準備中', phone:'090-1234-5678', address:'東京都世田谷区成城1-2-3', rel:'配偶者', note:'参列者25名。生花グレードアップ。' },
+  { id:2, client:'加藤 誠', deceased:'加藤 ハル', date:'2026-02-05', area:'千葉県', plan:'一般葬', amount:1350000, status:'準備中', phone:'080-5678-9012', address:'船橋市本町5-6-7', rel:'長男', note:'通夜振る舞い50名分。香典返し。' },
+  { id:3, client:'斉藤 裕子', deceased:'斉藤 武男', date:'2026-01-28', area:'東京都', plan:'家族葬', amount:750000, status:'完了', phone:'080-1111-2222', address:'東京都中野区新井1-1-1', rel:'配偶者', note:'生花グレードアップ。ムービー。' },
+  { id:4, client:'田口 正義', deceased:'田口 光子', date:'2026-01-20', area:'神奈川県', plan:'一般葬', amount:1280000, status:'完了', phone:'070-3333-4444', address:'横浜市西区花咲町3-3-3', rel:'長男', note:'霊柩車グレードアップ。' },
+  { id:5, client:'西村 健太', deceased:'西村 キヨ', date:'2026-01-12', area:'埼玉県', plan:'家族葬', amount:630000, status:'完了', phone:'090-5555-6666', address:'さいたま市浦和区4-4-4', rel:'長男', note:'シンプルな家族葬。' },
+  { id:6, client:'佐々木 一郎', deceased:'佐々木 節子', date:'2025-12-25', area:'東京都', plan:'特別葬', amount:2500000, status:'完了', phone:'080-7777-8888', address:'東京都港区赤坂5-5-5', rel:'長男', note:'大規模社葬対応。' },
+];
+
+const SCHEDULES = {
+  today: [
+    { time:'09:00', title:'山田家 打ち合わせ', detail:'施主ご自宅にて。祭壇生花の最終確認。', color:'var(--gold)', tag:'打合せ' },
+    { time:'13:00', title:'加藤家 通夜リハーサル', detail:'船橋メモリアルホール。受付設営の確認。', color:'var(--blue)', tag:'施行準備' },
+    { time:'16:00', title:'新規相談 — 中村様', detail:'来社相談。一般葬を検討中とのこと。', color:'var(--green)', tag:'相談' },
+  ],
+  tomorrow: [
+    { time:'10:00', title:'加藤家 通夜', detail:'船橋メモリアルホール。17:00開式。', color:'var(--orange)', tag:'施行' },
+    { time:'14:00', title:'月次報告書 作成', detail:'今月の施行実績をまとめ。', color:'var(--blue)', tag:'事務' },
+  ],
+  week: [
+    { time:'2/3 09:00', title:'山田家 打ち合わせ', detail:'施主ご自宅にて。', color:'var(--gold)', tag:'打合せ' },
+    { time:'2/3 13:00', title:'加藤家 通夜リハーサル', detail:'船橋メモリアルホール。', color:'var(--blue)', tag:'施行準備' },
+    { time:'2/3 16:00', title:'新規相談 — 中村様', detail:'来社相談。', color:'var(--green)', tag:'相談' },
+    { time:'2/4 10:00', title:'加藤家 通夜', detail:'船橋メモリアルホール。', color:'var(--orange)', tag:'施行' },
+    { time:'2/4 14:00', title:'月次報告書 作成', detail:'', color:'var(--blue)', tag:'事務' },
+    { time:'2/5 10:00', title:'加藤家 告別式', detail:'船橋メモリアルホール。10:00開式。', color:'var(--orange)', tag:'施行' },
+    { time:'2/7 11:00', title:'社内研修', detail:'新システム操作研修。', color:'var(--green)', tag:'研修' },
+    { time:'2/10 09:00', title:'山田家 通夜', detail:'世田谷セレモニーホール。', color:'var(--orange)', tag:'施行' },
+  ]
+};
+
+const CUSTOMERS = [
+  ...MY_CASES,
+  { id:7, client:'松本 隆', deceased:'松本 信一', date:'2025-12-28', area:'神奈川県', plan:'一般葬', amount:1280000, status:'完了', phone:'090-7890-1234', address:'川崎市中原区7-8-9', rel:'長男', note:'年末対応。' },
+  { id:8, client:'井上 直美', deceased:'井上 三郎', date:'2025-12-20', area:'東京都', plan:'特別葬', amount:2350000, status:'完了', phone:'080-8901-2345', address:'東京都文京区8-9-10', rel:'長女', note:'大規模。僧侶手配。' },
+];
+
+// ================================================================
+// STATE
+// ================================================================
+
+let selPlan = null;
+let optState = {};
+OPTIONS.forEach(o => { optState[o.id] = o.id === 'kenpai'; });
+let caseFilter = 'all';
+let dayFilter = 'today';
+
+// ================================================================
+// NAVIGATION
+// ================================================================
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    switchTab(this.dataset.page);
+  });
+});
+
+function switchTab(page) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.querySelector(`.nav-tab[data-page="${page}"]`);
+  if (tab) tab.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  // FABs
+  document.getElementById('fabSchedule').classList.toggle('hidden', page !== 'schedule');
+  document.getElementById('fabCustomer').classList.toggle('hidden', page !== 'customer');
+}
+
+// ================================================================
+// HELPERS
+// ================================================================
+
+function yen(n) { return '¥' + n.toLocaleString(); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function openSheet(title, html) {
+  document.getElementById('sheetTitle').textContent = title;
+  document.getElementById('sheetContent').innerHTML = html;
+  document.getElementById('sheetOverlay').classList.add('show');
+  document.getElementById('sheet').classList.add('show');
+}
+
+function closeSheet() {
+  document.getElementById('sheetOverlay').classList.remove('show');
+  document.getElementById('sheet').classList.remove('show');
+}
+
+// ================================================================
+// HOME
+// ================================================================
+
+function renderHome() {
+  // Today schedule
+  const today = SCHEDULES.today;
+  document.getElementById('todaySchedule').innerHTML = today.map(s => `
+    <div class="sched-item">
+      <div class="sched-time">
+        <div class="sched-hour">${s.time.split(':')[0]}</div>
+        <div class="sched-min">:${s.time.split(':')[1]}</div>
+      </div>
+      <div class="sched-line" style="--sl:${s.color}"></div>
+      <div class="sched-body">
+        <div class="sched-title">${s.title}</div>
+        <div class="sched-detail">${s.detail}</div>
+        <div class="sched-tag"><span class="tag tag-gold">${s.tag}</span></div>
+      </div>
+    </div>
+  `).join('');
+
+  // Recent cases (top 3)
+  document.getElementById('homeCases').innerHTML = MY_CASES.slice(0, 3).map(c => caseHTML(c)).join('');
+}
+
+// ================================================================
+// CASES
+// ================================================================
+
+function caseHTML(c) {
+  const icon = c.status === '完了' ? '✅' : '⏳';
+  const tagCls = c.status === '完了' ? 'tag-green' : 'tag-orange';
+  return `<div class="case-item" onclick="showCaseDetail(${c.id})">
+    <div class="case-icon">${icon}</div>
+    <div class="case-body">
+      <div class="case-name">${c.deceased} 様</div>
+      <div class="case-meta">
+        <span class="tag ${tagCls}">${c.status}</span>
+        <span>${c.plan}</span>
+        <span>${c.area}</span>
+      </div>
+    </div>
+    <div class="case-right">
+      <div class="case-amount">${yen(c.amount)}</div>
+      <div class="case-date">${c.date}</div>
+    </div>
+  </div>`;
+}
+
+function renderCases() {
+  const q = (document.getElementById('caseSearch')?.value || '').toLowerCase();
+  let list = MY_CASES.filter(c => {
+    const matchQ = !q || c.client.toLowerCase().includes(q) || c.deceased.toLowerCase().includes(q);
+    const matchF = caseFilter === 'all' || c.status === (caseFilter === 'active' ? '準備中' : '完了');
+    return matchQ && matchF;
+  });
+
+  document.getElementById('caseCount').textContent = `全 ${list.length} 件`;
+  document.getElementById('caseList').innerHTML = list.length > 0 ?
+    list.map(c => caseHTML(c)).join('') :
+    '<div class="empty"><div class="empty-icon">📂</div><div class="empty-text">該当する案件がありません</div></div>';
+}
+
+function renderCaseFilters() {
+  const filters = [
+    { id:'all', label:'すべて' },
+    { id:'active', label:'準備中' },
+    { id:'done', label:'完了' },
+  ];
+  document.getElementById('caseFilters').innerHTML = filters.map(f =>
+    `<button class="filter-chip ${caseFilter===f.id?'active':''}" onclick="setCaseFilter('${f.id}')">${f.label}</button>`
+  ).join('');
+}
+
+function setCaseFilter(f) {
+  caseFilter = f;
+  renderCaseFilters();
+  renderCases();
+}
+
+function showCaseDetail(id) {
+  const c = MY_CASES.find(x => x.id === id) || CUSTOMERS.find(x => x.id === id);
+  if (!c) return;
+  openSheet(c.deceased + ' 様', `
+    <div class="detail-grid">
+      <div class="detail-box"><div class="detail-label">施主名</div><div class="detail-val">${c.client}</div></div>
+      <div class="detail-box"><div class="detail-label">故人名</div><div class="detail-val">${c.deceased}</div></div>
+      <div class="detail-box"><div class="detail-label">施行日</div><div class="detail-val">${c.date}</div></div>
+      <div class="detail-box"><div class="detail-label">ステータス</div><div class="detail-val"><span class="tag ${c.status==='完了'?'tag-green':'tag-orange'}">${c.status}</span></div></div>
+      <div class="detail-box"><div class="detail-label">電話番号</div><div class="detail-val">${c.phone}</div></div>
+      <div class="detail-box"><div class="detail-label">プラン</div><div class="detail-val">${c.plan}</div></div>
+      <div class="detail-box"><div class="detail-label">金額</div><div class="detail-val" style="color:var(--gold);font-size:1.05rem;">${yen(c.amount)}</div></div>
+      <div class="detail-box"><div class="detail-label">続柄</div><div class="detail-val">${c.rel}</div></div>
+      <div class="detail-box detail-full"><div class="detail-label">住所</div><div class="detail-val">${c.address}</div></div>
+      <div class="detail-box detail-full"><div class="detail-label">備考</div><div class="detail-val">${c.note}</div></div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:8px;">
+      <button class="btn btn-outline" onclick="showToast('📞 電話発信（デモ）')" style="flex:1;">📞 電話</button>
+      <button class="btn btn-gold" onclick="closeSheet();switchTab('estimate')" style="flex:1;">📋 見積作成</button>
+    </div>
+  `);
+}
+
+// ================================================================
+// ESTIMATE
+// ================================================================
+
+function renderEstimate() {
+  document.getElementById('planScroll').innerHTML = PLANS.map(p => `
+    <div class="plan-chip ${selPlan===p.id?'selected':''}" onclick="pickPlan('${p.id}')">
+      <div class="plan-chip-name">${p.name}</div>
+      <div class="plan-chip-price">${yen(p.price)}</div>
+      <div class="plan-chip-desc">${p.desc}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('optList').innerHTML = OPTIONS.map(o => {
+    const on = optState[o.id] ? 'on' : '';
+    const price = o.price === 0 ? '無料' : '+' + yen(o.price);
+    return `<div class="opt-item ${on}" onclick="toggleOpt('${o.id}')">
+      <div class="opt-left">
+        <div class="opt-switch"></div>
+        <div class="opt-name">${o.name}</div>
+      </div>
+      <div class="opt-price">${price}</div>
+    </div>`;
+  }).join('');
+
+  updateEstSummary();
+}
+
+function pickPlan(id) {
+  selPlan = id;
+  renderEstimate();
+}
+
+function toggleOpt(id) {
+  optState[id] = !optState[id];
+  renderEstimate();
+}
+
+function updateEstSummary() {
+  const el = document.getElementById('estSummary');
+  let lines = [];
+  let sub = 0;
+
+  if (selPlan) {
+    const p = PLANS.find(x => x.id === selPlan);
+    lines.push({ n: p.name, v: p.price });
+    sub += p.price;
+  }
+  OPTIONS.forEach(o => {
+    if (optState[o.id] && o.price > 0) {
+      lines.push({ n: o.name, v: o.price });
+      sub += o.price;
+    }
+    if (optState[o.id] && o.price === 0) {
+      lines.push({ n: o.name, v: 0 });
+    }
+  });
+
+  const tax = Math.round(sub * 0.1);
+  const total = sub + tax;
+
+  el.innerHTML = (lines.length > 0 ?
+    lines.map(l => `<div class="summary-line"><span>${l.n}</span><span class="summary-line-val">${l.v > 0 ? yen(l.v) : '¥0'}</span></div>`).join('') :
+    '<div style="text-align:center;color:var(--t3);font-size:0.82rem;padding:8px 0;">プランを選択してください</div>'
+  ) + `
+    <hr class="summary-divider">
+    <div class="summary-total">
+      <span class="summary-total-label">合計（税込）</span>
+      <span class="summary-total-val">${yen(total)}</span>
+    </div>
+    <div class="summary-tax">税抜: ${yen(sub)} / 消費税: ${yen(tax)}</div>
+  `;
+}
+
+function saveEst() {
+  if (!selPlan) { showToast('⚠️ プランを選択してください'); return; }
+  const client = document.getElementById('eClient').value || '未入力';
+  showToast('✅ 見積を保存しました — ' + client + '様');
+}
+
+// ================================================================
+// SCHEDULE
+// ================================================================
+
+function renderSchedule() {
+  const data = SCHEDULES[dayFilter] || [];
+  document.getElementById('scheduleList').innerHTML = data.length > 0 ?
+    data.map(s => `
+      <div class="sched-item">
+        <div class="sched-time">
+          <div class="sched-hour">${s.time.split(':')[0].split(' ').pop()}</div>
+          <div class="sched-min">:${s.time.split(':')[1]}</div>
+        </div>
+        <div class="sched-line" style="--sl:${s.color}"></div>
+        <div class="sched-body">
+          <div class="sched-title">${s.title}</div>
+          ${s.detail ? '<div class="sched-detail">' + s.detail + '</div>' : ''}
+          <div class="sched-tag"><span class="tag tag-gold">${s.tag}</span></div>
+        </div>
+      </div>
+    `).join('') :
+    '<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">予定はありません</div></div>';
+}
+
+function setDayFilter(btn, val) {
+  dayFilter = val;
+  document.querySelectorAll('#page-schedule .filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderSchedule();
+}
+
+function openAddSchedule() {
+  openSheet('予定を追加', `
+    <div class="form-group">
+      <label class="form-label">タイトル</label>
+      <input class="form-input" placeholder="例：山田家 打ち合わせ">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">日付</label>
+        <input class="form-input" type="date" value="2026-02-03">
+      </div>
+      <div class="form-group">
+        <label class="form-label">時間</label>
+        <input class="form-input" type="time" value="10:00">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">詳細</label>
+      <textarea class="form-textarea" placeholder="場所や備考"></textarea>
+    </div>
+    <button class="btn btn-gold" onclick="closeSheet();showToast('✅ 予定を追加しました')">追加する</button>
+  `);
+}
+
+// ================================================================
+// CUSTOMERS
+// ================================================================
+
+function renderCustomers() {
+  const q = (document.getElementById('custSearch')?.value || '').toLowerCase();
+  const list = CUSTOMERS.filter(c => {
+    return !q || c.client.toLowerCase().includes(q) || c.deceased.toLowerCase().includes(q);
+  });
+
+  document.getElementById('custList').innerHTML = list.length > 0 ?
+    list.map(c => `
+      <div class="case-item" onclick="showCustDetail(${c.id})">
+        <div class="case-icon">👤</div>
+        <div class="case-body">
+          <div class="case-name">${c.client}</div>
+          <div class="case-meta">
+            <span>故人: ${c.deceased}</span>
+            <span>${c.area}</span>
+          </div>
+        </div>
+        <div class="case-right">
+          <div class="case-amount">${yen(c.amount)}</div>
+          <div class="case-date">${c.date}</div>
+        </div>
+      </div>
+    `).join('') :
+    '<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">該当する顧客がいません</div></div>';
+}
+
+function showCustDetail(id) {
+  const c = CUSTOMERS.find(x => x.id === id);
+  if (!c) return;
+  openSheet(c.client + ' 様', `
+    <div class="detail-grid">
+      <div class="detail-box"><div class="detail-label">施主名</div><div class="detail-val">${c.client}</div></div>
+      <div class="detail-box"><div class="detail-label">故人名</div><div class="detail-val">${c.deceased}</div></div>
+      <div class="detail-box"><div class="detail-label">施行日</div><div class="detail-val">${c.date}</div></div>
+      <div class="detail-box"><div class="detail-label">プラン</div><div class="detail-val">${c.plan}</div></div>
+      <div class="detail-box"><div class="detail-label">電話番号</div><div class="detail-val">${c.phone}</div></div>
+      <div class="detail-box"><div class="detail-label">金額</div><div class="detail-val" style="color:var(--gold)">${yen(c.amount)}</div></div>
+      <div class="detail-box detail-full"><div class="detail-label">住所</div><div class="detail-val">${c.address}</div></div>
+      <div class="detail-box"><div class="detail-label">続柄</div><div class="detail-val">${c.rel}</div></div>
+      <div class="detail-box detail-full"><div class="detail-label">備考</div><div class="detail-val">${c.note}</div></div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:8px;">
+      <button class="btn btn-outline" onclick="closeSheet();showToast('✏️ 編集モード（デモ）')" style="flex:1;">✏️ 編集</button>
+      <button class="btn btn-gold" onclick="showToast('📞 電話発信（デモ）')" style="flex:1;">📞 電話</button>
+    </div>
+  `);
+}
+
+function openAddCustomer() {
+  openSheet('新規顧客登録', `
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">施主名</label>
+        <input class="form-input" placeholder="山田 太郎">
+      </div>
+      <div class="form-group">
+        <label class="form-label">故人名</label>
+        <input class="form-input" placeholder="山田 花子">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">電話番号</label>
+        <input class="form-input" type="tel" placeholder="090-xxxx-xxxx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">エリア</label>
+        <select class="form-select">
+          <option>東京都</option>
+          <option>神奈川県</option>
+          <option>埼玉県</option>
+          <option>千葉県</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">住所</label>
+      <input class="form-input" placeholder="住所を入力">
+    </div>
+    <div class="form-group">
+      <label class="form-label">続柄</label>
+      <select class="form-select">
+        <option>配偶者</option>
+        <option>長男</option>
+        <option>長女</option>
+        <option>その他</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">備考</label>
+      <textarea class="form-textarea" placeholder="特記事項"></textarea>
+    </div>
+    <button class="btn btn-gold" onclick="closeSheet();showToast('✅ 顧客を登録しました')">登録する</button>
+  `);
+}
+
+// ================================================================
+// INIT
+// ================================================================
+
+function init() {
+  renderHome();
+  renderCaseFilters();
+  renderCases();
+  renderEstimate();
+  renderSchedule();
+  renderCustomers();
+  // Hide FABs initially
+  document.getElementById('fabSchedule').classList.add('hidden');
+  document.getElementById('fabCustomer').classList.add('hidden');
+}
+
+init();
+</script>
+</body>
+</html>
