@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>礼（Rei）— 遠隔献杯で、見積もりで勝てる葬儀社へ</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#faf9f6;
+  --white:#ffffff;
+  --bg-warm:#f5f0e8;
+  --bg-section:#f0ede6;
+  --border:#e2ddd2;
+  --border-l:#ece8df;
+  --t1:#1a1a1a;
+  --t2:#4a4a4a;
+  --t3:#8a8578;
+  --gold:#9e7c3c;
+  --gold-l:#b8944e;
+  --gold-bg:rgba(158,124,60,0.07);
+  --gold-bg2:rgba(158,124,60,0.12);
+  --serif:'Shippori Mincho',serif;
+  --sans:'Noto Sans JP',sans-serif;
+}
+
+html{font-size:16px;scroll-behavior:smooth}
+
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--t1);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  line-height:1.9;
+}
+
+::selection{background:var(--gold-bg2);color:var(--t1)}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 28px;position:relative}
+
+/* NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(250,249,246,0.92);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-l);
+  padding:14px 0;
+}
+.nav-inner{
+  max-width:960px;margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-mark{
+  width:30px;height:30px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  border-radius:7px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:14px;font-weight:700;color:#fff;
+}
+.nav-brand{font-family:var(--serif);font-size:0.88rem;color:var(--t1);letter-spacing:2px;font-weight:600}
+.nav-cta{
+  font-size:0.78rem;font-weight:600;color:var(--gold);
+  text-decoration:none;letter-spacing:0.5px;
+  padding:8px 20px;border:1px solid var(--gold);border-radius:6px;
+  transition:all .3s ease;
+}
+.nav-cta:hover{background:var(--gold);color:#fff}
+
+h1,h2{font-family:var(--serif);letter-spacing:0.5px}
+h1{font-size:clamp(1.5rem,4vw,2.3rem);font-weight:800;line-height:1.6;color:var(--t1)}
+h2{font-size:clamp(1.15rem,2.8vw,1.55rem);font-weight:700;line-height:1.6;margin-bottom:24px;color:var(--t1)}
+p{color:var(--t2);font-size:0.92rem;line-height:2}
+.accent{color:var(--gold);font-weight:700}
+.strong{color:var(--t1);font-weight:600}
+
+/* HERO */
+.hero{
+  min-height:100vh;min-height:100dvh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:100px 28px 80px;
+  background:linear-gradient(180deg,var(--white) 0%,var(--bg) 100%);
+  position:relative;
+}
+.hero::before{
+  content:'';position:absolute;
+  width:600px;height:600px;
+  background:radial-gradient(ellipse,rgba(158,124,60,0.06) 0%,transparent 70%);
+  top:30%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+.hero-content{position:relative;z-index:2;max-width:640px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--gold-bg);border:1px solid rgba(158,124,60,0.15);
+  border-radius:24px;padding:7px 18px;
+  font-size:0.72rem;font-weight:600;color:var(--gold);letter-spacing:1.5px;
+  margin-bottom:32px;animation:fadeUp .6s ease both;
+}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%}
+.hero h1{margin-bottom:24px;animation:fadeUp .6s .08s ease both}
+.hero-sub{font-size:0.95rem;color:var(--t2);line-height:2;margin-bottom:10px;animation:fadeUp .6s .15s ease both}
+.hero-target{font-size:0.72rem;color:var(--t3);letter-spacing:1px;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
+.hero-cta{animation:fadeUp .6s .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 36px;border-radius:8px;
+  font-size:0.92rem;font-weight:600;font-family:var(--sans);
+  cursor:pointer;border:none;text-decoration:none;
+  letter-spacing:0.5px;transition:all .3s ease;
+}
+.btn:active{transform:scale(.97)}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:#fff;box-shadow:0 4px 20px rgba(158,124,60,0.2);
+}
+.btn-gold:hover{box-shadow:0 6px 30px rgba(158,124,60,0.3);transform:translateY(-2px)}
+
+/* SECTIONS */
+.sec{padding:88px 0;position:relative}
+.sec-alt{background:var(--white)}
+
+/* MATH */
+.math{
+  background:var(--white);border:1px solid var(--border-l);border-radius:14px;
+  padding:32px;margin:28px 0;box-shadow:0 2px 12px rgba(0,0,0,0.03);
+}
+.math-line{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;font-size:0.9rem;color:var(--t2)}
+.math-line-val{font-weight:600;color:var(--t1);font-size:0.95rem}
+.math-divider{border:none;border-top:1px solid var(--border-l);margin:12px 0}
+.math-total{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0}
+.math-total-label{font-size:0.95rem;font-weight:600;color:var(--t1)}
+.math-total-val{font-size:1.3rem;font-weight:700;color:var(--gold)}
+
+/* LISTS */
+.check-list{list-style:none;margin:24px 0}
+.check-list li{padding:12px 0;font-size:0.9rem;color:var(--t2);display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--border-l)}
+.check-list li:last-child{border:none}
+.check-list li::before{content:'';width:7px;height:7px;background:var(--gold);border-radius:50%;flex-shrink:0;margin-top:10px}
+
+.qualify-list{list-style:none;margin:24px 0}
+.qualify-list li{padding:12px 0;font-size:0.9rem;color:var(--t2);display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--border-l)}
+.qualify-list li:last-child{border:none}
+.qualify-list li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
+
+/* STEPS */
+.steps{margin:28px 0}
+.step{display:flex;gap:18px;padding:18px 0;border-bottom:1px solid var(--border-l)}
+.step:last-child{border:none}
+.step-num{
+  width:34px;height:34px;
+  background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:0.82rem;font-weight:700;color:var(--gold);flex-shrink:0;
+}
+.step-text{font-size:0.9rem;color:var(--t2);padding-top:5px}
+
+.note{font-size:0.76rem;color:var(--t3);margin-top:10px;line-height:1.7}
+
+/* CUSTOM SECTION */
+.custom-sec{background:var(--white);padding:88px 0}
+.custom-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:#fff;border-radius:24px;padding:8px 20px;
+  font-size:0.78rem;font-weight:700;letter-spacing:1.5px;margin-bottom:24px;
+}
+.custom-card{
+  background:var(--bg);border:1px solid var(--border-l);
+  border-radius:16px;padding:36px;margin-top:32px;
+}
+.custom-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.custom-feat{
+  display:flex;align-items:center;gap:10px;
+  font-size:0.82rem;color:var(--t2);
+  padding:10px 14px;background:var(--white);border:1px solid var(--border-l);border-radius:8px;
+}
+.custom-feat::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
+.custom-pt{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);
+  border-radius:8px;padding:10px 18px;
+  font-size:0.88rem;font-weight:600;color:var(--gold);margin-top:16px;
+}
+
+/* CTA */
+.cta-sec{padding:88px 0;text-align:center;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-warm) 100%)}
+.cta-box{
+  background:var(--white);border:1px solid var(--border-l);
+  border-radius:18px;padding:52px 40px;
+  box-shadow:0 4px 30px rgba(0,0,0,0.04);position:relative;overflow:hidden;
+}
+.cta-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l))}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border-l);padding:36px 0;text-align:center;background:var(--bg)}
+.footer-mark{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px}
+.footer-logo{
+  width:22px;height:22px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  border-radius:5px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:11px;font-weight:700;color:#fff;
+}
+.footer-brand{font-family:var(--serif);font-size:0.82rem;color:var(--t3);letter-spacing:2px}
+.footer-copy{font-size:0.66rem;color:var(--t3)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
+.reveal.v{opacity:1;transform:translateY(0)}
+
+@media(max-width:640px){
+  html{font-size:15px}
+  .sec,.custom-sec{padding:64px 0}
+  .hero{padding:80px 20px 60px}
+  .math{padding:24px 20px}
+  .btn{width:100%;padding:15px 24px}
+  .cta-box{padding:36px 24px}
+  .custom-card{padding:24px}
+  .custom-features{grid-template-columns:1fr}
+  .nav-cta{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="nav-mark">礼</div>
+      <div class="nav-brand">礼（Rei）</div>
+    </a>
+    <a class="nav-cta" href="rei-showcase.html">デモを見る →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">先着10社限定</div>
+    <h1>遠隔献杯で、遺族還元を増やし、<br>見積もりで<span class="accent">"勝てる"</span>葬儀社へ。</h1>
+    <p class="hero-sub">値下げは一切しません。<br><span class="strong">それでも、他社より「安く見える」仕組みがあります。</span></p>
+    <p class="hero-target">【 対象：経営者・役員の方 】</p>
+    <div class="hero-cta"><a class="btn btn-gold" href="rei-showcase.html">経営者向けデモを見る →</a></div>
+  </div>
+</section>
+
+<section class="sec sec-alt">
+  <div class="wrap reveal">
+    <h2>その見積もり競争、<br>いつまで続けますか？</h2>
+    <p>同じ内容。同じ式。<br>最後に決まるのは、いつも「価格」。</p><br>
+    <p>値下げすれば利益が削れ、<br>値下げしなければ、負ける。</p><br>
+    <p>この構造自体を変えない限り、<br>どれだけ営業を頑張っても、結果は変わりません。</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap reveal">
+    <h2>価格を下げずに、勝つ方法があります</h2>
+    <p>礼（Rei）は、<br>「遠方で参列できない人の献杯」を<br><span class="strong">仕組みとして売上に変えるシステム</span>です。</p><br>
+    <p>見積もりの金額は変えない。<br>でも、<span class="strong">遺族の実質負担は下がる。</span></p><br>
+    <p>だから、<br><span class="strong">他社より"安く見える"。</span></p>
+  </div>
+</section>
+
+<section class="sec sec-alt">
+  <div class="wrap reveal">
+    <h2>なぜ、値下げせずに<br>安く見えるのか？</h2>
+    <div class="math">
+      <div class="math-line"><span>葬儀費用</span><span class="math-line-val">120万円</span></div>
+      <div class="math-line"><span>遠隔献杯による還元</span><span class="math-line-val" style="color:var(--gold)">− 20万円</span></div>
+      <hr class="math-divider">
+      <div class="math-total"><span class="math-total-label">遺族の実質負担</span><span class="math-total-val">100万円</span></div>
+    </div>
+    <p>見積もりは同じ120万円。<br>でも、遺族が実際に支払う金額は違います。</p><br>
+    <p>この差が、<br><span class="strong">見積もりで「選ばれる理由」になります。</span></p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap reveal">
+    <h2>礼（Rei）とは？</h2>
+    <p>参列できない方がオンラインで<br>献杯（香典＋メッセージ）を届けられるシステムです。</p><br>
+    <p>葬儀社様がやることは、<span class="strong">URLを案内するだけ。</span><br>現場のオペレーションは、一切変わりません。</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text">管理画面から故人ページを作成（約1分）</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">ご遺族がURLを共有</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">遠方の方が献杯＋メッセージを送信</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt">
+  <div class="wrap reveal">
+    <h2>感動話より、現実的なメリット</h2>
+    <ul class="check-list">
+      <li>今まで0円だった層から献杯が集まる</li>
+      <li>遺族の実質負担が下がる</li>
+      <li>見積もり勝率が上がる</li>
+      <li>紹介・満足度の向上</li>
+      <li>導入・運用の手間はほぼゼロ</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap reveal">
+    <h2>このシステムは、<br>全ての葬儀社向けではありません</h2>
+    <p>以下に当てはまる葬儀社様のみ、ご検討ください。</p>
+    <ul class="qualify-list">
+      <li>年間施行件数100件以上</li>
+      <li>見積もり競争に課題を感じている</li>
+      <li>社長・役員がIT導入判断を行っている</li>
+    </ul>
+    <p class="note">※ 価格だけで判断される方には向いていません。</p>
+  </div>
+</section>
+
+<section class="sec sec-alt">
+  <div class="wrap reveal">
+    <h2>導入費用</h2>
+    <p>初期導入費用：<span class="strong" style="font-size:1.15rem">500万円（税別）</span></p><br>
+    <p>IT導入補助金により、<br><span class="strong">最大2/3（約333万円）が補助される可能性</span>があります。</p>
+    <div class="math">
+      <div class="math-line"><span>導入費用</span><span class="math-line-val">500万円</span></div>
+      <div class="math-line"><span>補助金（最大2/3）</span><span class="math-line-val" style="color:var(--gold)">− 約333万円</span></div>
+      <hr class="math-divider">
+      <div class="math-total"><span class="math-total-label">実質負担</span><span class="math-total-val">約167万円〜</span></div>
+    </div>
+    <p>もしこの金額を「高い」と感じる場合、<br><span class="strong">今はタイミングではありません。</span></p>
+  </div>
+</section>
+
+<section class="custom-sec">
+  <div class="wrap reveal">
+    <div class="custom-badge">先着10社限定</div>
+    <h2>礼の導入で終わりません</h2>
+    <p>見積もり、顧客管理、現場オペレーション、<br>法要管理、経営ダッシュボード。</p><br>
+    <p style="font-size:1.05rem;"><span class="strong">「これが欲しい」を、そのまま形にします。</span></p>
+    <div class="custom-card">
+      <p style="font-size:0.82rem;color:var(--t3);margin-bottom:16px;letter-spacing:0.5px;font-weight:500;">選べる機能の例</p>
+      <div class="custom-features">
+        <div class="custom-feat">見積もり自動作成</div>
+        <div class="custom-feat">顧客・施主の一元管理</div>
+        <div class="custom-feat">スタッフ配置管理</div>
+        <div class="custom-feat">法要リマインド</div>
+        <div class="custom-feat">社長専用ダッシュボード</div>
+        <div class="custom-feat">献杯データ連携</div>
+      </div>
+      <div class="custom-pt">500万円の中に 12pt分の機能開発を含みます</div>
+      <p class="note">※ 7カテゴリ・全35機能の中から自由にお選びいただけます<br>※ 詳細はデモ画面でご確認いただけます</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap reveal" style="text-align:center;">
+    <h2>実際の画面をご覧ください</h2>
+    <p style="margin-bottom:36px;">文章より、画面を見た方が早い。<br>経営者向け・現場向け、両方のデモをご用意しています。</p>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+      <a class="btn btn-gold" href="rei-showcase.html">経営者向けデモを確認する →</a>
+      <span class="note">※ 導入をお約束するものではありません</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt" style="text-align:center;">
+  <div class="wrap reveal">
+    <h2 style="font-size:clamp(1.2rem,3vw,1.7rem);margin-bottom:16px;">値下げ競争に入るか。<br><span class="accent">仕組みで勝つか。</span></h2>
+    <p>選ぶのは、今です。</p>
+  </div>
+</section>
+
+<section class="cta-sec">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <a class="btn btn-gold" href="rei-showcase.html" style="font-size:1rem;padding:18px 44px;">経営者向けデモを見る →</a>
+      <p class="note" style="margin-top:18px;">先着10社限定 ／ 500万円（IT補助金で実質 約167万円〜）</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-mark">
+      <div class="footer-logo">礼</div>
+      <span class="footer-brand">礼（Rei）</span>
+    </div>
+    <div class="footer-copy">© 2026 Rei — 遠隔献杯システム</div>
+  </div>
+</footer>
+
+<script>
+const els=document.querySelectorAll('.reveal');
+const ob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:0.15});
+els.forEach(e=>ob.observe(e));
+</script>
+</body>
+</html>
