@@ -91,14 +91,34 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   top:30%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
 }
 .hero-content{position:relative;z-index:2;max-width:640px}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--gold-bg);border:1px solid rgba(158,124,60,0.15);
-  border-radius:24px;padding:7px 18px;
-  font-size:0.72rem;font-weight:600;color:var(--gold);letter-spacing:1.5px;
-  margin-bottom:32px;animation:fadeUp .6s ease both;
+.hero-limit{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  margin-bottom:36px;animation:fadeUp .6s ease both;
 }
-.hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%}
+.hero-limit-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  border-radius:10px 10px 0 0;padding:10px 28px;
+  font-size:0.82rem;font-weight:700;color:#fff;letter-spacing:2px;
+  font-family:var(--serif);
+}
+.hero-limit-badge::before,.hero-limit-badge::after{content:'—';opacity:.5}
+.hero-limit-count{
+  display:inline-flex;align-items:center;gap:14px;
+  background:var(--white);
+  border:2px solid var(--gold);border-top:none;
+  border-radius:0 0 10px 10px;padding:12px 28px;
+}
+.hero-limit-remaining{
+  font-family:var(--serif);font-size:0.82rem;font-weight:600;color:var(--t2);letter-spacing:1px;
+}
+.hero-limit-num{
+  font-family:var(--serif);font-size:1.6rem;font-weight:800;
+  color:var(--gold);line-height:1;
+}
+.hero-limit-unit{
+  font-family:var(--serif);font-size:0.82rem;font-weight:600;color:var(--t2);
+}
 .hero h1{margin-bottom:24px;animation:fadeUp .6s .08s ease both}
 .hero-sub{font-size:0.95rem;color:var(--t2);line-height:2;margin-bottom:10px;animation:fadeUp .6s .15s ease both}
 .hero-target{font-size:0.72rem;color:var(--t3);letter-spacing:1px;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
@@ -319,7 +339,14 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-badge">先着10社限定</div>
+    <div class="hero-limit">
+      <div class="hero-limit-badge">先着 10社限定</div>
+      <div class="hero-limit-count">
+        <span class="hero-limit-remaining">残り</span>
+        <span class="hero-limit-num">8</span>
+        <span class="hero-limit-unit">社</span>
+      </div>
+    </div>
     <h1>遠隔献杯で、遺族還元を増やし、<br>見積もりで<span class="accent">"勝てる"</span>葬儀社へ。</h1>
     <p class="hero-sub">値下げは一切しません。<br><span class="strong">それでも、他社より「安く見える」仕組みがあります。</span></p>
     <p class="hero-target">【 対象：経営者・役員の方 】</p>
@@ -415,7 +442,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 
 <section class="custom-sec">
   <div class="wrap reveal">
-    <div class="custom-badge">先着10社限定</div>
+    <div class="custom-badge">先着10社限定 ― 残り8社</div>
     <h2>礼の導入で終わりません</h2>
     <p>見積もり、顧客管理、現場オペレーション、<br>法要管理、経営ダッシュボード。</p><br>
     <p style="font-size:1.05rem;"><span class="strong">「これが欲しい」を、そのまま形にします。</span></p>
@@ -522,7 +549,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   <div class="wrap">
     <div class="cta-box reveal">
       <a class="btn btn-gold" href="#demo" style="font-size:1rem;padding:18px 44px;">システムデモを見る →</a>
-      <p class="note" style="margin-top:18px;">先着10社限定 ／ 500万円（IT補助金で実質 約167万円〜）</p>
+      <p class="note" style="margin-top:18px;">先着10社限定（残り<strong style="color:var(--gold)">8社</strong>）／ 500万円（IT補助金で実質 約167万円〜）</p>
     </div>
   </div>
 </section>
