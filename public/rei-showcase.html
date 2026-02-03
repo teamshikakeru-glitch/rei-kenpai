@@ -662,6 +662,13 @@ body::before {
   letter-spacing: 0.3px;
 }
 
+.feat-card-selected {
+  font-size: 0.68rem;
+  color: var(--gold);
+  font-weight: 600;
+  margin-top: 6px;
+}
+
 .feat-modal-overlay {
   display: none;
   position: fixed;
@@ -760,23 +767,58 @@ body::before {
 .feat-func-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
   padding: 14px 16px;
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 10px;
   margin-bottom: 8px;
-  transition: border-color 0.2s ease;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-.feat-func-item:hover {
-  border-color: var(--border2);
+.feat-func-item:active { transform: scale(0.98); }
+
+.feat-func-item.selected {
+  border-color: var(--gold);
+  background: var(--gold-g);
+}
+
+.feat-func-item.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.feat-func-item.disabled:active { transform: none; }
+
+/* Checkbox */
+.feat-check {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border2);
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 0.7rem;
+  color: transparent;
+}
+
+.feat-func-item.selected .feat-check {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #0b0d12;
 }
 
 .feat-func-name {
   font-size: 0.88rem;
   color: var(--t1);
   font-weight: 500;
+  flex: 1;
 }
 
 .feat-func-pt {
@@ -803,6 +845,212 @@ body::before {
   font-size: 0.78rem;
   color: var(--t3);
   text-align: center;
+}
+
+/* ============ STICKY PT TRACKER ============ */
+.pt-tracker {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 14px 24px;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+
+.pt-tracker.show {
+  transform: translateY(0);
+}
+
+.pt-tracker-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pt-bar-wrap {
+  flex: 1;
+}
+
+.pt-bar-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.pt-bar-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--t2);
+}
+
+.pt-bar-nums {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.pt-bar-used {
+  color: var(--gold);
+}
+
+.pt-bar-total {
+  color: var(--t3);
+}
+
+.pt-bar-remain {
+  font-size: 0.72rem;
+  color: var(--t3);
+  margin-left: 8px;
+}
+
+.pt-bar-remain.warn { color: var(--orange); }
+.pt-bar-remain.full { color: var(--red); font-weight: 600; }
+
+.pt-bar-outer {
+  width: 100%;
+  height: 8px;
+  background: var(--bg4);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pt-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-d));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.pt-bar-fill.warn {
+  background: linear-gradient(90deg, var(--orange), #c77a30);
+}
+
+.pt-bar-fill.full {
+  background: linear-gradient(90deg, var(--red), #b83030);
+}
+
+.pt-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pt-status.ok {
+  background: rgba(92,184,122,0.12);
+  color: var(--green);
+}
+
+.pt-status.warn {
+  background: rgba(224,168,92,0.12);
+  color: var(--orange);
+}
+
+.pt-status.full {
+  background: rgba(224,92,92,0.12);
+  color: var(--red);
+}
+
+.pt-count-btn {
+  padding: 10px 20px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--t2);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.pt-count-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ============ SELECTION SUMMARY MODAL ============ */
+.sel-summary-list {
+  margin-bottom: 20px;
+}
+
+.sel-cat-group {
+  margin-bottom: 14px;
+}
+
+.sel-cat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--t3);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.sel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.sel-item-name {
+  font-size: 0.82rem;
+  color: var(--t1);
+}
+
+.sel-item-pt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.sel-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--gold-g);
+  border: 1px solid rgba(201,169,110,0.2);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+
+.sel-total-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sel-total-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+@media (max-width: 768px) {
+  .pt-tracker { padding: 12px 16px; }
+  .pt-tracker-inner { flex-wrap: wrap; gap: 10px; }
+  .pt-bar-wrap { flex: 1 1 100%; }
+  .pt-status { flex: 1; justify-content: center; }
+  .pt-count-btn { flex: 1; text-align: center; }
 }
 
 /* ============ SCROLLBAR ============ */
@@ -950,8 +1198,44 @@ body::before {
   </div>
 </section>
 
+<!-- Sticky PT Tracker -->
+<div class="pt-tracker" id="ptTracker">
+  <div class="pt-tracker-inner">
+    <div class="pt-bar-wrap">
+      <div class="pt-bar-top">
+        <span class="pt-bar-label">選択ポイント</span>
+        <span class="pt-bar-nums">
+          <span class="pt-bar-used" id="ptUsed">0</span>
+          <span class="pt-bar-total"> / 12 pt</span>
+          <span class="pt-bar-remain" id="ptRemain">（残り 12pt）</span>
+        </span>
+      </div>
+      <div class="pt-bar-outer">
+        <div class="pt-bar-fill" id="ptFill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="pt-status ok" id="ptStatus">✓ 追加可能</div>
+    <button class="pt-count-btn" onclick="openSelSummary()">選択一覧</button>
+  </div>
+</div>
+
+<!-- Selection Summary Modal -->
+<div class="feat-modal-overlay" id="selModal" onclick="closeSelModal(event)">
+  <div class="feat-modal">
+    <div class="feat-modal-header">
+      <div class="feat-modal-icon">🛒</div>
+      <div>
+        <div class="feat-modal-title">選択した機能一覧</div>
+        <div class="feat-modal-sub" id="selSub"></div>
+      </div>
+      <button class="feat-modal-close" onclick="closeSelModal()">✕</button>
+    </div>
+    <div class="feat-modal-body" id="selBody"></div>
+  </div>
+</div>
+
 <!-- Footer -->
-<footer class="footer">
+<footer class="footer" style="padding-bottom:100px;">
   <div class="container">
     <div class="footer-logo">
       <div class="footer-mark">礼</div>
@@ -972,6 +1256,9 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 revealEls.forEach(el => observer.observe(el));
+
+// ============ CONSTANTS ============
+const MAX_PT = 12;
 
 // ============ FEATURE DATA ============
 const CATEGORIES = [
@@ -1054,44 +1341,194 @@ const CATEGORIES = [
   },
 ];
 
-// Render feature cards
-const grid = document.getElementById('featGrid');
-CATEGORIES.forEach((cat, i) => {
-  const totalPt = cat.features.reduce((s, f) => s + f.pt, 0);
-  const minPt = Math.min(...cat.features.map(f => f.pt));
-  const maxPt = Math.max(...cat.features.map(f => f.pt));
-  grid.innerHTML += `
-    <div class="feat-card" onclick="openFeatModal(${i})">
-      <div class="feat-icon">${cat.icon}</div>
-      <div class="feat-name">${cat.name}</div>
-      <div class="feat-desc">${cat.desc}</div>
-      <div class="feat-pt">${cat.features.length}機能 / ${minPt}〜${maxPt}pt</div>
-      <div class="feat-card-hint">タップして詳細を見る →</div>
-    </div>
-  `;
-});
+// ============ STATE ============
+// selected[catIdx][featIdx] = true/false
+const selected = CATEGORIES.map(c => c.features.map(() => false));
 
-// Modal
+function getUsedPt() {
+  let total = 0;
+  CATEGORIES.forEach((cat, ci) => {
+    cat.features.forEach((f, fi) => {
+      if (selected[ci][fi]) total += f.pt;
+    });
+  });
+  return total;
+}
+
+function getSelectedCount() {
+  let count = 0;
+  selected.forEach(cat => cat.forEach(v => { if (v) count++; }));
+  return count;
+}
+
+// ============ RENDER GRID ============
+const grid = document.getElementById('featGrid');
+
+function renderGrid() {
+  grid.innerHTML = '';
+  CATEGORIES.forEach((cat, i) => {
+    const minPt = Math.min(...cat.features.map(f => f.pt));
+    const maxPt = Math.max(...cat.features.map(f => f.pt));
+    const selCount = selected[i].filter(Boolean).length;
+    const selHtml = selCount > 0
+      ? `<div class="feat-card-selected">✓ ${selCount}機能を選択中</div>`
+      : `<div class="feat-card-hint">タップして機能を選ぶ →</div>`;
+    grid.innerHTML += `
+      <div class="feat-card" onclick="openFeatModal(${i})">
+        <div class="feat-icon">${cat.icon}</div>
+        <div class="feat-name">${cat.name}</div>
+        <div class="feat-desc">${cat.desc}</div>
+        <div class="feat-pt">${cat.features.length}機能 / ${minPt}〜${maxPt}pt</div>
+        ${selHtml}
+      </div>
+    `;
+  });
+}
+
+renderGrid();
+
+// ============ PT TRACKER ============
+function updateTracker() {
+  const used = getUsedPt();
+  const remain = MAX_PT - used;
+  const pct = Math.min((used / MAX_PT) * 100, 100);
+
+  document.getElementById('ptUsed').textContent = used;
+  document.getElementById('ptFill').style.width = pct + '%';
+
+  const fill = document.getElementById('ptFill');
+  const status = document.getElementById('ptStatus');
+  const remainEl = document.getElementById('ptRemain');
+
+  fill.classList.remove('warn', 'full');
+  status.classList.remove('ok', 'warn', 'full');
+  remainEl.classList.remove('warn', 'full');
+
+  if (used === 0) {
+    document.getElementById('ptTracker').classList.remove('show');
+    return;
+  }
+
+  document.getElementById('ptTracker').classList.add('show');
+
+  if (remain > 4) {
+    fill.classList.add('');
+    status.classList.add('ok');
+    status.innerHTML = '✓ 追加可能';
+    remainEl.textContent = `（残り ${remain}pt）`;
+  } else if (remain > 0) {
+    fill.classList.add('warn');
+    status.classList.add('warn');
+    status.innerHTML = `⚠ 残り ${remain}pt`;
+    remainEl.classList.add('warn');
+    remainEl.textContent = `（残り ${remain}pt）`;
+  } else {
+    fill.classList.add('full');
+    status.classList.add('full');
+    status.innerHTML = '✕ 上限に達しました';
+    remainEl.classList.add('full');
+    remainEl.textContent = `（残り 0pt）`;
+  }
+}
+
+// ============ FEATURE MODAL ============
+let currentCatIdx = -1;
+
 function openFeatModal(idx) {
+  currentCatIdx = idx;
   const cat = CATEGORIES[idx];
   document.getElementById('fmIcon').textContent = cat.icon;
   document.getElementById('fmTitle').textContent = cat.name;
   document.getElementById('fmSub').textContent = cat.features.length + '機能';
 
-  document.getElementById('fmBody').innerHTML = cat.features.map(f => `
-    <div class="feat-func-item">
-      <div class="feat-func-name">${f.name}</div>
-      <div class="feat-func-pt">${f.pt} pt</div>
-    </div>
-  `).join('');
+  renderModalItems(idx);
 
   document.getElementById('featModal').classList.add('show');
   document.body.style.overflow = 'hidden';
 }
 
+function renderModalItems(idx) {
+  const cat = CATEGORIES[idx];
+  const used = getUsedPt();
+
+  document.getElementById('fmBody').innerHTML = cat.features.map((f, fi) => {
+    const isSel = selected[idx][fi];
+    const wouldExceed = !isSel && (used + f.pt > MAX_PT);
+    const cls = isSel ? 'selected' : (wouldExceed ? 'disabled' : '');
+    return `
+      <div class="feat-func-item ${cls}" onclick="toggleFeat(${idx},${fi})" data-ci="${idx}" data-fi="${fi}">
+        <div class="feat-check">${isSel ? '✓' : ''}</div>
+        <div class="feat-func-name">${f.name}</div>
+        <div class="feat-func-pt">${f.pt} pt</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleFeat(ci, fi) {
+  const f = CATEGORIES[ci].features[fi];
+  const isSel = selected[ci][fi];
+
+  if (!isSel) {
+    // Try to add
+    if (getUsedPt() + f.pt > MAX_PT) return; // can't add
+    selected[ci][fi] = true;
+  } else {
+    selected[ci][fi] = false;
+  }
+
+  renderModalItems(ci);
+  updateTracker();
+  renderGrid();
+}
+
 function closeFeatModal(e) {
   if (e && e.target !== e.currentTarget && !e.target.classList.contains('feat-modal-close')) return;
   document.getElementById('featModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ============ SELECTION SUMMARY ============
+function openSelSummary() {
+  const used = getUsedPt();
+  const count = getSelectedCount();
+  document.getElementById('selSub').textContent = count + '機能 / ' + used + 'pt 選択中';
+
+  let html = '<div class="sel-summary-list">';
+
+  if (count === 0) {
+    html += '<div style="text-align:center;padding:30px 0;color:var(--t3);font-size:0.88rem;">まだ機能が選択されていません<br>カテゴリをタップして機能を選んでください</div>';
+  } else {
+    CATEGORIES.forEach((cat, ci) => {
+      const selFeats = cat.features.filter((_, fi) => selected[ci][fi]);
+      if (selFeats.length === 0) return;
+
+      html += `<div class="sel-cat-group">
+        <div class="sel-cat-label">${cat.icon} ${cat.name}</div>`;
+      selFeats.forEach(f => {
+        html += `<div class="sel-item">
+          <span class="sel-item-name">${f.name}</span>
+          <span class="sel-item-pt">${f.pt} pt</span>
+        </div>`;
+      });
+      html += '</div>';
+    });
+
+    html += `<div class="sel-total-row">
+      <span class="sel-total-label">合計</span>
+      <span class="sel-total-val">${used} / ${MAX_PT} pt</span>
+    </div>`;
+  }
+
+  html += '</div>';
+  document.getElementById('selBody').innerHTML = html;
+  document.getElementById('selModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSelModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('feat-modal-close')) return;
+  document.getElementById('selModal').classList.remove('show');
   document.body.style.overflow = '';
 }
 </script>
