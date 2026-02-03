@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>礼（Rei）— 遠隔献杯で、見積もりで勝てる葬儀社へ</title>
+<title>礼（Rei）— 遠隔献杯システム</title>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -12,7 +12,6 @@
   --bg:#faf9f6;
   --white:#ffffff;
   --bg-warm:#f5f0e8;
-  --bg-section:#f0ede6;
   --border:#e2ddd2;
   --border-l:#ece8df;
   --t1:#1a1a1a;
@@ -27,47 +26,21 @@
 }
 
 html{font-size:16px;scroll-behavior:smooth}
-
-body{
-  font-family:var(--sans);
-  background:var(--bg);
-  color:var(--t1);
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-  line-height:1.9;
-}
-
+body{font-family:var(--sans);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.9}
 ::selection{background:var(--gold-bg2);color:var(--t1)}
-
 .wrap{max-width:760px;margin:0 auto;padding:0 28px;position:relative}
 
 /* NAV */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(250,249,246,0.92);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border-l);
-  padding:14px 0;
-}
-.nav-inner{
-  max-width:960px;margin:0 auto;padding:0 28px;
-  display:flex;align-items:center;justify-content:space-between;
-}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,249,246,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border-l);padding:14px 0}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-mark{
-  width:30px;height:30px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  border-radius:7px;display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:14px;font-weight:700;color:#fff;
-}
+.nav-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--gold-l));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:700;color:#fff}
 .nav-brand{font-family:var(--serif);font-size:0.88rem;color:var(--t1);letter-spacing:2px;font-weight:600}
-.nav-cta{
-  font-size:0.78rem;font-weight:600;color:var(--gold);
-  text-decoration:none;letter-spacing:0.5px;
-  padding:8px 20px;border:1px solid var(--gold);border-radius:6px;
-  transition:all .3s ease;
-}
-.nav-cta:hover{background:var(--gold);color:#fff}
+.nav-cta{font-size:0.78rem;font-weight:600;text-decoration:none;letter-spacing:0.5px;padding:8px 20px;border-radius:6px;transition:all .3s ease}
+.nav-cta-outline{color:var(--gold);border:1px solid var(--gold)}
+.nav-cta-outline:hover{background:var(--gold);color:#fff}
+.nav-cta-fill{background:var(--gold);color:#fff;border:1px solid var(--gold)}
+.nav-cta-fill:hover{background:var(--gold-l)}
 
 h1,h2{font-family:var(--serif);letter-spacing:0.5px}
 h1{font-size:clamp(1.5rem,4vw,2.3rem);font-weight:800;line-height:1.6;color:var(--t1)}
@@ -75,84 +48,35 @@ h2{font-size:clamp(1.15rem,2.8vw,1.55rem);font-weight:700;line-height:1.6;margin
 p{color:var(--t2);font-size:0.92rem;line-height:2}
 .accent{color:var(--gold);font-weight:700}
 .strong{color:var(--t1);font-weight:600}
+.note{font-size:0.76rem;color:var(--t3);margin-top:10px;line-height:1.7}
 
 /* HERO */
-.hero{
-  min-height:100vh;min-height:100dvh;
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;padding:100px 28px 80px;
-  background:linear-gradient(180deg,var(--white) 0%,var(--bg) 100%);
-  position:relative;
-}
-.hero::before{
-  content:'';position:absolute;
-  width:600px;height:600px;
-  background:radial-gradient(ellipse,rgba(158,124,60,0.06) 0%,transparent 70%);
-  top:30%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
-}
+.hero{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 28px 80px;background:linear-gradient(180deg,var(--white) 0%,var(--bg) 100%);position:relative}
+.hero::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(ellipse,rgba(158,124,60,0.06) 0%,transparent 70%);top:30%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
 .hero-content{position:relative;z-index:2;max-width:640px}
-.hero-limit{
-  display:flex;flex-direction:column;align-items:center;gap:0;
-  margin-bottom:40px;animation:fadeUp .6s ease both;
-}
-.hero-limit-badge{
-  display:inline-flex;align-items:center;gap:12px;
-  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
-  border-radius:12px 12px 0 0;padding:14px 40px;
-  font-size:0.92rem;font-weight:700;color:#fff;letter-spacing:3px;
-  font-family:var(--serif);
-  box-shadow:0 -4px 20px rgba(0,0,0,0.08);
-}
-.hero-limit-badge::before,.hero-limit-badge::after{content:'◆';font-size:0.5rem;color:var(--gold);opacity:.8}
-.hero-limit-count{
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  background:var(--white);
-  border:3px solid var(--gold);border-top:none;
-  border-radius:0 0 14px 14px;padding:18px 44px;
-  box-shadow:0 8px 32px rgba(158,124,60,0.15);
-  position:relative;
-}
-.hero-limit-count::before{
-  content:'';position:absolute;top:0;left:20px;right:20px;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-}
-.hero-limit-remaining{
-  font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t2);letter-spacing:1px;
-}
-.hero-limit-num{
-  font-family:var(--serif);font-size:2.8rem;font-weight:800;
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;line-height:1;
-  filter:drop-shadow(0 2px 4px rgba(158,124,60,0.3));
-}
-.hero-limit-unit{
-  font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t2);
-}
 .hero h1{margin-bottom:24px;animation:fadeUp .6s .08s ease both}
-.hero-sub{font-size:0.95rem;color:var(--t2);line-height:2;margin-bottom:10px;animation:fadeUp .6s .15s ease both}
-.hero-target{font-size:0.72rem;color:var(--t3);letter-spacing:1px;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
+.hero-sub{font-size:0.95rem;color:var(--t2);line-height:2;margin-bottom:14px;animation:fadeUp .6s .15s ease both}
+.hero-bonus{font-size:0.82rem;color:var(--t3);letter-spacing:0.5px;margin-bottom:36px;animation:fadeUp .6s .2s ease both;line-height:1.8}
+.hero-bonus strong{color:var(--gold);font-weight:700}
 .hero-cta{animation:fadeUp .6s .3s ease both;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
+/* LIMIT BADGE */
+.hero-limit{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:40px;animation:fadeUp .6s ease both}
+.hero-limit-badge{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);border-radius:12px 12px 0 0;padding:14px 40px;font-size:0.92rem;font-weight:700;color:#fff;letter-spacing:3px;font-family:var(--serif);box-shadow:0 -4px 20px rgba(0,0,0,0.08)}
+.hero-limit-badge::before,.hero-limit-badge::after{content:'◆';font-size:0.5rem;color:var(--gold);opacity:.8}
+.hero-limit-count{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--white);border:3px solid var(--gold);border-top:none;border-radius:0 0 14px 14px;padding:18px 44px;box-shadow:0 8px 32px rgba(158,124,60,0.15);position:relative}
+.hero-limit-count::before{content:'';position:absolute;top:0;left:20px;right:20px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-limit-remaining{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t2);letter-spacing:1px}
+.hero-limit-num{font-family:var(--serif);font-size:2.8rem;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;filter:drop-shadow(0 2px 4px rgba(158,124,60,0.3))}
+.hero-limit-unit{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t2)}
+
 /* BUTTONS */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  padding:16px 36px;border-radius:8px;
-  font-size:0.92rem;font-weight:600;font-family:var(--sans);
-  cursor:pointer;border:none;text-decoration:none;
-  letter-spacing:0.5px;transition:all .3s ease;
-}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 36px;border-radius:8px;font-size:0.92rem;font-weight:600;font-family:var(--sans);cursor:pointer;border:none;text-decoration:none;letter-spacing:0.5px;transition:all .3s ease}
 .btn:active{transform:scale(.97)}
-.btn-gold{
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  color:#fff;box-shadow:0 4px 20px rgba(158,124,60,0.2);
-}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#fff;box-shadow:0 4px 20px rgba(158,124,60,0.2)}
 .btn-gold:hover{box-shadow:0 6px 30px rgba(158,124,60,0.3);transform:translateY(-2px)}
-.btn-outline{
-  background:transparent;color:var(--gold);
-  border:2px solid var(--gold);
-}
+.btn-outline{background:transparent;color:var(--gold);border:2px solid var(--gold)}
 .btn-outline:hover{background:var(--gold-bg)}
 
 /* SECTIONS */
@@ -160,10 +84,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 .sec-alt{background:var(--white)}
 
 /* MATH */
-.math{
-  background:var(--white);border:1px solid var(--border-l);border-radius:14px;
-  padding:32px;margin:28px 0;box-shadow:0 2px 12px rgba(0,0,0,0.03);
-}
+.math{background:var(--white);border:1px solid var(--border-l);border-radius:14px;padding:32px;margin:28px 0;box-shadow:0 2px 12px rgba(0,0,0,0.03)}
 .math-line{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;font-size:0.9rem;color:var(--t2)}
 .math-line-val{font-weight:600;color:var(--t1);font-size:0.95rem}
 .math-divider{border:none;border-top:1px solid var(--border-l);margin:12px 0}
@@ -177,204 +98,94 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 .check-list li:last-child{border:none}
 .check-list li::before{content:'';width:7px;height:7px;background:var(--gold);border-radius:50%;flex-shrink:0;margin-top:10px}
 
-.qualify-list{list-style:none;margin:24px 0}
-.qualify-list li{padding:12px 0;font-size:0.9rem;color:var(--t2);display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--border-l)}
-.qualify-list li:last-child{border:none}
-.qualify-list li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
-
 /* STEPS */
 .steps{margin:28px 0}
 .step{display:flex;gap:18px;padding:18px 0;border-bottom:1px solid var(--border-l)}
 .step:last-child{border:none}
-.step-num{
-  width:34px;height:34px;
-  background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);
-  border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:0.82rem;font-weight:700;color:var(--gold);flex-shrink:0;
-}
+.step-num{width:34px;height:34px;background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:0.82rem;font-weight:700;color:var(--gold);flex-shrink:0}
 .step-text{font-size:0.9rem;color:var(--t2);padding-top:5px}
 
-.note{font-size:0.76rem;color:var(--t3);margin-top:10px;line-height:1.7}
+/* 10社限定 BONUS */
+.bonus-sec{background:linear-gradient(180deg,var(--bg) 0%,var(--bg-warm) 100%);padding:88px 0;position:relative}
+.bonus-sec::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 10%,var(--gold) 50%,transparent 90%)}
+.bonus-badge{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#fff;border-radius:8px;padding:10px 24px;font-size:0.82rem;font-weight:700;letter-spacing:2px;margin-bottom:24px;font-family:var(--serif)}
+.bonus-badge::before,.bonus-badge::after{content:'◆';font-size:0.45rem;color:var(--gold)}
+.bonus-card{background:var(--white);border:2px solid var(--gold);border-radius:16px;padding:36px;margin-top:32px;box-shadow:0 4px 24px rgba(158,124,60,0.1)}
+.bonus-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.bonus-feat{display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--t2);padding:10px 14px;background:var(--bg);border:1px solid var(--border-l);border-radius:8px}
+.bonus-feat::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
+.bonus-pt{display:inline-flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);border-radius:8px;padding:10px 18px;font-size:0.88rem;font-weight:600;color:var(--gold);margin-top:16px}
 
-/* CUSTOM SECTION */
-.custom-sec{background:var(--white);padding:88px 0}
-.custom-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  color:#fff;border-radius:24px;padding:8px 20px;
-  font-size:0.78rem;font-weight:700;letter-spacing:1.5px;margin-bottom:24px;
-}
-.custom-card{
-  background:var(--bg);border:1px solid var(--border-l);
-  border-radius:16px;padding:36px;margin-top:32px;
-}
-.custom-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
-.custom-feat{
-  display:flex;align-items:center;gap:10px;
-  font-size:0.82rem;color:var(--t2);
-  padding:10px 14px;background:var(--white);border:1px solid var(--border-l);border-radius:8px;
-}
-.custom-feat::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
-.custom-pt{
-  display:inline-flex;align-items:center;gap:6px;
-  background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);
-  border-radius:8px;padding:10px 18px;
-  font-size:0.88rem;font-weight:600;color:var(--gold);margin-top:16px;
-}
+/* DUAL BENEFITS */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:32px 0}
+.dual-card{background:var(--white);border:1px solid var(--border-l);border-radius:14px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.03)}
+.dual-card-icon{font-size:1.4rem;margin-bottom:10px}
+.dual-card-label{font-family:var(--serif);font-size:0.72rem;font-weight:600;color:var(--gold);letter-spacing:1.5px;margin-bottom:8px}
+.dual-card-title{font-family:var(--serif);font-size:1.05rem;font-weight:700;margin-bottom:14px}
+.dual-card ul{list-style:none}
+.dual-card li{font-size:0.82rem;color:var(--t2);padding:6px 0;display:flex;align-items:center;gap:8px}
+.dual-card li::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
 
-/* CTA */
-.cta-sec{padding:88px 0;text-align:center;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-warm) 100%)}
-.cta-box{
-  background:var(--white);border:1px solid var(--border-l);
-  border-radius:18px;padding:52px 40px;
-  box-shadow:0 4px 30px rgba(0,0,0,0.04);position:relative;overflow:hidden;
-}
-.cta-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l))}
+/* DEMO CARDS */
+.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:36px 0 8px}
+.demo-card{background:var(--white);border:1px solid var(--border-l);border-radius:14px;overflow:hidden;transition:all .35s ease;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(0,0,0,0.03)}
+.demo-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.08);border-color:var(--gold)}
+.demo-preview{height:160px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.demo-preview-kenpai{background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%)}
+.demo-preview-family{background:#faf9f7}
+.demo-preview-admin{background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%)}
+.demo-mini-header{position:absolute;top:0;left:0;right:0;height:28px;background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);display:flex;align-items:center;padding:0 10px;gap:6px}
+.demo-mini-logo{width:16px;height:16px;background:linear-gradient(135deg,#c9a227,#d4af37);border-radius:3px;display:flex;align-items:center;justify-content:center;color:white;font-size:8px;font-weight:700;font-family:var(--serif)}
+.demo-mini-brand{color:rgba(255,255,255,.7);font-size:8px;letter-spacing:1px}
+.demo-mini-card{background:white;border-radius:10px;padding:14px;width:80%;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-top:16px;text-align:center}
+.demo-mini-card .star{color:#c9a227;font-size:8px}
+.demo-mini-card .name{font-size:12px;font-family:var(--serif);font-weight:500;margin:4px 0}
+.demo-mini-btn{display:inline-block;padding:4px 14px;border-radius:6px;font-size:8px;font-weight:600;margin-top:6px}
+.demo-mini-btn-dark{background:#1a1a1a;color:white}
+.demo-mini-sidebar{position:absolute;top:0;left:0;bottom:0;width:52px;background:linear-gradient(180deg,#1a1a1a 0%,#2d2d2d 100%);display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:4px}
+.demo-mini-slogo{width:20px;height:20px;background:linear-gradient(135deg,#c9a227,#d4af37);border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:9px;font-weight:700;font-family:var(--serif);margin-bottom:6px}
+.demo-mini-slink{width:32px;height:5px;border-radius:3px;background:rgba(255,255,255,.12)}
+.demo-mini-slink.active{background:rgba(201,162,39,.3)}
+.demo-mini-stats{display:flex;gap:6px;margin-left:56px;margin-top:10px;width:calc(100% - 64px)}
+.demo-mini-stat{flex:1;background:white;border-radius:6px;padding:6px;box-shadow:0 1px 6px rgba(0,0,0,0.05);text-align:center}
+.demo-mini-stat .num{font-size:12px;font-weight:600}
+.demo-mini-stat .label{font-size:6px;color:#888}
+.demo-mini-form{background:#faf9f7;border-radius:8px;padding:10px;width:75%;text-align:center}
+.demo-mini-input{width:100%;height:14px;border:1px solid #d4d4d4;border-radius:4px;background:white;margin:4px 0}
+.demo-card-body{padding:18px 20px}
+.demo-card-tag{display:inline-block;font-size:0.62rem;font-weight:600;letter-spacing:1px;color:var(--gold);background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);border-radius:4px;padding:3px 10px;margin-bottom:10px}
+.demo-card-title{font-family:var(--serif);font-size:1rem;font-weight:600;margin-bottom:6px}
+.demo-card-desc{font-size:0.78rem;color:var(--t3);line-height:1.7;margin-bottom:14px}
+.demo-card-link{font-size:0.78rem;font-weight:600;color:var(--gold);display:inline-flex;align-items:center;gap:6px}
+
+/* FLOATING CTA */
+.float-cta{position:fixed;bottom:28px;right:28px;z-index:99;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#fff;text-decoration:none;padding:14px 24px;border-radius:50px;font-size:0.82rem;font-weight:700;font-family:var(--sans);letter-spacing:0.5px;box-shadow:0 4px 24px rgba(158,124,60,0.35);transition:all .3s ease;opacity:0;transform:translateY(20px);pointer-events:none}
+.float-cta.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.float-cta:hover,.float-cta.show:hover{box-shadow:0 6px 32px rgba(158,124,60,0.5);transform:translateY(-2px)}
+.float-cta-dot{width:8px;height:8px;background:#fff;border-radius:50%;opacity:.7;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
 /* FOOTER */
 .footer{border-top:1px solid var(--border-l);padding:36px 0;text-align:center;background:var(--bg)}
 .footer-mark{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px}
-.footer-logo{
-  width:22px;height:22px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  border-radius:5px;display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:11px;font-weight:700;color:#fff;
-}
+.footer-logo{width:22px;height:22px;background:linear-gradient(135deg,var(--gold),var(--gold-l));border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:11px;font-weight:700;color:#fff}
 .footer-brand{font-family:var(--serif);font-size:0.82rem;color:var(--t3);letter-spacing:2px}
 .footer-copy{font-size:0.66rem;color:var(--t3)}
-
-/* DEMO CARDS */
-.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:36px 0 8px}
-.demo-card{
-  background:var(--white);border:1px solid var(--border-l);border-radius:14px;
-  overflow:hidden;transition:all .35s ease;text-decoration:none;color:inherit;
-  box-shadow:0 2px 12px rgba(0,0,0,0.03);
-}
-.demo-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.08);border-color:var(--gold)}
-.demo-preview{
-  height:160px;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-}
-.demo-preview-kenpai{background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%)}
-.demo-preview-family{background:#faf9f7}
-.demo-preview-admin{background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%)}
-.demo-mini-header{
-  position:absolute;top:0;left:0;right:0;height:28px;
-  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
-  display:flex;align-items:center;padding:0 10px;gap:6px;
-}
-.demo-mini-logo{
-  width:16px;height:16px;background:linear-gradient(135deg,#c9a227,#d4af37);
-  border-radius:3px;display:flex;align-items:center;justify-content:center;
-  color:white;font-size:8px;font-weight:700;font-family:var(--serif);
-}
-.demo-mini-brand{color:rgba(255,255,255,.7);font-size:8px;letter-spacing:1px}
-.demo-mini-card{
-  background:white;border-radius:10px;padding:14px;width:80%;
-  box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-top:16px;text-align:center;
-}
-.demo-mini-card .star{color:#c9a227;font-size:8px}
-.demo-mini-card .name{font-size:12px;font-family:var(--serif);font-weight:500;margin:4px 0}
-.demo-mini-btn{
-  display:inline-block;padding:4px 14px;border-radius:6px;font-size:8px;font-weight:600;margin-top:6px;
-}
-.demo-mini-btn-dark{background:#1a1a1a;color:white}
-.demo-mini-btn-gold{background:linear-gradient(135deg,#c9a227,#d4af37);color:white}
-.demo-mini-sidebar{
-  position:absolute;top:0;left:0;bottom:0;width:52px;
-  background:linear-gradient(180deg,#1a1a1a 0%,#2d2d2d 100%);
-  display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:4px;
-}
-.demo-mini-slogo{
-  width:20px;height:20px;background:linear-gradient(135deg,#c9a227,#d4af37);
-  border-radius:4px;display:flex;align-items:center;justify-content:center;
-  color:white;font-size:9px;font-weight:700;font-family:var(--serif);margin-bottom:6px;
-}
-.demo-mini-slink{width:32px;height:5px;border-radius:3px;background:rgba(255,255,255,.12)}
-.demo-mini-slink.active{background:rgba(201,162,39,.3)}
-.demo-mini-stats{
-  display:flex;gap:6px;margin-left:56px;margin-top:10px;width:calc(100% - 64px);
-}
-.demo-mini-stat{
-  flex:1;background:white;border-radius:6px;padding:6px;
-  box-shadow:0 1px 6px rgba(0,0,0,0.05);text-align:center;
-}
-.demo-mini-stat .num{font-size:12px;font-weight:600}
-.demo-mini-stat .label{font-size:6px;color:#888}
-.demo-mini-form{background:#faf9f7;border-radius:8px;padding:10px;width:75%;text-align:center}
-.demo-mini-input{
-  width:100%;height:14px;border:1px solid #d4d4d4;border-radius:4px;
-  background:white;margin:4px 0;
-}
-.demo-card-body{padding:18px 20px}
-.demo-card-tag{
-  display:inline-block;font-size:0.62rem;font-weight:600;letter-spacing:1px;
-  color:var(--gold);background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);
-  border-radius:4px;padding:3px 10px;margin-bottom:10px;
-}
-.demo-card-title{font-family:var(--serif);font-size:1rem;font-weight:600;margin-bottom:6px}
-.demo-card-desc{font-size:0.78rem;color:var(--t3);line-height:1.7;margin-bottom:14px}
-.demo-card-link{
-  font-size:0.78rem;font-weight:600;color:var(--gold);
-  display:inline-flex;align-items:center;gap:6px;
-}
-
-@media(max-width:640px){
-  .demo-grid{grid-template-columns:1fr;gap:16px}
-  .demo-preview{height:140px}
-}
 
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
 .reveal.v{opacity:1;transform:translateY(0)}
 
-/* DUAL BENEFITS */
-.dual{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:32px 0}
-.dual-card{
-  background:var(--white);border:1px solid var(--border-l);border-radius:14px;
-  padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.03);
-}
-.dual-card-icon{font-size:1.4rem;margin-bottom:10px}
-.dual-card-label{
-  font-family:var(--serif);font-size:0.72rem;font-weight:600;
-  color:var(--gold);letter-spacing:1.5px;margin-bottom:8px;
-}
-.dual-card-title{font-family:var(--serif);font-size:1.05rem;font-weight:700;margin-bottom:14px}
-.dual-card ul{list-style:none}
-.dual-card li{
-  font-size:0.82rem;color:var(--t2);padding:6px 0;
-  display:flex;align-items:center;gap:8px;
-}
-.dual-card li::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
-
-@media(max-width:640px){.dual{grid-template-columns:1fr}}
-
-/* FIXED FLOATING CTA */
-.float-cta{
-  position:fixed;bottom:28px;right:28px;z-index:99;
-  display:flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  color:#fff;text-decoration:none;
-  padding:14px 24px;border-radius:50px;
-  font-size:0.82rem;font-weight:700;font-family:var(--sans);letter-spacing:0.5px;
-  box-shadow:0 4px 24px rgba(158,124,60,0.35);
-  transition:all .3s ease;
-  opacity:0;transform:translateY(20px);pointer-events:none;
-}
-.float-cta.show{opacity:1;transform:translateY(0);pointer-events:auto}
-.float-cta:hover{box-shadow:0 6px 32px rgba(158,124,60,0.5);transform:translateY(-2px)}
-.float-cta.show:hover{transform:translateY(-2px)}
-.float-cta-dot{width:8px;height:8px;background:#fff;border-radius:50%;opacity:.7;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
-
 @media(max-width:640px){
   html{font-size:15px}
-  .sec,.custom-sec{padding:64px 0}
+  .sec,.bonus-sec{padding:64px 0}
   .hero{padding:80px 20px 60px}
   .math{padding:24px 20px}
   .btn{width:100%;padding:15px 24px}
-  .cta-box{padding:36px 24px}
-  .custom-card{padding:24px}
-  .custom-features{grid-template-columns:1fr}
+  .bonus-card{padding:24px}
+  .bonus-features{grid-template-columns:1fr}
+  .dual{grid-template-columns:1fr}
+  .demo-grid{grid-template-columns:1fr;gap:16px}
+  .demo-preview{height:140px}
   .nav-cta{display:none}
   .nav-inner div{display:none}
   .float-cta{bottom:20px;right:16px;left:16px;justify-content:center;border-radius:12px;padding:16px 20px}
@@ -383,6 +194,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
     <a class="nav-logo" href="#">
@@ -390,12 +202,13 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
       <div class="nav-brand">礼（Rei）</div>
     </a>
     <div style="display:flex;gap:12px;align-items:center;">
-      <a class="nav-cta" href="rei-showcase.html">機能デモ</a>
-      <a class="nav-cta" href="#demo" style="background:var(--gold);color:#fff;">デモを見る</a>
+      <a class="nav-cta nav-cta-outline" href="rei-showcase.html">機能デモ</a>
+      <a class="nav-cta nav-cta-fill" href="#demo">デモを見る</a>
     </div>
   </div>
 </nav>
 
+<!-- HERO: 礼が商品。10社限定はボーナス -->
 <section class="hero">
   <div class="hero-content">
     <div class="hero-limit">
@@ -406,10 +219,9 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
         <span class="hero-limit-unit">社</span>
       </div>
     </div>
-    <p style="font-size:0.82rem;color:var(--t3);letter-spacing:0.5px;margin-bottom:28px;animation:fadeUp .6s .04s ease both;">遠隔献杯「礼」の導入＋御社専用の業務システムを丸ごと構築</p>
-    <h1>見積もりで<span class="accent">"勝てる"</span>仕組みと、<br>現場が<span class="accent">楽になる</span>業務システムを。</h1>
-    <p class="hero-sub">経営者には、値下げせずに選ばれる武器を。<br><span class="strong">現場スタッフには、手書き・Excelから解放される業務環境を。</span></p>
-    <p class="hero-target">【 経営者・現場スタッフ、両方のためのシステム 】</p>
+    <h1>遠隔献杯で、<br>見積もりで<span class="accent">"勝てる"</span>葬儀社へ。</h1>
+    <p class="hero-sub">値下げは一切しません。<br><span class="strong">それでも、他社より「安く見える」仕組みがあります。</span></p>
+    <p class="hero-bonus">先着10社には、礼の導入に加えて<br><strong>御社専用の業務システムもオーダーメイドで構築</strong>します</p>
     <div class="hero-cta">
       <a class="btn btn-gold" href="#demo">システムデモを見る →</a>
       <a class="btn btn-outline" href="rei-showcase.html">全機能デモを見る →</a>
@@ -417,6 +229,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   </div>
 </section>
 
+<!-- 問題提起 -->
 <section class="sec sec-alt">
   <div class="wrap reveal">
     <h2>その見積もり競争、<br>いつまで続けますか？</h2>
@@ -426,6 +239,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   </div>
 </section>
 
+<!-- 解決策: 礼 -->
 <section class="sec">
   <div class="wrap reveal">
     <h2>価格を下げずに、勝つ方法があります</h2>
@@ -435,6 +249,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   </div>
 </section>
 
+<!-- 仕組み -->
 <section class="sec sec-alt">
   <div class="wrap reveal">
     <h2>なぜ、値下げせずに<br>安く見えるのか？</h2>
@@ -449,6 +264,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   </div>
 </section>
 
+<!-- 礼とは -->
 <section class="sec">
   <div class="wrap reveal">
     <h2>礼（Rei）とは？</h2>
@@ -462,37 +278,22 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   </div>
 </section>
 
+<!-- 礼のメリット -->
 <section class="sec sec-alt">
   <div class="wrap reveal">
-    <h2>経営者も、現場も、変わります</h2>
-    <div class="dual">
-      <div class="dual-card">
-        <div class="dual-card-icon">👔</div>
-        <div class="dual-card-label">OWNER</div>
-        <div class="dual-card-title">経営者のメリット</div>
-        <ul>
-          <li>遠隔献杯で遺族還元が増える</li>
-          <li>値下げせずに見積もり勝率が上がる</li>
-          <li>経営数値がダッシュボードで一目</li>
-          <li>紹介・リピート率の向上</li>
-        </ul>
-      </div>
-      <div class="dual-card">
-        <div class="dual-card-icon">👷</div>
-        <div class="dual-card-label">STAFF</div>
-        <div class="dual-card-title">現場スタッフのメリット</div>
-        <ul>
-          <li>日報・報告がスマホで完結</li>
-          <li>手書き・Excel作業が激減</li>
-          <li>現場の段取り確認がアプリで一目</li>
-          <li>経費申請がワンタップ</li>
-        </ul>
-      </div>
-    </div>
+    <h2>礼を導入するメリット</h2>
+    <ul class="check-list">
+      <li>今まで0円だった層から献杯が集まる</li>
+      <li>遺族の実質負担が下がり、選ばれやすくなる</li>
+      <li>値下げせずに見積もり勝率が上がる</li>
+      <li>紹介・満足度の向上</li>
+      <li>導入・運用の手間はほぼゼロ</li>
+    </ul>
   </div>
 </section>
 
-<section class="sec sec-alt">
+<!-- 導入費用 -->
+<section class="sec">
   <div class="wrap reveal">
     <h2>導入費用</h2>
     <p>初期導入費用：<span class="strong" style="font-size:1.15rem">500万円（税別）</span></p><br>
@@ -503,45 +304,68 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
       <hr class="math-divider">
       <div class="math-total"><span class="math-total-label">実質負担</span><span class="math-total-val">約167万円〜</span></div>
     </div>
-    <p>もしこの金額を「高い」と感じる場合、<br><span class="strong">今はタイミングではありません。</span></p>
   </div>
 </section>
 
-<section class="custom-sec">
+<!-- ===== 10社限定ボーナス ===== -->
+<section class="bonus-sec">
   <div class="wrap reveal">
-    <div class="custom-badge">先着10社限定 ― 残り8社</div>
-    <h2>500万円で、礼の導入＋<br>業務システムを丸ごと構築</h2>
-    <p>遠隔献杯で売上の仕組みをつくりながら、<br>見積もり、顧客管理、現場オペレーション、経営ダッシュボードまで。</p><br>
-    <p style="font-size:1.05rem;"><span class="strong">経営者にも、現場スタッフにも届くシステムを、まとめて。</span></p>
-    <div class="custom-card">
+    <div class="bonus-badge">先着10社限定 ― 残り8社</div>
+    <h2>最初の10社だけの、特別対応</h2>
+    <p>礼の導入に加えて、<br><span class="strong">御社専用の業務システムをオーダーメイドで構築します。</span></p><br>
+    <p>見積もり作成、顧客管理、現場の段取り、法要フォロー、経営ダッシュボード。<br>
+    <span class="strong">「うちに欲しい」を、そのまま形にします。</span></p>
+
+    <div class="bonus-card">
       <p style="font-size:0.82rem;color:var(--t3);margin-bottom:16px;letter-spacing:0.5px;font-weight:500;">選べる機能の例</p>
-      <div class="custom-features">
-        <div class="custom-feat">見積もり自動作成</div>
-        <div class="custom-feat">顧客・施主の一元管理</div>
-        <div class="custom-feat">スタッフ配置管理</div>
-        <div class="custom-feat">法要リマインド</div>
-        <div class="custom-feat">社長専用ダッシュボード</div>
-        <div class="custom-feat">献杯データ連携</div>
+      <div class="bonus-features">
+        <div class="bonus-feat">見積もり自動作成</div>
+        <div class="bonus-feat">顧客・施主の一元管理</div>
+        <div class="bonus-feat">スタッフ配置管理</div>
+        <div class="bonus-feat">法要リマインド</div>
+        <div class="bonus-feat">社長専用ダッシュボード</div>
+        <div class="bonus-feat">献杯データ連携</div>
       </div>
-      <div class="custom-pt">500万円の中に 12pt分の機能開発を含みます</div>
-      <p class="note">※ 7カテゴリ・全35機能の中から自由にお選びいただけます<br>※ 詳細はデモ画面でご確認いただけます</p>
+      <div class="bonus-pt">500万円の中に 12pt分の機能開発を含みます</div>
+      <p class="note">※ 7カテゴリ・全35機能の中から自由にお選びいただけます</p>
+    </div>
+
+    <div class="dual" style="margin-top:36px">
+      <div class="dual-card">
+        <div class="dual-card-icon">👔</div>
+        <div class="dual-card-label">OWNER</div>
+        <div class="dual-card-title">経営者のメリット</div>
+        <ul>
+          <li>経営数値がダッシュボードで一目</li>
+          <li>現場の報告が自動で上がる</li>
+          <li>属人化した業務を仕組み化</li>
+        </ul>
+      </div>
+      <div class="dual-card">
+        <div class="dual-card-icon">👷</div>
+        <div class="dual-card-label">STAFF</div>
+        <div class="dual-card-title">現場スタッフのメリット</div>
+        <ul>
+          <li>日報・報告がスマホで完結</li>
+          <li>手書き・Excel作業が激減</li>
+          <li>段取り確認がアプリで一目</li>
+          <li>経費申請がワンタップ</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- デモ -->
 <section class="sec" id="demo">
   <div class="wrap reveal" style="text-align:center;">
     <h2>実際の画面をご覧ください</h2>
     <p style="margin-bottom:8px;">文章より、画面を見た方が早い。<br>本物と同じUIで動作するデモをご用意しています。</p>
 
     <div class="demo-grid">
-      <!-- 献杯ページデモ -->
       <a class="demo-card" href="rei-demo-kenpai.html">
         <div class="demo-preview demo-preview-kenpai">
-          <div class="demo-mini-header">
-            <div class="demo-mini-logo">礼</div>
-            <span class="demo-mini-brand">Rei</span>
-          </div>
+          <div class="demo-mini-header"><div class="demo-mini-logo">礼</div><span class="demo-mini-brand">Rei</span></div>
           <div class="demo-mini-card">
             <div class="star">✦ 追 悼 ✦</div>
             <div class="name">故 中川 孝一 様</div>
@@ -556,7 +380,6 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
         </div>
       </a>
 
-      <!-- 遺族ページデモ -->
       <a class="demo-card" href="rei-demo-family.html">
         <div class="demo-preview demo-preview-family">
           <div class="demo-mini-form">
@@ -574,7 +397,6 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
         </div>
       </a>
 
-      <!-- 管理画面デモ -->
       <a class="demo-card" href="rei-demo-admin.html">
         <div class="demo-preview demo-preview-admin">
           <div class="demo-mini-sidebar">
@@ -605,11 +427,13 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   </div>
 </section>
 
+<!-- FLOATING CTA -->
 <a class="float-cta" id="floatCta" href="#demo">
   <span class="float-cta-dot"></span>
   残り8社｜デモを見る
 </a>
 
+<!-- FOOTER -->
 <footer class="footer">
   <div class="wrap">
     <div class="footer-mark">
@@ -621,21 +445,15 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 </footer>
 
 <script>
-// Force scroll to top on page load (override anchor hash)
 if('scrollRestoration' in history) history.scrollRestoration='manual';
 window.scrollTo(0,0);
-if(window.location.hash){
-  history.replaceState(null,null,' ');
-  window.scrollTo(0,0);
-}
+if(window.location.hash){history.replaceState(null,null,' ');window.scrollTo(0,0)}
 window.addEventListener('load',function(){window.scrollTo(0,0)});
 
-// Reveal animations
 const els=document.querySelectorAll('.reveal');
 const ob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:0.15});
 els.forEach(e=>ob.observe(e));
 
-// Floating CTA show/hide
 const fc=document.getElementById('floatCta');
 window.addEventListener('scroll',()=>{
   if(window.scrollY>400)fc.classList.add('show');
