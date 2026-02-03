@@ -93,31 +93,41 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 .hero-content{position:relative;z-index:2;max-width:640px}
 .hero-limit{
   display:flex;flex-direction:column;align-items:center;gap:0;
-  margin-bottom:36px;animation:fadeUp .6s ease both;
+  margin-bottom:40px;animation:fadeUp .6s ease both;
 }
 .hero-limit-badge{
-  display:inline-flex;align-items:center;gap:10px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-l));
-  border-radius:10px 10px 0 0;padding:10px 28px;
-  font-size:0.82rem;font-weight:700;color:#fff;letter-spacing:2px;
+  display:inline-flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+  border-radius:12px 12px 0 0;padding:14px 40px;
+  font-size:0.92rem;font-weight:700;color:#fff;letter-spacing:3px;
   font-family:var(--serif);
+  box-shadow:0 -4px 20px rgba(0,0,0,0.08);
 }
-.hero-limit-badge::before,.hero-limit-badge::after{content:'—';opacity:.5}
+.hero-limit-badge::before,.hero-limit-badge::after{content:'◆';font-size:0.5rem;color:var(--gold);opacity:.8}
 .hero-limit-count{
-  display:inline-flex;align-items:center;gap:14px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
   background:var(--white);
-  border:2px solid var(--gold);border-top:none;
-  border-radius:0 0 10px 10px;padding:12px 28px;
+  border:3px solid var(--gold);border-top:none;
+  border-radius:0 0 14px 14px;padding:18px 44px;
+  box-shadow:0 8px 32px rgba(158,124,60,0.15);
+  position:relative;
+}
+.hero-limit-count::before{
+  content:'';position:absolute;top:0;left:20px;right:20px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
 }
 .hero-limit-remaining{
-  font-family:var(--serif);font-size:0.82rem;font-weight:600;color:var(--t2);letter-spacing:1px;
+  font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t2);letter-spacing:1px;
 }
 .hero-limit-num{
-  font-family:var(--serif);font-size:1.6rem;font-weight:800;
-  color:var(--gold);line-height:1;
+  font-family:var(--serif);font-size:2.8rem;font-weight:800;
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1;
+  filter:drop-shadow(0 2px 4px rgba(158,124,60,0.3));
 }
 .hero-limit-unit{
-  font-family:var(--serif);font-size:0.82rem;font-weight:600;color:var(--t2);
+  font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t2);
 }
 .hero h1{margin-bottom:24px;animation:fadeUp .6s .08s ease both}
 .hero-sub{font-size:0.95rem;color:var(--t2);line-height:2;margin-bottom:10px;animation:fadeUp .6s .15s ease both}
@@ -312,6 +322,24 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
 .reveal.v{opacity:1;transform:translateY(0)}
 
+/* FIXED FLOATING CTA */
+.float-cta{
+  position:fixed;bottom:28px;right:28px;z-index:99;
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:#fff;text-decoration:none;
+  padding:14px 24px;border-radius:50px;
+  font-size:0.82rem;font-weight:700;font-family:var(--sans);letter-spacing:0.5px;
+  box-shadow:0 4px 24px rgba(158,124,60,0.35);
+  transition:all .3s ease;
+  opacity:0;transform:translateY(20px);pointer-events:none;
+}
+.float-cta.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.float-cta:hover{box-shadow:0 6px 32px rgba(158,124,60,0.5);transform:translateY(-2px)}
+.float-cta.show:hover{transform:translateY(-2px)}
+.float-cta-dot{width:8px;height:8px;background:#fff;border-radius:50%;opacity:.7;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
 @media(max-width:640px){
   html{font-size:15px}
   .sec,.custom-sec{padding:64px 0}
@@ -322,6 +350,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   .custom-card{padding:24px}
   .custom-features{grid-template-columns:1fr}
   .nav-cta{display:none}
+  .float-cta{bottom:20px;right:16px;left:16px;justify-content:center;border-radius:12px;padding:16px 20px}
 }
 </style>
 </head>
@@ -409,19 +438,6 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
       <li>紹介・満足度の向上</li>
       <li>導入・運用の手間はほぼゼロ</li>
     </ul>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="wrap reveal">
-    <h2>このシステムは、<br>全ての葬儀社向けではありません</h2>
-    <p>以下に当てはまる葬儀社様のみ、ご検討ください。</p>
-    <ul class="qualify-list">
-      <li>年間施行件数100件以上</li>
-      <li>見積もり競争に課題を感じている</li>
-      <li>社長・役員がIT導入判断を行っている</li>
-    </ul>
-    <p class="note">※ 価格だけで判断される方には向いていません。</p>
   </div>
 </section>
 
@@ -548,11 +564,17 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 <section class="cta-sec">
   <div class="wrap">
     <div class="cta-box reveal">
+      <p style="font-family:var(--serif);font-size:0.88rem;font-weight:600;color:var(--gold);letter-spacing:2px;margin-bottom:18px;">◆ 先着10社限定 — 残り<span style="font-size:1.3rem;font-weight:800">8</span>社 ◆</p>
       <a class="btn btn-gold" href="#demo" style="font-size:1rem;padding:18px 44px;">システムデモを見る →</a>
-      <p class="note" style="margin-top:18px;">先着10社限定（残り<strong style="color:var(--gold)">8社</strong>）／ 500万円（IT補助金で実質 約167万円〜）</p>
+      <p class="note" style="margin-top:18px;">500万円（IT補助金で実質 約167万円〜）</p>
     </div>
   </div>
 </section>
+
+<a class="float-cta" id="floatCta" href="#demo">
+  <span class="float-cta-dot"></span>
+  残り8社｜デモを見る
+</a>
 
 <footer class="footer">
   <div class="wrap">
@@ -565,9 +587,21 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 </footer>
 
 <script>
+// Scroll to top on page load
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+
+// Reveal animations
 const els=document.querySelectorAll('.reveal');
 const ob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:0.15});
 els.forEach(e=>ob.observe(e));
+
+// Floating CTA show/hide
+const fc=document.getElementById('floatCta');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>400)fc.classList.add('show');
+  else fc.classList.remove('show');
+});
 </script>
 </body>
 </html>
