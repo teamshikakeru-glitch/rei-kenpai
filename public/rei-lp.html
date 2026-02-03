@@ -132,7 +132,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 .hero h1{margin-bottom:24px;animation:fadeUp .6s .08s ease both}
 .hero-sub{font-size:0.95rem;color:var(--t2);line-height:2;margin-bottom:10px;animation:fadeUp .6s .15s ease both}
 .hero-target{font-size:0.72rem;color:var(--t3);letter-spacing:1px;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
-.hero-cta{animation:fadeUp .6s .3s ease both}
+.hero-cta{animation:fadeUp .6s .3s ease both;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
 /* BUTTONS */
@@ -149,6 +149,11 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   color:#fff;box-shadow:0 4px 20px rgba(158,124,60,0.2);
 }
 .btn-gold:hover{box-shadow:0 6px 30px rgba(158,124,60,0.3);transform:translateY(-2px)}
+.btn-outline{
+  background:transparent;color:var(--gold);
+  border:2px solid var(--gold);
+}
+.btn-outline:hover{background:var(--gold-bg)}
 
 /* SECTIONS */
 .sec{padding:88px 0;position:relative}
@@ -322,6 +327,27 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
 .reveal.v{opacity:1;transform:translateY(0)}
 
+/* DUAL BENEFITS */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:32px 0}
+.dual-card{
+  background:var(--white);border:1px solid var(--border-l);border-radius:14px;
+  padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.03);
+}
+.dual-card-icon{font-size:1.4rem;margin-bottom:10px}
+.dual-card-label{
+  font-family:var(--serif);font-size:0.72rem;font-weight:600;
+  color:var(--gold);letter-spacing:1.5px;margin-bottom:8px;
+}
+.dual-card-title{font-family:var(--serif);font-size:1.05rem;font-weight:700;margin-bottom:14px}
+.dual-card ul{list-style:none}
+.dual-card li{
+  font-size:0.82rem;color:var(--t2);padding:6px 0;
+  display:flex;align-items:center;gap:8px;
+}
+.dual-card li::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0}
+
+@media(max-width:640px){.dual{grid-template-columns:1fr}}
+
 /* FIXED FLOATING CTA */
 .float-cta{
   position:fixed;bottom:28px;right:28px;z-index:99;
@@ -350,6 +376,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   .custom-card{padding:24px}
   .custom-features{grid-template-columns:1fr}
   .nav-cta{display:none}
+  .nav-inner div{display:none}
   .float-cta{bottom:20px;right:16px;left:16px;justify-content:center;border-radius:12px;padding:16px 20px}
 }
 </style>
@@ -362,7 +389,10 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
       <div class="nav-mark">礼</div>
       <div class="nav-brand">礼（Rei）</div>
     </a>
-    <a class="nav-cta" href="#demo">デモを見る →</a>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <a class="nav-cta" href="rei-showcase.html">機能デモ</a>
+      <a class="nav-cta" href="#demo" style="background:var(--gold);color:#fff;">デモを見る</a>
+    </div>
   </div>
 </nav>
 
@@ -376,10 +406,14 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
         <span class="hero-limit-unit">社</span>
       </div>
     </div>
-    <h1>遠隔献杯で、遺族還元を増やし、<br>見積もりで<span class="accent">"勝てる"</span>葬儀社へ。</h1>
-    <p class="hero-sub">値下げは一切しません。<br><span class="strong">それでも、他社より「安く見える」仕組みがあります。</span></p>
-    <p class="hero-target">【 対象：経営者・役員の方 】</p>
-    <div class="hero-cta"><a class="btn btn-gold" href="#demo">システムデモを見る →</a></div>
+    <p style="font-size:0.82rem;color:var(--t3);letter-spacing:0.5px;margin-bottom:28px;animation:fadeUp .6s .04s ease both;">遠隔献杯「礼」の導入＋御社専用の業務システムを丸ごと構築</p>
+    <h1>見積もりで<span class="accent">"勝てる"</span>仕組みと、<br>現場が<span class="accent">楽になる</span>業務システムを。</h1>
+    <p class="hero-sub">経営者には、値下げせずに選ばれる武器を。<br><span class="strong">現場スタッフには、手書き・Excelから解放される業務環境を。</span></p>
+    <p class="hero-target">【 経営者・現場スタッフ、両方のためのシステム 】</p>
+    <div class="hero-cta">
+      <a class="btn btn-gold" href="#demo">システムデモを見る →</a>
+      <a class="btn btn-outline" href="rei-showcase.html">全機能デモを見る →</a>
+    </div>
   </div>
 </section>
 
@@ -430,14 +464,31 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 
 <section class="sec sec-alt">
   <div class="wrap reveal">
-    <h2>感動話より、現実的なメリット</h2>
-    <ul class="check-list">
-      <li>今まで0円だった層から献杯が集まる</li>
-      <li>遺族の実質負担が下がる</li>
-      <li>見積もり勝率が上がる</li>
-      <li>紹介・満足度の向上</li>
-      <li>導入・運用の手間はほぼゼロ</li>
-    </ul>
+    <h2>経営者も、現場も、変わります</h2>
+    <div class="dual">
+      <div class="dual-card">
+        <div class="dual-card-icon">👔</div>
+        <div class="dual-card-label">OWNER</div>
+        <div class="dual-card-title">経営者のメリット</div>
+        <ul>
+          <li>遠隔献杯で遺族還元が増える</li>
+          <li>値下げせずに見積もり勝率が上がる</li>
+          <li>経営数値がダッシュボードで一目</li>
+          <li>紹介・リピート率の向上</li>
+        </ul>
+      </div>
+      <div class="dual-card">
+        <div class="dual-card-icon">👷</div>
+        <div class="dual-card-label">STAFF</div>
+        <div class="dual-card-title">現場スタッフのメリット</div>
+        <ul>
+          <li>日報・報告がスマホで完結</li>
+          <li>手書き・Excel作業が激減</li>
+          <li>現場の段取り確認がアプリで一目</li>
+          <li>経費申請がワンタップ</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -459,9 +510,9 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 <section class="custom-sec">
   <div class="wrap reveal">
     <div class="custom-badge">先着10社限定 ― 残り8社</div>
-    <h2>礼の導入で終わりません</h2>
-    <p>見積もり、顧客管理、現場オペレーション、<br>法要管理、経営ダッシュボード。</p><br>
-    <p style="font-size:1.05rem;"><span class="strong">「これが欲しい」を、そのまま形にします。</span></p>
+    <h2>500万円で、礼の導入＋<br>業務システムを丸ごと構築</h2>
+    <p>遠隔献杯で売上の仕組みをつくりながら、<br>見積もり、顧客管理、現場オペレーション、経営ダッシュボードまで。</p><br>
+    <p style="font-size:1.05rem;"><span class="strong">経営者にも、現場スタッフにも届くシステムを、まとめて。</span></p>
     <div class="custom-card">
       <p style="font-size:0.82rem;color:var(--t3);margin-bottom:16px;letter-spacing:0.5px;font-weight:500;">選べる機能の例</p>
       <div class="custom-features">
@@ -548,25 +599,8 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
     </div>
 
     <div style="margin-top:32px;">
-      <a class="btn btn-gold" href="rei-showcase.html">経営者向け機能紹介を見る →</a>
+      <a class="btn btn-gold" href="rei-showcase.html">全機能デモを見る →</a>
       <p class="note" style="margin-top:12px;">※ 導入をお約束するものではありません</p>
-    </div>
-  </div>
-</section>
-
-<section class="sec sec-alt" style="text-align:center;">
-  <div class="wrap reveal">
-    <h2 style="font-size:clamp(1.2rem,3vw,1.7rem);margin-bottom:16px;">値下げ競争に入るか。<br><span class="accent">仕組みで勝つか。</span></h2>
-    <p>選ぶのは、今です。</p>
-  </div>
-</section>
-
-<section class="cta-sec">
-  <div class="wrap">
-    <div class="cta-box reveal">
-      <p style="font-family:var(--serif);font-size:0.88rem;font-weight:600;color:var(--gold);letter-spacing:2px;margin-bottom:18px;">◆ 先着10社限定 — 残り<span style="font-size:1.3rem;font-weight:800">8</span>社 ◆</p>
-      <a class="btn btn-gold" href="#demo" style="font-size:1rem;padding:18px 44px;">システムデモを見る →</a>
-      <p class="note" style="margin-top:18px;">500万円（IT補助金で実質 約167万円〜）</p>
     </div>
   </div>
 </section>
