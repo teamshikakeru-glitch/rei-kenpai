@@ -208,6 +208,87 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 .footer-brand{font-family:var(--serif);font-size:0.82rem;color:var(--t3);letter-spacing:2px}
 .footer-copy{font-size:0.66rem;color:var(--t3)}
 
+/* DEMO CARDS */
+.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:36px 0 8px}
+.demo-card{
+  background:var(--white);border:1px solid var(--border-l);border-radius:14px;
+  overflow:hidden;transition:all .35s ease;text-decoration:none;color:inherit;
+  box-shadow:0 2px 12px rgba(0,0,0,0.03);
+}
+.demo-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.08);border-color:var(--gold)}
+.demo-preview{
+  height:160px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.demo-preview-kenpai{background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%)}
+.demo-preview-family{background:#faf9f7}
+.demo-preview-admin{background:linear-gradient(180deg,#faf8f5 0%,#f5f0e8 100%)}
+.demo-mini-header{
+  position:absolute;top:0;left:0;right:0;height:28px;
+  background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+  display:flex;align-items:center;padding:0 10px;gap:6px;
+}
+.demo-mini-logo{
+  width:16px;height:16px;background:linear-gradient(135deg,#c9a227,#d4af37);
+  border-radius:3px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:8px;font-weight:700;font-family:var(--serif);
+}
+.demo-mini-brand{color:rgba(255,255,255,.7);font-size:8px;letter-spacing:1px}
+.demo-mini-card{
+  background:white;border-radius:10px;padding:14px;width:80%;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-top:16px;text-align:center;
+}
+.demo-mini-card .star{color:#c9a227;font-size:8px}
+.demo-mini-card .name{font-size:12px;font-family:var(--serif);font-weight:500;margin:4px 0}
+.demo-mini-btn{
+  display:inline-block;padding:4px 14px;border-radius:6px;font-size:8px;font-weight:600;margin-top:6px;
+}
+.demo-mini-btn-dark{background:#1a1a1a;color:white}
+.demo-mini-btn-gold{background:linear-gradient(135deg,#c9a227,#d4af37);color:white}
+.demo-mini-sidebar{
+  position:absolute;top:0;left:0;bottom:0;width:52px;
+  background:linear-gradient(180deg,#1a1a1a 0%,#2d2d2d 100%);
+  display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:4px;
+}
+.demo-mini-slogo{
+  width:20px;height:20px;background:linear-gradient(135deg,#c9a227,#d4af37);
+  border-radius:4px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:9px;font-weight:700;font-family:var(--serif);margin-bottom:6px;
+}
+.demo-mini-slink{width:32px;height:5px;border-radius:3px;background:rgba(255,255,255,.12)}
+.demo-mini-slink.active{background:rgba(201,162,39,.3)}
+.demo-mini-stats{
+  display:flex;gap:6px;margin-left:56px;margin-top:10px;width:calc(100% - 64px);
+}
+.demo-mini-stat{
+  flex:1;background:white;border-radius:6px;padding:6px;
+  box-shadow:0 1px 6px rgba(0,0,0,0.05);text-align:center;
+}
+.demo-mini-stat .num{font-size:12px;font-weight:600}
+.demo-mini-stat .label{font-size:6px;color:#888}
+.demo-mini-form{background:#faf9f7;border-radius:8px;padding:10px;width:75%;text-align:center}
+.demo-mini-input{
+  width:100%;height:14px;border:1px solid #d4d4d4;border-radius:4px;
+  background:white;margin:4px 0;
+}
+.demo-card-body{padding:18px 20px}
+.demo-card-tag{
+  display:inline-block;font-size:0.62rem;font-weight:600;letter-spacing:1px;
+  color:var(--gold);background:var(--gold-bg);border:1px solid rgba(158,124,60,0.12);
+  border-radius:4px;padding:3px 10px;margin-bottom:10px;
+}
+.demo-card-title{font-family:var(--serif);font-size:1rem;font-weight:600;margin-bottom:6px}
+.demo-card-desc{font-size:0.78rem;color:var(--t3);line-height:1.7;margin-bottom:14px}
+.demo-card-link{
+  font-size:0.78rem;font-weight:600;color:var(--gold);
+  display:inline-flex;align-items:center;gap:6px;
+}
+
+@media(max-width:640px){
+  .demo-grid{grid-template-columns:1fr;gap:16px}
+  .demo-preview{height:140px}
+}
+
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
 .reveal.v{opacity:1;transform:translateY(0)}
 
@@ -232,7 +313,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
       <div class="nav-mark">礼</div>
       <div class="nav-brand">礼（Rei）</div>
     </a>
-    <a class="nav-cta" href="rei-showcase.html">デモを見る →</a>
+    <a class="nav-cta" href="#demo">デモを見る →</a>
   </div>
 </nav>
 
@@ -242,7 +323,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
     <h1>遠隔献杯で、遺族還元を増やし、<br>見積もりで<span class="accent">"勝てる"</span>葬儀社へ。</h1>
     <p class="hero-sub">値下げは一切しません。<br><span class="strong">それでも、他社より「安く見える」仕組みがあります。</span></p>
     <p class="hero-target">【 対象：経営者・役員の方 】</p>
-    <div class="hero-cta"><a class="btn btn-gold" href="rei-showcase.html">経営者向けデモを見る →</a></div>
+    <div class="hero-cta"><a class="btn btn-gold" href="#demo">システムデモを見る →</a></div>
   </div>
 </section>
 
@@ -354,13 +435,78 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
   </div>
 </section>
 
-<section class="sec">
+<section class="sec" id="demo">
   <div class="wrap reveal" style="text-align:center;">
     <h2>実際の画面をご覧ください</h2>
-    <p style="margin-bottom:36px;">文章より、画面を見た方が早い。<br>経営者向け・現場向け、両方のデモをご用意しています。</p>
-    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
-      <a class="btn btn-gold" href="rei-showcase.html">経営者向けデモを確認する →</a>
-      <span class="note">※ 導入をお約束するものではありません</span>
+    <p style="margin-bottom:8px;">文章より、画面を見た方が早い。<br>本物と同じUIで動作するデモをご用意しています。</p>
+
+    <div class="demo-grid">
+      <!-- 献杯ページデモ -->
+      <a class="demo-card" href="rei-demo-kenpai.html">
+        <div class="demo-preview demo-preview-kenpai">
+          <div class="demo-mini-header">
+            <div class="demo-mini-logo">礼</div>
+            <span class="demo-mini-brand">Rei</span>
+          </div>
+          <div class="demo-mini-card">
+            <div class="star">✦ 追 悼 ✦</div>
+            <div class="name">故 中川 孝一 様</div>
+            <div class="demo-mini-btn demo-mini-btn-dark">献杯する</div>
+          </div>
+        </div>
+        <div class="demo-card-body">
+          <div class="demo-card-tag">メイン画面</div>
+          <div class="demo-card-title">献杯ページ</div>
+          <p class="demo-card-desc">参列者がオンラインで献杯・メッセージを送る画面</p>
+          <span class="demo-card-link">デモを見る →</span>
+        </div>
+      </a>
+
+      <!-- 遺族ページデモ -->
+      <a class="demo-card" href="rei-demo-family.html">
+        <div class="demo-preview demo-preview-family">
+          <div class="demo-mini-form">
+            <div style="font-size:8px;font-family:var(--serif);margin-bottom:6px;font-weight:500">ご遺族様専用ページ</div>
+            <div class="demo-mini-input"></div>
+            <div class="demo-mini-input"></div>
+            <div class="demo-mini-btn demo-mini-btn-dark" style="margin-top:8px">確認する</div>
+          </div>
+        </div>
+        <div class="demo-card-body">
+          <div class="demo-card-tag">遺族様向け</div>
+          <div class="demo-card-title">入金確認ページ</div>
+          <p class="demo-card-desc">ご遺族が献杯状況・入金額を確認できる専用画面</p>
+          <span class="demo-card-link">デモを見る →</span>
+        </div>
+      </a>
+
+      <!-- 管理画面デモ -->
+      <a class="demo-card" href="rei-demo-admin.html">
+        <div class="demo-preview demo-preview-admin">
+          <div class="demo-mini-sidebar">
+            <div class="demo-mini-slogo">礼</div>
+            <div class="demo-mini-slink active"></div>
+            <div class="demo-mini-slink"></div>
+            <div class="demo-mini-slink"></div>
+          </div>
+          <div class="demo-mini-stats">
+            <div class="demo-mini-stat"><div class="num">3</div><div class="label">稼働中</div></div>
+            <div class="demo-mini-stat"><div class="num">23</div><div class="label">献杯</div></div>
+            <div class="demo-mini-stat"><div class="num">¥287k</div><div class="label">総額</div></div>
+          </div>
+        </div>
+        <div class="demo-card-body">
+          <div class="demo-card-tag">葬儀社様向け</div>
+          <div class="demo-card-title">管理ダッシュボード</div>
+          <p class="demo-card-desc">献杯ページの作成・入金管理を行う管理画面</p>
+          <span class="demo-card-link">デモを見る →</span>
+        </div>
+      </a>
+    </div>
+
+    <div style="margin-top:32px;">
+      <a class="btn btn-gold" href="rei-showcase.html">経営者向け機能紹介を見る →</a>
+      <p class="note" style="margin-top:12px;">※ 導入をお約束するものではありません</p>
     </div>
   </div>
 </section>
@@ -375,7 +521,7 @@ p{color:var(--t2);font-size:0.92rem;line-height:2}
 <section class="cta-sec">
   <div class="wrap">
     <div class="cta-box reveal">
-      <a class="btn btn-gold" href="rei-showcase.html" style="font-size:1rem;padding:18px 44px;">経営者向けデモを見る →</a>
+      <a class="btn btn-gold" href="#demo" style="font-size:1rem;padding:18px 44px;">システムデモを見る →</a>
       <p class="note" style="margin-top:18px;">先着10社限定 ／ 500万円（IT補助金で実質 約167万円〜）</p>
     </div>
   </div>
