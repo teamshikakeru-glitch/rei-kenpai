@@ -646,6 +646,165 @@ body::before {
   html { font-size: 15px; }
 }
 
+/* ============ FEATURE MODAL ============ */
+.feat-card {
+  cursor: pointer;
+}
+
+.feat-card:hover .feat-name {
+  color: var(--gold-l);
+}
+
+.feat-card-hint {
+  font-size: 0.68rem;
+  color: var(--t3);
+  margin-top: 10px;
+  letter-spacing: 0.3px;
+}
+
+.feat-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.feat-modal-overlay.show {
+  display: flex;
+  animation: fadeIn 0.25s ease;
+}
+
+.feat-modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: modalUp 0.3s ease;
+}
+
+@keyframes modalUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.feat-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.feat-modal-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--gold-g);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.feat-modal-title {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: 0.5px;
+}
+
+.feat-modal-sub {
+  font-size: 0.72rem;
+  color: var(--t3);
+  margin-top: 2px;
+}
+
+.feat-modal-close {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--t2);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.feat-modal-close:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.feat-modal-body {
+  padding: 20px 28px;
+}
+
+.feat-func-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.feat-func-item:hover {
+  border-color: var(--border2);
+}
+
+.feat-func-name {
+  font-size: 0.88rem;
+  color: var(--t1);
+  font-weight: 500;
+}
+
+.feat-func-pt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  padding: 4px 12px;
+  background: var(--gold-g);
+  border-radius: 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+.feat-modal-footer {
+  padding: 16px 28px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.feat-modal-footer-text {
+  font-size: 0.78rem;
+  color: var(--t3);
+  text-align: center;
+}
+
 /* ============ SCROLLBAR ============ */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -750,55 +909,31 @@ body::before {
     <div class="section-title">35の機能から、御社に合わせて選べます</div>
     <div class="section-desc">
       7カテゴリ・全35機能のメニューから、欲しい機能を選ぶだけ。<br>
-      「この機能がほしい」をそのままシステムにします。
+      「この機能がほしい」をそのままシステムにします。<br>
+      <span style="color:var(--gold);font-weight:500;">カードをタップすると詳細が見られます。</span>
     </div>
   </div>
 
-  <div class="feat-grid reveal">
-    <div class="feat-card">
-      <div class="feat-icon">📋</div>
-      <div class="feat-name">見積・売上まわり</div>
-      <div class="feat-desc">プラン選択式の自動見積、オプションON/OFFで金額反映、原価・粗利管理、見積履歴の保存・再利用</div>
-      <div class="feat-pt">5機能 / 1〜4pt</div>
+  <div class="feat-grid reveal" id="featGrid"></div>
+</section>
+
+<!-- Feature Detail Modal -->
+<div class="feat-modal-overlay" id="featModal" onclick="closeFeatModal(event)">
+  <div class="feat-modal">
+    <div class="feat-modal-header">
+      <div class="feat-modal-icon" id="fmIcon"></div>
+      <div>
+        <div class="feat-modal-title" id="fmTitle"></div>
+        <div class="feat-modal-sub" id="fmSub"></div>
+      </div>
+      <button class="feat-modal-close" onclick="closeFeatModal()">✕</button>
     </div>
-    <div class="feat-card">
-      <div class="feat-icon">👤</div>
-      <div class="feat-name">顧客・施主管理</div>
-      <div class="feat-desc">施主・故人の一元管理、施行履歴の紐付け、引き継ぎメモ、クレーム共有、多条件検索</div>
-      <div class="feat-pt">5機能 / 1〜2pt</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">🔧</div>
-      <div class="feat-name">現場オペレーション</div>
-      <div class="feat-desc">当番表の自動作成、急な欠勤アラート、スタッフ配置管理、チェックリスト管理</div>
-      <div class="feat-pt">5機能 / 2〜6pt</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">🕊</div>
-      <div class="feat-name">法要・アフターフォロー</div>
-      <div class="feat-desc">四十九日・一周忌の自動リマインド、案内状履歴管理、フォロー漏れ防止アラート</div>
-      <div class="feat-pt">5機能 / 2〜4pt</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">📊</div>
-      <div class="feat-name">社長・管理者向け</div>
-      <div class="feat-desc">施行件数・売上の可視化、担当者別集計、値引き率分析、社長専用ダッシュボード</div>
-      <div class="feat-pt">5機能 / 2〜4pt</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">🔗</div>
-      <div class="feat-name">礼との連携</div>
-      <div class="feat-desc">献杯データの自動反映、入金管理、献杯者リストPDF出力、想いの可視化</div>
-      <div class="feat-pt">5機能 / 1〜4pt</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">💡</div>
-      <div class="feat-name">現場が地味に助かる系</div>
-      <div class="feat-desc">スマホ対応、写真アップロード、テンプレ文言、操作ログ、入力チェック</div>
-      <div class="feat-pt">5機能 / 1〜4pt</div>
+    <div class="feat-modal-body" id="fmBody"></div>
+    <div class="feat-modal-footer">
+      <div class="feat-modal-footer-text">「この機能がほしい」があれば、お気軽にご相談ください</div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- CTA -->
 <section class="cta-section container" id="contact">
@@ -836,8 +971,129 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.15 });
-
 revealEls.forEach(el => observer.observe(el));
+
+// ============ FEATURE DATA ============
+const CATEGORIES = [
+  {
+    icon: '📋', name: '見積・売上まわり',
+    desc: 'プラン選択式の自動見積、オプションON/OFFで金額反映、原価・粗利管理',
+    features: [
+      { name: '見積もり自動作成（プラン選択式）', pt: 4 },
+      { name: 'オプションON／OFFで金額自動反映', pt: 2 },
+      { name: '原価・粗利が社長だけ見える画面', pt: 2 },
+      { name: '見積履歴の保存・再利用', pt: 2 },
+      { name: '値引き履歴の記録', pt: 1 },
+    ]
+  },
+  {
+    icon: '👤', name: '顧客・施主管理',
+    desc: '施主・故人の一元管理、施行履歴の紐付け、引き継ぎメモ',
+    features: [
+      { name: '施主・故人情報の一元管理', pt: 2 },
+      { name: '過去の施行履歴の紐付け表示', pt: 2 },
+      { name: '担当者引き継ぎメモ', pt: 1 },
+      { name: 'クレーム・注意事項の共有欄', pt: 1 },
+      { name: '顧客検索（地域・時期・金額）', pt: 2 },
+    ]
+  },
+  {
+    icon: '🔧', name: '現場オペレーション',
+    desc: '当番表の自動作成、急な欠勤アラート、スタッフ配置管理',
+    features: [
+      { name: '夜間・当番表の自動作成', pt: 6 },
+      { name: '急な欠勤時の代替アラート', pt: 4 },
+      { name: 'スタッフ配置管理', pt: 4 },
+      { name: '外注スタッフ管理', pt: 2 },
+      { name: '施行ごとのチェックリスト管理', pt: 2 },
+    ]
+  },
+  {
+    icon: '🕊', name: '法要・アフターフォロー',
+    desc: '四十九日・一周忌の自動リマインド、フォロー漏れ防止',
+    features: [
+      { name: '四十九日・一周忌の自動リマインド', pt: 4 },
+      { name: '法要スケジュール一覧', pt: 2 },
+      { name: '案内状送付の履歴管理', pt: 2 },
+      { name: '担当者ごとの対応タスク化', pt: 2 },
+      { name: '施行後フォロー漏れ防止アラート', pt: 4 },
+    ]
+  },
+  {
+    icon: '📊', name: '社長・管理者向け',
+    desc: '施行件数・売上の可視化、担当者別集計、社長専用ダッシュボード',
+    features: [
+      { name: '月別・年別の施行件数表示', pt: 2 },
+      { name: '担当者別の売上・件数集計', pt: 2 },
+      { name: '値引き率・平均単価の可視化', pt: 2 },
+      { name: '社長専用ダッシュボード', pt: 4 },
+      { name: '権限管理（見せる情報を制御）', pt: 4 },
+    ]
+  },
+  {
+    icon: '🔗', name: '礼との連携・価値拡張',
+    desc: '献杯データの自動反映、入金管理、献杯者リストPDF出力',
+    features: [
+      { name: '献杯・決済データの自動反映', pt: 1 },
+      { name: '入金状況の一覧管理', pt: 1 },
+      { name: '献杯者リストのPDF出力', pt: 4 },
+      { name: '遠方参列者向け案内ページ管理', pt: 2 },
+      { name: '施行ごとの「想いの可視化」記録', pt: 2 },
+    ]
+  },
+  {
+    icon: '💡', name: '現場が地味に助かる系',
+    desc: 'スマホ対応、写真アップロード、テンプレ文言、操作ログ',
+    features: [
+      { name: 'スマホ対応（現場入力）', pt: 2 },
+      { name: '写真・書類の簡易アップロード', pt: 4 },
+      { name: 'テンプレ文言の登録', pt: 1 },
+      { name: '操作ログ（誰が何したか）', pt: 4 },
+      { name: 'ミス防止の入力チェック', pt: 2 },
+    ]
+  },
+];
+
+// Render feature cards
+const grid = document.getElementById('featGrid');
+CATEGORIES.forEach((cat, i) => {
+  const totalPt = cat.features.reduce((s, f) => s + f.pt, 0);
+  const minPt = Math.min(...cat.features.map(f => f.pt));
+  const maxPt = Math.max(...cat.features.map(f => f.pt));
+  grid.innerHTML += `
+    <div class="feat-card" onclick="openFeatModal(${i})">
+      <div class="feat-icon">${cat.icon}</div>
+      <div class="feat-name">${cat.name}</div>
+      <div class="feat-desc">${cat.desc}</div>
+      <div class="feat-pt">${cat.features.length}機能 / ${minPt}〜${maxPt}pt</div>
+      <div class="feat-card-hint">タップして詳細を見る →</div>
+    </div>
+  `;
+});
+
+// Modal
+function openFeatModal(idx) {
+  const cat = CATEGORIES[idx];
+  document.getElementById('fmIcon').textContent = cat.icon;
+  document.getElementById('fmTitle').textContent = cat.name;
+  document.getElementById('fmSub').textContent = cat.features.length + '機能';
+
+  document.getElementById('fmBody').innerHTML = cat.features.map(f => `
+    <div class="feat-func-item">
+      <div class="feat-func-name">${f.name}</div>
+      <div class="feat-func-pt">${f.pt} pt</div>
+    </div>
+  `).join('');
+
+  document.getElementById('featModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFeatModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('feat-modal-close')) return;
+  document.getElementById('featModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>
