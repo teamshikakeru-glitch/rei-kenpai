@@ -790,3 +790,183 @@
   .co-hero-actions .co-btn { width: 100%; justify-content: center; }
   .co-numbers-grid { grid-template-columns: 1fr; }
 }
+/* ── Philosophy Section ── */
+.co-philosophy { background: var(--color-bg-warm); }
+.co-philosophy-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.co-philosophy h2 {
+  font-family: var(--font-serif); font-size: clamp(24px, 4vw, 38px);
+  font-weight: 400; line-height: 1.7; margin-bottom: 40px;
+}
+.co-philosophy-text {
+  font-size: 16px; color: var(--color-text-secondary); line-height: 2.2;
+}
+.co-philosophy-text p { margin-bottom: 24px; }
+.co-philosophy-text strong { color: var(--color-accent); font-weight: 600; }
+
+/* ── Definition Section ── */
+.co-definition { background: var(--color-bg); }
+.co-definition-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.co-definition h2 {
+  font-family: var(--font-serif); font-size: clamp(28px, 5vw, 48px);
+  font-weight: 500; line-height: 1.5; margin-bottom: 40px;
+  color: var(--color-accent);
+}
+.co-definition-text {
+  font-size: 16px; color: var(--color-text-secondary); line-height: 2.2;
+}
+.co-definition-text p { margin-bottom: 24px; }
+.co-definition-text strong { color: var(--color-text); font-weight: 600; }
+
+/* ── Workplace Section ── */
+.co-workplace { background: var(--color-accent); color: white; }
+.co-workplace-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.co-workplace .co-label { color: var(--color-gold-light); }
+.co-workplace .co-label::before, .co-workplace .co-label::after { background: var(--color-gold-light); }
+.co-workplace h2 {
+  font-family: var(--font-serif); font-size: clamp(22px, 3.5vw, 34px);
+  font-weight: 400; line-height: 1.8; margin-bottom: 40px;
+}
+.co-workplace-text {
+  font-size: 16px; line-height: 2.2; opacity: 0.9;
+}
+.co-workplace-text p { margin-bottom: 24px; }
+.co-workplace-text strong { color: var(--color-gold-light); font-weight: 600; }
+
+/* ── Last Message Section ── */
+.co-lastmsg { background: var(--color-bg-warm); }
+.co-lastmsg-inner { max-width: 800px; margin: 0 auto; text-align: center; padding: 40px 0; }
+.co-lastmsg h2 {
+  font-family: var(--font-serif); font-size: clamp(20px, 3vw, 28px);
+  font-weight: 400; line-height: 1.7; margin-bottom: 24px;
+  color: var(--color-text);
+}
+.co-lastmsg p {
+  font-size: 16px; color: var(--color-text-secondary); line-height: 2;
+}
+/* ── About Page ── */
+.co-about-section { background: var(--color-bg); }
+.co-about-grid {
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start;
+}
+.co-about-main h2 {
+  font-family: var(--font-serif); font-size: clamp(24px, 3vw, 32px);
+  font-weight: 400; margin-bottom: 8px;
+}
+.co-about-side .co-info-card { height: 100%; }
+.co-about-mission { background: var(--color-bg-warm); }
+.co-about-mission-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.co-about-mission h2 {
+  font-family: var(--font-serif); font-size: clamp(24px, 4vw, 36px);
+  font-weight: 400; line-height: 1.6; margin-bottom: 32px; color: var(--color-accent);
+}
+.co-about-mission p {
+  font-size: 16px; color: var(--color-text-secondary); line-height: 2.2;
+}
+@media (max-width: 768px) {
+  .co-about-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ── Rei Custom Page ── */
+.rc-concept { background: var(--color-bg-warm); }
+.rc-concept-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.rc-concept h2 {
+  font-family: var(--font-serif); font-size: clamp(22px, 3vw, 32px);
+  font-weight: 400; line-height: 1.7; margin-bottom: 32px;
+}
+.rc-concept-text { font-size: 15px; color: var(--color-text-secondary); line-height: 2.2; text-align: left; }
+.rc-concept-text p { margin-bottom: 20px; }
+.rc-features { background: var(--color-bg); }
+.rc-features-header { text-align: center; max-width: 600px; margin: 0 auto 56px; }
+.rc-features-header h2 {
+  font-family: var(--font-serif); font-size: clamp(22px, 3vw, 30px);
+  font-weight: 400; margin-bottom: 12px;
+}
+.rc-features-header p { font-size: 14px; color: var(--color-text-secondary); }
+.rc-features-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.rc-feature-card {
+  background: var(--color-surface); border: 1px solid var(--color-border-light);
+  border-radius: 12px; padding: 28px 20px; text-align: center;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+}
+.rc-feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); }
+.rc-feature-icon { font-size: 32px; margin-bottom: 16px; }
+.rc-feature-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.rc-feature-card p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+.rc-pricing { background: var(--color-bg-warm); }
+.rc-pricing-header { text-align: center; max-width: 600px; margin: 0 auto 48px; }
+.rc-pricing-header h2 {
+  font-family: var(--font-serif); font-size: clamp(22px, 3vw, 30px);
+  font-weight: 400; margin-bottom: 12px;
+}
+.rc-pricing-header p { font-size: 14px; color: var(--color-text-secondary); }
+.rc-pricing-card {
+  max-width: 560px; margin: 0 auto; background: var(--color-surface);
+  border: 1px solid var(--color-border-light); border-radius: 20px; overflow: hidden;
+}
+.rc-pricing-card-header {
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
+  color: white; padding: 40px; text-align: center;
+}
+.rc-pricing-badge {
+  display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.2);
+  border-radius: 100px; font-size: 12px; font-weight: 600; margin-bottom: 16px;
+}
+.rc-pricing-card-header h3 {
+  font-family: var(--font-serif); font-size: 18px; font-weight: 400; margin-bottom: 8px;
+}
+.rc-price-big { font-family: var(--font-display); font-size: 56px; font-weight: 500; line-height: 1.1; }
+.rc-price-unit { font-size: 18px; opacity: 0.9; }
+.rc-price-note { font-size: 13px; opacity: 0.8; margin-top: 8px; }
+.rc-pricing-card-body { padding: 36px 40px; }
+.rc-pricing-includes { list-style: none; padding: 0; }
+.rc-pricing-includes li {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; padding: 12px 0; border-bottom: 1px solid var(--color-border-light);
+}
+.rc-pricing-includes li:last-child { border-bottom: none; }
+.rc-check {
+  width: 20px; height: 20px; background: rgba(184,149,106,0.15); color: var(--color-gold);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; flex-shrink: 0;
+}
+.rc-pricing-note {
+  text-align: center; font-size: 13px; color: var(--color-text-light); margin-top: 24px; line-height: 1.8;
+}
+.rc-flow { background: var(--color-bg); }
+.rc-flow-header { text-align: center; max-width: 600px; margin: 0 auto 56px; }
+.rc-flow-header h2 {
+  font-family: var(--font-serif); font-size: clamp(22px, 3vw, 30px); font-weight: 400;
+}
+.rc-flow-steps {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative;
+}
+.rc-flow-steps::before {
+  content: ''; position: absolute; top: 32px;
+  left: calc(12.5% + 12px); right: calc(12.5% + 12px);
+  height: 2px; background: var(--color-border); z-index: 0;
+}
+.rc-flow-step {
+  background: var(--color-surface); border: 1px solid var(--color-border-light);
+  border-radius: 16px; padding: 32px 20px; text-align: center;
+  position: relative; z-index: 1;
+}
+.rc-flow-num {
+  width: 48px; height: 48px; background: var(--color-gold); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 20px; font-weight: 500;
+  margin: 0 auto 20px;
+}
+.rc-flow-step h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.rc-flow-step p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+@media (max-width: 1024px) {
+  .rc-features-grid { grid-template-columns: repeat(2, 1fr); }
+  .rc-flow-steps { grid-template-columns: repeat(2, 1fr); }
+  .rc-flow-steps::before { display: none; }
+}
+@media (max-width: 768px) {
+  .rc-features-grid { grid-template-columns: 1fr; }
+  .rc-flow-steps { grid-template-columns: 1fr; }
+  .rc-pricing-card-body { padding: 28px 24px; }
+}

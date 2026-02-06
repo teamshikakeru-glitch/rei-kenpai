@@ -34,8 +34,6 @@ export default function CompanyHeader() {
           <nav className="co-nav">
             <Link href="/company/service/rei">礼（Rei）</Link>
             <Link href="/company/service/rei-custom">礼カスタム</Link>
-            <Link href="/company/cases">導入事例</Link>
-            <Link href="/company/blog">コラム</Link>
             <Link href="/company/about">会社概要</Link>
             <Link href="/company/contact" className="co-nav-cta">
               お問い合わせ
@@ -56,8 +54,6 @@ export default function CompanyHeader() {
       <div className={`co-mobile-nav ${menuOpen ? "open" : ""}`}>
         <Link href="/company/service/rei" onClick={closeMenu}>礼（Rei）</Link>
         <Link href="/company/service/rei-custom" onClick={closeMenu}>礼カスタム</Link>
-        <Link href="/company/cases" onClick={closeMenu}>導入事例</Link>
-        <Link href="/company/blog" onClick={closeMenu}>コラム</Link>
         <Link href="/company/about" onClick={closeMenu}>会社概要</Link>
         <Link href="/company/contact" className="co-nav-cta-mobile" onClick={closeMenu}>
           お問い合わせ
