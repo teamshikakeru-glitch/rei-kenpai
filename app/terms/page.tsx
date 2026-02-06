@@ -214,7 +214,7 @@ export default function TermsPage() {
               <span className="section-number">6</span>
               免責事項
             </h2>
-            <div className="section-content">
+            <a href="/company" className="back-link">← トップページに戻る</a>
               <div className="highlight-box">
                 <p>システム障害・通信環境等により、一時的にサービスをご利用いただけない場合がございます。</p>
               </div>
@@ -225,7 +225,7 @@ export default function TermsPage() {
 
         <div className="terms-footer">
           <p>最終更新日：2026年1月13日</p>
-          <a href="/" className="back-link">← トップページに戻る</a>
+          <a href="/company" className="back-link">← トップページに戻る</a>
         </div>
       </div>
     </div>
