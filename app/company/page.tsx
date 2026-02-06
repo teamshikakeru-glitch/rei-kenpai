@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "株式会社SHIKAKERU｜人生が動くきっかけを、仕掛ける。",
@@ -13,6 +14,16 @@ export default function CompanyTopPage() {
       {/* ── Hero ── */}
       <section className="co-hero">
         <div className="co-hero-inner" style={{ textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
+          <div style={{ marginBottom: "32px" }}>
+            <Image
+              src="/shikakeru-logo.jpg"
+              alt="SHIKAKERU"
+              width={280}
+              height={180}
+              style={{ objectFit: "contain" }}
+              priority
+            />
+          </div>
           <h1 className="co-hero-title" style={{ marginBottom: "24px" }}>
             人生が動くきっかけを、<br />
             <em>仕掛ける。</em>
@@ -197,7 +208,7 @@ export default function CompanyTopPage() {
                 <div className="co-timeline" style={{ marginTop: "0", paddingTop: "0", borderTop: "none" }}>
                   <div className="co-timeline-items">
                     <div className="co-timeline-item">
-                      <span className="co-timeline-year">2024</span>
+                      <span className="co-timeline-year">2025</span>
                       <span className="co-timeline-text">株式会社SHIKAKERU 設立</span>
                     </div>
                     <div className="co-timeline-item">
