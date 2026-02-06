@@ -7,10 +7,32 @@ import "./company.css";
 export const metadata: Metadata = {
   title: {
     template: "%s｜株式会社SHIKAKERU",
-    default: "株式会社SHIKAKERU｜葬儀業界のデジタル革新パートナー",
+    default: "株式会社SHIKAKERU｜人生が動くきっかけを、仕掛ける。",
   },
   description:
-    "株式会社SHIKAKERUは、遠隔献杯システム「礼（Rei）」を提供。導入企業様には葬儀社向け業務システム「礼カスタム」もご用意。テクノロジーで弔いの文化を守り、進化させます。",
+    "SHIKAKERUは、人・土地・組織の感情と行動が動き出す仕掛けを設計する会社です。遠隔献杯システム「礼（Rei）」を提供しています。",
+  openGraph: {
+    title: "株式会社SHIKAKERU｜人生が動くきっかけを、仕掛ける。",
+    description: "SHIKAKERUは、人・土地・組織の感情と行動が動き出す仕掛けを設計する会社です。",
+    url: "https://rei-kenpai-b3z8.vercel.app/company",
+    siteName: "株式会社SHIKAKERU",
+    images: [
+      {
+        url: "https://rei-kenpai-b3z8.vercel.app/shikakeru-logo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "SHIKAKERU",
+      },
+    ],
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "株式会社SHIKAKERU｜人生が動くきっかけを、仕掛ける。",
+    description: "SHIKAKERUは、人・土地・組織の感情と行動が動き出す仕掛けを設計する会社です。",
+    images: ["https://rei-kenpai-b3z8.vercel.app/shikakeru-logo.jpg"],
+  },
 };
 
 export default function CompanyLayout({
