@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     siteName: "株式会社SHIKAKERU",
     images: [
       {
-        url: "https://rei-kenpai-b3z8.vercel.app/shikakeru-logo.jpg",
+        url: "https://rei-kenpai-b3z8.vercel.app/ogp-shikakeru.jpg",
         width: 1200,
         height: 630,
         alt: "SHIKAKERU",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "株式会社SHIKAKERU｜人生が動くきっかけを、仕掛ける。",
     description: "SHIKAKERUは、人・土地・組織の感情と行動が動き出す仕掛けを設計する会社です。",
-    images: ["https://rei-kenpai-b3z8.vercel.app/shikakeru-logo.jpg"],
+    images: ["https://rei-kenpai-b3z8.vercel.app/ogp-shikakeru.jpg"],
   },
 };
 
