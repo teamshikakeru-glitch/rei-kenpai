@@ -12,7 +12,7 @@ export default function CompanyTopPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="co-hero">
+      <section className="co-hero" style={{ background: "#FFFFFF" }}>
         <div className="co-hero-inner" style={{ textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
           <div style={{ marginBottom: "32px" }}>
             <Image
