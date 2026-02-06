@@ -33,7 +33,11 @@ export async function POST(request: NextRequest) {
         amount: session.amount_total,
         message: session.metadata?.message || '',
         is_anonymous: session.metadata?.is_anonymous === 'true',
-        stripe_session_id: session.id
+        stripe_session_id: session.id,
+        // 住所情報を追加
+        postal_code: session.metadata?.postal_code || null,
+        address: session.metadata?.address || null,
+        phone: session.metadata?.phone || null,
       });
 
       if (error) {
