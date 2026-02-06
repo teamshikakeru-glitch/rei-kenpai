@@ -180,7 +180,7 @@ export default function CompanyTopPage() {
                     <tr><th>会社名</th><td>株式会社SHIKAKERU</td></tr>
                     <tr><th>代表者</th><td>中川 航輝</td></tr>
                     <tr><th>所在地</th><td>〒910-0017<br />福井県福井市文京2-26-2</td></tr>
-                    <tr><th>設立</th><td>2024年</td></tr>
+                    <tr><th>設立</th><td>2025年</td></tr>
                     <tr><th>資本金</th><td>300万円</td></tr>
                     <tr><th>事業内容</th><td>
                       遠隔献杯システム「礼」の企画・開発・運営<br />
