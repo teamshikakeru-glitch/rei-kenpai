@@ -24,20 +24,18 @@ export default function CompanyFooter() {
             <Link href="/company/service/rei-custom">礼カスタム</Link>
           </div>
           <div className="co-footer-col">
-            <h4>情報</h4>
-            <Link href="/company/cases">導入事例</Link>
-            <Link href="/company/blog">コラム</Link>
-          </div>
-          <div className="co-footer-col">
             <h4>会社</h4>
             <Link href="/company/about">会社概要</Link>
             <Link href="/company/contact">お問い合わせ</Link>
+          </div>
+          <div className="co-footer-col">
+            <h4>その他</h4>
             <Link href="/company/privacy">プライバシーポリシー</Link>
             <Link href="/terms">利用規約</Link>
           </div>
         </div>
         <div className="co-footer-bottom">
-          <span>&copy; 2026 株式会社SHIKAKERU All Rights Reserved.</span>
+          <span>&copy; 2025 株式会社SHIKAKERU All Rights Reserved.</span>
         </div>
       </div>
     </footer>

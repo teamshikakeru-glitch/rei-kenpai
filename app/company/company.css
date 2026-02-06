@@ -970,3 +970,36 @@
   .rc-flow-steps { grid-template-columns: 1fr; }
   .rc-pricing-card-body { padding: 28px 24px; }
 }
+/* ── Privacy Page ── */
+.privacy-content { background: var(--color-bg); }
+.privacy-inner { max-width: 800px; margin: 0 auto; }
+.privacy-intro {
+  font-size: 15px; color: var(--color-text-secondary); line-height: 2;
+  margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--color-border-light);
+}
+.privacy-section { margin-bottom: 40px; }
+.privacy-section h2 {
+  font-family: var(--font-serif); font-size: 18px; font-weight: 500;
+  margin-bottom: 16px; color: var(--color-text);
+}
+.privacy-section p {
+  font-size: 14px; color: var(--color-text-secondary); line-height: 2; margin-bottom: 16px;
+}
+.privacy-section ul {
+  margin: 16px 0; padding-left: 24px;
+}
+.privacy-section li {
+  font-size: 14px; color: var(--color-text-secondary); line-height: 2; margin-bottom: 8px;
+}
+.privacy-contact {
+  background: var(--color-bg-warm); border-radius: 12px; padding: 24px; margin-top: 16px;
+}
+.privacy-contact p {
+  font-size: 14px; line-height: 1.9; margin-bottom: 0;
+}
+.privacy-contact strong { color: var(--color-text); }
+.privacy-footer {
+  margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--color-border-light);
+  text-align: right;
+}
+.privacy-footer p { font-size: 13px; color: var(--color-text-light); }
