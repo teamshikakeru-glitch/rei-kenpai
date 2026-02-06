@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "株式会社SHIKAKERU｜人生が動くきっかけを、仕掛ける。",
   description:
-    "SHIKAKERUは、人・土地・組織の感情と行動が動き出す"仕掛け"を設計する会社です。心が動いた瞬間から、人生は変わり始める。",
+    "SHIKAKERUは、人・土地・組織の感情と行動が動き出す仕掛けを設計する会社です。心が動いた瞬間から、人生は変わり始める。",
 };
 
 export default function CompanyTopPage() {
