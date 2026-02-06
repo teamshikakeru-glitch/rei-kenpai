@@ -42,7 +42,7 @@ export default function ContactPage() {
                 <div className="ct-method">
                   <div className="ct-method-label">メール</div>
                   <div className="ct-method-value">
-                    <a href="mailto:info@shikakeru.co.jp">info@shikakeru.co.jp</a>
+                    <a href="mailto:team.shikakeru@gmail.com">team.shikakeru@gmail.com</a>
                   </div>
                 </div>
                 <div className="ct-method">

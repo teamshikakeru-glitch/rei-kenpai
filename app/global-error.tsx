@@ -69,7 +69,7 @@ export default function GlobalError({
             {/* お問い合わせ */}
             <div style={styles.contactInfo}>
               <p style={styles.contactText}>
-                お問い合わせ: info@shikakeru.co.jp
+                お問い合わせ: team.shikakeru@gmail.com
               </p>
             </div>
             

@@ -186,7 +186,7 @@ export default function ServiceReiPage() {
               <Link href="/company/contact" className="co-btn co-btn-primary">
                 お問い合わせフォーム<span className="co-btn-arrow">→</span>
               </Link>
-              <a href="mailto:info@shikakeru.co.jp" className="co-btn co-btn-outline">
+              <a href="mailto:team.shikakeru@gmail.com" className="co-btn co-btn-outline">
                 メールで相談する
               </a>
             </div>
