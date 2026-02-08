@@ -189,20 +189,6 @@ export default function CompanyTopPage() {
         </div>
       </section>
 
-      {/* ── Trust ── */}
-      <section className="co-trust co-section">
-        <div className="co-container">
-          <div className="co-reveal">
-            <div className="co-label">TRUST</div>
-            <h2>信頼</h2>
-          </div>
-          <div className="co-trust-item co-reveal">
-            <div className="co-trust-label">取引銀行</div>
-            <div className="co-trust-value">福井銀行</div>
-          </div>
-        </div>
-      </section>
-
       {/* ── Company Info ── */}
       <section className="co-company co-section">
         <div className="co-container">
