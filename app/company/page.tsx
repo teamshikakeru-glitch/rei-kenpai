@@ -99,30 +99,6 @@ export default function CompanyTopPage() {
         </div>
       </section>
 
-      {/* ── Numbers ── */}
-      <section className="co-numbers co-section">
-        <div className="co-container">
-          <div className="co-reveal">
-            <div className="co-label">NUMBERS</div>
-            <h2>礼（Rei）の実績</h2>
-          </div>
-          <div className="co-numbers-grid">
-            <div className="co-number-item co-reveal">
-              <div className="co-number-value">88.4<span className="co-number-unit">%</span></div>
-              <div className="co-number-label">遺族還元率</div>
-            </div>
-            <div className="co-number-item co-reveal">
-              <div className="co-number-value">3<span className="co-number-unit">分</span></div>
-              <div className="co-number-label">導入時間</div>
-            </div>
-            <div className="co-number-item co-reveal">
-              <div className="co-number-value">0<span className="co-number-unit">円</span></div>
-              <div className="co-number-label">月額費用</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── Services ── */}
       <section className="co-services co-section">
         <div className="co-container">
