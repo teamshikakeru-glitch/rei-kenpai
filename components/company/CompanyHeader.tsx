@@ -32,7 +32,7 @@ export default function CompanyHeader() {
             <div className="co-logo-text">SHIKAKERU</div>
           </Link>
           <nav className="co-nav">
-            <Link href="/company/service/rei">礼（Rei）</Link>
+            <a href="/rei-lp.html">礼（Rei）</a>
             <Link href="/company/service/rei-custom">礼カスタム</Link>
             <Link href="/company/about">会社概要</Link>
             <Link href="/company/contact" className="co-nav-cta">
@@ -52,7 +52,7 @@ export default function CompanyHeader() {
       </header>
 
       <div className={`co-mobile-nav ${menuOpen ? "open" : ""}`}>
-        <Link href="/company/service/rei" onClick={closeMenu}>礼（Rei）</Link>
+        <a href="/rei-lp.html" onClick={closeMenu}>礼（Rei）</a>
         <Link href="/company/service/rei-custom" onClick={closeMenu}>礼カスタム</Link>
         <Link href="/company/about" onClick={closeMenu}>会社概要</Link>
         <Link href="/company/contact" className="co-nav-cta-mobile" onClick={closeMenu}>
