@@ -33,6 +33,36 @@ export default function ReiCustomPage() {
         </div>
       </section>
 
+      {/* ── Demo ── */}
+      <section className="rc-demo co-section" style={{ paddingTop: "40px", paddingBottom: "40px" }}>
+        <div className="co-container">
+          <div style={{ 
+            background: "linear-gradient(135deg, #2C4A3E 0%, #3D6B5A 100%)",
+            borderRadius: "16px",
+            padding: "48px 32px",
+            textAlign: "center"
+          }}>
+            <p style={{ color: "#B8956A", fontSize: "14px", letterSpacing: "2px", marginBottom: "16px" }}>
+              DEMO
+            </p>
+            <h2 style={{ color: "#FFFFFF", fontSize: "28px", marginBottom: "16px", fontWeight: "600" }}>
+              実際の画面をご覧ください
+            </h2>
+            <p style={{ color: "#CCCCCC", fontSize: "15px", marginBottom: "32px", lineHeight: "1.8" }}>
+              礼カスタムでどんなシステムが作れるのか、<br />
+              デモ画面でご確認いただけます。
+            </p>
+            <a 
+              href="/rei-showcase.html" 
+              className="co-btn co-btn-primary"
+              style={{ fontSize: "16px", padding: "16px 40px" }}
+            >
+              デモ画面を見る<span className="co-btn-arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ── Concept ── */}
       <section className="rc-concept co-section">
         <div className="co-container">
