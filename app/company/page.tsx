@@ -29,8 +29,9 @@ export default function CompanyTopPage() {
             <em>仕掛ける。</em>
           </h1>
           <p className="co-hero-subtitle">
-            心が動いた瞬間から、<br />
-            人生は変わり始める。
+            SHIKAKERUは、<br />
+            人・土地・組織の感情と行動が動き出す<br />
+            "仕掛け"を設計する会社です。
           </p>
           <div className="co-hero-actions">
             <a href="/rei-lp.html" className="co-btn co-btn-primary co-btn-full">
@@ -47,7 +48,7 @@ export default function CompanyTopPage() {
         </div>
       </section>
 
-      {/* ── Philosophy with Steps ── */}
+      {/* ── Philosophy 1: 心が動いた瞬間から ── */}
       <section className="co-philosophy co-section">
         <div className="co-container">
           <div className="co-philosophy-inner co-reveal">
@@ -57,41 +58,43 @@ export default function CompanyTopPage() {
             </h2>
             <div className="co-philosophy-text">
               <p>
-                頭で記憶したことは、だんだん薄れていく。<br />
-                でも、心で記憶したことは、一生残る。
+                人は、正しい情報を知ったから動くのではありません。<br />
+                心が揺れた時に、はじめて行動を変えます。
               </p>
               <p>
-                子どもの頃の運動会。家族で過ごしたクリスマス。<br />
-                あの時の「感覚」は、今でも胸に残っている。
+                あの日の出来事。あの場所の空気。あの人との出会い。<br />
+                人生に残っている記憶は、いつも「感情が動いた瞬間」です。
+              </p>
+              <p>
+                SHIKAKERUは、そんな瞬間を偶然に任せず、<br />
+                <strong>感情が動き、次の行動が生まれる構造</strong>を設計しています。
               </p>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* 3ステップ */}
-            <div className="co-steps">
-              <div className="co-step">
-                <div className="co-step-icon">💭</div>
-                <div className="co-step-title">心で感じる</div>
-                <div className="co-step-desc">情報ではなく、感情が動く体験</div>
-              </div>
-              <div className="co-step-arrow">↓</div>
-              <div className="co-step">
-                <div className="co-step-icon">💡</div>
-                <div className="co-step-title">きっかけが生まれる</div>
-                <div className="co-step-desc">行動を変える「瞬間」</div>
-              </div>
-              <div className="co-step-arrow">↓</div>
-              <div className="co-step">
-                <div className="co-step-icon">🚀</div>
-                <div className="co-step-title">人生が動き出す</div>
-                <div className="co-step-desc">その後、何かが始まる</div>
-              </div>
+      {/* ── Philosophy 2: 仕掛けをつくる会社 ── */}
+      <section className="co-definition co-section">
+        <div className="co-container">
+          <div className="co-definition-inner co-reveal">
+            <div className="co-label">WHAT WE DO</div>
+            <h2>仕掛けをつくる会社です。</h2>
+            <div className="co-definition-text">
+              <p>
+                SHIKAKERUは、人や土地、組織が持つ想いや物語を起点に、<br />
+                行動が生まれる"仕掛け"を形にします。
+              </p>
+              <p>
+                その仕掛けは、体験として現れることもあれば、<br />
+                プロジェクトや仕組み、物語や「場」として立ち上がることもあります。
+              </p>
+              <p>
+                私たちが大切にしているのは、その瞬間の盛り上がりではありません。<br />
+                <strong>「その後、何かが始まったかどうか」</strong><br />
+                そこに、すべての価値があると考えています。
+              </p>
             </div>
-
-            <p className="co-philosophy-conclusion">
-              SHIKAKERUは、この「心が動く瞬間」を<br />
-              偶然にしないために、<br />
-              <strong>"感情が動く構造"</strong>を設計しています。
-            </p>
           </div>
         </div>
       </section>
@@ -159,6 +162,53 @@ export default function CompanyTopPage() {
                 詳しく見る<span className="co-btn-arrow">→</span>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Philosophy 3: 挑戦できる場 ── */}
+      <section className="co-workplace co-section">
+        <div className="co-container">
+          <div className="co-workplace-inner co-reveal">
+            <div className="co-label">CULTURE</div>
+            <h2>
+              挑戦できる「場」を、<br />仕事にする。
+            </h2>
+            <div className="co-workplace-text">
+              <p>
+                SHIKAKERUは、完成された人材を集める会社ではありません。
+              </p>
+              <p>
+                未完成な若者が、自分で考え、自分で動き、<br />
+                主体的に挑戦できる"場"をつくる会社です。
+              </p>
+              <p>
+                指示を待つより、まず動く。<br />
+                正解を探すより、自分なりの答えをつくる。
+              </p>
+              <p>
+                ここで働くことは、仕事をこなすことではなく、<br />
+                <strong>自分の可能性を試すこと。</strong>
+              </p>
+              <p>
+                SHIKAKERUで過ごす時間そのものが、<br />
+                人生を前に進める経験になることを、<br />
+                私たちは本気で目指しています。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Last Message ── */}
+      <section className="co-lastmsg co-section">
+        <div className="co-container">
+          <div className="co-lastmsg-inner co-reveal">
+            <h2>仕掛け人は、私たちだけじゃない。</h2>
+            <p>
+              この場所に関わった瞬間から、<br />
+              あなたも、物語の当事者になる。
+            </p>
           </div>
         </div>
       </section>
