@@ -12,32 +12,31 @@ export default function CompanyTopPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="co-hero" style={{ background: "#FFFFFF" }}>
-        <div className="co-hero-inner" style={{ textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
-          <div style={{ marginBottom: "32px" }}>
+      <section className="co-hero">
+        <div className="co-hero-inner">
+          <div className="co-hero-logo">
             <Image
               src="/shikakeru-logo.jpg"
               alt="SHIKAKERU"
-              width={280}
-              height={180}
+              width={200}
+              height={130}
               style={{ objectFit: "contain" }}
               priority
             />
           </div>
-          <h1 className="co-hero-title" style={{ marginBottom: "24px" }}>
+          <h1 className="co-hero-title">
             人生が動くきっかけを、<br />
             <em>仕掛ける。</em>
           </h1>
-          <p className="co-hero-subtitle" style={{ maxWidth: "700px", margin: "0 auto 48px" }}>
-            SHIKAKERUは、<br />
-            人・土地・組織の感情と行動が動き出す<br />
-            "仕掛け"を設計する会社です。
+          <p className="co-hero-subtitle">
+            心が動いた瞬間から、<br />
+            人生は変わり始める。
           </p>
-          <div className="co-hero-actions" style={{ justifyContent: "center" }}>
-            <Link href="/company/service/rei" className="co-btn co-btn-primary">
+          <div className="co-hero-actions">
+            <a href="/rei-lp.html" className="co-btn co-btn-primary co-btn-full">
               サービスを見る<span className="co-btn-arrow">→</span>
-            </Link>
-            <Link href="/company/contact" className="co-btn co-btn-outline">
+            </a>
+            <Link href="/company/contact" className="co-btn co-btn-outline co-btn-full">
               お問い合わせ
             </Link>
           </div>
@@ -48,7 +47,7 @@ export default function CompanyTopPage() {
         </div>
       </section>
 
-      {/* ── Philosophy 1: 思想ゾーン ── */}
+      {/* ── Philosophy with Steps ── */}
       <section className="co-philosophy co-section">
         <div className="co-container">
           <div className="co-philosophy-inner co-reveal">
@@ -58,84 +57,65 @@ export default function CompanyTopPage() {
             </h2>
             <div className="co-philosophy-text">
               <p>
-                人は、情報を得た時よりも、心が動いた時に行動を変えます。
+                頭で記憶したことは、だんだん薄れていく。<br />
+                でも、心で記憶したことは、一生残る。
               </p>
               <p>
-                あの日の出来事。あの場所の空気。あの人との出会い。<br />
-                人生に残っている記憶は、いつも「感情が動いた瞬間」です。
-              </p>
-              <p>
-                SHIKAKERUは、そんな瞬間を偶然にしないために、<br />
-                <strong>"感情が動く構造"</strong>を設計しています。
+                子どもの頃の運動会。家族で過ごしたクリスマス。<br />
+                あの時の「感覚」は、今でも胸に残っている。
               </p>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── Philosophy 2: 定義 ── */}
-      <section className="co-definition co-section">
-        <div className="co-container">
-          <div className="co-definition-inner co-reveal">
-            <div className="co-label">WHAT WE DO</div>
-            <h2>仕掛けの会社です。</h2>
-            <div className="co-definition-text">
-              <p>
-                SHIKAKERUは、人・土地・組織が持つ物語や想いを起点に、<br />
-                行動が生まれる「仕掛け」を設計します。
-              </p>
-              <p>
-                その仕掛けは、イベントという形をとることもあれば、<br />
-                プロジェクトや体験、仕組みやストーリーになることもあります。
-              </p>
-              <p>
-                私たちが大切にしているのは、「当日盛り上がったか」ではなく、<br />
-                <strong>「その後、何かが始まったかどうか」</strong>です。
-              </p>
+            {/* 3ステップ */}
+            <div className="co-steps">
+              <div className="co-step">
+                <div className="co-step-icon">💭</div>
+                <div className="co-step-title">心で感じる</div>
+                <div className="co-step-desc">情報ではなく、感情が動く体験</div>
+              </div>
+              <div className="co-step-arrow">↓</div>
+              <div className="co-step">
+                <div className="co-step-icon">💡</div>
+                <div className="co-step-title">きっかけが生まれる</div>
+                <div className="co-step-desc">行動を変える「瞬間」</div>
+              </div>
+              <div className="co-step-arrow">↓</div>
+              <div className="co-step">
+                <div className="co-step-icon">🚀</div>
+                <div className="co-step-title">人生が動き出す</div>
+                <div className="co-step-desc">その後、何かが始まる</div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── Philosophy 3: 働く場所 ── */}
-      <section className="co-workplace co-section">
-        <div className="co-container">
-          <div className="co-workplace-inner co-reveal">
-            <div className="co-label">CULTURE</div>
-            <h2>
-              挑戦は、与えられるものじゃない。<br />自分で踏み出すものだ。
-            </h2>
-            <div className="co-workplace-text">
-              <p>
-                SHIKAKERUは、完成された人材を集める会社ではありません。<br />
-                未完成な若者が、自分で考え、挑戦できる「場」をつくる会社です。
-              </p>
-              <p>
-                指示を待つより、まず動いてみる。<br />
-                正解を探すより、自分なりの答えをつくる。
-              </p>
-              <p>
-                ここで働くことは、仕事をこなすことではなく、<br />
-                <strong>自分の可能性を試すこと。</strong>
-              </p>
-              <p>
-                SHIKAKERUで働く時間そのものが、<br />
-                人生を前に進める経験になることを、私たちは本気で目指しています。
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Last Message ── */}
-      <section className="co-lastmsg co-section">
-        <div className="co-container">
-          <div className="co-lastmsg-inner co-reveal">
-            <h2>仕掛け人は、私たちだけじゃない。</h2>
-            <p>
-              この場所に関わった瞬間から、<br />
-              あなたも、物語の当事者になる。
+            <p className="co-philosophy-conclusion">
+              SHIKAKERUは、この「心が動く瞬間」を<br />
+              偶然にしないために、<br />
+              <strong>"感情が動く構造"</strong>を設計しています。
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Numbers ── */}
+      <section className="co-numbers co-section">
+        <div className="co-container">
+          <div className="co-reveal">
+            <div className="co-label">NUMBERS</div>
+            <h2>礼（Rei）の実績</h2>
+          </div>
+          <div className="co-numbers-grid">
+            <div className="co-number-item co-reveal">
+              <div className="co-number-value">88.4<span className="co-number-unit">%</span></div>
+              <div className="co-number-label">遺族還元率</div>
+            </div>
+            <div className="co-number-item co-reveal">
+              <div className="co-number-value">3<span className="co-number-unit">分</span></div>
+              <div className="co-number-label">導入時間</div>
+            </div>
+            <div className="co-number-item co-reveal">
+              <div className="co-number-value">0<span className="co-number-unit">円</span></div>
+              <div className="co-number-label">月額費用</div>
+            </div>
           </div>
         </div>
       </section>
@@ -149,31 +129,50 @@ export default function CompanyTopPage() {
           </div>
           <div className="co-services-grid">
             {/* Rei */}
-            <div className="co-service-card co-reveal co-reveal-d1">
+            <div className="co-service-card co-reveal">
               <div className="co-service-icon">🙏</div>
               <div className="co-service-tag co-service-tag-green">遠隔献杯システム</div>
               <h3>礼（Rei）</h3>
               <p>
-                葬儀に参列できない方が、オンラインで香典とメッセージを届けられるシステムです。
+                葬儀に参列できない方が、オンラインで香典とメッセージを届けられるシステム。
+              </p>
+              <p className="co-service-point">
                 距離を超えて、想いを届ける仕掛け。
               </p>
-              <Link href="/company/service/rei" className="co-service-link co-link-green">
-                詳しく見る <span className="co-btn-arrow">→</span>
-              </Link>
+              <a href="/rei-lp.html" className="co-btn co-btn-primary co-btn-full">
+                詳しく見る<span className="co-btn-arrow">→</span>
+              </a>
             </div>
 
             {/* Rei Custom */}
-            <div className="co-service-card co-reveal co-reveal-d2">
-              <div className="co-service-icon co-icon-gold">⚙️</div>
+            <div className="co-service-card co-reveal">
+              <div className="co-service-icon">⚙️</div>
               <div className="co-service-tag co-service-tag-gold">礼 導入企業限定</div>
               <h3>礼カスタム</h3>
               <p>
-                「礼」を導入いただいた葬儀社様だけにご提供する、業務システムのオーダーメイド開発サービスです。
+                「礼」を導入いただいた葬儀社様限定の、業務システムオーダーメイド開発。
               </p>
-              <Link href="/company/service/rei-custom" className="co-service-link co-link-gold">
-                詳しく見る <span className="co-btn-arrow">→</span>
+              <p className="co-service-point">
+                御社だけの仕組みを、一緒につくる。
+              </p>
+              <Link href="/company/service/rei-custom" className="co-btn co-btn-outline co-btn-full">
+                詳しく見る<span className="co-btn-arrow">→</span>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Trust ── */}
+      <section className="co-trust co-section">
+        <div className="co-container">
+          <div className="co-reveal">
+            <div className="co-label">TRUST</div>
+            <h2>信頼</h2>
+          </div>
+          <div className="co-trust-item co-reveal">
+            <div className="co-trust-label">取引銀行</div>
+            <div className="co-trust-value">福井銀行</div>
           </div>
         </div>
       </section>
@@ -181,46 +180,40 @@ export default function CompanyTopPage() {
       {/* ── Company Info ── */}
       <section className="co-company co-section">
         <div className="co-container">
-          <div className="co-company-grid">
-            <div className="co-company-message co-reveal">
-              <div className="co-label">COMPANY</div>
-              <h2>会社概要</h2>
-              <div className="co-info-card" style={{ marginTop: "32px" }}>
-                <table className="co-info-table">
-                  <tbody>
-                    <tr><th>会社名</th><td>株式会社SHIKAKERU</td></tr>
-                    <tr><th>代表者</th><td>中川 航輝</td></tr>
-                    <tr><th>所在地</th><td>〒910-0017<br />福井県福井市文京2-26-2</td></tr>
-                    <tr><th>設立</th><td>2025年</td></tr>
-                    <tr><th>資本金</th><td>300万円</td></tr>
-                    <tr><th>事業内容</th><td>
-                      遠隔献杯システム「礼」の企画・開発・運営<br />
-                      葬儀社向け業務システムの開発<br />
-                      イベント企画・運営・制作
-                    </td></tr>
-                  </tbody>
-                </table>
-              </div>
+          <div className="co-reveal">
+            <div className="co-label">COMPANY</div>
+            <h2>会社概要</h2>
+          </div>
+          <div className="co-company-list co-reveal">
+            <div className="co-company-row">
+              <div className="co-company-th">会社名</div>
+              <div className="co-company-td">株式会社SHIKAKERU</div>
             </div>
-            <div className="co-reveal co-reveal-d2">
-              <div className="co-info-card">
-                <h3>沿革</h3>
-                <div className="co-timeline" style={{ marginTop: "0", paddingTop: "0", borderTop: "none" }}>
-                  <div className="co-timeline-items">
-                    <div className="co-timeline-item">
-                      <span className="co-timeline-year">2025</span>
-                      <span className="co-timeline-text">株式会社SHIKAKERU 設立</span>
-                    </div>
-                    <div className="co-timeline-item">
-                      <span className="co-timeline-year">2025</span>
-                      <span className="co-timeline-text">遠隔献杯システム「礼（Rei）」リリース</span>
-                    </div>
-                    <div className="co-timeline-item co-timeline-item-last">
-                      <span className="co-timeline-year">2026</span>
-                      <span className="co-timeline-text">葬儀社向け業務システム「礼カスタム」提供開始</span>
-                    </div>
-                  </div>
-                </div>
+            <div className="co-company-row">
+              <div className="co-company-th">代表者</div>
+              <div className="co-company-td">中川 航輝</div>
+            </div>
+            <div className="co-company-row">
+              <div className="co-company-th">所在地</div>
+              <div className="co-company-td">〒910-0017<br />福井県福井市文京2-26-2</div>
+            </div>
+            <div className="co-company-row">
+              <div className="co-company-th">設立</div>
+              <div className="co-company-td">2025年</div>
+            </div>
+            <div className="co-company-row">
+              <div className="co-company-th">資本金</div>
+              <div className="co-company-td">300万円</div>
+            </div>
+            <div className="co-company-row">
+              <div className="co-company-th">取引銀行</div>
+              <div className="co-company-td">福井銀行</div>
+            </div>
+            <div className="co-company-row">
+              <div className="co-company-th">事業内容</div>
+              <div className="co-company-td">
+                遠隔献杯システム「礼」の企画・開発・運営<br />
+                葬儀社向け業務システムの開発
               </div>
             </div>
           </div>
@@ -234,14 +227,15 @@ export default function CompanyTopPage() {
             <div className="co-label">CONTACT</div>
             <h2>お問い合わせ</h2>
             <p>
-              サービスに関するご質問、お仕事のご相談など、<br />
+              サービスに関するご質問、<br />
+              お仕事のご相談など、<br />
               お気軽にお問い合わせください。
             </p>
             <div className="co-cta-actions">
-              <Link href="/company/contact" className="co-btn co-btn-primary">
+              <Link href="/company/contact" className="co-btn co-btn-primary co-btn-full">
                 お問い合わせフォーム<span className="co-btn-arrow">→</span>
               </Link>
-              <a href="mailto:team.shikakeru@gmail.com" className="co-btn co-btn-outline">
+              <a href="mailto:team.shikakeru@gmail.com" className="co-btn co-btn-outline co-btn-full">
                 メールで相談する
               </a>
             </div>

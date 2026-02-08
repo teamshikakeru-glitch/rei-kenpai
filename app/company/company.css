@@ -1003,3 +1003,362 @@
   text-align: right;
 }
 .privacy-footer p { font-size: 13px; color: var(--color-text-light); }
+/* ========================================
+   スマホファースト追加CSS
+   ======================================== */
+
+/* Hero - スマホ最適化 */
+.co-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  padding: 80px 20px 40px;
+}
+
+.co-hero-inner {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.co-hero-logo {
+  margin-bottom: 24px;
+}
+
+.co-hero-title {
+  font-size: 28px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.co-hero-title em {
+  color: var(--color-primary);
+  font-style: normal;
+}
+
+.co-hero-subtitle {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+.co-hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.co-btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* 3ステップ */
+.co-steps {
+  margin: 48px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.co-step {
+  background: #FAFAF7;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 280px;
+}
+
+.co-step-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.co-step-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.co-step-desc {
+  font-size: 14px;
+  color: #666;
+}
+
+.co-step-arrow {
+  font-size: 24px;
+  color: var(--color-primary);
+  padding: 8px 0;
+}
+
+.co-philosophy-conclusion {
+  margin-top: 32px;
+  font-size: 15px;
+  line-height: 2;
+  text-align: center;
+}
+
+.co-philosophy-conclusion strong {
+  color: var(--color-primary);
+}
+
+/* Numbers - 数字セクション */
+.co-numbers {
+  background: var(--color-primary);
+  color: #FFFFFF;
+  padding: 60px 20px;
+}
+
+.co-numbers .co-label {
+  color: rgba(255,255,255,0.6);
+}
+
+.co-numbers h2 {
+  color: #FFFFFF;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.co-numbers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.co-number-item {
+  text-align: center;
+}
+
+.co-number-value {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  font-family: "Georgia", serif;
+}
+
+.co-number-unit {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.co-number-label {
+  font-size: 14px;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+/* Services - スマホ最適化 */
+.co-services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.co-service-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 32px 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.co-service-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.co-service-tag {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.co-service-tag-green {
+  background: rgba(44, 74, 62, 0.1);
+  color: var(--color-primary);
+}
+
+.co-service-tag-gold {
+  background: rgba(184, 149, 106, 0.1);
+  color: #8B6914;
+}
+
+.co-service-card h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.co-service-card p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+.co-service-point {
+  font-weight: 600;
+  color: var(--color-primary) !important;
+  margin-bottom: 20px !important;
+}
+
+.co-service-card .co-btn {
+  margin-top: 8px;
+}
+
+/* Trust - 信頼セクション */
+.co-trust {
+  background: #FAFAF7;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.co-trust h2 {
+  margin-bottom: 32px;
+}
+
+.co-trust-item {
+  display: inline-block;
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 24px 48px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.co-trust-label {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.co-trust-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Company - スマホ用リスト形式 */
+.co-company-list {
+  margin-top: 32px;
+}
+
+.co-company-row {
+  padding: 16px 0;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.co-company-row:last-child {
+  border-bottom: none;
+}
+
+.co-company-th {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.co-company-td {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* CTA - スマホ最適化 */
+.co-cta-card {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.co-cta-card h2 {
+  margin-bottom: 16px;
+}
+
+.co-cta-card > p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.co-cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   PC用スタイル（768px以上）
+   ======================================== */
+@media (min-width: 768px) {
+  .co-hero-title {
+    font-size: 42px;
+  }
+
+  .co-hero-subtitle {
+    font-size: 18px;
+  }
+
+  .co-hero-actions {
+    flex-direction: row;
+    max-width: none;
+    justify-content: center;
+  }
+
+  .co-btn-full {
+    width: auto;
+  }
+
+  .co-steps {
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .co-step {
+    max-width: 200px;
+  }
+
+  .co-step-arrow {
+    transform: rotate(-90deg);
+    padding: 0 8px;
+  }
+
+  .co-numbers-grid {
+    flex-direction: row;
+    justify-content: center;
+    gap: 80px;
+    max-width: none;
+  }
+
+  .co-number-value {
+    font-size: 72px;
+  }
+
+  .co-services-grid {
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .co-service-card {
+    flex: 1;
+    padding: 40px 32px;
+  }
+
+  .co-cta-actions {
+    flex-direction: row;
+    max-width: none;
+    justify-content: center;
+  }
+}
