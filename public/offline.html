@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>礼 - オフライン</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background: linear-gradient(135deg, #faf8f5 0%, #f5f0e8 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+    .container { text-align: center; padding: 2rem; }
+    .icon { font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.6; }
+    h1 { font-size: 1.5rem; font-weight: 400; margin-bottom: 1rem; color: #1a1a1a; }
+    p { font-size: 0.95rem; color: #666; line-height: 1.8; }
+    .retry-btn {
+      margin-top: 2rem; padding: 0.8rem 2rem;
+      background: #1a1a1a; color: #fff; border: none;
+      border-radius: 8px; font-family: inherit; font-size: 0.9rem; cursor: pointer;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🕊️</div>
+    <h1>インターネットに接続できません</h1>
+    <p>ネットワーク接続を確認して<br>もう一度お試しください。</p>
+    <button class="retry-btn" onclick="location.reload()">再読み込み</button>
+  </div>
+</body>
+</html>

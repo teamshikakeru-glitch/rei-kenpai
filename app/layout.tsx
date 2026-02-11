@@ -36,7 +36,14 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        {/* FOUC対策: 最初にクリティカルCSSをインライン化 */}
+        {/* PWA */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1a1a1a" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="礼" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        {/* FOUC対策 */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -67,10 +74,8 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {/* FOUC対策: 初期オーバーレイ（HTMLと同時に読み込まれる） */}
         <div id="fouc-overlay" aria-hidden="true" />
         {children}
-        {/* FOUC対策: フォントとCSSが読み込まれたらオーバーレイを非表示 */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -84,6 +89,11 @@ export default function RootLayout({
                   setTimeout(showPage, 150);
                 }
               })();
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                  .then(function(reg) { console.log('SW registered:', reg.scope); })
+                  .catch(function(err) { console.log('SW registration failed:', err); });
+              }
             `,
           }}
         />
