@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>礼カスタム ヒアリングシート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --gold: #c9a227;
+    --gold-light: #f5ecd0;
+    --gold-bg: #fdf8e8;
+    --bg: #faf8f5;
+    --bg2: #f5f0e8;
+    --dark: #2d2d2d;
+    --text: #444;
+    --text-light: #888;
+    --border: #e0dbd2;
+    --white: #ffffff;
+    --success: #4caf50;
+    --error: #e53935;
+  }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.8;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(201,162,39,0.15) 0%, transparent 60%);
+  }
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .header-logo-icon {
+    width: 40px; height: 40px;
+    background: var(--gold);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700; font-size: 20px; color: #fff;
+  }
+  .header-logo-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px; color: rgba(255,255,255,0.9);
+    letter-spacing: 2px;
+  }
+  .header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 28px; color: #fff;
+    font-weight: 700; letter-spacing: 3px;
+    position: relative; margin-bottom: 12px;
+  }
+  .header p {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px; position: relative;
+  }
+
+  /* Container */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* Intro */
+  .intro {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin: -30px auto 24px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+  }
+  .intro p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 2;
+  }
+  .intro strong { color: var(--dark); }
+  .intro .time-note {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold-bg);
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 13px; color: var(--gold);
+    font-weight: 500; margin-top: 12px;
+  }
+
+  /* Section */
+  .section {
+    background: var(--white);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+  }
+  .section-header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+  .section-header:hover { opacity: 0.9; }
+  .section-icon {
+    font-size: 22px;
+    width: 40px; height: 40px;
+    background: rgba(201,162,39,0.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px; color: #fff;
+    font-weight: 700;
+  }
+  .section-subtitle {
+    font-size: 12px; color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+  .section-toggle {
+    margin-left: auto;
+    color: rgba(255,255,255,0.4);
+    font-size: 20px;
+    transition: transform 0.3s;
+  }
+  .section.open .section-toggle { transform: rotate(180deg); }
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .section.open .section-body {
+    max-height: 3000px;
+  }
+  .section-inner {
+    padding: 20px 24px 24px;
+  }
+
+  /* Question */
+  .question {
+    margin-bottom: 24px;
+  }
+  .question:last-child { margin-bottom: 0; }
+  .question-label {
+    display: flex; align-items: flex-start; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .question-num {
+    background: var(--gold);
+    color: #fff;
+    font-size: 11px; font-weight: 700;
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .question-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--dark);
+    line-height: 1.6;
+  }
+  .question-hint {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-left: 32px;
+    margin-bottom: 8px;
+  }
+
+  /* Input styles */
+  .input-wrap {
+    margin-left: 32px;
+  }
+  textarea, input[type="text"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    resize: vertical;
+  }
+  textarea:focus, input[type="text"]:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,162,39,0.12);
+    background: #fff;
+  }
+  textarea { min-height: 70px; }
+  textarea.large { min-height: 120px; }
+
+  /* Radio options */
+  .radio-group {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-left: 32px;
+  }
+  .radio-option {
+    position: relative;
+  }
+  .radio-option input {
+    position: absolute; opacity: 0;
+  }
+  .radio-option label {
+    display: block;
+    padding: 8px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--bg);
+  }
+  .radio-option input:checked + label {
+    border-color: var(--gold);
+    background: var(--gold-bg);
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .radio-option label:hover {
+    border-color: var(--gold);
+  }
+
+  /* Submit section */
+  .submit-section {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  .submit-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, var(--gold) 0%, #d4af37 100%);
+    color: #fff;
+    border: none;
+    padding: 16px 48px;
+    border-radius: 30px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 2px;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201,162,39,0.3);
+  }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled {
+    opacity: 0.5; cursor: not-allowed; transform: none;
+  }
+  .submit-note {
+    font-size: 12px; color: var(--text-light);
+    margin-top: 12px;
+  }
+
+  /* Progress */
+  .progress-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 3px; background: rgba(0,0,0,0.05);
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), #d4af37);
+    transition: width 0.3s;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    padding: 16px 32px; border-radius: 12px;
+    color: #fff; font-size: 14px; font-weight: 500;
+    z-index: 200; opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+  .toast.show {
+    opacity: 1; transform: translateX(-50%) translateY(-10px);
+  }
+  .toast.success { background: var(--success); }
+  .toast.error { background: var(--error); }
+
+  /* Complete screen */
+  .complete-screen {
+    display: none;
+    text-align: center;
+    padding: 80px 24px;
+  }
+  .complete-screen.show { display: block; }
+  .complete-icon {
+    font-size: 64px; margin-bottom: 24px;
+  }
+  .complete-screen h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 24px; color: var(--dark);
+    margin-bottom: 16px;
+  }
+  .complete-screen p {
+    font-size: 14px; color: var(--text);
+    line-height: 2;
+  }
+
+  /* Required mark */
+  .required {
+    color: var(--error);
+    font-size: 11px;
+    margin-left: 4px;
+  }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 22px; }
+    .section-inner { padding: 16px; }
+    .radio-group { gap: 6px; }
+    .radio-option label { padding: 6px 14px; font-size: 12px; }
+    .input-wrap, .radio-group, .question-hint { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<div class="header">
+  <div class="header-logo">
+    <div class="header-logo-icon">礼</div>
+    <div class="header-logo-text">礼 カスタム</div>
+  </div>
+  <h1>ヒアリングシート</h1>
+  <p>御社の業務改善に最適なシステムをご提案するための質問です</p>
+</div>
+
+<div class="container" id="formContainer">
+
+  <div class="intro">
+    <p>このヒアリングシートは、<strong>御社に最適な業務システム</strong>をご提案するためのものです。<br>
+    現在の業務で「困っていること」「もっと楽にしたいこと」を教えてください。<br>
+    <strong>正解・不正解はありません。</strong>率直なご意見をお聞かせください。</p>
+    <div class="time-note">⏱ 所要時間：約10〜15分</div>
+  </div>
+
+  <form id="hearingForm">
+
+    <!-- 基本情報 -->
+    <div class="section open">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">🏢</div>
+        <div>
+          <div class="section-title">基本情報</div>
+          <div class="section-subtitle">まずは御社について教えてください</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label">
+              <div class="question-text">葬儀社名<span class="required">※必須</span></div>
+            </div>
+            <div class="input-wrap">
+              <input type="text" name="company_name" required placeholder="例：〇〇葬祭">
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label">
+              <div class="question-text">ご担当者名</div>
+            </div>
+            <div class="input-wrap">
+              <input type="text" name="contact_name" placeholder="例：山田太郎">
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label">
+              <div class="question-text">月間の施行件数</div>
+            </div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="monthly_cases" value="10件未満" id="mc1"><label for="mc1">10件未満</label></div>
+              <div class="radio-option"><input type="radio" name="monthly_cases" value="10〜30件" id="mc2"><label for="mc2">10〜30件</label></div>
+              <div class="radio-option"><input type="radio" name="monthly_cases" value="30〜50件" id="mc3"><label for="mc3">30〜50件</label></div>
+              <div class="radio-option"><input type="radio" name="monthly_cases" value="50件以上" id="mc4"><label for="mc4">50件以上</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label">
+              <div class="question-text">スタッフ人数</div>
+            </div>
+            <div class="input-wrap">
+              <input type="text" name="staff_count" placeholder="例：正社員5名、パート3名">
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label">
+              <div class="question-text">現在使っているシステム・ツール</div>
+            </div>
+            <div class="question-hint">紙・Excel・専用ソフトなど、なんでもOKです</div>
+            <div class="input-wrap">
+              <textarea name="current_system" placeholder="例：見積はExcel、顧客管理は紙の台帳"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ① 見積・売上 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">📋</div>
+        <div>
+          <div class="section-title">見積・売上まわり</div>
+          <div class="section-subtitle">見積書の作成や売上管理について</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-num">1</div><div class="question-text">見積書は今どうやって作っていますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q1_estimate_method" value="手書き" id="q1a"><label for="q1a">手書き</label></div>
+              <div class="radio-option"><input type="radio" name="q1_estimate_method" value="Excel" id="q1b"><label for="q1b">Excel</label></div>
+              <div class="radio-option"><input type="radio" name="q1_estimate_method" value="専用ソフト" id="q1c"><label for="q1c">専用ソフト</label></div>
+              <div class="radio-option"><input type="radio" name="q1_estimate_method" value="その他" id="q1d"><label for="q1d">その他</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">2</div><div class="question-text">見積の作成に、だいたいどのくらい時間がかかりますか？</div></div>
+            <div class="input-wrap"><textarea name="q2_estimate_time" placeholder="例：1件あたり30分くらい"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">3</div><div class="question-text">プランは何種類ありますか？</div></div>
+            <div class="input-wrap"><input type="text" name="q3_plan_types" placeholder="例：家族葬・一般葬・直葬の3種類"></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">4</div><div class="question-text">オプション（花・料理等）の見積で困ることはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q4_option_trouble" placeholder="例：オプションが多すぎて計算ミスが起きる"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">5</div><div class="question-text">原価・粗利は誰が管理していますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q5_cost_management" value="社長のみ" id="q5a"><label for="q5a">社長のみ</label></div>
+              <div class="radio-option"><input type="radio" name="q5_cost_management" value="全員見える" id="q5b"><label for="q5b">全員見える</label></div>
+              <div class="radio-option"><input type="radio" name="q5_cost_management" value="管理していない" id="q5c"><label for="q5c">管理していない</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">6</div><div class="question-text">値引きのルールはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q6_discount_rules" placeholder="例：リピーターは5%引き、社員の裁量で値引きすることもある"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② 顧客・施主管理 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">👤</div>
+        <div>
+          <div class="section-title">顧客・施主管理</div>
+          <div class="section-subtitle">顧客情報の管理や引き継ぎについて</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-num">7</div><div class="question-text">顧客情報はどこで管理していますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q7_customer_management" value="紙の台帳" id="q7a"><label for="q7a">紙の台帳</label></div>
+              <div class="radio-option"><input type="radio" name="q7_customer_management" value="Excel" id="q7b"><label for="q7b">Excel</label></div>
+              <div class="radio-option"><input type="radio" name="q7_customer_management" value="専用システム" id="q7c"><label for="q7c">専用システム</label></div>
+              <div class="radio-option"><input type="radio" name="q7_customer_management" value="特に管理していない" id="q7d"><label for="q7d">特に管理していない</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">8</div><div class="question-text">同じ家族の過去の施行記録は確認できますか？</div></div>
+            <div class="input-wrap"><textarea name="q8_past_records" placeholder="例：台帳を探せば見つかるが時間がかかる"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">9</div><div class="question-text">担当者の引き継ぎで困ったことはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q9_handover_trouble" placeholder="例：前の担当しか知らない情報があった"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">10</div><div class="question-text">注意が必要な顧客の共有はどうしていますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q10_alert_sharing" value="口頭で共有" id="q10a"><label for="q10a">口頭で共有</label></div>
+              <div class="radio-option"><input type="radio" name="q10_alert_sharing" value="メモを貼っている" id="q10b"><label for="q10b">メモを貼っている</label></div>
+              <div class="radio-option"><input type="radio" name="q10_alert_sharing" value="特に共有していない" id="q10c"><label for="q10c">特に共有していない</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">11</div><div class="question-text">顧客を検索したいと思うことはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q11_search_needs" placeholder="例：「去年の○○地区の施行」を探したいことがある"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 現場オペレーション -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">🔧</div>
+        <div>
+          <div class="section-title">現場オペレーション</div>
+          <div class="section-subtitle">シフト・スタッフ配置・準備について</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-num">12</div><div class="question-text">夜間当番のシフトはどう決めていますか？</div></div>
+            <div class="input-wrap"><textarea name="q12_shift_method" placeholder="例：月初に社長が手作業で組んでいる"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">13</div><div class="question-text">急な欠勤が出た時はどう対応していますか？</div></div>
+            <div class="input-wrap"><textarea name="q13_absence_flow" placeholder="例：電話で1人ずつ連絡して代わりを探す"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">14</div><div class="question-text">施行当日のスタッフ配置で困ることはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q14_staffing_trouble" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">15</div><div class="question-text">外注スタッフを使うことはありますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q15_external_staff" value="よく使う" id="q15a"><label for="q15a">よく使う</label></div>
+              <div class="radio-option"><input type="radio" name="q15_external_staff" value="たまに使う" id="q15b"><label for="q15b">たまに使う</label></div>
+              <div class="radio-option"><input type="radio" name="q15_external_staff" value="使わない" id="q15c"><label for="q15c">使わない</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">16</div><div class="question-text">施行準備で「忘れがち」なことはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q16_forgotten_tasks" placeholder=""></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ 法要・アフターフォロー -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">🕊</div>
+        <div>
+          <div class="section-title">法要・アフターフォロー</div>
+          <div class="section-subtitle">施行後のフォロー・法要対応について</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-num">17</div><div class="question-text">四十九日・一周忌のフォローはしていますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q17_memorial_follow" value="毎回している" id="q17a"><label for="q17a">毎回している</label></div>
+              <div class="radio-option"><input type="radio" name="q17_memorial_follow" value="時々忘れる" id="q17b"><label for="q17b">時々忘れる</label></div>
+              <div class="radio-option"><input type="radio" name="q17_memorial_follow" value="していない" id="q17c"><label for="q17c">していない</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">18</div><div class="question-text">法要の案内状は送っていますか？</div></div>
+            <div class="input-wrap"><textarea name="q18_invitation_sending" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">19</div><div class="question-text">施行後のフォロー漏れは気になりますか？</div></div>
+            <div class="input-wrap"><textarea name="q19_follow_leak" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">20</div><div class="question-text">フォロー業務の担当は決まっていますか？</div></div>
+            <div class="input-wrap"><textarea name="q20_follow_assignee" placeholder=""></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ 経営・数字 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">📊</div>
+        <div>
+          <div class="section-title">経営・数字の管理</div>
+          <div class="section-subtitle">売上や実績の把握について</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-num">21</div><div class="question-text">施行件数や売上の推移は把握できていますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q21_stats_tracking" value="月次で把握" id="q21a"><label for="q21a">月次で把握</label></div>
+              <div class="radio-option"><input type="radio" name="q21_stats_tracking" value="年次で把握" id="q21b"><label for="q21b">年次で把握</label></div>
+              <div class="radio-option"><input type="radio" name="q21_stats_tracking" value="把握できていない" id="q21c"><label for="q21c">把握できていない</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">22</div><div class="question-text">担当者ごとの実績を見たいと思いますか？</div></div>
+            <div class="input-wrap"><textarea name="q22_staff_performance" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">23</div><div class="question-text">値引き率や平均単価は気になりますか？</div></div>
+            <div class="input-wrap"><textarea name="q23_pricing_analytics" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">24</div><div class="question-text">「社長だけ見たい数字」はありますか？</div></div>
+            <div class="input-wrap"><textarea name="q24_owner_only_data" placeholder="例：スタッフの人件費率、粗利率など"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">25</div><div class="question-text">スタッフに見せたくない情報はありますか？</div></div>
+            <div class="input-wrap"><textarea name="q25_restricted_info" placeholder=""></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑥ 礼との連携 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">🔗</div>
+        <div>
+          <div class="section-title">オンライン香典（礼）との連携</div>
+          <div class="section-subtitle">献杯データの活用について</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-num">26</div><div class="question-text">オンライン香典の入金管理で困ることはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q26_payment_trouble" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">27</div><div class="question-text">献杯者のリストを遺族に渡していますか？</div></div>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="q27_donor_list" value="紙で渡している" id="q27a"><label for="q27a">紙で渡している</label></div>
+              <div class="radio-option"><input type="radio" name="q27_donor_list" value="データで渡している" id="q27b"><label for="q27b">データで渡している</label></div>
+              <div class="radio-option"><input type="radio" name="q27_donor_list" value="渡していない" id="q27c"><label for="q27c">渡していない</label></div>
+            </div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">28</div><div class="question-text">遠方の参列者への案内はどうしていますか？</div></div>
+            <div class="input-wrap"><textarea name="q28_remote_guide" placeholder=""></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑦ 現場の困りごと -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">💡</div>
+        <div>
+          <div class="section-title">現場の困りごと</div>
+          <div class="section-subtitle">日々の業務で「あったらいいな」と思うこと</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-num">29</div><div class="question-text">現場でスマホから入力したいことはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q29_mobile_needs" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">30</div><div class="question-text">写真や書類の管理で困っていることはありますか？</div></div>
+            <div class="input-wrap"><textarea name="q30_file_trouble" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">31</div><div class="question-text">よく使う定型文（挨拶状等）はありますか？</div></div>
+            <div class="input-wrap"><textarea name="q31_templates" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">32</div><div class="question-text">「誰がいつ何をしたか」の記録は必要ですか？</div></div>
+            <div class="input-wrap"><textarea name="q32_activity_log" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-num">33</div><div class="question-text">入力ミスが起きやすい作業はありますか？</div></div>
+            <div class="input-wrap"><textarea name="q33_input_errors" placeholder=""></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- まとめ -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon">⭐</div>
+        <div>
+          <div class="section-title">まとめ</div>
+          <div class="section-subtitle">一番解決したい課題を教えてください</div>
+        </div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="question">
+            <div class="question-label"><div class="question-text">一番解決したい課題は何ですか？</div></div>
+            <div class="input-wrap"><textarea name="priority_1" placeholder="例：見積作成に時間がかかりすぎる"></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-text">2番目に解決したい課題</div></div>
+            <div class="input-wrap"><textarea name="priority_2" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-text">3番目に解決したい課題</div></div>
+            <div class="input-wrap"><textarea name="priority_3" placeholder=""></textarea></div>
+          </div>
+          <div class="question">
+            <div class="question-label"><div class="question-text">その他、気になることやご要望</div></div>
+            <div class="input-wrap"><textarea name="free_comment" class="large" placeholder="何でもお気軽にどうぞ"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 送信ボタン -->
+    <div class="submit-section">
+      <button type="submit" class="submit-btn" id="submitBtn">
+        送信する →
+      </button>
+      <div class="submit-note">※ 送信後の修正はお電話またはメールにてお知らせください</div>
+    </div>
+
+  </form>
+</div>
+
+<!-- 完了画面 -->
+<div class="complete-screen" id="completeScreen">
+  <div class="complete-icon">✨</div>
+  <h2>ご回答ありがとうございます</h2>
+  <p>
+    いただいた内容をもとに、<br>
+    御社に最適なシステムプランをご提案させていただきます。<br><br>
+    担当者より数日以内にご連絡いたします。<br>
+    今しばらくお待ちください。
+  </p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SUPABASE_URL = 'https://osyysvompcfuadlnuojs.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzMTQ0NjksImV4cCI6MjA1MTg5MDQ2OX0.a1C8R5Ry5x6fBSnSloTTqOmOIkuMOp7W5YLaXbITvOE';
+var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Section toggle
+function toggleSection(header) {
+  var section = header.parentElement;
+  section.classList.toggle('open');
+}
+
+// Progress tracking
+function updateProgress() {
+  var form = document.getElementById('hearingForm');
+  var inputs = form.querySelectorAll('input[type="text"], textarea');
+  var radios = form.querySelectorAll('input[type="radio"]');
+  var filled = 0;
+  var total = inputs.length;
+
+  inputs.forEach(function(input) {
+    if (input.value.trim()) filled++;
+  });
+
+  var radioGroups = {};
+  radios.forEach(function(r) { radioGroups[r.name] = radioGroups[r.name] || false; if (r.checked) radioGroups[r.name] = true; });
+  var radioNames = Object.keys(radioGroups);
+  total += radioNames.length;
+  radioNames.forEach(function(name) { if (radioGroups[name]) filled++; });
+
+  var pct = Math.round((filled / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+document.addEventListener('input', updateProgress);
+document.addEventListener('change', updateProgress);
+
+// Toast
+function showToast(msg, type) {
+  var toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type + ' show';
+  setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+// Form submit
+document.getElementById('hearingForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  var form = e.target;
+  var data = {};
+
+  // Text inputs & textareas
+  form.querySelectorAll('input[type="text"], textarea').forEach(function(el) {
+    if (el.name) data[el.name] = el.value.trim() || null;
+  });
+
+  // Radio buttons
+  form.querySelectorAll('input[type="radio"]:checked').forEach(function(el) {
+    data[el.name] = el.value;
+  });
+
+  // Validation
+  if (!data.company_name) {
+    showToast('葬儀社名を入力してください', 'error');
+    btn.disabled = false;
+    btn.textContent = '送信する →';
+    return;
+  }
+
+  try {
+    var result = await supabase.from('hearing_responses').insert([data]);
+    
+    if (result.error) {
+      throw result.error;
+    }
+
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('completeScreen').classList.add('show');
+    document.getElementById('progressFill').style.width = '100%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    console.error(err);
+    showToast('送信に失敗しました。もう一度お試しください。', 'error');
+    btn.disabled = false;
+    btn.textContent = '送信する →';
+  }
+});
+</script>
+</body>
+</html>
