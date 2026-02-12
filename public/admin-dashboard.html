@@ -156,6 +156,7 @@
     }
     .badge-total { background: #3d4559; color: #e0e0e0; }
     .badge-pass { background: #28a745; color: white; }
+    .badge-unread { background: #e8963a; color: white; }
     
     /* URL共有セクション */
     .url-section {
@@ -262,6 +263,15 @@
   <div class="menu-section">
     <div class="menu-section-title">📊 管理機能</div>
     <div class="menu-card">
+      <a class="menu-item" href="hearing-admin.html">
+        <div class="menu-item-icon">📩</div>
+        <div class="menu-item-content">
+          <div class="menu-item-title">ヒアリング回答管理</div>
+          <div class="menu-item-desc" id="hearingDesc">葬儀社からのアンケート回答を確認</div>
+        </div>
+        <div class="menu-item-badge" id="hearingBadge" style="display:flex; gap:0.5rem; margin-right:0.75rem;"></div>
+        <div class="menu-item-arrow">→</div>
+      </a>
       <a class="menu-item" href="sales-test-admin.html">
         <div class="menu-item-icon">📋</div>
         <div class="menu-item-content">
@@ -331,7 +341,15 @@
 
   <!-- URL共有 -->
   <div class="url-section">
-    <div class="url-section-title">🔗 パートナー候補者に共有するURL</div>
+    <div class="url-section-title">🔗 共有用URL</div>
+
+    <div class="url-group">
+      <div class="url-label">📩 葬儀社向けヒアリングフォーム</div>
+      <div class="url-row">
+        <input type="text" class="url-input" value="https://rei-kenpai-b3z8.vercel.app/hearing-form.html" readonly id="url0">
+        <button class="url-copy" onclick="copyUrl('url0')">コピー</button>
+      </div>
+    </div>
     
     <div class="url-group">
       <div class="url-label">営業パートナーのご案内ページ（推奨）</div>
@@ -371,6 +389,7 @@
     <div class="notice-title">💡 共有について</div>
     <div class="notice-text">
       営業パートナー候補者には「営業パートナーのご案内」ページのURLを共有してください。<br><br>
+      葬儀社には「ヒアリングフォーム」のURLを共有してください。<br><br>
       このダッシュボードのURLは管理者のみに共有してください。
     </div>
   </div>
@@ -418,6 +437,7 @@ function showMenu() {
   document.getElementById('mainMenu').style.display = 'block';
   loadStats();
   loadTestStats();
+  loadHearingStats();
 }
 
 // 成約数を取得
@@ -427,7 +447,6 @@ async function loadStats() {
   try {
     if (!supabase) throw new Error('Supabase未初期化');
     
-    // sales_prospects テーブルから成約数をカウント
     var { data, error, count } = await supabase
       .from('sales_prospects')
       .select('*', { count: 'exact', head: true })
@@ -444,7 +463,6 @@ async function loadStats() {
     
   } catch(e) {
     console.error('統計取得エラー:', e);
-    // エラー時は0件表示
     statsCard.innerHTML = 
       '<div class="stats-number">0</div>' +
       '<div class="stats-label">件の成約</div>' +
@@ -460,7 +478,6 @@ async function loadTestStats() {
   try {
     if (!supabase) throw new Error('Supabase未初期化');
     
-    // sales_test_results テーブルからテスト結果を取得
     var { data, error } = await supabase
       .from('sales_test_results')
       .select('score');
@@ -471,18 +488,49 @@ async function loadTestStats() {
     var totalCount = results.length;
     var passCount = results.filter(function(r) { return r.score >= 80; }).length;
     
-    // バッジを表示
     badgeContainer.innerHTML = 
       '<span class="badge-total">受験 ' + totalCount + '人</span>' +
       '<span class="badge-pass">合格 ' + passCount + '人</span>';
     
-    // 説明文を更新
     descEl.textContent = '合格率: ' + (totalCount > 0 ? Math.round(passCount / totalCount * 100) : 0) + '%';
     
   } catch(e) {
     console.error('テスト統計取得エラー:', e);
     badgeContainer.innerHTML = '';
     descEl.textContent = '受験者一覧と合格者の確認';
+  }
+}
+
+// ヒアリング回答統計を取得
+async function loadHearingStats() {
+  var badgeContainer = document.getElementById('hearingBadge');
+  var descEl = document.getElementById('hearingDesc');
+  
+  try {
+    if (!supabase) throw new Error('Supabase未初期化');
+    
+    var { data, error } = await supabase
+      .from('hearing_responses')
+      .select('is_read');
+    
+    if (error) throw error;
+    
+    var results = data || [];
+    var totalCount = results.length;
+    var unreadCount = results.filter(function(r) { return !r.is_read; }).length;
+    
+    badgeContainer.innerHTML = 
+      '<span class="badge-total">回答 ' + totalCount + '件</span>' +
+      (unreadCount > 0 ? '<span class="badge-unread">未確認 ' + unreadCount + '件</span>' : '');
+    
+    descEl.textContent = totalCount > 0 
+      ? (unreadCount > 0 ? '未確認の回答が' + unreadCount + '件あります' : '全て確認済み')
+      : 'まだ回答がありません';
+    
+  } catch(e) {
+    console.error('ヒアリング統計取得エラー:', e);
+    badgeContainer.innerHTML = '';
+    descEl.textContent = '葬儀社からのアンケート回答を確認';
   }
 }
 
