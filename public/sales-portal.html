@@ -7,21 +7,7 @@
   <title>Rei 営業ポータル</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 // ==================== ヒアリングフォーム共有機能 ====================
-var HEARING_FORM_URL = 'https://rei-kenpai-b3z8.vercel.app/hearing-form.html';
-
-function shareHearingLine() {
-  var text = '【礼カスタム】業務に関する簡単なアンケートのお願い\\n\\nお忙しいところ恐れ入りますが、御社の業務についてお聞かせください。\\n5分程度・選択式が中心です。\\n\\n▼ こちらからお願いします\\n' + HEARING_FORM_URL;
-  var lineUrl = 'https://line.me/R/share?text=' + encodeURIComponent(text);
-  window.open(lineUrl, '_blank');
-}
-
-function shareHearingEmail() {
-  var subject = '【礼カスタム】業務に関する簡単なアンケートのお願い';
-  var body = 'お世話になっております。\\n先日はお時間をいただきありがとうございました。\\n\\n御社の業務について、簡単なアンケートにご協力いただけますでしょうか。\\n5分程度で完了いたします。選択式が中心ですので、お気軽にお答えください。\\n\\n▼ アンケートはこちら\\n' + HEARING_FORM_URL + '\\n\\n正解・不正解はございません。\\n率直なお声をお聞かせいただけますと幸いです。\\n\\nどうぞよろしくお願いいたします。';
-  window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-}
-
-function copyHearingUrl() {
+var HEARING_FORM_URL = 'https://rei-kenpai-b3z8.vercel.app/hearing-form.html';function copyHearingUrl() {
   if (navigator.clipboard) {
     navigator.clipboard.writeText(HEARING_FORM_URL).then(function() {
       showHearingCopySuccess();
@@ -1439,33 +1425,23 @@ function showHearingCopySuccess() {
     <div class="page" id="page-more">
       <!-- ヒアリングフォーム共有カード -->
       <div class="card" style="background:linear-gradient(135deg, #b8941f 0%, #d4a827 50%, #c9a227 100%); color:white; margin-bottom:1rem; border-radius:16px;">
-        <div class="card-body" style="padding:1.25rem;">
-          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
-            <div style="font-size:2rem;">📋</div>
-            <div>
-              <div style="font-size:1.1rem; font-weight:700;">ヒアリングフォーム</div>
-              <div style="font-size:0.8rem; opacity:0.9;">葬儀社にすぐ送れます</div>
+        <div class="card-body" style="padding:1rem 1.25rem;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <div style="font-size:1.5rem;">📋</div>
+              <div>
+                <div style="font-size:1rem; font-weight:700;">ヒアリングフォーム</div>
+                <div style="font-size:0.75rem; opacity:0.85;">タップでリンクをコピー</div>
+              </div>
             </div>
-          </div>
-          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <button onclick="shareHearingLine()" style="flex:1; min-width:80px; padding:0.7rem; border:none; border-radius:10px; background:#06C755; color:white; font-weight:600; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem;">
-              <span>💬</span> LINE
-            </button>
-            <button onclick="shareHearingEmail()" style="flex:1; min-width:80px; padding:0.7rem; border:none; border-radius:10px; background:#4285F4; color:white; font-weight:600; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem;">
-              <span>✉️</span> メール
-            </button>
-            <button onclick="copyHearingUrl()" id="copyHearingBtn" style="flex:1; min-width:80px; padding:0.7rem; border:none; border-radius:10px; background:rgba(255,255,255,0.25); color:white; font-weight:600; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem;">
-              <span>🔗</span> URLコピー
+            <button onclick="copyHearingUrl()" id="copyHearingBtn" style="padding:0.6rem 1.2rem; border:none; border-radius:10px; background:rgba(255,255,255,0.25); color:white; font-weight:600; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; gap:0.4rem;">
+              <span>🔗</span> コピー
             </button>
           </div>
-          <div style="margin-top:0.75rem; font-size:0.75rem; opacity:0.8; text-align:center;">💡 商談後のフォローや事前調査にご活用ください</div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="list-item" onclick="switchPage('notifications')">
-          <div class="list-item-icon">🔔</div>
-          <div class="list-item-content">
+<div class="list-item-content">
             <div class="list-item-title">通知</div>
             <div class="list-item-sub" id="notifCount">0件の未読</div>
           </div>
