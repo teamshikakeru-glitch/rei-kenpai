@@ -180,8 +180,6 @@
       <!-- 目標管理ページ -->
       <div class="page" id="page-goals">
         <h1 class="page-title">🎯 目標管理</h1>
-        
-        <!-- KPI設計の説明 -->
         <div class="card" style="background:linear-gradient(135deg, #252b3d, #2d3548); border-left:4px solid #c9a962;">
           <div class="card-body">
             <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
@@ -195,28 +193,12 @@
             </div>
           </div>
         </div>
-        
-        <!-- 全体サマリー -->
         <div class="stats-grid" style="margin-top:1rem;">
-          <div class="stat-card success">
-            <div class="stat-label">今月の受注（チーム計）</div>
-            <div class="stat-value" id="goalTeamClosed">0</div>
-          </div>
-          <div class="stat-card warning">
-            <div class="stat-label">見込み（チーム計）</div>
-            <div class="stat-value" id="goalTeamProspect">0</div>
-          </div>
-          <div class="stat-card info">
-            <div class="stat-label">商談（チーム計）</div>
-            <div class="stat-value" id="goalTeamNego">0</div>
-          </div>
-          <div class="stat-card gold">
-            <div class="stat-label">アポ（チーム計）</div>
-            <div class="stat-value" id="goalTeamAppo">0</div>
-          </div>
+          <div class="stat-card success"><div class="stat-label">今月の受注（チーム計）</div><div class="stat-value" id="goalTeamClosed">0</div></div>
+          <div class="stat-card warning"><div class="stat-label">見込み（チーム計）</div><div class="stat-value" id="goalTeamProspect">0</div></div>
+          <div class="stat-card info"><div class="stat-label">商談（チーム計）</div><div class="stat-value" id="goalTeamNego">0</div></div>
+          <div class="stat-card gold"><div class="stat-label">アポ（チーム計）</div><div class="stat-value" id="goalTeamAppo">0</div></div>
         </div>
-        
-        <!-- メンバー別目標一覧 -->
         <div class="card">
           <div class="card-header">
             <span class="card-title">👥 メンバー別 月間目標・進捗</span>
@@ -224,26 +206,15 @@
           </div>
           <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>名前</th>
-                  <th style="text-align:center;">受注目標</th>
-                  <th style="text-align:center;">受注実績</th>
-                  <th style="text-align:center;">見込み</th>
-                  <th style="text-align:center;">商談</th>
-                  <th style="text-align:center;">アポ</th>
-                  <th style="text-align:center;">達成率</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
+              <thead><tr><th>名前</th><th style="text-align:center;">受注目標</th><th style="text-align:center;">受注実績</th><th style="text-align:center;">見込み</th><th style="text-align:center;">商談</th><th style="text-align:center;">アポ</th><th style="text-align:center;">達成率</th><th>操作</th></tr></thead>
               <tbody id="goalMemberTable"></tbody>
             </table>
           </div>
         </div>
-        
-        <!-- メンバー別詳細カード -->
         <div id="goalMemberCards"></div>
       </div>
+
+      <!-- 葬儀社管理ページ -->
       <div class="page" id="page-funerals">
         <h1 class="page-title">🏢 葬儀社管理（<span id="funeralCount">0</span>社）</h1>
         <div class="card">
@@ -253,71 +224,44 @@
               <select class="form-input-dark" id="filterPref" style="width:auto;padding:0.4rem;"><option value="">全都道府県</option></select>
               <select class="form-input-dark" id="filterTemp" style="width:auto;padding:0.4rem;"><option value="">全感度</option><option value="熱い">🔥熱い</option><option value="温かい">☀️温かい</option><option value="普通">😐普通</option><option value="冷たい">❄️冷たい</option></select>
             </div>
-            <button class="btn btn-sm btn-gold" onclick="openFuneralModal()">+ 追加</button>
+            <div style="display:flex;gap:0.5rem;">
+              <button class="btn btn-sm btn-success" onclick="openImportModal()">📋 一括インポート</button>
+              <button class="btn btn-sm btn-gold" onclick="openFuneralModal()">+ 追加</button>
+            </div>
           </div>
           <div style="overflow-x:auto;"><table><thead><tr><th>葬儀社名</th><th>エリア</th><th>都道府県</th><th>感度</th><th>担当</th><th>状態</th><th></th></tr></thead><tbody id="funeralTable"></tbody></table></div>
         </div>
       </div>
+
+      <!-- 経費申請ページ -->
       <div class="page" id="page-expenses">
         <h1 class="page-title">💰 経費申請</h1>
-        
-        <!-- 経費サマリー -->
         <div class="expense-summary" id="expenseSummary">
-          <div class="expense-summary-card">
-            <div class="expense-summary-label">申請中</div>
-            <div class="expense-summary-value pending" id="expPending">¥0</div>
-          </div>
-          <div class="expense-summary-card">
-            <div class="expense-summary-label">承認済</div>
-            <div class="expense-summary-value approved" id="expApproved">¥0</div>
-          </div>
-          <div class="expense-summary-card">
-            <div class="expense-summary-label">却下</div>
-            <div class="expense-summary-value rejected" id="expRejected">¥0</div>
-          </div>
-          <div class="expense-summary-card">
-            <div class="expense-summary-label">総申請額</div>
-            <div class="expense-summary-value" id="expTotal">¥0</div>
-          </div>
+          <div class="expense-summary-card"><div class="expense-summary-label">申請中</div><div class="expense-summary-value pending" id="expPending">¥0</div></div>
+          <div class="expense-summary-card"><div class="expense-summary-label">承認済</div><div class="expense-summary-value approved" id="expApproved">¥0</div></div>
+          <div class="expense-summary-card"><div class="expense-summary-label">却下</div><div class="expense-summary-value rejected" id="expRejected">¥0</div></div>
+          <div class="expense-summary-card"><div class="expense-summary-label">総申請額</div><div class="expense-summary-value" id="expTotal">¥0</div></div>
         </div>
-        
         <div class="card">
           <div class="card-header">
             <span class="card-title">申請一覧</span>
             <select class="form-input-dark" id="expenseFilter" style="width:auto;padding:0.4rem;">
-              <option value="申請中">申請中</option>
-              <option value="承認">承認済</option>
-              <option value="却下">却下</option>
-              <option value="">すべて</option>
+              <option value="申請中">申請中</option><option value="承認">承認済</option><option value="却下">却下</option><option value="">すべて</option>
             </select>
           </div>
           <div id="expensesList"></div>
         </div>
-        
-        <!-- 経費履歴テーブル -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">📋 経費履歴（全件）</span>
-          </div>
+          <div class="card-header"><span class="card-title">📋 経費履歴（全件）</span></div>
           <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>日付</th>
-                  <th>申請者</th>
-                  <th>カテゴリ</th>
-                  <th>内容</th>
-                  <th>金額</th>
-                  <th>状態</th>
-                  <th>申請日時</th>
-                  <th></th>
-                </tr>
-              </thead>
+              <thead><tr><th>日付</th><th>申請者</th><th>カテゴリ</th><th>内容</th><th>金額</th><th>状態</th><th>申請日時</th><th></th></tr></thead>
               <tbody id="expenseHistoryTable"></tbody>
             </table>
           </div>
         </div>
       </div>
+
       <div class="page" id="page-members"><h1 class="page-title">👥 メンバー</h1><div class="card"><div id="membersList"></div></div></div>
       <div class="page" id="page-todos"><h1 class="page-title">📋 TODO指示</h1><div class="card"><div class="card-header"><span class="card-title">一覧</span><button class="btn btn-sm btn-gold" onclick="openTodoModal()">+ 新規</button></div><div id="todosList"></div></div></div>
       <div class="page" id="page-posts"><h1 class="page-title">💬 掲示板</h1><div class="card"><div class="card-header"><span class="card-title">投稿</span><button class="btn btn-sm btn-gold" onclick="openPostModal()">+ 投稿</button></div><div id="postsList"></div></div></div>
@@ -325,30 +269,15 @@
       <!-- スケジュール管理 -->
       <div class="page" id="page-schedules">
         <h1 class="page-title">📅 スケジュール管理</h1>
-        
-        <!-- メンバー稼働状況 -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">👥 メンバー稼働状況（今月）</span>
-          </div>
+          <div class="card-header"><span class="card-title">👥 メンバー稼働状況（今月）</span></div>
           <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>名前</th>
-                  <th>予定数</th>
-                  <th>完了</th>
-                  <th>未完了</th>
-                  <th>直近の予定</th>
-                  <th>最終活動</th>
-                </tr>
-              </thead>
+              <thead><tr><th>名前</th><th>予定数</th><th>完了</th><th>未完了</th><th>直近の予定</th><th>最終活動</th></tr></thead>
               <tbody id="memberActivityTable"></tbody>
             </table>
           </div>
         </div>
-        
-        <!-- カレンダー表示 -->
         <div class="card">
           <div class="card-header">
             <button class="btn btn-sm btn-secondary" onclick="changeAdminMonth(-1)">◀</button>
@@ -359,26 +288,14 @@
             <div id="adminCalendarGrid" style="display:grid; grid-template-columns:repeat(7,1fr); gap:2px;"></div>
           </div>
         </div>
-        
-        <!-- 選択日の予定 -->
         <div class="card">
           <div class="card-header">
             <span class="card-title" id="adminSelectedDateTitle">予定一覧</span>
-            <select class="form-input-dark" id="scheduleMemberFilter" style="width:auto; padding:0.4rem;">
-              <option value="">全メンバー</option>
-            </select>
+            <select class="form-input-dark" id="scheduleMemberFilter" style="width:auto; padding:0.4rem;"><option value="">全メンバー</option></select>
           </div>
           <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>日付</th>
-                  <th>メンバー</th>
-                  <th>訪問先</th>
-                  <th>メモ</th>
-                  <th>状態</th>
-                </tr>
-              </thead>
+              <thead><tr><th>日付</th><th>メンバー</th><th>訪問先</th><th>メモ</th><th>状態</th></tr></thead>
               <tbody id="scheduleListTable"></tbody>
             </table>
           </div>
@@ -388,47 +305,24 @@
       <!-- 下調べページ -->
       <div class="page" id="page-research">
         <h1 class="page-title">🔍 下調べ管理</h1>
-        
-        <!-- 統計 -->
         <div class="stats-grid" style="grid-template-columns:repeat(3, 1fr);">
           <div class="stat-card info"><div class="stat-label">担当あり会社数</div><div class="stat-value" id="researchStatAssigned">0</div></div>
           <div class="stat-card success"><div class="stat-label">下調べ完了</div><div class="stat-value" id="researchStatComplete">0</div></div>
           <div class="stat-card warning"><div class="stat-label">下調べ未完了</div><div class="stat-value" id="researchStatIncomplete">0</div></div>
         </div>
-
-        <!-- フィルター -->
         <div class="card">
           <div class="card-body" style="padding:0.75rem;">
             <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-              <select class="form-input-dark" id="researchFilterMember" style="flex:1; min-width:120px;" onchange="renderAdminResearchList()">
-                <option value="">全メンバー</option>
-              </select>
-              <select class="form-input-dark" id="researchFilterStatus" style="flex:1; min-width:120px;" onchange="renderAdminResearchList()">
-                <option value="">全ステータス</option>
-                <option value="complete">✅ 完了のみ</option>
-                <option value="incomplete">⬜ 未完了のみ</option>
-              </select>
+              <select class="form-input-dark" id="researchFilterMember" style="flex:1; min-width:120px;" onchange="renderAdminResearchList()"><option value="">全メンバー</option></select>
+              <select class="form-input-dark" id="researchFilterStatus" style="flex:1; min-width:120px;" onchange="renderAdminResearchList()"><option value="">全ステータス</option><option value="complete">✅ 完了のみ</option><option value="incomplete">⬜ 未完了のみ</option></select>
             </div>
           </div>
         </div>
-
-        <!-- 下調べ一覧 -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">📋 下調べ一覧</span>
-          </div>
+          <div class="card-header"><span class="card-title">📋 下調べ一覧</span></div>
           <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>葬儀社名</th>
-                  <th>担当者</th>
-                  <th>進捗</th>
-                  <th>代表者</th>
-                  <th>規模</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
+              <thead><tr><th>葬儀社名</th><th>担当者</th><th>進捗</th><th>代表者</th><th>規模</th><th>操作</th></tr></thead>
               <tbody id="adminResearchTable"></tbody>
             </table>
           </div>
@@ -438,162 +332,52 @@
       <!-- 評価シートページ -->
       <div class="page" id="page-evaluation">
         <h1 class="page-title">📝 営業評価シート</h1>
-        
-        <!-- メンバー振り返り一覧（自己申告）を一番上に -->
         <div class="card">
           <div class="card-header">
             <span class="card-title">📝 メンバーの振り返り（自己申告）</span>
-            <select class="form-input-dark" id="selfEvalFilter" style="width:auto; padding:0.4rem;" onchange="renderSelfEvalList()">
-              <option value="">全メンバー</option>
-            </select>
+            <select class="form-input-dark" id="selfEvalFilter" style="width:auto; padding:0.4rem;" onchange="renderSelfEvalList()"><option value="">全メンバー</option></select>
           </div>
           <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>日付</th>
-                  <th>メンバー</th>
-                  <th>商談先</th>
-                  <th>結果</th>
-                  <th>スコア</th>
-                  <th>詳細</th>
-                </tr>
-              </thead>
+              <thead><tr><th>日付</th><th>メンバー</th><th>商談先</th><th>結果</th><th>スコア</th><th>詳細</th></tr></thead>
               <tbody id="selfEvalListTable"></tbody>
             </table>
           </div>
         </div>
-
         <div class="card" style="background:linear-gradient(135deg, #252b3d, #2d3548); border-left:4px solid #c9a962;">
           <div class="card-body">
             <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
               <div style="font-size:2rem;">🧮</div>
               <div style="flex:1; min-width:200px;">
                 <div style="font-weight:600; color:#c9a962; margin-bottom:0.25rem;">評価の考え方</div>
-                <div style="font-size:0.85rem; color:#8a8a9a;">
-                  満点100点 / 合否ライン70点<br>
-                  受注＝高評価 ❌ → 「正しい工程を踏めたか」が評価対象 ⭕
-                </div>
+                <div style="font-size:0.85rem; color:#8a8a9a;">満点100点 / 合否ライン70点<br>受注＝高評価 ❌ → 「正しい工程を踏めたか」が評価対象 ⭕</div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- 評価フォーム -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">📋 新規評価</span>
-          </div>
+          <div class="card-header"><span class="card-title">📋 新規評価</span></div>
           <div class="card-body">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
-              <div class="form-group" style="margin:0;">
-                <label class="form-label">対象メンバー *</label>
-                <select class="form-input-dark" id="evalMember"></select>
-              </div>
-              <div class="form-group" style="margin:0;">
-                <label class="form-label">商談日 *</label>
-                <input type="date" class="form-input-dark" id="evalDate">
-              </div>
+              <div class="form-group" style="margin:0;"><label class="form-label">対象メンバー *</label><select class="form-input-dark" id="evalMember"></select></div>
+              <div class="form-group" style="margin:0;"><label class="form-label">商談日 *</label><input type="date" class="form-input-dark" id="evalDate"></div>
             </div>
-            <div class="form-group">
-              <label class="form-label">商談先（葬儀社名）</label>
-              <input type="text" class="form-input-dark" id="evalCompany" placeholder="例：◯◯葬祭">
-            </div>
-
+            <div class="form-group"><label class="form-label">商談先（葬儀社名）</label><input type="text" class="form-input-dark" id="evalCompany" placeholder="例：◯◯葬祭"></div>
             <h4 style="color:#c9a962; margin:1.5rem 0 1rem; border-bottom:1px solid #3d4559; padding-bottom:0.5rem;">① 商談設計スコア【30点】</h4>
-            <div class="form-group">
-              <label class="form-label">Q1. 前提合わせができたか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「今日は判断の場」と伝えた</div>
-              <select class="form-input-dark" id="evalQ1" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="0">No（0点）</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Q2. 決裁者を正しく扱えたか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">決裁者に直接質問している</div>
-              <select class="form-input-dark" id="evalQ2" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="0">No（0点）</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Q3. 時間配分を守れたか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">30分以内に収めている</div>
-              <select class="form-input-dark" id="evalQ3" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="5">ほぼOK（5点）</option>
-                <option value="0">No（0点）</option>
-              </select>
-            </div>
-
+            <div class="form-group"><label class="form-label">Q1. 前提合わせができたか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「今日は判断の場」と伝えた</div><select class="form-input-dark" id="evalQ1" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="0">No（0点）</option></select></div>
+            <div class="form-group"><label class="form-label">Q2. 決裁者を正しく扱えたか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">決裁者に直接質問している</div><select class="form-input-dark" id="evalQ2" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="0">No（0点）</option></select></div>
+            <div class="form-group"><label class="form-label">Q3. 時間配分を守れたか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">30分以内に収めている</div><select class="form-input-dark" id="evalQ3" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="5">ほぼOK（5点）</option><option value="0">No（0点）</option></select></div>
             <h4 style="color:#c9a962; margin:1.5rem 0 1rem; border-bottom:1px solid #3d4559; padding-bottom:0.5rem;">② 判断軸スコア【25点】</h4>
-            <div class="form-group">
-              <label class="form-label">Q4. 決裁者の「判断軸ワード」を取れているか（15点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">明確な言葉が記載されている</div>
-              <select class="form-input-dark" id="evalQ4" onchange="calcEvalScore()">
-                <option value="15">Yes（15点）</option>
-                <option value="5">曖昧（5点）</option>
-                <option value="0">なし（0点）</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Q5. その言葉を以降で使っているか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">同じ言葉を3回以上使用</div>
-              <select class="form-input-dark" id="evalQ5" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="5">1〜2回（5点）</option>
-                <option value="0">使っていない（0点）</option>
-              </select>
-            </div>
-
+            <div class="form-group"><label class="form-label">Q4. 決裁者の「判断軸ワード」を取れているか（15点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">明確な言葉が記載されている</div><select class="form-input-dark" id="evalQ4" onchange="calcEvalScore()"><option value="15">Yes（15点）</option><option value="5">曖昧（5点）</option><option value="0">なし（0点）</option></select></div>
+            <div class="form-group"><label class="form-label">Q5. その言葉を以降で使っているか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">同じ言葉を3回以上使用</div><select class="form-input-dark" id="evalQ5" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="5">1〜2回（5点）</option><option value="0">使っていない（0点）</option></select></div>
             <h4 style="color:#c9a962; margin:1.5rem 0 1rem; border-bottom:1px solid #3d4559; padding-bottom:0.5rem;">③ 数値化スコア【20点】</h4>
-            <div class="form-group">
-              <label class="form-label">Q6. 手間の分数を取れているか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「1件◯分」を取得</div>
-              <select class="form-input-dark" id="evalQ6" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="0">No（0点）</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Q7. 削減後の件数まで言語化できたか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「月◯件分」に変換</div>
-              <select class="form-input-dark" id="evalQ7" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="0">No（0点）</option>
-              </select>
-            </div>
-
+            <div class="form-group"><label class="form-label">Q6. 手間の分数を取れているか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「1件◯分」を取得</div><select class="form-input-dark" id="evalQ6" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="0">No（0点）</option></select></div>
+            <div class="form-group"><label class="form-label">Q7. 削減後の件数まで言語化できたか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「月◯件分」に変換</div><select class="form-input-dark" id="evalQ7" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="0">No（0点）</option></select></div>
             <h4 style="color:#c9a962; margin:1.5rem 0 1rem; border-bottom:1px solid #3d4559; padding-bottom:0.5rem;">④ クロージング工程スコア【15点】</h4>
-            <div class="form-group">
-              <label class="form-label">Q8. NO理由を価格前に出させたか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">価格前に「見送る理由」を聞いている</div>
-              <select class="form-input-dark" id="evalQ8" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="0">No（0点）</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Q9. 最終クロージング質問をしているか（5点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「見送るとしたら何が引っかかるか」</div>
-              <select class="form-input-dark" id="evalQ9" onchange="calcEvalScore()">
-                <option value="5">Yes（5点）</option>
-                <option value="0">No（0点）</option>
-              </select>
-            </div>
-
+            <div class="form-group"><label class="form-label">Q8. NO理由を価格前に出させたか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">価格前に「見送る理由」を聞いている</div><select class="form-input-dark" id="evalQ8" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="0">No（0点）</option></select></div>
+            <div class="form-group"><label class="form-label">Q9. 最終クロージング質問をしているか（5点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">「見送るとしたら何が引っかかるか」</div><select class="form-input-dark" id="evalQ9" onchange="calcEvalScore()"><option value="5">Yes（5点）</option><option value="0">No（0点）</option></select></div>
             <h4 style="color:#c9a962; margin:1.5rem 0 1rem; border-bottom:1px solid #3d4559; padding-bottom:0.5rem;">⑤ 条件施策（8%還元）【10点】</h4>
-            <div class="form-group">
-              <label class="form-label">Q10. 正しいタイミングで出せたか（10点）</label>
-              <div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">価格後＋迷いが出てから</div>
-              <select class="form-input-dark" id="evalQ10" onchange="calcEvalScore()">
-                <option value="10">Yes（10点）</option>
-                <option value="0">早出し／未使用（0点）</option>
-              </select>
-            </div>
-
-            <!-- 合計表示 -->
+            <div class="form-group"><label class="form-label">Q10. 正しいタイミングで出せたか（10点）</label><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">価格後＋迷いが出てから</div><select class="form-input-dark" id="evalQ10" onchange="calcEvalScore()"><option value="10">Yes（10点）</option><option value="0">早出し／未使用（0点）</option></select></div>
             <div style="background:#1a1f2e; padding:1.5rem; border-radius:12px; margin-top:1.5rem;">
               <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:0.75rem; text-align:center; margin-bottom:1rem;">
                 <div><div style="font-size:0.7rem; color:#8a8a9a;">商談設計</div><div style="font-size:1.2rem; font-weight:600;" id="evalScore1">30</div><div style="font-size:0.65rem; color:#8a8a9a;">/30</div></div>
@@ -606,106 +390,47 @@
                 <div style="font-size:0.85rem; color:#8a8a9a;">合計スコア</div>
                 <div style="font-size:3rem; font-weight:800;" id="evalTotalScore">100</div>
                 <div style="font-size:1rem; color:#8a8a9a;">/100点</div>
-                <div style="margin-top:0.75rem; padding:0.5rem 1rem; border-radius:100px; display:inline-block; font-weight:600;" id="evalGrade" style="background:#28a745; color:white;">🟩 標準合格</div>
+                <div style="margin-top:0.75rem; padding:0.5rem 1rem; border-radius:100px; display:inline-block; font-weight:600; background:#28a745; color:white;" id="evalGrade">🟩 標準合格</div>
               </div>
             </div>
-
-            <div class="form-group" style="margin-top:1.5rem;">
-              <label class="form-label">コメント・改善点</label>
-              <textarea class="form-input-dark" id="evalComment" rows="3" placeholder="次回の改善点など..."></textarea>
-            </div>
-
+            <div class="form-group" style="margin-top:1.5rem;"><label class="form-label">コメント・改善点</label><textarea class="form-input-dark" id="evalComment" rows="3" placeholder="次回の改善点など..."></textarea></div>
             <button class="btn btn-gold" onclick="saveEvaluation()" style="margin-top:1rem;">評価を保存</button>
           </div>
         </div>
-
-        <!-- 管理者評価履歴 -->
         <div class="card">
           <div class="card-header">
             <span class="card-title">📊 管理者評価履歴</span>
-            <select class="form-input-dark" id="evalHistoryFilter" style="width:auto; padding:0.4rem;" onchange="renderEvalHistory()">
-              <option value="">全メンバー</option>
-            </select>
+            <select class="form-input-dark" id="evalHistoryFilter" style="width:auto; padding:0.4rem;" onchange="renderEvalHistory()"><option value="">全メンバー</option></select>
           </div>
           <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>日付</th>
-                  <th>メンバー</th>
-                  <th>商談先</th>
-                  <th>スコア</th>
-                  <th>判定</th>
-                </tr>
-              </thead>
+              <thead><tr><th>日付</th><th>メンバー</th><th>商談先</th><th>スコア</th><th>判定</th></tr></thead>
               <tbody id="evalHistoryTable"></tbody>
             </table>
           </div>
         </div>
-
-        <!-- 点数別の扱い -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">🎯 点数別の対応方針</span>
-          </div>
+          <div class="card-header"><span class="card-title">🎯 点数別の対応方針</span></div>
           <div class="card-body" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem;">
-            <div style="background:#5c2a2a; padding:1rem; border-radius:8px;">
-              <div style="font-weight:600; margin-bottom:0.5rem;">🟥 〜59点</div>
-              <div style="font-size:0.85rem;">
-                ・台本未遵守<br>
-                ・ロープレ必須<br>
-                ・実商談NG（同席必須）
-              </div>
-            </div>
-            <div style="background:#5c4a1a; padding:1rem; border-radius:8px;">
-              <div style="font-weight:600; margin-bottom:0.5rem;">🟨 60〜69点</div>
-              <div style="font-size:0.85rem;">
-                ・工程理解はあり<br>
-                ・弱点1つに集中修正<br>
-                ・次回も単独OK
-              </div>
-            </div>
-            <div style="background:#1a4a2a; padding:1rem; border-radius:8px;">
-              <div style="font-weight:600; margin-bottom:0.5rem;">🟩 70〜84点</div>
-              <div style="font-size:0.85rem;">
-                ・標準合格<br>
-                ・再現性あり<br>
-                ・数を打たせてOK
-              </div>
-            </div>
-            <div style="background:#1a3a5c; padding:1rem; border-radius:8px;">
-              <div style="font-weight:600; margin-bottom:0.5rem;">🟦 85点以上</div>
-              <div style="font-size:0.85rem;">
-                ・上位営業<br>
-                ・トーク共有対象<br>
-                ・ロープレ講師候補
-              </div>
-            </div>
+            <div style="background:#5c2a2a; padding:1rem; border-radius:8px;"><div style="font-weight:600; margin-bottom:0.5rem;">🟥 〜59点</div><div style="font-size:0.85rem;">・台本未遵守<br>・ロープレ必須<br>・実商談NG（同席必須）</div></div>
+            <div style="background:#5c4a1a; padding:1rem; border-radius:8px;"><div style="font-weight:600; margin-bottom:0.5rem;">🟨 60〜69点</div><div style="font-size:0.85rem;">・工程理解はあり<br>・弱点1つに集中修正<br>・次回も単独OK</div></div>
+            <div style="background:#1a4a2a; padding:1rem; border-radius:8px;"><div style="font-weight:600; margin-bottom:0.5rem;">🟩 70〜84点</div><div style="font-size:0.85rem;">・標準合格<br>・再現性あり<br>・数を打たせてOK</div></div>
+            <div style="background:#1a3a5c; padding:1rem; border-radius:8px;"><div style="font-weight:600; margin-bottom:0.5rem;">🟦 85点以上</div><div style="font-size:0.85rem;">・上位営業<br>・トーク共有対象<br>・ロープレ講師候補</div></div>
           </div>
         </div>
-
-        <!-- 運用ルール -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">🔁 運用ルール</span>
-          </div>
+          <div class="card-header"><span class="card-title">🔁 運用ルール</span></div>
           <div class="card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-            <div>
-              <div style="font-weight:600; color:#dc3545; margin-bottom:0.5rem;">❌ やらないこと</div>
-              <p style="font-size:0.9rem;">・点数で叱らない</p>
-              <p style="font-size:0.9rem;">・受注率と直結させない</p>
-            </div>
-            <div>
-              <div style="font-weight:600; color:#28a745; margin-bottom:0.5rem;">⭕ やること</div>
-              <p style="font-size:0.9rem;">・「0点項目」を1つだけ直す</p>
-              <p style="font-size:0.9rem;">・次回商談で同項目を再評価</p>
-            </div>
+            <div><div style="font-weight:600; color:#dc3545; margin-bottom:0.5rem;">❌ やらないこと</div><p style="font-size:0.9rem;">・点数で叱らない</p><p style="font-size:0.9rem;">・受注率と直結させない</p></div>
+            <div><div style="font-weight:600; color:#28a745; margin-bottom:0.5rem;">⭕ やること</div><p style="font-size:0.9rem;">・「0点項目」を1つだけ直す</p><p style="font-size:0.9rem;">・次回商談で同項目を再評価</p></div>
           </div>
         </div>
       </div>
     </main>
   </div>
 </div>
+
+<!-- モーダル群 -->
 <div class="modal-bg" id="funeralModal"><div class="modal-box"><div class="modal-head"><h3 id="funeralModalTitle">葬儀社を追加</h3><button class="modal-close" onclick="closeModal('funeralModal')">&times;</button></div><div class="modal-content"><input type="hidden" id="funeralId"><div class="form-group"><label class="form-label">葬儀社名 *</label><input type="text" class="form-input-dark" id="fName"></div><div class="form-group"><label class="form-label">都道府県 *</label><select class="form-input-dark" id="fPref" onchange="updateRegionFromPref()"><option value="">選択してください</option></select></div><input type="hidden" id="fRegion"><div class="form-group"><label class="form-label">住所</label><input type="text" class="form-input-dark" id="fAddress"></div><div class="form-group"><label class="form-label">電話番号</label><input type="tel" class="form-input-dark" id="fPhone"></div><div class="form-group"><label class="form-label">感度</label><select class="form-input-dark" id="fTemp"><option value="未設定">未設定</option><option value="熱い">🔥熱い</option><option value="温かい">☀️温かい</option><option value="普通">😐普通</option><option value="冷たい">❄️冷たい</option></select></div><div class="form-group"><label class="form-label">メモ</label><textarea class="form-input-dark" id="fNotes" rows="2"></textarea></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('funeralModal')">キャンセル</button><button class="btn btn-gold" onclick="saveFuneral()">保存</button></div></div></div>
 <div class="modal-bg" id="todoModal"><div class="modal-box"><div class="modal-head"><h3 id="todoModalTitle">TODO指示</h3><button class="modal-close" onclick="closeModal('todoModal')">&times;</button></div><div class="modal-content"><input type="hidden" id="todoId"><div class="form-group"><label class="form-label">担当者 *</label><select class="form-input-dark" id="todoMember"></select></div><div class="form-group"><label class="form-label">タイトル *</label><input type="text" class="form-input-dark" id="todoTitle"></div><div class="form-group"><label class="form-label">詳細</label><textarea class="form-input-dark" id="todoDesc" rows="2"></textarea></div><div class="form-group"><label class="form-label">期限</label><input type="date" class="form-input-dark" id="todoDue"></div><div class="form-group" id="todoStatusGroup" style="display:none;"><label class="form-label">ステータス</label><select class="form-input-dark" id="todoStatus"><option value="未着手">未着手</option><option value="確認済み">確認済み</option><option value="取組中">取組中</option><option value="完了">完了</option></select></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('todoModal')">キャンセル</button><button class="btn btn-gold" onclick="saveTodo()">保存</button></div></div></div>
 <div class="modal-bg" id="postModal"><div class="modal-box"><div class="modal-head"><h3>投稿</h3><button class="modal-close" onclick="closeModal('postModal')">&times;</button></div><div class="modal-content"><div class="form-group"><label class="form-label">内容 *</label><textarea class="form-input-dark" id="postContent" rows="3"></textarea></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('postModal')">キャンセル</button><button class="btn btn-gold" onclick="savePost()">投稿</button></div></div></div>
@@ -713,6 +438,50 @@
 <div class="modal-bg" id="goalEditModal"><div class="modal-box"><div class="modal-head"><h3>🎯 目標を設定</h3><button class="modal-close" onclick="closeModal('goalEditModal')">&times;</button></div><div class="modal-content"><input type="hidden" id="goalEditMemberId"><input type="hidden" id="goalEditId"><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; margin-bottom:1rem;"><div style="font-size:0.8rem; color:#8a8a9a;">対象メンバー</div><div style="font-weight:600; color:#c9a962;" id="goalEditMemberName">-</div></div><div class="form-group"><label class="form-label">🏆 月間受注目標（社）</label><input type="number" class="form-input-dark" id="goalEditClosed" placeholder="例：5" oninput="calcGoalPreview()"><div style="font-size:0.75rem; color:#8a8a9a; margin-top:0.25rem;">この数字から必要なアポ数を自動逆算します</div></div><div id="goalEditPreview" style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-top:1rem; display:none;"><div style="font-weight:600; margin-bottom:0.5rem; color:#c9a962;">📊 必要数の逆算</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;"><div style="color:#8a8a9a;">見込み数:</div><div id="goalPreviewProspect">-</div><div style="color:#8a8a9a;">商談数:</div><div id="goalPreviewNego">-</div><div style="color:#8a8a9a;">アポ数:</div><div style="color:#28a745; font-weight:600;" id="goalPreviewAppo">-</div></div><hr style="border:none;border-top:1px solid #3d4559;margin:0.75rem 0;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.85rem; color:#8a8a9a;"><div>週あたり:</div><div id="goalPreviewWeekly">-</div><div>日あたり:</div><div id="goalPreviewDaily">-</div></div></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('goalEditModal')">キャンセル</button><button class="btn btn-gold" onclick="saveGoalEdit()">保存</button></div></div></div>
 <div class="modal-bg" id="selfEvalDetailModal"><div class="modal-box" style="max-width:600px;"><div class="modal-head"><h3>📝 振り返り詳細</h3><button class="modal-close" onclick="closeModal('selfEvalDetailModal')">&times;</button></div><div class="modal-content" id="selfEvalDetailContent"></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('selfEvalDetailModal')">閉じる</button></div></div></div>
 <div class="modal-bg" id="researchEditModal"><div class="modal-box" style="max-width:550px;"><div class="modal-head"><h3>🔍 下調べ編集</h3><button class="modal-close" onclick="closeModal('researchEditModal')">&times;</button></div><div class="modal-content" style="max-height:70vh; overflow-y:auto;"><input type="hidden" id="researchEditId"><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; margin-bottom:1rem;"><div style="font-size:0.8rem; color:#8a8a9a;">葬儀社名</div><div style="font-weight:600; color:#c9a962;" id="researchEditCompany">-</div></div><div class="form-group"><label class="form-label">🌐 ホームページURL</label><input type="url" class="form-input-dark" id="researchEditUrl" placeholder="https://..."></div><div class="form-group"><label class="form-label">👤 代表者名・決裁者</label><input type="text" class="form-input-dark" id="researchEditCeo" placeholder="例：山田太郎"></div><div class="form-group"><label class="form-label">👥 従業員数・規模</label><select class="form-input-dark" id="researchEditScale"><option value="">選択してください</option><option value="1-5名">1〜5名</option><option value="6-20名">6〜20名</option><option value="21-50名">21〜50名</option><option value="51-100名">51〜100名</option><option value="100名以上">100名以上</option></select></div><div class="form-group"><label class="form-label">⭐ 会社の特徴・強み</label><textarea class="form-input-dark" id="researchEditFeatures" rows="3" placeholder="例：家族葬に特化、24時間対応..."></textarea></div><div class="form-group"><label class="form-label">🏁 競合情報</label><textarea class="form-input-dark" id="researchEditCompetitors" rows="2" placeholder="例：近隣に○○葬祭あり..."></textarea></div><div class="form-group"><label class="form-label">📝 その他メモ</label><textarea class="form-input-dark" id="researchEditMemo" rows="3"></textarea></div></div><div class="modal-foot"><button class="btn btn-secondary" onclick="closeModal('researchEditModal')">キャンセル</button><button class="btn btn-gold" onclick="saveAdminResearch()">保存</button></div></div></div>
+
+<!-- ★★★ 一括インポートモーダル（新規追加） ★★★ -->
+<div class="modal-bg" id="importModal">
+  <div class="modal-box" style="max-width:700px;">
+    <div class="modal-head">
+      <h3>📋 スプレッドシートから一括インポート</h3>
+      <button class="modal-close" onclick="closeModal('importModal')">&times;</button>
+    </div>
+    <div class="modal-content">
+      <div style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-bottom:1rem;">
+        <div style="font-weight:600; color:#c9a962; margin-bottom:0.5rem;">📌 使い方</div>
+        <div style="font-size:0.85rem; color:#8a8a9a; line-height:1.8;">
+          1. Googleスプレッドシートの「アポ一覧」シートを開く<br>
+          2. データ行を選択（ヘッダー行は含めてOK・自動スキップ）<br>
+          3. Ctrl+C（またはCmd+C）でコピー<br>
+          4. 下のテキストエリアに貼り付け<br>
+          5.「プレビュー」→「インポート実行」
+        </div>
+      </div>
+      <div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; margin-bottom:1rem; font-size:0.75rem; color:#8a8a9a;">
+        <strong>カラム順:</strong> No. / アポ獲得日 / 発生月 / アポ担当者 / 商談日 / 商談開始時間 / 会社名 / HP / 担当者 / メールアドレス / 電話番号 / ヒアリング内容 / 承認
+      </div>
+      <div class="form-group">
+        <label class="form-label">貼り付けエリア（タブ区切りデータ）</label>
+        <textarea class="form-input-dark" id="importData" rows="8" placeholder="スプレッドシートからコピーしたデータをここに貼り付けてください..." style="font-size:0.8rem; font-family:monospace;"></textarea>
+      </div>
+      <button class="btn btn-secondary" onclick="previewImport()" style="width:auto; display:inline-block; margin-bottom:1rem;">🔍 プレビュー</button>
+      <div id="importPreview" style="display:none;">
+        <div class="card-title" style="margin-bottom:0.75rem;">プレビュー（<span id="importCount">0</span>件）</div>
+        <div style="overflow-x:auto; max-height:300px; overflow-y:auto;">
+          <table>
+            <thead><tr><th>No.</th><th>アポ獲得日</th><th>担当者</th><th>商談日</th><th>会社名</th><th>HP</th><th>担当者名</th><th>電話番号</th><th>ヒアリング</th></tr></thead>
+            <tbody id="importPreviewTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('importModal')">キャンセル</button>
+      <button class="btn btn-gold" id="importExecBtn" onclick="executeImport()" style="display:none;">🚀 インポート実行</button>
+    </div>
+  </div>
+</div>
+
 <script>
 var supabase,members=[],prospects=[],expenses=[],todos=[],posts=[],schedules=[],goals=[],selectedMemberId=null,adminCalendarDate=new Date(),adminSelectedDate=null;
 var ADMIN_PASS='1123';
@@ -735,7 +504,7 @@ function editFuneral(id){var p=prospects.find(function(x){return x.id===id;});if
 function saveFuneral(){var id=document.getElementById('funeralId').value;var data={company_name:document.getElementById('fName').value.trim(),region:document.getElementById('fRegion').value,area:document.getElementById('fPref').value,address:document.getElementById('fAddress').value.trim(),phone:document.getElementById('fPhone').value.trim(),temperature:document.getElementById('fTemp').value,notes:document.getElementById('fNotes').value.trim(),updated_at:new Date().toISOString()};if(!data.company_name||!data.region||!data.area){alert('葬儀社名、エリア、都道府県を入力');return;}if(id){supabase.from('sales_prospects').update(data).eq('id',id).then(function(){closeModal('funeralModal');loadData();});}else{data.status='未訪問';supabase.from('sales_prospects').insert(data).then(function(){closeModal('funeralModal');loadData();});}}
 function deleteFuneral(id,name){if(!confirm('「'+name+'」を削除しますか？\n\nこの操作は取り消せません。'))return;supabase.from('sales_prospects').delete().eq('id',id).then(function(r){if(r.error){alert('削除に失敗しました');console.error(r.error);}else{loadData();}});}
 function renderExpenses(){var filter=document.getElementById('expenseFilter').value;var filtered=filter?expenses.filter(function(e){return e.status===filter;}):expenses;var c=document.getElementById('expensesList');if(filtered.length===0){c.innerHTML='<div class="empty">なし</div>';return;}var h='';filtered.forEach(function(e){var member=members.find(function(m){return m.id===e.member_id;});var b=e.status==='承認'?'badge-green':(e.status==='却下'?'badge-red':'badge-yellow');h+='<div class="list-item"><div style="flex:1;"><div><strong>'+(member?member.name:'不明')+'</strong> • '+e.category+' <span class="badge '+b+'">'+e.status+'</span></div><div style="font-size:0.8rem;color:#8a8a9a;">'+formatDate(e.expense_date)+(e.description?' • '+esc(e.description):'')+'</div></div><div style="font-weight:700;color:#c9a962;">¥'+e.amount.toLocaleString()+'</div>';if(e.status==='申請中'){h+='<div style="display:flex;gap:0.25rem;margin-left:0.5rem;"><button class="btn btn-sm btn-success" onclick="approveExpense(\''+e.id+'\')">承認</button><button class="btn btn-sm btn-danger" onclick="rejectExpense(\''+e.id+'\')">却下</button></div>';}h+='</div>';});c.innerHTML=h;}
-function renderExpenseHistory(){var tbody=document.getElementById('expenseHistoryTable');if(expenses.length===0){tbody.innerHTML='<tr><td colspan="8" class="empty">経費履歴がありません</td></tr>';return;}var h='';expenses.forEach(function(e){var member=members.find(function(m){return m.id===e.member_id;});var b=e.status==='承認'?'badge-green':(e.status==='却下'?'badge-red':'badge-yellow');h+='<tr>';h+='<td>'+formatDate(e.expense_date)+'</td>';h+='<td>'+(member?esc(member.name):'不明')+'</td>';h+='<td>'+esc(e.category||'-')+'</td>';h+='<td>'+esc(e.description||'-')+'</td>';h+='<td style="font-weight:600;color:#c9a962;">¥'+e.amount.toLocaleString()+'</td>';h+='<td><span class="badge '+b+'">'+e.status+'</span></td>';h+='<td style="font-size:0.75rem;color:#8a8a9a;">'+formatDateTime(e.created_at)+'</td>';h+='<td><button class="btn btn-sm btn-danger" onclick="deleteExpense(\''+e.id+'\',\''+esc(e.category).replace(/'/g,"\\'")+'\')" style="font-size:0.7rem;padding:0.2rem 0.4rem;">削除</button></td>';h+='</tr>';});tbody.innerHTML=h;}
+function renderExpenseHistory(){var tbody=document.getElementById('expenseHistoryTable');if(expenses.length===0){tbody.innerHTML='<tr><td colspan="8" class="empty">経費履歴がありません</td></tr>';return;}var h='';expenses.forEach(function(e){var member=members.find(function(m){return m.id===e.member_id;});var b=e.status==='承認'?'badge-green':(e.status==='却下'?'badge-red':'badge-yellow');h+='<tr><td>'+formatDate(e.expense_date)+'</td><td>'+(member?esc(member.name):'不明')+'</td><td>'+esc(e.category||'-')+'</td><td>'+esc(e.description||'-')+'</td><td style="font-weight:600;color:#c9a962;">¥'+e.amount.toLocaleString()+'</td><td><span class="badge '+b+'">'+e.status+'</span></td><td style="font-size:0.75rem;color:#8a8a9a;">'+formatDateTime(e.created_at)+'</td><td><button class="btn btn-sm btn-danger" onclick="deleteExpense(\''+e.id+'\',\''+esc(e.category).replace(/'/g,"\\'")+'\')" style="font-size:0.7rem;padding:0.2rem 0.4rem;">削除</button></td></tr>';});tbody.innerHTML=h;}
 function deleteExpense(id,category){if(!confirm('経費「'+category+'」を削除しますか？\n\nこの操作は取り消せません。'))return;supabase.from('sales_expenses').delete().eq('id',id).then(function(r){if(r.error){alert('削除に失敗しました');console.error(r.error);}else{loadData();}});}
 function approveExpense(id){var e=expenses.find(function(x){return x.id===id;});supabase.from('sales_expenses').update({status:'承認'}).eq('id',id).then(function(){supabase.from('sales_notifications').insert({member_id:e.member_id,title:'経費が承認されました',content:e.category+' ¥'+e.amount.toLocaleString(),type:'success'}).then(loadData);});}
 function rejectExpense(id){var reason=prompt('却下理由（任意）');var e=expenses.find(function(x){return x.id===id;});supabase.from('sales_expenses').update({status:'却下'}).eq('id',id).then(function(){supabase.from('sales_notifications').insert({member_id:e.member_id,title:'経費が却下されました',content:e.category+(reason?' 理由:'+reason:''),type:'error'}).then(loadData);});}
@@ -757,455 +526,138 @@ function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').re
 function formatDate(s){if(!s)return'-';var d=new Date(s);return(d.getMonth()+1)+'/'+d.getDate();}
 function formatDateTime(s){if(!s)return'-';var d=new Date(s);return(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');}
 
-// スケジュール関連の関数
+// スケジュール関連
 function updateScheduleMemberFilter(){var h='<option value="">全メンバー</option>';members.forEach(function(m){h+='<option value="'+m.id+'">'+esc(m.name)+'</option>';});document.getElementById('scheduleMemberFilter').innerHTML=h;document.getElementById('scheduleMemberFilter').onchange=renderScheduleList;}
-
-function renderMemberActivity(){var tbody=document.getElementById('memberActivityTable');var now=new Date();var thisMonth=now.getMonth();var thisYear=now.getFullYear();var h='';members.forEach(function(m){var memberSchedules=schedules.filter(function(s){var d=new Date(s.scheduled_date);return s.member_id===m.id&&d.getMonth()===thisMonth&&d.getFullYear()===thisYear;});var done=memberSchedules.filter(function(s){return s.is_done;}).length;var pending=memberSchedules.filter(function(s){return!s.is_done;}).length;var upcoming=schedules.filter(function(s){return s.member_id===m.id&&!s.is_done&&s.scheduled_date>=now.toISOString().split('T')[0];}).sort(function(a,b){return a.scheduled_date.localeCompare(b.scheduled_date);})[0];var lastActivity=schedules.filter(function(s){return s.member_id===m.id&&s.is_done;}).sort(function(a,b){return b.scheduled_date.localeCompare(a.scheduled_date);})[0];var upcomingProspect=upcoming?prospects.find(function(p){return p.id===upcoming.prospect_id;}):null;h+='<tr>';h+='<td><strong>'+esc(m.name)+'</strong></td>';h+='<td>'+memberSchedules.length+'件</td>';h+='<td style="color:#28a745;">'+done+'</td>';h+='<td style="color:'+(pending>0?'#ffc107':'#8a8a9a')+';">'+pending+'</td>';h+='<td>'+(upcoming?(formatDate(upcoming.scheduled_date)+' '+(upcomingProspect?esc(upcomingProspect.company_name):'')):'<span style="color:#8a8a9a;">-</span>')+'</td>';h+='<td>'+(lastActivity?formatDate(lastActivity.scheduled_date):'<span style="color:#8a8a9a;">-</span>')+'</td>';h+='</tr>';});tbody.innerHTML=h||'<tr><td colspan="6" class="empty">メンバーがいません</td></tr>';}
-
+function renderMemberActivity(){var tbody=document.getElementById('memberActivityTable');var now=new Date();var thisMonth=now.getMonth();var thisYear=now.getFullYear();var h='';members.forEach(function(m){var memberSchedules=schedules.filter(function(s){var d=new Date(s.scheduled_date);return s.member_id===m.id&&d.getMonth()===thisMonth&&d.getFullYear()===thisYear;});var done=memberSchedules.filter(function(s){return s.is_done;}).length;var pending=memberSchedules.filter(function(s){return!s.is_done;}).length;var upcoming=schedules.filter(function(s){return s.member_id===m.id&&!s.is_done&&s.scheduled_date>=now.toISOString().split('T')[0];}).sort(function(a,b){return a.scheduled_date.localeCompare(b.scheduled_date);})[0];var lastActivity=schedules.filter(function(s){return s.member_id===m.id&&s.is_done;}).sort(function(a,b){return b.scheduled_date.localeCompare(a.scheduled_date);})[0];var upcomingProspect=upcoming?prospects.find(function(p){return p.id===upcoming.prospect_id;}):null;h+='<tr><td><strong>'+esc(m.name)+'</strong></td><td>'+memberSchedules.length+'件</td><td style="color:#28a745;">'+done+'</td><td style="color:'+(pending>0?'#ffc107':'#8a8a9a')+';">'+pending+'</td><td>'+(upcoming?(formatDate(upcoming.scheduled_date)+' '+(upcomingProspect?esc(upcomingProspect.company_name):'')):'<span style="color:#8a8a9a;">-</span>')+'</td><td>'+(lastActivity?formatDate(lastActivity.scheduled_date):'<span style="color:#8a8a9a;">-</span>')+'</td></tr>';});tbody.innerHTML=h||'<tr><td colspan="6" class="empty">メンバーがいません</td></tr>';}
 function renderAdminCalendar(){var year=adminCalendarDate.getFullYear();var month=adminCalendarDate.getMonth();document.getElementById('adminCalendarTitle').textContent=year+'年'+(month+1)+'月';var firstDay=new Date(year,month,1);var lastDay=new Date(year,month+1,0);var startDay=firstDay.getDay();var daysInMonth=lastDay.getDate();var today=new Date();var todayStr=today.toISOString().split('T')[0];var scheduleCounts={};schedules.forEach(function(s){if(!scheduleCounts[s.scheduled_date])scheduleCounts[s.scheduled_date]=0;scheduleCounts[s.scheduled_date]++;});var html='';var days=['日','月','火','水','木','金','土'];for(var d=0;d<7;d++){var cls=d===0?'sun':(d===6?'sat':'');html+='<div class="admin-calendar-header '+cls+'">'+days[d]+'</div>';}var prevMonth=new Date(year,month,0);var prevDays=prevMonth.getDate();for(var d=startDay-1;d>=0;d--){html+='<div class="admin-calendar-day other-month">'+(prevDays-d)+'</div>';}for(var d=1;d<=daysInMonth;d++){var dateStr=year+'-'+String(month+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');var isToday=dateStr===todayStr;var isSelected=adminSelectedDate===dateStr;var count=scheduleCounts[dateStr]||0;var cls='admin-calendar-day';if(isToday)cls+=' today';if(isSelected)cls+=' selected';html+='<div class="'+cls+'" onclick="selectAdminDate(\''+dateStr+'\')">'+d;if(count>0)html+='<span class="schedule-count">'+count+'</span>';html+='</div>';}var totalCells=startDay+daysInMonth;var nextDays=7-(totalCells%7);if(nextDays<7){for(var d=1;d<=nextDays;d++){html+='<div class="admin-calendar-day other-month">'+d+'</div>';}}document.getElementById('adminCalendarGrid').innerHTML=html;if(!adminSelectedDate){selectAdminDate(todayStr);}}
-
 function changeAdminMonth(delta){adminCalendarDate.setMonth(adminCalendarDate.getMonth()+delta);renderAdminCalendar();}
-
 function selectAdminDate(dateStr){adminSelectedDate=dateStr;renderAdminCalendar();renderScheduleList();var d=new Date(dateStr);document.getElementById('adminSelectedDateTitle').textContent=(d.getMonth()+1)+'/'+d.getDate()+'の予定';}
-
-function renderScheduleList(){var tbody=document.getElementById('scheduleListTable');var memberFilter=document.getElementById('scheduleMemberFilter').value;var filtered=schedules;if(adminSelectedDate){filtered=filtered.filter(function(s){return s.scheduled_date===adminSelectedDate;});}if(memberFilter){filtered=filtered.filter(function(s){return s.member_id===memberFilter;});}if(filtered.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">予定がありません</td></tr>';return;}var h='';filtered.forEach(function(s){var member=members.find(function(m){return m.id===s.member_id;});var prospect=prospects.find(function(p){return p.id===s.prospect_id;});var statusBadge=s.is_done?'badge-green':'badge-yellow';var statusText=s.is_done?'完了':'予定';h+='<tr>';h+='<td>'+formatDate(s.scheduled_date)+'</td>';h+='<td>'+(member?esc(member.name):'<span style="color:#8a8a9a;">不明</span>')+'</td>';h+='<td>'+(prospect?esc(prospect.company_name):'<span style="color:#8a8a9a;">その他</span>')+'</td>';h+='<td>'+esc(s.memo||'-')+'</td>';h+='<td><span class="badge '+statusBadge+'">'+statusText+'</span></td>';h+='</tr>';});tbody.innerHTML=h;}
+function renderScheduleList(){var tbody=document.getElementById('scheduleListTable');var memberFilter=document.getElementById('scheduleMemberFilter').value;var filtered=schedules;if(adminSelectedDate){filtered=filtered.filter(function(s){return s.scheduled_date===adminSelectedDate;});}if(memberFilter){filtered=filtered.filter(function(s){return s.member_id===memberFilter;});}if(filtered.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">予定がありません</td></tr>';return;}var h='';filtered.forEach(function(s){var member=members.find(function(m){return m.id===s.member_id;});var prospect=prospects.find(function(p){return p.id===s.prospect_id;});var statusBadge=s.is_done?'badge-green':'badge-yellow';var statusText=s.is_done?'完了':'予定';h+='<tr><td>'+formatDate(s.scheduled_date)+'</td><td>'+(member?esc(member.name):'<span style="color:#8a8a9a;">不明</span>')+'</td><td>'+(prospect?esc(prospect.company_name):'<span style="color:#8a8a9a;">その他</span>')+'</td><td>'+esc(s.memo||'-')+'</td><td><span class="badge '+statusBadge+'">'+statusText+'</span></td></tr>';});tbody.innerHTML=h;}
 
 // 目標管理関連
 function initGoalMonthFilter(){var select=document.getElementById('goalMonthFilter');var now=new Date();var h='';for(var i=0;i<6;i++){var d=new Date(now.getFullYear(),now.getMonth()-i,1);var val=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');var label=d.getFullYear()+'年'+(d.getMonth()+1)+'月';h+='<option value="'+val+'"'+(i===0?' selected':'')+'>'+label+'</option>';}select.innerHTML=h;select.onchange=renderGoalStats;}
-
-function renderGoalStats(){var monthFilter=document.getElementById('goalMonthFilter');if(!monthFilter)return;var selectedMonth=monthFilter.value||new Date().toISOString().slice(0,7);var teamClosed=0,teamProspect=0,teamNego=0,teamAppo=0;var tbody=document.getElementById('goalMemberTable');var cardsHtml='';var tableHtml='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var appo=mp.filter(function(p){return p.status==='訪問済み'||p.status==='商談中'||p.status==='見込み'||p.status==='成約';}).length;var nego=mp.filter(function(p){return p.status==='商談中'||p.status==='見込み'||p.status==='成約';}).length;var prospect=mp.filter(function(p){return p.status==='見込み'||p.status==='成約';}).length;var closed=mp.filter(function(p){return p.status==='成約';}).length;var goal=goals.find(function(g){return g.member_id===m.id&&g.month===selectedMonth;});var closedTarget=goal?goal.closed_goal:0;var prospectTarget=Math.ceil(closedTarget/0.10);var negoTarget=Math.ceil(prospectTarget/0.50);var appoTarget=Math.ceil(negoTarget/0.70);var rate=closedTarget>0?Math.round((closed/closedTarget)*100):0;var rateColor=rate>=100?'#28a745':(rate>=50?'#ffc107':'#dc3545');teamClosed+=closed;teamProspect+=prospect;teamNego+=nego;teamAppo+=appo;tableHtml+='<tr>';tableHtml+='<td><strong>'+esc(m.name)+'</strong></td>';tableHtml+='<td style="text-align:center;">'+(closedTarget>0?closedTarget+'社':'<span style="color:#8a8a9a;">未設定</span>')+'</td>';tableHtml+='<td style="text-align:center; font-weight:600; color:#28a745;">'+closed+'</td>';tableHtml+='<td style="text-align:center;">'+prospect+' / '+prospectTarget+'</td>';tableHtml+='<td style="text-align:center;">'+nego+' / '+negoTarget+'</td>';tableHtml+='<td style="text-align:center;">'+appo+' / '+appoTarget+'</td>';tableHtml+='<td style="text-align:center;"><span style="color:'+rateColor+'; font-weight:600;">'+(closedTarget>0?rate+'%':'-')+'</span></td>';tableHtml+='<td><button class="btn btn-sm btn-gold" onclick="openGoalEditModal(\''+m.id+'\',\''+esc(m.name).replace(/'/g,"\\'")+'\')">設定</button></td>';tableHtml+='</tr>';if(closedTarget>0){var actualBeta=appo>0?Math.round((nego/appo)*100):0;var actualGamma=nego>0?Math.round((prospect/nego)*100):0;var actualDelta=prospect>0?Math.round((closed/prospect)*100):0;cardsHtml+='<div class="card" style="margin-top:1rem;"><div class="card-header"><span class="card-title">'+esc(m.name)+' の詳細</span><span class="badge '+(rate>=100?'badge-green':(rate>=50?'badge-yellow':'badge-red'))+'">達成率 '+rate+'%</span></div><div class="card-body">';cardsHtml+='<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.5rem; margin-bottom:1rem;">';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">受注</div><div style="font-size:1.2rem; font-weight:700; color:#28a745;">'+closed+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+closedTarget+'</span></div></div>';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">見込み</div><div style="font-size:1.2rem; font-weight:700;">'+prospect+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+prospectTarget+'</span></div></div>';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">商談</div><div style="font-size:1.2rem; font-weight:700;">'+nego+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+negoTarget+'</span></div></div>';cardsHtml+='<div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">アポ</div><div style="font-size:1.2rem; font-weight:700;">'+appo+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+appoTarget+'</span></div></div>';cardsHtml+='</div>';cardsHtml+='<div style="font-size:0.85rem; color:#8a8a9a;">実績転換率: ';cardsHtml+='<span style="color:'+(actualBeta>=70?'#28a745':'#dc3545')+';">β '+actualBeta+'%</span> ｜ ';cardsHtml+='<span style="color:'+(actualGamma>=50?'#28a745':'#dc3545')+';">γ '+actualGamma+'%</span> ｜ ';cardsHtml+='<span style="color:'+(actualDelta>=10?'#28a745':'#dc3545')+';">δ '+actualDelta+'%</span>';cardsHtml+='</div></div></div>';}});tbody.innerHTML=tableHtml||'<tr><td colspan="8" class="empty">メンバーがいません</td></tr>';document.getElementById('goalMemberCards').innerHTML=cardsHtml;document.getElementById('goalTeamClosed').textContent=teamClosed;document.getElementById('goalTeamProspect').textContent=teamProspect;document.getElementById('goalTeamNego').textContent=teamNego;document.getElementById('goalTeamAppo').textContent=teamAppo;}
-
+function renderGoalStats(){var monthFilter=document.getElementById('goalMonthFilter');if(!monthFilter)return;var selectedMonth=monthFilter.value||new Date().toISOString().slice(0,7);var teamClosed=0,teamProspect=0,teamNego=0,teamAppo=0;var tbody=document.getElementById('goalMemberTable');var cardsHtml='';var tableHtml='';members.forEach(function(m){var mp=prospects.filter(function(p){return p.assigned_to===m.id;});var appo=mp.filter(function(p){return p.status==='訪問済み'||p.status==='商談中'||p.status==='見込み'||p.status==='成約';}).length;var nego=mp.filter(function(p){return p.status==='商談中'||p.status==='見込み'||p.status==='成約';}).length;var prospect=mp.filter(function(p){return p.status==='見込み'||p.status==='成約';}).length;var closed=mp.filter(function(p){return p.status==='成約';}).length;var goal=goals.find(function(g){return g.member_id===m.id&&g.month===selectedMonth;});var closedTarget=goal?goal.closed_goal:0;var prospectTarget=Math.ceil(closedTarget/0.10);var negoTarget=Math.ceil(prospectTarget/0.50);var appoTarget=Math.ceil(negoTarget/0.70);var rate=closedTarget>0?Math.round((closed/closedTarget)*100):0;var rateColor=rate>=100?'#28a745':(rate>=50?'#ffc107':'#dc3545');teamClosed+=closed;teamProspect+=prospect;teamNego+=nego;teamAppo+=appo;tableHtml+='<tr><td><strong>'+esc(m.name)+'</strong></td><td style="text-align:center;">'+(closedTarget>0?closedTarget+'社':'<span style="color:#8a8a9a;">未設定</span>')+'</td><td style="text-align:center; font-weight:600; color:#28a745;">'+closed+'</td><td style="text-align:center;">'+prospect+' / '+prospectTarget+'</td><td style="text-align:center;">'+nego+' / '+negoTarget+'</td><td style="text-align:center;">'+appo+' / '+appoTarget+'</td><td style="text-align:center;"><span style="color:'+rateColor+'; font-weight:600;">'+(closedTarget>0?rate+'%':'-')+'</span></td><td><button class="btn btn-sm btn-gold" onclick="openGoalEditModal(\''+m.id+'\',\''+esc(m.name).replace(/'/g,"\\'")+'\')">設定</button></td></tr>';if(closedTarget>0){var actualBeta=appo>0?Math.round((nego/appo)*100):0;var actualGamma=nego>0?Math.round((prospect/nego)*100):0;var actualDelta=prospect>0?Math.round((closed/prospect)*100):0;cardsHtml+='<div class="card" style="margin-top:1rem;"><div class="card-header"><span class="card-title">'+esc(m.name)+' の詳細</span><span class="badge '+(rate>=100?'badge-green':(rate>=50?'badge-yellow':'badge-red'))+'">達成率 '+rate+'%</span></div><div class="card-body"><div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.5rem; margin-bottom:1rem;"><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">受注</div><div style="font-size:1.2rem; font-weight:700; color:#28a745;">'+closed+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+closedTarget+'</span></div></div><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">見込み</div><div style="font-size:1.2rem; font-weight:700;">'+prospect+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+prospectTarget+'</span></div></div><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">商談</div><div style="font-size:1.2rem; font-weight:700;">'+nego+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+negoTarget+'</span></div></div><div style="background:#1a1f2e; padding:0.75rem; border-radius:8px; text-align:center;"><div style="font-size:0.7rem; color:#8a8a9a;">アポ</div><div style="font-size:1.2rem; font-weight:700;">'+appo+'<span style="font-size:0.8rem; color:#8a8a9a;">/'+appoTarget+'</span></div></div></div><div style="font-size:0.85rem; color:#8a8a9a;">実績転換率: <span style="color:'+(actualBeta>=70?'#28a745':'#dc3545')+';">β '+actualBeta+'%</span> ｜ <span style="color:'+(actualGamma>=50?'#28a745':'#dc3545')+';">γ '+actualGamma+'%</span> ｜ <span style="color:'+(actualDelta>=10?'#28a745':'#dc3545')+';">δ '+actualDelta+'%</span></div></div></div>';}});tbody.innerHTML=tableHtml||'<tr><td colspan="8" class="empty">メンバーがいません</td></tr>';document.getElementById('goalMemberCards').innerHTML=cardsHtml;document.getElementById('goalTeamClosed').textContent=teamClosed;document.getElementById('goalTeamProspect').textContent=teamProspect;document.getElementById('goalTeamNego').textContent=teamNego;document.getElementById('goalTeamAppo').textContent=teamAppo;}
 function openGoalEditModal(memberId,memberName){var monthFilter=document.getElementById('goalMonthFilter');var selectedMonth=monthFilter?monthFilter.value:new Date().toISOString().slice(0,7);var goal=goals.find(function(g){return g.member_id===memberId&&g.month===selectedMonth;});document.getElementById('goalEditMemberId').value=memberId;document.getElementById('goalEditId').value=goal?goal.id:'';document.getElementById('goalEditMemberName').textContent=memberName;document.getElementById('goalEditClosed').value=goal?goal.closed_goal:'';calcGoalPreview();openModal('goalEditModal');}
-
 function calcGoalPreview(){var closedGoal=parseInt(document.getElementById('goalEditClosed').value)||0;var preview=document.getElementById('goalEditPreview');if(closedGoal<=0){preview.style.display='none';return;}var prospectNeeded=Math.ceil(closedGoal/0.10);var negoNeeded=Math.ceil(prospectNeeded/0.50);var appoNeeded=Math.ceil(negoNeeded/0.70);var weeklyAppo=Math.ceil(appoNeeded/4);var dailyAppo=Math.ceil(appoNeeded/20);document.getElementById('goalPreviewProspect').textContent=prospectNeeded+'件';document.getElementById('goalPreviewNego').textContent=negoNeeded+'件';document.getElementById('goalPreviewAppo').textContent=appoNeeded+'件';document.getElementById('goalPreviewWeekly').textContent=weeklyAppo+'件/週';document.getElementById('goalPreviewDaily').textContent=dailyAppo+'件/日';preview.style.display='block';}
-
 function saveGoalEdit(){var memberId=document.getElementById('goalEditMemberId').value;var goalId=document.getElementById('goalEditId').value;var closedGoal=parseInt(document.getElementById('goalEditClosed').value)||0;var monthFilter=document.getElementById('goalMonthFilter');var selectedMonth=monthFilter?monthFilter.value:new Date().toISOString().slice(0,7);var prospectGoal=Math.ceil(closedGoal/0.10);var negoGoal=Math.ceil(prospectGoal/0.50);var appoGoal=Math.ceil(negoGoal/0.70);var data={member_id:memberId,month:selectedMonth,visit_goal:appoGoal,negotiation_goal:negoGoal,closed_goal:closedGoal};if(goalId){supabase.from('sales_goals').update(data).eq('id',goalId).then(function(){closeModal('goalEditModal');loadData();});}else{supabase.from('sales_goals').insert(data).then(function(){closeModal('goalEditModal');loadData();});}}
 
 // 評価シート関連
-var evaluations = [];
-
-function initEvaluation() {
-  // メンバー選択肢を設定
-  var memberSelect = document.getElementById('evalMember');
-  var filterSelect = document.getElementById('evalHistoryFilter');
-  if (memberSelect) {
-    var html = '<option value="">選択してください</option>';
-    members.forEach(function(m) {
-      html += '<option value="' + m.id + '">' + esc(m.name) + '</option>';
-    });
-    memberSelect.innerHTML = html;
-  }
-  if (filterSelect) {
-    var fhtml = '<option value="">全メンバー</option>';
-    members.forEach(function(m) {
-      fhtml += '<option value="' + m.id + '">' + esc(m.name) + '</option>';
-    });
-    filterSelect.innerHTML = fhtml;
-  }
-  // 今日の日付をセット
-  var dateInput = document.getElementById('evalDate');
-  if (dateInput && !dateInput.value) {
-    dateInput.value = new Date().toISOString().slice(0, 10);
-  }
-  calcEvalScore();
-  loadEvaluations();
-}
-
-function calcEvalScore() {
-  var q1 = parseInt(document.getElementById('evalQ1').value) || 0;
-  var q2 = parseInt(document.getElementById('evalQ2').value) || 0;
-  var q3 = parseInt(document.getElementById('evalQ3').value) || 0;
-  var q4 = parseInt(document.getElementById('evalQ4').value) || 0;
-  var q5 = parseInt(document.getElementById('evalQ5').value) || 0;
-  var q6 = parseInt(document.getElementById('evalQ6').value) || 0;
-  var q7 = parseInt(document.getElementById('evalQ7').value) || 0;
-  var q8 = parseInt(document.getElementById('evalQ8').value) || 0;
-  var q9 = parseInt(document.getElementById('evalQ9').value) || 0;
-  var q10 = parseInt(document.getElementById('evalQ10').value) || 0;
-  
-  var score1 = q1 + q2 + q3;
-  var score2 = q4 + q5;
-  var score3 = q6 + q7;
-  var score4 = q8 + q9;
-  var score5 = q10;
-  var total = score1 + score2 + score3 + score4 + score5;
-  
-  document.getElementById('evalScore1').textContent = score1;
-  document.getElementById('evalScore2').textContent = score2;
-  document.getElementById('evalScore3').textContent = score3;
-  document.getElementById('evalScore4').textContent = score4;
-  document.getElementById('evalScore5').textContent = score5;
-  document.getElementById('evalTotalScore').textContent = total;
-  
-  var gradeEl = document.getElementById('evalGrade');
-  if (total >= 85) {
-    gradeEl.textContent = '🟦 上位営業';
-    gradeEl.style.background = '#17a2b8';
-  } else if (total >= 70) {
-    gradeEl.textContent = '🟩 標準合格';
-    gradeEl.style.background = '#28a745';
-  } else if (total >= 60) {
-    gradeEl.textContent = '🟨 要改善';
-    gradeEl.style.background = '#ffc107';
-    gradeEl.style.color = '#1a1f2e';
-  } else {
-    gradeEl.textContent = '🟥 要指導';
-    gradeEl.style.background = '#dc3545';
-    gradeEl.style.color = 'white';
-  }
-}
-
-function saveEvaluation() {
-  var memberId = document.getElementById('evalMember').value;
-  var evalDate = document.getElementById('evalDate').value;
-  var company = document.getElementById('evalCompany').value;
-  var comment = document.getElementById('evalComment').value;
-  
-  if (!memberId || !evalDate) {
-    alert('メンバーと日付を入力してください');
-    return;
-  }
-  
-  var scores = {
-    q1: parseInt(document.getElementById('evalQ1').value) || 0,
-    q2: parseInt(document.getElementById('evalQ2').value) || 0,
-    q3: parseInt(document.getElementById('evalQ3').value) || 0,
-    q4: parseInt(document.getElementById('evalQ4').value) || 0,
-    q5: parseInt(document.getElementById('evalQ5').value) || 0,
-    q6: parseInt(document.getElementById('evalQ6').value) || 0,
-    q7: parseInt(document.getElementById('evalQ7').value) || 0,
-    q8: parseInt(document.getElementById('evalQ8').value) || 0,
-    q9: parseInt(document.getElementById('evalQ9').value) || 0,
-    q10: parseInt(document.getElementById('evalQ10').value) || 0
-  };
-  var total = scores.q1 + scores.q2 + scores.q3 + scores.q4 + scores.q5 + scores.q6 + scores.q7 + scores.q8 + scores.q9 + scores.q10;
-  
-  var data = {
-    member_id: memberId,
-    eval_date: evalDate,
-    company_name: company,
-    scores: JSON.stringify(scores),
-    total_score: total,
-    comment: comment
-  };
-  
-  supabase.from('sales_evaluations').insert(data).then(function(res) {
-    if (res.error) {
-      alert('保存に失敗しました: ' + res.error.message);
-      return;
-    }
-    alert('評価を保存しました（' + total + '点）');
-    // フォームリセット
-    document.getElementById('evalMember').value = '';
-    document.getElementById('evalCompany').value = '';
-    document.getElementById('evalComment').value = '';
-    ['evalQ1','evalQ2','evalQ3','evalQ4','evalQ5','evalQ6','evalQ7','evalQ8','evalQ9','evalQ10'].forEach(function(id) {
-      document.getElementById(id).selectedIndex = 0;
-    });
-    calcEvalScore();
-    loadEvaluations();
-  });
-}
-
-function loadEvaluations() {
-  supabase.from('sales_evaluations').select('*').order('eval_date', { ascending: false }).limit(50).then(function(res) {
-    evaluations = res.data || [];
-    renderEvalHistory();
-  });
-}
-
-function renderEvalHistory() {
-  var filter = document.getElementById('evalHistoryFilter').value;
-  var filtered = filter ? evaluations.filter(function(e) { return e.member_id === filter; }) : evaluations;
-  
-  var tbody = document.getElementById('evalHistoryTable');
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty">評価履歴がありません</td></tr>';
-    return;
-  }
-  
-  var html = '';
-  filtered.forEach(function(e) {
-    var member = members.find(function(m) { return m.id === e.member_id; });
-    var memberName = member ? member.name : '-';
-    var score = e.total_score;
-    var grade, badgeClass;
-    if (score >= 85) { grade = '🟦 上位'; badgeClass = 'badge-blue'; }
-    else if (score >= 70) { grade = '🟩 合格'; badgeClass = 'badge-green'; }
-    else if (score >= 60) { grade = '🟨 要改善'; badgeClass = 'badge-yellow'; }
-    else { grade = '🟥 要指導'; badgeClass = 'badge-red'; }
-    
-    html += '<tr>';
-    html += '<td>' + e.eval_date + '</td>';
-    html += '<td>' + esc(memberName) + '</td>';
-    html += '<td>' + esc(e.company_name || '-') + '</td>';
-    html += '<td><strong>' + score + '</strong>点</td>';
-    html += '<td><span class="badge ' + badgeClass + '">' + grade + '</span></td>';
-    html += '</tr>';
-  });
-  
-  tbody.innerHTML = html;
-}
+var evaluations=[];
+function initEvaluation(){var memberSelect=document.getElementById('evalMember');var filterSelect=document.getElementById('evalHistoryFilter');if(memberSelect){var html='<option value="">選択してください</option>';members.forEach(function(m){html+='<option value="'+m.id+'">'+esc(m.name)+'</option>';});memberSelect.innerHTML=html;}if(filterSelect){var fhtml='<option value="">全メンバー</option>';members.forEach(function(m){fhtml+='<option value="'+m.id+'">'+esc(m.name)+'</option>';});filterSelect.innerHTML=fhtml;}var dateInput=document.getElementById('evalDate');if(dateInput&&!dateInput.value){dateInput.value=new Date().toISOString().slice(0,10);}calcEvalScore();loadEvaluations();}
+function calcEvalScore(){var q1=parseInt(document.getElementById('evalQ1').value)||0;var q2=parseInt(document.getElementById('evalQ2').value)||0;var q3=parseInt(document.getElementById('evalQ3').value)||0;var q4=parseInt(document.getElementById('evalQ4').value)||0;var q5=parseInt(document.getElementById('evalQ5').value)||0;var q6=parseInt(document.getElementById('evalQ6').value)||0;var q7=parseInt(document.getElementById('evalQ7').value)||0;var q8=parseInt(document.getElementById('evalQ8').value)||0;var q9=parseInt(document.getElementById('evalQ9').value)||0;var q10=parseInt(document.getElementById('evalQ10').value)||0;var score1=q1+q2+q3;var score2=q4+q5;var score3=q6+q7;var score4=q8+q9;var score5=q10;var total=score1+score2+score3+score4+score5;document.getElementById('evalScore1').textContent=score1;document.getElementById('evalScore2').textContent=score2;document.getElementById('evalScore3').textContent=score3;document.getElementById('evalScore4').textContent=score4;document.getElementById('evalScore5').textContent=score5;document.getElementById('evalTotalScore').textContent=total;var gradeEl=document.getElementById('evalGrade');if(total>=85){gradeEl.textContent='🟦 上位営業';gradeEl.style.background='#17a2b8';gradeEl.style.color='white';}else if(total>=70){gradeEl.textContent='🟩 標準合格';gradeEl.style.background='#28a745';gradeEl.style.color='white';}else if(total>=60){gradeEl.textContent='🟨 要改善';gradeEl.style.background='#ffc107';gradeEl.style.color='#1a1f2e';}else{gradeEl.textContent='🟥 要指導';gradeEl.style.background='#dc3545';gradeEl.style.color='white';}}
+function saveEvaluation(){var memberId=document.getElementById('evalMember').value;var evalDate=document.getElementById('evalDate').value;var company=document.getElementById('evalCompany').value;var comment=document.getElementById('evalComment').value;if(!memberId||!evalDate){alert('メンバーと日付を入力してください');return;}var scores={q1:parseInt(document.getElementById('evalQ1').value)||0,q2:parseInt(document.getElementById('evalQ2').value)||0,q3:parseInt(document.getElementById('evalQ3').value)||0,q4:parseInt(document.getElementById('evalQ4').value)||0,q5:parseInt(document.getElementById('evalQ5').value)||0,q6:parseInt(document.getElementById('evalQ6').value)||0,q7:parseInt(document.getElementById('evalQ7').value)||0,q8:parseInt(document.getElementById('evalQ8').value)||0,q9:parseInt(document.getElementById('evalQ9').value)||0,q10:parseInt(document.getElementById('evalQ10').value)||0};var total=scores.q1+scores.q2+scores.q3+scores.q4+scores.q5+scores.q6+scores.q7+scores.q8+scores.q9+scores.q10;var data={member_id:memberId,eval_date:evalDate,company_name:company,scores:JSON.stringify(scores),total_score:total,comment:comment};supabase.from('sales_evaluations').insert(data).then(function(res){if(res.error){alert('保存に失敗しました: '+res.error.message);return;}alert('評価を保存しました（'+total+'点）');document.getElementById('evalMember').value='';document.getElementById('evalCompany').value='';document.getElementById('evalComment').value='';['evalQ1','evalQ2','evalQ3','evalQ4','evalQ5','evalQ6','evalQ7','evalQ8','evalQ9','evalQ10'].forEach(function(id){document.getElementById(id).selectedIndex=0;});calcEvalScore();loadEvaluations();});}
+function loadEvaluations(){supabase.from('sales_evaluations').select('*').order('eval_date',{ascending:false}).limit(50).then(function(res){evaluations=res.data||[];renderEvalHistory();});}
+function renderEvalHistory(){var filter=document.getElementById('evalHistoryFilter').value;var filtered=filter?evaluations.filter(function(e){return e.member_id===filter;}):evaluations;var tbody=document.getElementById('evalHistoryTable');if(filtered.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">評価履歴がありません</td></tr>';return;}var html='';filtered.forEach(function(e){var member=members.find(function(m){return m.id===e.member_id;});var memberName=member?member.name:'-';var score=e.total_score;var grade,badgeClass;if(score>=85){grade='🟦 上位';badgeClass='badge-blue';}else if(score>=70){grade='🟩 合格';badgeClass='badge-green';}else if(score>=60){grade='🟨 要改善';badgeClass='badge-yellow';}else{grade='🟥 要指導';badgeClass='badge-red';}html+='<tr><td>'+e.eval_date+'</td><td>'+esc(memberName)+'</td><td>'+esc(e.company_name||'-')+'</td><td><strong>'+score+'</strong>点</td><td><span class="badge '+badgeClass+'">'+grade+'</span></td></tr>';});tbody.innerHTML=html;}
 
 // メンバー自己振り返り一覧
-var selfEvaluations = [];
+var selfEvaluations=[];
+function loadSelfEvaluations(){supabase.from('sales_evaluations').select('*').eq('is_self_eval',true).order('eval_date',{ascending:false}).limit(100).then(function(res){selfEvaluations=res.data||[];renderSelfEvalList();initSelfEvalFilter();});}
+function initSelfEvalFilter(){var filterSelect=document.getElementById('selfEvalFilter');if(filterSelect){var html='<option value="">全メンバー</option>';members.forEach(function(m){html+='<option value="'+m.id+'">'+esc(m.name)+'</option>';});filterSelect.innerHTML=html;}}
+function renderSelfEvalList(){var filter=document.getElementById('selfEvalFilter').value;var filtered=filter?selfEvaluations.filter(function(e){return e.member_id===filter;}):selfEvaluations;var tbody=document.getElementById('selfEvalListTable');if(!tbody)return;if(filtered.length===0){tbody.innerHTML='<tr><td colspan="6" class="empty">振り返りがありません</td></tr>';return;}var html='';filtered.forEach(function(e,idx){var member=members.find(function(m){return m.id===e.member_id;});var memberName=member?member.name:'-';var score=e.total_score;var gradeColor;if(score>=85)gradeColor='#17a2b8';else if(score>=70)gradeColor='#28a745';else if(score>=60)gradeColor='#ffc107';else gradeColor='#dc3545';var resultIcon='';if(e.result==='受注')resultIcon='🎉';else if(e.result==='見込み')resultIcon='🔥';else if(e.result==='継続')resultIcon='💼';else if(e.result==='見送り')resultIcon='😢';html+='<tr><td>'+e.eval_date+'</td><td>'+esc(memberName)+'</td><td>'+esc(e.company_name||'-')+'</td><td>'+resultIcon+' '+esc(e.result||'-')+'</td><td style="color:'+gradeColor+'; font-weight:600;">'+score+'点</td><td><button class="btn btn-sm btn-secondary" onclick="showSelfEvalDetail('+idx+')">詳細</button></td></tr>';});tbody.innerHTML=html;}
+function showSelfEvalDetail(idx){var e=selfEvaluations[idx];if(!e)return;var member=members.find(function(m){return m.id===e.member_id;});var memberName=member?member.name:'-';var scores=e.scores?(typeof e.scores==='string'?JSON.parse(e.scores):e.scores):{};var questions=[{key:'q1',label:'Q1. 「今日は判断の場」と伝えた？'},{key:'q2',label:'Q2. 決裁者に直接質問した？'},{key:'q3',label:'Q3. 30分以内に収めた？'},{key:'q4',label:'Q4. 「判断軸ワード」を取れた？'},{key:'q5',label:'Q5. その言葉を3回以上使った？'},{key:'q6',label:'Q6. 「1件◯分」を聞けた？'},{key:'q7',label:'Q7. 「月◯件分」に変換した？'},{key:'q8',label:'Q8. 価格前に「見送る理由」を聞いた？'},{key:'q9',label:'Q9. 最終クロージング質問をした？'},{key:'q10',label:'Q10. 正しいタイミングで8%還元を出した？'}];var resultIcon='';if(e.result==='受注')resultIcon='🎉';else if(e.result==='見込み')resultIcon='🔥';else if(e.result==='継続')resultIcon='💼';else if(e.result==='見送り')resultIcon='😢';var html='<div style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-bottom:1rem;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;"><div><span style="color:#8a8a9a;">メンバー:</span> <strong>'+esc(memberName)+'</strong></div><div><span style="color:#8a8a9a;">日付:</span> '+e.eval_date+'</div><div><span style="color:#8a8a9a;">商談先:</span> '+esc(e.company_name||'-')+'</div><div><span style="color:#8a8a9a;">結果:</span> '+resultIcon+' '+esc(e.result||'-')+'</div></div>';if(e.keyword){html+='<div style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid #3d4559;"><span style="color:#8a8a9a;">判断軸ワード:</span> <strong style="color:#c9a962;">'+esc(e.keyword)+'</strong></div>';}html+='</div><div style="font-weight:600; margin-bottom:0.75rem; color:#c9a962;">回答内容</div><div style="display:grid; gap:0.5rem;">';questions.forEach(function(q){var val=scores[q.key]||0;var icon,color;if(val>=10){icon='⭕';color='#28a745';}else if(val>=5){icon='△';color='#ffc107';}else{icon='❌';color='#dc3545';}html+='<div style="display:flex; justify-content:space-between; padding:0.5rem; background:#252b3d; border-radius:6px;"><span style="font-size:0.85rem;">'+q.label+'</span><span style="color:'+color+'; font-weight:600;">'+icon+'</span></div>';});html+='</div><div style="background:linear-gradient(135deg, #252b3d, #2d3548); padding:1rem; border-radius:8px; margin-top:1rem; text-align:center;"><div style="font-size:0.8rem; color:#8a8a9a;">合計スコア</div><div style="font-size:2rem; font-weight:800; color:#c9a962;">'+e.total_score+'<span style="font-size:1rem; color:#8a8a9a;">/100</span></div></div>';if(e.comment){html+='<div style="margin-top:1rem; padding:1rem; background:#1a1f2e; border-radius:8px;"><div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">コメント・改善点</div><div style="font-size:0.9rem;">'+esc(e.comment)+'</div></div>';}document.getElementById('selfEvalDetailContent').innerHTML=html;openModal('selfEvalDetailModal');}
 
-function loadSelfEvaluations() {
-  supabase.from('sales_evaluations').select('*')
-    .eq('is_self_eval', true)
-    .order('eval_date', { ascending: false })
-    .limit(100)
-    .then(function(res) {
-      selfEvaluations = res.data || [];
-      renderSelfEvalList();
-      initSelfEvalFilter();
-    });
+// 下調べ管理
+function initAdminResearch(){var filterSelect=document.getElementById('researchFilterMember');if(filterSelect){var html='<option value="">全メンバー</option>';members.forEach(function(m){html+='<option value="'+m.id+'">'+esc(m.name)+'</option>';});filterSelect.innerHTML=html;}renderAdminResearchList();}
+function renderAdminResearchList(){var memberFilter=document.getElementById('researchFilterMember').value;var statusFilter=document.getElementById('researchFilterStatus').value;var assigned=prospects.filter(function(p){return p.assigned_to;});var filtered=assigned;if(memberFilter){filtered=filtered.filter(function(p){return p.assigned_to===memberFilter;});}if(statusFilter==='complete'){filtered=filtered.filter(function(p){return isResearchComplete(p);});}else if(statusFilter==='incomplete'){filtered=filtered.filter(function(p){return!isResearchComplete(p);});}var complete=assigned.filter(function(p){return isResearchComplete(p);}).length;document.getElementById('researchStatAssigned').textContent=assigned.length;document.getElementById('researchStatComplete').textContent=complete;document.getElementById('researchStatIncomplete').textContent=assigned.length-complete;var tbody=document.getElementById('adminResearchTable');if(filtered.length===0){tbody.innerHTML='<tr><td colspan="6" class="empty">データがありません</td></tr>';return;}var html='';filtered.forEach(function(p){var member=members.find(function(m){return m.id===p.assigned_to;});var memberName=member?member.name:'-';var filled=countResearchFields(p);var isComplete=filled>=4;html+='<tr><td><strong>'+esc(p.company_name)+'</strong><br><span style="font-size:0.75rem; color:#8a8a9a;">'+esc(p.area||'')+'</span></td><td>'+esc(memberName)+'</td><td><span class="badge '+(isComplete?'badge-green':'badge-yellow')+'">'+(isComplete?'✅ '+filled+'/6':'⬜ '+filled+'/6')+'</span></td><td>'+esc(p.research_ceo||'-')+'</td><td>'+esc(p.research_scale||'-')+'</td><td><button class="btn btn-sm btn-secondary" onclick="openResearchEdit(\''+p.id+'\')">編集</button></td></tr>';});tbody.innerHTML=html;}
+function isResearchComplete(p){return countResearchFields(p)>=4;}
+function countResearchFields(p){var count=0;if(p.research_url)count++;if(p.research_ceo)count++;if(p.research_scale)count++;if(p.research_features)count++;if(p.research_competitors)count++;if(p.research_memo)count++;return count;}
+function openResearchEdit(id){var p=prospects.find(function(x){return x.id===id;});if(!p)return;document.getElementById('researchEditId').value=id;document.getElementById('researchEditCompany').textContent=p.company_name;document.getElementById('researchEditUrl').value=p.research_url||'';document.getElementById('researchEditCeo').value=p.research_ceo||'';document.getElementById('researchEditScale').value=p.research_scale||'';document.getElementById('researchEditFeatures').value=p.research_features||'';document.getElementById('researchEditCompetitors').value=p.research_competitors||'';document.getElementById('researchEditMemo').value=p.research_memo||'';openModal('researchEditModal');}
+function saveAdminResearch(){var id=document.getElementById('researchEditId').value;if(!id)return;var data={research_url:document.getElementById('researchEditUrl').value,research_ceo:document.getElementById('researchEditCeo').value,research_scale:document.getElementById('researchEditScale').value,research_features:document.getElementById('researchEditFeatures').value,research_competitors:document.getElementById('researchEditCompetitors').value,research_memo:document.getElementById('researchEditMemo').value,updated_at:new Date().toISOString()};supabase.from('sales_prospects').update(data).eq('id',id).then(function(res){if(res.error){alert('保存に失敗しました');return;}alert('下調べを保存しました');closeModal('researchEditModal');loadData();});}
+
+// ★★★ スプレッドシート一括インポート機能（新規追加） ★★★
+var importParsedRows=[];
+
+function openImportModal(){
+  document.getElementById('importData').value='';
+  document.getElementById('importPreview').style.display='none';
+  document.getElementById('importExecBtn').style.display='none';
+  importParsedRows=[];
+  openModal('importModal');
 }
 
-function initSelfEvalFilter() {
-  var filterSelect = document.getElementById('selfEvalFilter');
-  if (filterSelect) {
-    var html = '<option value="">全メンバー</option>';
-    members.forEach(function(m) {
-      html += '<option value="' + m.id + '">' + esc(m.name) + '</option>';
-    });
-    filterSelect.innerHTML = html;
+function previewImport(){
+  var raw=document.getElementById('importData').value.trim();
+  if(!raw){alert('データを貼り付けてください');return;}
+  var lines=raw.split('\n');
+  importParsedRows=[];
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(!line)continue;
+    var cols=line.split('\t');
+    var no=(cols[0]||'').trim();
+    var appoDate=(cols[1]||'').trim();
+    var appoMonth=(cols[2]||'').trim();
+    var appoMember=(cols[3]||'').trim();
+    var meetingDate=(cols[4]||'').trim();
+    var meetingTime=(cols[5]||'').trim();
+    var companyName=(cols[6]||'').trim();
+    var website=(cols[7]||'').trim();
+    var contactPerson=(cols[8]||'').trim();
+    var email=(cols[9]||'').trim();
+    var phone=(cols[10]||'').trim();
+    var hearing=(cols[11]||'').trim();
+    if(no==='例'||no==='No.'||no==='No')continue;
+    if(!companyName)continue;
+    importParsedRows.push({no:no,appo_date:appoDate,appo_month:appoMonth,appo_member:appoMember,meeting_date:meetingDate,meeting_time:meetingTime,company_name:companyName,website_url:website,contact_person:contactPerson,email:email,phone:phone,hearing_content:hearing});
   }
-}
-
-function renderSelfEvalList() {
-  var filter = document.getElementById('selfEvalFilter').value;
-  var filtered = filter ? selfEvaluations.filter(function(e) { return e.member_id === filter; }) : selfEvaluations;
-  
-  var tbody = document.getElementById('selfEvalListTable');
-  if (!tbody) return;
-  
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">振り返りがありません</td></tr>';
-    return;
-  }
-  
-  var html = '';
-  filtered.forEach(function(e, idx) {
-    var member = members.find(function(m) { return m.id === e.member_id; });
-    var memberName = member ? member.name : '-';
-    var score = e.total_score;
-    var gradeColor;
-    if (score >= 85) gradeColor = '#17a2b8';
-    else if (score >= 70) gradeColor = '#28a745';
-    else if (score >= 60) gradeColor = '#ffc107';
-    else gradeColor = '#dc3545';
-    
-    var resultIcon = '';
-    if (e.result === '受注') resultIcon = '🎉';
-    else if (e.result === '見込み') resultIcon = '🔥';
-    else if (e.result === '継続') resultIcon = '💼';
-    else if (e.result === '見送り') resultIcon = '😢';
-    
-    html += '<tr>';
-    html += '<td>' + e.eval_date + '</td>';
-    html += '<td>' + esc(memberName) + '</td>';
-    html += '<td>' + esc(e.company_name || '-') + '</td>';
-    html += '<td>' + resultIcon + ' ' + esc(e.result || '-') + '</td>';
-    html += '<td style="color:' + gradeColor + '; font-weight:600;">' + score + '点</td>';
-    html += '<td><button class="btn btn-sm btn-secondary" onclick="showSelfEvalDetail(' + idx + ')">詳細</button></td>';
-    html += '</tr>';
+  if(importParsedRows.length===0){alert('有効なデータが見つかりませんでした。\nヘッダー行や例の行は自動でスキップされます。');return;}
+  document.getElementById('importCount').textContent=importParsedRows.length;
+  var tbody=document.getElementById('importPreviewTable');
+  var h='';
+  importParsedRows.forEach(function(row){
+    var hearingShort=row.hearing_content.length>40?row.hearing_content.substring(0,40)+'...':row.hearing_content;
+    h+='<tr><td>'+esc(row.no)+'</td><td>'+esc(row.appo_date)+'</td><td>'+esc(row.appo_member)+'</td><td>'+esc(row.meeting_date)+'</td><td><strong>'+esc(row.company_name)+'</strong></td><td style="font-size:0.7rem;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(row.website_url)+'</td><td>'+esc(row.contact_person)+'</td><td>'+esc(row.phone)+'</td><td style="font-size:0.75rem;max-width:200px;">'+esc(hearingShort)+'</td></tr>';
   });
-  
-  tbody.innerHTML = html;
+  tbody.innerHTML=h;
+  document.getElementById('importPreview').style.display='block';
+  document.getElementById('importExecBtn').style.display='inline-block';
 }
 
-function showSelfEvalDetail(idx) {
-  var e = selfEvaluations[idx];
-  if (!e) return;
-  
-  var member = members.find(function(m) { return m.id === e.member_id; });
-  var memberName = member ? member.name : '-';
-  var scores = e.scores ? (typeof e.scores === 'string' ? JSON.parse(e.scores) : e.scores) : {};
-  
-  var questions = [
-    { key: 'q1', label: 'Q1. 「今日は判断の場」と伝えた？' },
-    { key: 'q2', label: 'Q2. 決裁者に直接質問した？' },
-    { key: 'q3', label: 'Q3. 30分以内に収めた？' },
-    { key: 'q4', label: 'Q4. 「判断軸ワード」を取れた？' },
-    { key: 'q5', label: 'Q5. その言葉を3回以上使った？' },
-    { key: 'q6', label: 'Q6. 「1件◯分」を聞けた？' },
-    { key: 'q7', label: 'Q7. 「月◯件分」に変換した？' },
-    { key: 'q8', label: 'Q8. 価格前に「見送る理由」を聞いた？' },
-    { key: 'q9', label: 'Q9. 最終クロージング質問をした？' },
-    { key: 'q10', label: 'Q10. 正しいタイミングで8%還元を出した？' }
-  ];
-  
-  var resultIcon = '';
-  if (e.result === '受注') resultIcon = '🎉';
-  else if (e.result === '見込み') resultIcon = '🔥';
-  else if (e.result === '継続') resultIcon = '💼';
-  else if (e.result === '見送り') resultIcon = '😢';
-  
-  var html = '';
-  html += '<div style="background:#1a1f2e; padding:1rem; border-radius:8px; margin-bottom:1rem;">';
-  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.9rem;">';
-  html += '<div><span style="color:#8a8a9a;">メンバー:</span> <strong>' + esc(memberName) + '</strong></div>';
-  html += '<div><span style="color:#8a8a9a;">日付:</span> ' + e.eval_date + '</div>';
-  html += '<div><span style="color:#8a8a9a;">商談先:</span> ' + esc(e.company_name || '-') + '</div>';
-  html += '<div><span style="color:#8a8a9a;">結果:</span> ' + resultIcon + ' ' + esc(e.result || '-') + '</div>';
-  html += '</div>';
-  if (e.keyword) {
-    html += '<div style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid #3d4559;">';
-    html += '<span style="color:#8a8a9a;">判断軸ワード:</span> <strong style="color:#c9a962;">' + esc(e.keyword) + '</strong>';
-    html += '</div>';
-  }
-  html += '</div>';
-  
-  html += '<div style="font-weight:600; margin-bottom:0.75rem; color:#c9a962;">回答内容</div>';
-  html += '<div style="display:grid; gap:0.5rem;">';
-  questions.forEach(function(q) {
-    var val = scores[q.key] || 0;
-    var icon, color;
-    if (val >= 10) { icon = '⭕'; color = '#28a745'; }
-    else if (val >= 5) { icon = '△'; color = '#ffc107'; }
-    else { icon = '❌'; color = '#dc3545'; }
-    html += '<div style="display:flex; justify-content:space-between; padding:0.5rem; background:#252b3d; border-radius:6px;">';
-    html += '<span style="font-size:0.85rem;">' + q.label + '</span>';
-    html += '<span style="color:' + color + '; font-weight:600;">' + icon + '</span>';
-    html += '</div>';
+function executeImport(){
+  if(importParsedRows.length===0){alert('インポートするデータがありません');return;}
+  if(!confirm(importParsedRows.length+'件のデータをインポートしますか？'))return;
+  var insertData=importParsedRows.map(function(row){
+    var appoDateISO=parseJapaneseDate(row.appo_date);
+    return{
+      company_name:row.company_name,
+      phone:row.phone||null,
+      status:'未訪問',
+      temperature:'未設定',
+      appo_date:appoDateISO,
+      appo_month:row.appo_month||null,
+      appo_member:row.appo_member||null,
+      meeting_date:row.meeting_date||null,
+      meeting_time:row.meeting_time||null,
+      website_url:row.website_url||null,
+      contact_person:row.contact_person||null,
+      email:row.email||null,
+      hearing_content:row.hearing_content||null,
+      notes:buildNotesFromImport(row)
+    };
   });
-  html += '</div>';
-  
-  html += '<div style="background:linear-gradient(135deg, #252b3d, #2d3548); padding:1rem; border-radius:8px; margin-top:1rem; text-align:center;">';
-  html += '<div style="font-size:0.8rem; color:#8a8a9a;">合計スコア</div>';
-  html += '<div style="font-size:2rem; font-weight:800; color:#c9a962;">' + e.total_score + '<span style="font-size:1rem; color:#8a8a9a;">/100</span></div>';
-  html += '</div>';
-  
-  if (e.comment) {
-    html += '<div style="margin-top:1rem; padding:1rem; background:#1a1f2e; border-radius:8px;">';
-    html += '<div style="font-size:0.8rem; color:#8a8a9a; margin-bottom:0.5rem;">コメント・改善点</div>';
-    html += '<div style="font-size:0.9rem;">' + esc(e.comment) + '</div>';
-    html += '</div>';
-  }
-  
-  document.getElementById('selfEvalDetailContent').innerHTML = html;
-  openModal('selfEvalDetailModal');
-}
-
-// ==================== 下調べ管理 ====================
-function initAdminResearch() {
-  var filterSelect = document.getElementById('researchFilterMember');
-  if (filterSelect) {
-    var html = '<option value="">全メンバー</option>';
-    members.forEach(function(m) {
-      html += '<option value="' + m.id + '">' + esc(m.name) + '</option>';
-    });
-    filterSelect.innerHTML = html;
-  }
-  renderAdminResearchList();
-}
-
-function renderAdminResearchList() {
-  var memberFilter = document.getElementById('researchFilterMember').value;
-  var statusFilter = document.getElementById('researchFilterStatus').value;
-  
-  // 担当ありの会社のみ
-  var assigned = prospects.filter(function(p) { return p.assigned_to; });
-  
-  // フィルター適用
-  var filtered = assigned;
-  if (memberFilter) {
-    filtered = filtered.filter(function(p) { return p.assigned_to === memberFilter; });
-  }
-  if (statusFilter === 'complete') {
-    filtered = filtered.filter(function(p) { return isResearchComplete(p); });
-  } else if (statusFilter === 'incomplete') {
-    filtered = filtered.filter(function(p) { return !isResearchComplete(p); });
-  }
-  
-  // 統計更新
-  var complete = assigned.filter(function(p) { return isResearchComplete(p); }).length;
-  document.getElementById('researchStatAssigned').textContent = assigned.length;
-  document.getElementById('researchStatComplete').textContent = complete;
-  document.getElementById('researchStatIncomplete').textContent = assigned.length - complete;
-  
-  // テーブル描画
-  var tbody = document.getElementById('adminResearchTable');
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">データがありません</td></tr>';
-    return;
-  }
-  
-  var html = '';
-  filtered.forEach(function(p) {
-    var member = members.find(function(m) { return m.id === p.assigned_to; });
-    var memberName = member ? member.name : '-';
-    var filled = countResearchFields(p);
-    var isComplete = filled >= 4;
-    
-    html += '<tr>';
-    html += '<td><strong>' + esc(p.company_name) + '</strong><br><span style="font-size:0.75rem; color:#8a8a9a;">' + esc(p.area || '') + '</span></td>';
-    html += '<td>' + esc(memberName) + '</td>';
-    html += '<td><span class="badge ' + (isComplete ? 'badge-green' : 'badge-yellow') + '">' + (isComplete ? '✅ ' + filled + '/6' : '⬜ ' + filled + '/6') + '</span></td>';
-    html += '<td>' + esc(p.research_ceo || '-') + '</td>';
-    html += '<td>' + esc(p.research_scale || '-') + '</td>';
-    html += '<td><button class="btn btn-sm btn-secondary" onclick="openResearchEdit(\'' + p.id + '\')">編集</button></td>';
-    html += '</tr>';
-  });
-  
-  tbody.innerHTML = html;
-}
-
-function isResearchComplete(p) {
-  return countResearchFields(p) >= 4;
-}
-
-function countResearchFields(p) {
-  var count = 0;
-  if (p.research_url) count++;
-  if (p.research_ceo) count++;
-  if (p.research_scale) count++;
-  if (p.research_features) count++;
-  if (p.research_competitors) count++;
-  if (p.research_memo) count++;
-  return count;
-}
-
-function openResearchEdit(id) {
-  var p = prospects.find(function(x) { return x.id === id; });
-  if (!p) return;
-  
-  document.getElementById('researchEditId').value = id;
-  document.getElementById('researchEditCompany').textContent = p.company_name;
-  document.getElementById('researchEditUrl').value = p.research_url || '';
-  document.getElementById('researchEditCeo').value = p.research_ceo || '';
-  document.getElementById('researchEditScale').value = p.research_scale || '';
-  document.getElementById('researchEditFeatures').value = p.research_features || '';
-  document.getElementById('researchEditCompetitors').value = p.research_competitors || '';
-  document.getElementById('researchEditMemo').value = p.research_memo || '';
-  
-  openModal('researchEditModal');
-}
-
-function saveAdminResearch() {
-  var id = document.getElementById('researchEditId').value;
-  if (!id) return;
-  
-  var data = {
-    research_url: document.getElementById('researchEditUrl').value,
-    research_ceo: document.getElementById('researchEditCeo').value,
-    research_scale: document.getElementById('researchEditScale').value,
-    research_features: document.getElementById('researchEditFeatures').value,
-    research_competitors: document.getElementById('researchEditCompetitors').value,
-    research_memo: document.getElementById('researchEditMemo').value,
-    updated_at: new Date().toISOString()
-  };
-  
-  supabase.from('sales_prospects').update(data).eq('id', id).then(function(res) {
-    if (res.error) {
-      alert('保存に失敗しました');
-      return;
-    }
-    alert('下調べを保存しました');
-    closeModal('researchEditModal');
+  supabase.from('sales_prospects').insert(insertData).then(function(res){
+    if(res.error){alert('インポートに失敗しました: '+res.error.message);console.error(res.error);return;}
+    alert(importParsedRows.length+'件のインポートが完了しました！');
+    closeModal('importModal');
     loadData();
   });
+}
+
+function parseJapaneseDate(dateStr){
+  if(!dateStr)return null;
+  var parts=dateStr.replace(/年|月/g,'/').replace(/日/g,'').split('/');
+  if(parts.length>=3){return parts[0]+'-'+parts[1].padStart(2,'0')+'-'+parts[2].padStart(2,'0');}
+  if(parts.length===2&&parts[0].length===4){return parts[0]+'-'+parts[1].padStart(2,'0')+'-01';}
+  return null;
+}
+
+function buildNotesFromImport(row){
+  var notes=[];
+  if(row.meeting_date)notes.push('商談日: '+row.meeting_date);
+  if(row.meeting_time)notes.push('開始時間: '+row.meeting_time);
+  if(row.contact_person)notes.push('担当者: '+row.contact_person);
+  if(row.hearing_content)notes.push('【ヒアリング】\n'+row.hearing_content);
+  return notes.length>0?notes.join('\n'):null;
 }
 </script>
 </body>
