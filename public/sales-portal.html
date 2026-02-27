@@ -143,7 +143,8 @@ svg{vertical-align:middle;}
 <div class="login-brand">Rei</div>
 <div class="login-sub">営業ポータル</div>
 <div class="login-card">
-<div class="login-err" id="loginError">パスワードが違います</div>
+<div class="login-err" id="loginError">名前またはパスワードが違います</div>
+<input class="login-input" type="text" id="loginName" placeholder="名前" style="margin-bottom:10px;">
 <input class="login-input" type="password" id="loginPass" placeholder="パスワード">
 <button class="login-btn" onclick="doLogin()">ログイン</button>
 </div>
@@ -268,6 +269,7 @@ window.onload = function() {
   supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   var saved = localStorage.getItem('salesPortalMemberId');
   if (saved) { loadMembers(function() { loginAsMember(saved); }); }
+  document.getElementById('loginName').onkeypress = function(e) { if (e.key === 'Enter') document.getElementById('loginPass').focus(); };
   document.getElementById('loginPass').onkeypress = function(e) { if (e.key === 'Enter') doLogin(); };
   document.querySelectorAll('.bnav-btn').forEach(function(btn) {
     btn.onclick = function() { switchTab(btn.dataset.tab); };
@@ -282,10 +284,11 @@ function loadMembers(cb) {
 }
 
 function doLogin() {
+  var name = document.getElementById('loginName').value.trim();
   var pw = document.getElementById('loginPass').value;
-  if (!pw) return;
+  if (!name || !pw) return;
   loadMembers(function() {
-    var found = members.find(function(m) { return m.password === pw; });
+    var found = members.find(function(m) { return m.name === name && m.password === pw; });
     if (found) {
       localStorage.setItem('salesPortalMemberId', found.id);
       loginAsMember(found.id);
@@ -315,6 +318,7 @@ function doLogout() {
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('loginPass').value = '';
+  document.getElementById('loginName').value = '';
   document.getElementById('loginError').style.display = 'none';
 }
 
@@ -460,6 +464,7 @@ function renderVisits() {
       h += '<div class="visit-detail" id="vd-' + p.id + '">';
       if (p.contact_person) h += '<div class="visit-row"><span style="color:#999;">担当者</span><span style="font-weight:600;">' + esc(p.contact_person) + '</span></div>';
       if (p.phone) h += '<div class="visit-row"><span style="color:#999;">電話番号</span><a href="tel:' + esc(p.phone) + '" style="font-weight:600;color:#6366f1;">' + esc(p.phone) + '</a></div>';
+      if (p.address) h += '<div class="visit-row"><span style="color:#999;">住所</span><a href="https://www.google.com/maps/search/' + encodeURIComponent(p.address) + '" target="_blank" style="font-weight:600;color:#6366f1;font-size:12px;word-break:break-all;">' + esc(p.address) + ' ↗</a></div>';
       if (p.website_url) h += '<div class="visit-row"><span style="color:#999;">HP</span><a href="' + esc(p.website_url) + '" target="_blank" style="font-weight:600;color:#6366f1;font-size:12px;word-break:break-all;">' + esc(p.website_url) + '</a></div>';
       var memo = p.hearing_content || p.notes || '';
       if (memo) {
