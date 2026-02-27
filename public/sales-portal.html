@@ -5,355 +5,282 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>Rei 営業ポータル</title>
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1a1a2e">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;-webkit-text-size-adjust:100%;}
-body{font-family:'Noto Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;background:#f7f7fa;color:#1a1a2e;line-height:1.5;overscroll-behavior:none;}
+html{height:100%;-webkit-text-size-adjust:100%;}
+body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:#000;color:#1d1d1f;line-height:1.47;overscroll-behavior:none;min-height:100%;letter-spacing:-0.01em;}
 button{font-family:inherit;cursor:pointer;-webkit-appearance:none;}
 input,select,textarea{font-family:inherit;-webkit-appearance:none;}
 a{color:inherit;text-decoration:none;}
 ::-webkit-scrollbar{display:none;}
 
 /* ===== LOGIN ===== */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f7f7fa 0%,#e8e8f0 100%);padding:20px;}
-.login-box{width:100%;max-width:340px;text-align:center;}
-.login-brand{font-size:42px;font-weight:800;color:#1a1a2e;letter-spacing:8px;}
-.login-sub{font-size:12px;color:#aaa;margin:4px 0 32px;letter-spacing:2px;}
-.login-card{background:#fff;border-radius:24px;padding:32px 28px;box-shadow:0 4px 24px rgba(0,0,0,0.06);}
-.login-err{background:#fef2f2;color:#dc2626;font-size:12px;padding:10px 14px;border-radius:12px;margin-bottom:14px;display:none;}
-.login-input{width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid #e8e8ee;font-size:15px;background:#fafafc;outline:none;transition:border .2s;margin-bottom:10px;}
-.login-input:focus{border-color:#6366f1;background:#fff;}
-.login-btn{width:100%;padding:15px;border-radius:14px;border:none;background:#1a1a2e;color:#fff;font-size:15px;font-weight:700;margin-top:4px;transition:transform .1s;letter-spacing:1px;}
-.login-btn:active{transform:scale(0.98);}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#000;padding:20px;}
+.login-box{width:100%;max-width:360px;text-align:center;}
+.login-brand{font-size:48px;font-weight:900;color:#fff;letter-spacing:6px;margin-bottom:4px;}
+.login-sub{font-size:11px;color:#86868b;margin-bottom:40px;letter-spacing:3px;text-transform:uppercase;}
+.login-card{background:#1c1c1e;border-radius:20px;padding:32px 24px;border:1px solid rgba(255,255,255,0.06);}
+.login-err{background:rgba(255,59,48,0.12);color:#ff453a;font-size:13px;padding:12px 16px;border-radius:12px;margin-bottom:16px;display:none;font-weight:500;}
+.login-input{width:100%;padding:15px 18px;border-radius:12px;border:none;font-size:16px;background:#2c2c2e;color:#fff;outline:none;transition:all .2s;margin-bottom:10px;}
+.login-input::placeholder{color:#636366;}
+.login-input:focus{background:#3a3a3c;box-shadow:0 0 0 2px rgba(10,132,255,0.5);}
+.login-btn{width:100%;padding:16px;border-radius:14px;border:none;background:#0a84ff;color:#fff;font-size:16px;font-weight:700;margin-top:8px;transition:all .15s;letter-spacing:0.3px;}
+.login-btn:active{transform:scale(0.97);opacity:0.9;}
 
-/* ===== APP SHELL ===== */
-#app{display:none;max-width:430px;margin:0 auto;min-height:100vh;position:relative;background:#f7f7fa;}
-.hdr{background:#1a1a2e;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-.hdr-logo{font-size:18px;font-weight:800;letter-spacing:4px;color:#c9a962;}
-.hdr-user{display:flex;align-items:center;gap:8px;}
-.hdr-badge{display:flex;align-items:center;gap:6px;padding:5px 14px 5px 6px;border-radius:100px;font-size:12px;font-weight:600;}
-.hdr-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
-.hdr-logout{background:none;border:none;color:rgba(255,255,255,0.4);padding:6px;display:flex;transition:color .2s;}
+/* ===== APP ===== */
+#app{display:none;max-width:430px;margin:0 auto;min-height:100vh;position:relative;background:#f2f2f7;}
+.hdr{background:rgba(249,249,249,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;border-bottom:0.5px solid rgba(0,0,0,0.1);}
+.hdr-logo{font-size:20px;font-weight:900;letter-spacing:3px;color:#1d1d1f;}
+.hdr-user{display:flex;align-items:center;gap:10px;}
+.hdr-badge{display:flex;align-items:center;gap:7px;padding:5px 14px 5px 5px;border-radius:100px;font-size:13px;font-weight:600;}
+.hdr-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
+.hdr-logout{background:none;border:none;color:#86868b;padding:6px;display:flex;transition:color .2s;}
 
 /* ===== PAGES ===== */
-.pg{display:none;padding:0 0 90px;}
-.pg.active{display:block;}
+.pg{display:none;padding:0 0 100px;opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;}
+.pg.active{display:block;opacity:1;transform:translateY(0);}
 
 /* ===== BOTTOM NAV ===== */
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:6px 0 env(safe-area-inset-bottom,8px);z-index:100;}
-.bnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;padding:6px 10px;color:#bbb;transition:all .2s;}
-.bnav-btn.active{color:#1a1a2e;}
-.bnav-btn svg{width:22px;height:22px;}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(249,249,249,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid rgba(0,0,0,0.1);display:flex;justify-content:space-around;padding:8px 0 env(safe-area-inset-bottom,10px);z-index:100;}
+.bnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;padding:6px 12px;color:#86868b;transition:all .2s;}
+.bnav-btn.active{color:#0a84ff;}
+.bnav-btn svg{width:24px;height:24px;transition:transform .2s;}
+.bnav-btn:active svg{transform:scale(0.85);}
 .bnav-btn span{font-size:10px;font-weight:500;}
-.bnav-btn.active span{font-weight:700;}
+.bnav-btn.active span{font-weight:600;}
 
 /* ===== UTILITY ===== */
-.section-pad{padding:0 16px;}
-.section-title{font-size:17px;font-weight:800;color:#1a1a2e;padding:20px 16px 12px;}
-.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
-.toggle-wrap{display:inline-flex;gap:2px;background:#eef0f4;border-radius:100px;padding:3px;}
-.toggle-btn{padding:7px 16px;border-radius:100px;border:none;font-size:12px;font-weight:600;background:transparent;color:#999;transition:all .2s;}
-.toggle-btn.active{background:#fff;color:#1a1a2e;box-shadow:0 1px 6px rgba(0,0,0,0.08);}
-.badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;display:inline-block;letter-spacing:0.5px;}
-.empty{text-align:center;padding:32px;color:#bbb;font-size:13px;background:#fff;border-radius:18px;margin:0 16px;}
+.s-title{font-size:28px;font-weight:800;color:#1d1d1f;padding:24px 20px 16px;letter-spacing:-0.5px;}
+.card{background:#fff;border-radius:16px;margin:0 16px 12px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04);transition:transform .2s,box-shadow .2s;}
+.card:active{transform:scale(0.985);box-shadow:0 1px 2px rgba(0,0,0,0.06);}
+.toggle-wrap{display:inline-flex;gap:2px;background:rgba(118,118,128,0.12);border-radius:9px;padding:2px;}
+.toggle-btn{padding:7px 18px;border-radius:7px;border:none;font-size:13px;font-weight:600;background:transparent;color:#86868b;transition:all .25s ease;}
+.toggle-btn.active{background:#fff;color:#1d1d1f;box-shadow:0 1px 4px rgba(0,0,0,0.08),0 0 1px rgba(0,0,0,0.04);}
+.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;display:inline-block;}
+.empty{text-align:center;padding:40px 20px;color:#86868b;font-size:15px;font-weight:500;background:#fff;border-radius:16px;margin:0 16px;}
 
 /* ===== ALERT BANNER ===== */
-.alert-banner{margin:12px 16px 0;padding:16px 18px;border-radius:18px;background:linear-gradient(135deg,#dc2626 0%,#b91c1c 100%);color:#fff;display:flex;align-items:flex-start;gap:12px;box-shadow:0 4px 16px rgba(220,38,38,0.25);animation:pulse-glow 2s ease-in-out infinite;}
-@keyframes pulse-glow{0%,100%{box-shadow:0 4px 16px rgba(220,38,38,0.25);}50%{box-shadow:0 4px 24px rgba(220,38,38,0.45);}}
-.alert-icon{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;}
+.alert-banner{margin:16px 16px 0;padding:16px 20px;border-radius:16px;background:linear-gradient(135deg,#ff453a 0%,#d70015 100%);color:#fff;display:flex;align-items:flex-start;gap:14px;box-shadow:0 4px 20px rgba(255,69,58,0.3);animation:alertPulse 2.5s ease-in-out infinite;}
+@keyframes alertPulse{0%,100%{box-shadow:0 4px 20px rgba(255,69,58,0.3);}50%{box-shadow:0 6px 28px rgba(255,69,58,0.5);}}
+.alert-icon{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;}
 .alert-body{flex:1;}
-.alert-title{font-size:14px;font-weight:800;margin-bottom:2px;}
-.alert-sub{font-size:12px;opacity:0.9;line-height:1.4;}
+.alert-title{font-size:15px;font-weight:800;margin-bottom:3px;letter-spacing:-0.2px;}
+.alert-sub{font-size:12px;opacity:0.92;line-height:1.5;font-weight:500;}
 
-/* ===== APPO CARD (today/tomorrow) ===== */
-.appo-card{margin:10px 16px 0;padding:16px 18px;border-radius:18px;background:#fff;border:2px solid #ef4444;display:flex;align-items:center;gap:14px;box-shadow:0 2px 12px rgba(239,68,68,0.12);position:relative;overflow:hidden;}
-.appo-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:#ef4444;}
-.appo-card.tomorrow{border-color:#f59e0b;box-shadow:0 2px 12px rgba(245,158,11,0.12);}
-.appo-card.tomorrow::before{background:#f59e0b;}
-.appo-date-chip{width:52px;height:52px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;}
-.appo-date-chip.today-chip{background:#fef2f2;color:#dc2626;}
-.appo-date-chip.tomorrow-chip{background:#fefce8;color:#d97706;}
-.appo-date-d{font-size:20px;line-height:1;}
-.appo-date-w{font-size:10px;font-weight:600;margin-top:1px;}
+/* ===== APPO CARD ===== */
+.appo-card{margin:12px 16px 0;padding:18px 20px;border-radius:16px;background:#fff;border-left:4px solid #ff453a;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:relative;}
+.appo-card.tomorrow{border-left-color:#ff9f0a;}
+.appo-chip{width:52px;height:52px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;font-weight:800;}
+.appo-chip.td{background:rgba(255,69,58,0.08);color:#ff453a;}
+.appo-chip.tm{background:rgba(255,159,10,0.08);color:#ff9f0a;}
+.appo-chip-d{font-size:22px;line-height:1;}
+.appo-chip-w{font-size:10px;font-weight:700;margin-top:1px;}
 .appo-info{flex:1;min-width:0;}
-.appo-company{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.appo-time{font-size:13px;color:#ef4444;font-weight:700;margin-top:2px;}
-.appo-card.tomorrow .appo-time{color:#d97706;}
-.appo-label{position:absolute;top:8px;right:12px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;}
-.appo-label.today-label{background:#fef2f2;color:#dc2626;}
-.appo-label.tomorrow-label{background:#fefce8;color:#d97706;}
+.appo-company{font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.3px;}
+.appo-time{font-size:14px;font-weight:700;margin-top:3px;}
+.appo-card .appo-time{color:#ff453a;}
+.appo-card.tomorrow .appo-time{color:#ff9f0a;}
+.appo-label{position:absolute;top:10px;right:14px;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:0.5px;}
+.appo-label.td{background:rgba(255,69,58,0.1);color:#ff453a;}
+.appo-label.tm{background:rgba(255,159,10,0.1);color:#ff9f0a;}
 
 /* ===== STATS ===== */
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px;margin-bottom:16px;}
-.stat-card{background:#fff;border-radius:18px;padding:20px 12px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
-.stat-val{font-size:32px;font-weight:800;line-height:1;}
-.stat-lbl{font-size:11px;color:#999;margin-top:6px;font-weight:500;}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px;margin-bottom:4px;}
+.stat-card{background:#fff;border-radius:16px;padding:22px 14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04);}
+.stat-val{font-size:34px;font-weight:900;line-height:1;letter-spacing:-1px;}
+.stat-lbl{font-size:12px;color:#86868b;margin-top:6px;font-weight:600;}
 
 /* ===== CALENDAR ===== */
-.cal-wrap{background:#fff;border-radius:18px;margin:16px 16px 0;padding:18px;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
-.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.cal-nav-btn{border:none;background:#f0f0f5;border-radius:12px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
-.cal-nav-btn:active{background:#e0e0ea;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;text-align:center;}
-.cal-hdr{font-size:10px;font-weight:700;color:#bbb;padding:6px 0;}
-.cal-hdr.sun{color:#ef4444;}
-.cal-hdr.sat{color:#3b82f6;}
-.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;font-size:13px;cursor:pointer;position:relative;border:2px solid transparent;transition:all .15s;font-weight:500;}
-.cal-day:active{background:#f0f0ff;}
-.cal-day.today{background:#1a1a2e;color:#fff;font-weight:800;}
-.cal-day.selected:not(.today){border-color:#6366f1;background:#f0f0ff;}
-.cal-day.has-appo{background:#fef2f2;font-weight:800;color:#dc2626;}
-.cal-day.has-appo.today{background:#dc2626;color:#fff;}
-.cal-day.has-appo.selected:not(.today){border-color:#dc2626;background:#fef2f2;}
-.cal-dots{position:absolute;bottom:2px;display:flex;gap:2px;}
+.cal-wrap{background:#fff;border-radius:16px;margin:16px 16px 0;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04);}
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.cal-nav-btn{border:none;background:rgba(118,118,128,0.12);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:all .15s;color:#1d1d1f;}
+.cal-nav-btn:active{background:rgba(118,118,128,0.2);transform:scale(0.9);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;}
+.cal-hdr{font-size:11px;font-weight:600;color:#86868b;padding:6px 0;}
+.cal-hdr.sun{color:#ff453a;}
+.cal-hdr.sat{color:#0a84ff;}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;font-size:14px;cursor:pointer;position:relative;border:2px solid transparent;transition:all .2s;font-weight:500;}
+.cal-day:active{transform:scale(0.88);}
+.cal-day.today{background:#0a84ff;color:#fff;font-weight:800;}
+.cal-day.selected:not(.today){border-color:#0a84ff;background:rgba(10,132,255,0.08);}
+.cal-day.has-appo{background:rgba(255,69,58,0.1);color:#ff453a;font-weight:800;}
+.cal-day.has-appo.today{background:#ff453a;color:#fff;}
+.cal-day.has-appo.selected:not(.today){border-color:#ff453a;background:rgba(255,69,58,0.12);}
+.cal-dots{position:absolute;bottom:1px;display:flex;gap:2px;}
 .cal-dot{width:4px;height:4px;border-radius:50%;}
-.cal-appo-dot{width:6px;height:6px;border-radius:50%;background:#ef4444;position:absolute;top:3px;right:3px;}
+.cal-appo-mark{position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:#ff453a;}
 
 /* ===== FILTER BAR ===== */
-.filter-bar{padding:12px 16px;display:flex;flex-direction:column;gap:10px;position:sticky;top:52px;z-index:40;background:#f7f7fa;}
+.filter-bar{padding:12px 16px;display:flex;flex-direction:column;gap:10px;position:sticky;top:49px;z-index:40;background:rgba(242,242,247,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 .filter-search{position:relative;}
-.filter-search input{width:100%;padding:12px 12px 12px 40px;border-radius:14px;border:1.5px solid #e8e8ee;font-size:14px;background:#fff;outline:none;transition:border .2s;}
-.filter-search input:focus{border-color:#6366f1;}
-.filter-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#bbb;}
-.filter-pills{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch;}
-.fpill{padding:8px 16px;border-radius:100px;border:1.5px solid #e8e8ee;font-size:12px;font-weight:600;white-space:nowrap;background:#fff;color:#777;transition:all .15s;display:flex;align-items:center;gap:4px;}
-.fpill.active{border-color:#1a1a2e;background:#1a1a2e;color:#fff;}
-.fpill svg{width:12px;height:12px;}
-.sort-btn{padding:8px 14px;border-radius:100px;border:1.5px solid #e8e8ee;font-size:12px;font-weight:600;background:#fff;color:#777;display:flex;align-items:center;gap:4px;white-space:nowrap;}
-.sort-btn.active{border-color:#6366f1;color:#6366f1;}
+.filter-search input{width:100%;padding:11px 12px 11px 38px;border-radius:12px;border:none;font-size:15px;background:rgba(118,118,128,0.12);color:#1d1d1f;outline:none;transition:all .2s;font-weight:400;}
+.filter-search input:focus{background:#fff;box-shadow:0 0 0 2px rgba(10,132,255,0.4);}
+.filter-search input::placeholder{color:#86868b;}
+.filter-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#86868b;}
+.filter-pills{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fpill{padding:8px 16px;border-radius:100px;border:none;font-size:13px;font-weight:600;white-space:nowrap;background:rgba(118,118,128,0.12);color:#86868b;transition:all .2s;}
+.fpill:active{transform:scale(0.95);}
+.fpill.active{background:#0a84ff;color:#fff;}
+.sort-btn{padding:8px 14px;border-radius:100px;border:none;font-size:13px;font-weight:600;background:rgba(118,118,128,0.12);color:#86868b;display:flex;align-items:center;gap:4px;white-space:nowrap;transition:all .2s;}
+.sort-btn.active{background:rgba(10,132,255,0.12);color:#0a84ff;}
 
 /* ===== VISIT CARD ===== */
-.visit-grid{padding:0 12px;display:flex;flex-direction:column;gap:12px;}
-.vcard{background:#fff;border-radius:20px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,0.04);transition:transform .15s;}
-.vcard:active{transform:scale(0.99);}
-.vcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-.vcard-name{font-size:15px;font-weight:800;line-height:1.3;flex:1;margin-right:8px;}
-.vcard-info{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
-.vcard-row{display:flex;align-items:center;gap:8px;font-size:12px;color:#666;}
-.vcard-row svg{width:14px;height:14px;flex-shrink:0;color:#bbb;}
-.vcard-row a{color:#6366f1;font-weight:600;}
-.vcard-memo{font-size:12px;color:#888;line-height:1.6;background:#f8f8fc;padding:10px 12px;border-radius:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;}
-.vcard-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f5;}
-.vcard-assign{display:flex;align-items:center;gap:8px;}
-.vcard-assign-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
-.vcard-assign-name{font-size:12px;font-weight:600;}
-.assign-btn{padding:6px 14px;border-radius:100px;border:1.5px dashed #ccc;font-size:11px;font-weight:700;background:#fff;color:#999;transition:all .15s;}
-.assign-btn:active{background:#f0f0ff;border-color:#6366f1;color:#6366f1;}
-.vcard-detail{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f5;}
-.vcard-detail.open{display:block;}
-.vcard-detail-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;}
-.vcard-full-memo{font-size:13px;color:#444;line-height:1.7;background:#f8f8fc;padding:14px;border-radius:14px;margin-top:8px;white-space:pre-wrap;}
+.visit-grid{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
+.vcard{background:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04);transition:transform .2s,box-shadow .2s;}
+.vcard:active{transform:scale(0.985);}
+.vcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.vcard-name{font-size:17px;font-weight:800;line-height:1.3;flex:1;margin-right:10px;letter-spacing:-0.3px;}
+.vcard-info{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.vcard-row{display:flex;align-items:center;gap:10px;font-size:13px;color:#3c3c43;}
+.vcard-row svg{width:16px;height:16px;flex-shrink:0;color:#86868b;}
+.vcard-row a{color:#0a84ff;font-weight:600;}
+.vcard-memo{font-size:13px;color:#86868b;line-height:1.6;background:#f2f2f7;padding:12px 14px;border-radius:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;transition:background .15s;}
+.vcard-memo:active{background:#e8e8ed;}
+.vcard-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(0,0,0,0.06);}
+.vcard-assign{display:flex;align-items:center;gap:10px;}
+.vcard-assign-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
+.vcard-assign-name{font-size:13px;font-weight:600;color:#1d1d1f;}
+.assign-btn{padding:7px 16px;border-radius:100px;border:1.5px dashed #c7c7cc;font-size:12px;font-weight:700;background:#fff;color:#86868b;transition:all .2s;}
+.assign-btn:active{background:#f2f2f7;transform:scale(0.95);}
+.vcard-detail{display:none;margin-top:14px;padding-top:14px;border-top:0.5px solid rgba(0,0,0,0.06);}
+.vcard-detail.open{display:block;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+.vcard-detail-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;}
+.vcard-full-memo{font-size:14px;color:#3c3c43;line-height:1.8;background:#f2f2f7;padding:16px;border-radius:14px;margin-top:10px;white-space:pre-wrap;}
 
 /* ===== SCHEDULE ===== */
-.sch-card{background:#fff;border-radius:16px;padding:14px 16px;margin:0 16px 8px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
-.sch-time{font-size:13px;font-weight:700;color:#6366f1;width:50px;flex-shrink:0;text-align:center;}
+.sch-card{background:#fff;border-radius:14px;padding:16px 18px;margin:0 16px 8px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);transition:transform .2s;}
+.sch-card:active{transform:scale(0.98);}
+.sch-time{font-size:14px;font-weight:700;color:#0a84ff;width:50px;flex-shrink:0;text-align:center;}
 
 /* ===== EXPENSE ===== */
-.exp-item{background:#fff;border-radius:16px;padding:14px 16px;margin:0 16px 8px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
-.exp-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.exp-item{background:#fff;border-radius:14px;padding:16px 18px;margin:0 16px 8px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);transition:transform .2s;}
+.exp-item:active{transform:scale(0.98);}
+.exp-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
 /* ===== FORM ===== */
-.form-label{font-size:12px;color:#999;margin-bottom:6px;font-weight:600;display:block;}
-.form-input{width:100%;padding:12px 16px;border-radius:14px;border:1.5px solid #e8e8ee;font-size:14px;background:#fafafc;outline:none;box-sizing:border-box;transition:border .2s;}
-.form-input:focus{border-color:#6366f1;background:#fff;}
-.form-textarea{width:100%;padding:12px 16px;border-radius:14px;border:1.5px solid #e8e8ee;font-size:13px;resize:none;height:80px;font-family:inherit;background:#fafafc;box-sizing:border-box;outline:none;transition:border .2s;}
-.form-textarea:focus{border-color:#6366f1;background:#fff;}
-.form-group{margin-bottom:14px;}
-.btn-primary{width:100%;padding:14px;border-radius:14px;border:none;background:#1a1a2e;color:#fff;font-size:14px;font-weight:700;transition:transform .1s;letter-spacing:0.5px;}
-.btn-primary:active{transform:scale(0.98);}
-.btn-sm{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:100px;background:#1a1a2e;color:#fff;border:none;font-size:12px;font-weight:600;transition:transform .1s;}
-.btn-sm:active{transform:scale(0.96);}
+.form-label{font-size:13px;color:#86868b;margin-bottom:6px;font-weight:600;display:block;}
+.form-input{width:100%;padding:14px 16px;border-radius:12px;border:none;font-size:15px;background:rgba(118,118,128,0.12);outline:none;box-sizing:border-box;transition:all .2s;color:#1d1d1f;}
+.form-input:focus{background:#fff;box-shadow:0 0 0 2px rgba(10,132,255,0.4);}
+.form-textarea{width:100%;padding:14px 16px;border-radius:12px;border:none;font-size:14px;resize:none;height:90px;font-family:inherit;background:rgba(118,118,128,0.12);box-sizing:border-box;outline:none;transition:all .2s;color:#1d1d1f;}
+.form-textarea:focus{background:#fff;box-shadow:0 0 0 2px rgba(10,132,255,0.4);}
+.form-group{margin-bottom:16px;}
+.btn-primary{width:100%;padding:16px;border-radius:14px;border:none;background:#0a84ff;color:#fff;font-size:16px;font-weight:700;transition:all .15s;letter-spacing:0.2px;}
+.btn-primary:active{transform:scale(0.97);opacity:0.9;}
+.btn-sm{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:100px;background:#0a84ff;color:#fff;border:none;font-size:13px;font-weight:600;transition:all .15s;}
+.btn-sm:active{transform:scale(0.93);opacity:0.9;}
 .result-btns{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
-.result-btn{padding:10px 0;border-radius:12px;border:1.5px solid #e8e8ee;background:#fff;color:#555;font-size:12px;font-weight:600;transition:all .15s;}
-.result-btn.active{border-color:#1a1a2e;background:#1a1a2e;color:#fff;}
+.result-btn{padding:12px 0;border-radius:12px;border:none;background:rgba(118,118,128,0.12);color:#86868b;font-size:13px;font-weight:600;transition:all .2s;}
+.result-btn:active{transform:scale(0.95);}
+.result-btn.active{background:#0a84ff;color:#fff;box-shadow:0 2px 8px rgba(10,132,255,0.3);}
 
 /* ===== MODAL ===== */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
 .modal-overlay.show{display:flex;}
-.modal-sheet{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:430px;max-height:85vh;overflow-y:auto;padding:24px 20px env(safe-area-inset-bottom,20px);animation:slideUp .25s ease;}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.modal-handle{width:36px;height:4px;background:#ddd;border-radius:4px;margin:0 auto 18px;}
-.modal-title{font-size:17px;font-weight:800;margin-bottom:18px;}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:430px;max-height:85vh;overflow-y:auto;padding:28px 24px env(safe-area-inset-bottom,24px);animation:sheetUp .3s cubic-bezier(.32,.72,0,1);}
+@keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-handle{width:36px;height:5px;background:#c7c7cc;border-radius:3px;margin:0 auto 20px;}
+.modal-title{font-size:20px;font-weight:800;margin-bottom:20px;letter-spacing:-0.3px;}
 
-/* ===== TOGGLE SWITCH ===== */
-.switch{position:relative;display:inline-block;width:44px;height:24px;}
+/* ===== SWITCH ===== */
+.switch{position:relative;display:inline-block;width:51px;height:31px;}
 .switch input{opacity:0;width:0;height:0;}
-.switch-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ddd;border-radius:24px;transition:.2s;}
-.switch-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:white;border-radius:50%;transition:.2s;}
-.switch input:checked+.switch-slider{background-color:#6366f1;}
+.switch-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#e9e9eb;border-radius:31px;transition:.3s cubic-bezier(.4,0,.2,1);}
+.switch-slider:before{position:absolute;content:"";height:27px;width:27px;left:2px;bottom:2px;background-color:white;border-radius:50%;transition:.3s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+.switch input:checked+.switch-slider{background-color:#34c759;}
 .switch input:checked+.switch-slider:before{transform:translateX(20px);}
 
 /* ===== MEMBER COLORS ===== */
-.mc-blue .hdr-badge{background:#dbeafe;color:#2563eb;}.mc-blue .hdr-avatar{background:#2563eb;}
-.mc-green .hdr-badge{background:#dcfce7;color:#16a34a;}.mc-green .hdr-avatar{background:#16a34a;}
-.mc-amber .hdr-badge{background:#fef3c7;color:#d97706;}.mc-amber .hdr-avatar{background:#d97706;}
-.mc-rose .hdr-badge{background:#ffe4e6;color:#e11d48;}.mc-rose .hdr-avatar{background:#e11d48;}
-.mc-purple .hdr-badge{background:#ede9fe;color:#7c3aed;}.mc-purple .hdr-avatar{background:#7c3aed;}
+.mc-blue .hdr-badge{background:rgba(10,132,255,0.12);color:#0a84ff;}.mc-blue .hdr-avatar{background:#0a84ff;}
+.mc-green .hdr-badge{background:rgba(52,199,89,0.12);color:#34c759;}.mc-green .hdr-avatar{background:#34c759;}
+.mc-amber .hdr-badge{background:rgba(255,159,10,0.12);color:#ff9f0a;}.mc-amber .hdr-avatar{background:#ff9f0a;}
+.mc-rose .hdr-badge{background:rgba(255,55,95,0.12);color:#ff375f;}.mc-rose .hdr-avatar{background:#ff375f;}
+.mc-purple .hdr-badge{background:rgba(175,82,222,0.12);color:#af52de;}.mc-purple .hdr-avatar{background:#af52de;}
 svg{vertical-align:middle;}
 </style>
 </head>
 <body>
+<div class="login-wrap" id="loginScreen"><div class="login-box"><div class="login-brand">Rei</div><div class="login-sub">Sales Portal</div><div class="login-card"><div class="login-err" id="loginError">名前またはパスワードが違います</div><input class="login-input" type="text" id="loginName" placeholder="名前"><input class="login-input" type="password" id="loginPass" placeholder="パスワード"><button class="login-btn" onclick="doLogin()">サインイン</button></div></div></div>
 
-<!-- LOGIN -->
-<div class="login-wrap" id="loginScreen">
-<div class="login-box">
-<div class="login-brand">Rei</div>
-<div class="login-sub">営業ポータル</div>
-<div class="login-card">
-<div class="login-err" id="loginError">名前またはパスワードが違います</div>
-<input class="login-input" type="text" id="loginName" placeholder="名前">
-<input class="login-input" type="password" id="loginPass" placeholder="パスワード">
-<button class="login-btn" onclick="doLogin()">ログイン</button>
-</div>
-</div>
-</div>
-
-<!-- APP -->
 <div id="app">
-<header class="hdr">
-<div class="hdr-logo">Rei</div>
-<div class="hdr-user">
-<div class="hdr-badge" id="hdrBadge"><div class="hdr-avatar" id="hdrAvatar"></div><span id="hdrName"></span></div>
-<button class="hdr-logout" onclick="doLogout()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 2H3.5A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16H7M11 12l3-3-3-3M14 9H6"/></svg></button>
-</div>
-</header>
+<header class="hdr"><div class="hdr-logo">Rei</div><div class="hdr-user"><div class="hdr-badge" id="hdrBadge"><div class="hdr-avatar" id="hdrAvatar"></div><span id="hdrName"></span></div><button class="hdr-logout" onclick="doLogout()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 2H3.5A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16H7M11 12l3-3-3-3M14 9H6"/></svg></button></div></header>
 <div class="pg active" id="pg-home"></div>
 <div class="pg" id="pg-visits"></div>
 <div class="pg" id="pg-schedule"></div>
 <div class="pg" id="pg-review"></div>
 <div class="pg" id="pg-expense"></div>
 <nav class="bnav">
-<button class="bnav-btn active" data-tab="home"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M8 17V12h4v5"/></svg><span>ホーム</span></button>
-<button class="bnav-btn" data-tab="visits"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="14" rx="2"/><path d="M8 7v6M12 7v6M2 7h16"/></svg><span>訪問先</span></button>
-<button class="bnav-btn" data-tab="schedule"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="16" height="14" rx="2"/><path d="M2 8h16M6 2v4M14 2v4"/></svg><span>予定</span></button>
-<button class="bnav-btn" data-tab="review"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>振り返り</span></button>
-<button class="bnav-btn" data-tab="expense"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>経費</span></button>
+<button class="bnav-btn active" data-tab="home"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M8 17V12h4v5"/></svg><span>ホーム</span></button>
+<button class="bnav-btn" data-tab="visits"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="14" rx="2"/><path d="M8 7v6M12 7v6M2 7h16"/></svg><span>訪問先</span></button>
+<button class="bnav-btn" data-tab="schedule"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="16" height="14" rx="2"/><path d="M2 8h16M6 2v4M14 2v4"/></svg><span>予定</span></button>
+<button class="bnav-btn" data-tab="review"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>振り返り</span></button>
+<button class="bnav-btn" data-tab="expense"><svg fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>経費</span></button>
 </nav>
 </div>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="scheduleModal"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-title">予定を追加</div>
-<div class="form-group"><label class="form-label">日付</label><input type="date" class="form-input" id="schDate"></div>
-<div class="form-group"><label class="form-label">内容</label><input type="text" class="form-input" id="schMemo" placeholder="例：紫苑さま商談"></div>
-<div class="form-group" style="display:flex;justify-content:space-between;align-items:center;"><label class="form-label" style="margin:0;">全員に公開</label><label class="switch"><input type="checkbox" id="schPublic" checked><span class="switch-slider"></span></label></div>
-<button class="btn-primary" onclick="submitSchedule()">追加する</button>
-<button onclick="closeModal('scheduleModal')" style="width:100%;padding:12px;border:none;background:none;color:#999;font-size:13px;margin-top:8px;">キャンセル</button>
-</div></div>
-
-<div class="modal-overlay" id="assignModal"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-title">担当者を変更</div><div id="assignMemberList"></div>
-<button onclick="closeModal('assignModal')" style="width:100%;padding:12px;border:none;background:none;color:#999;font-size:13px;margin-top:8px;">キャンセル</button>
-</div></div>
-
-<div class="modal-overlay" id="expenseModal"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-title">経費を申請する</div>
-<div class="form-group"><label class="form-label">日付</label><input type="date" class="form-input" id="expDate"></div>
-<div class="form-group"><label class="form-label">カテゴリ</label><select class="form-input" id="expCategory"><option value="交通費">交通費</option><option value="宿泊費">宿泊費</option><option value="飲食費">飲食費</option><option value="備品">備品</option><option value="その他">その他</option></select></div>
-<div class="form-group"><label class="form-label">金額</label><input type="number" class="form-input" id="expAmount" placeholder="¥"></div>
-<div class="form-group"><label class="form-label">内容</label><input type="text" class="form-input" id="expDesc" placeholder="例：福井→金沢 往復"></div>
-<button class="btn-primary" onclick="submitExpense()">申請する</button>
-<button onclick="closeModal('expenseModal')" style="width:100%;padding:12px;border:none;background:none;color:#999;font-size:13px;margin-top:8px;">キャンセル</button>
-</div></div>
+<div class="modal-overlay" id="scheduleModal"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-title">予定を追加</div><div class="form-group"><label class="form-label">日付</label><input type="date" class="form-input" id="schDate"></div><div class="form-group"><label class="form-label">内容</label><input type="text" class="form-input" id="schMemo" placeholder="例：紫苑さま商談"></div><div class="form-group" style="display:flex;justify-content:space-between;align-items:center;"><label class="form-label" style="margin:0;">全員に公開</label><label class="switch"><input type="checkbox" id="schPublic" checked><span class="switch-slider"></span></label></div><button class="btn-primary" onclick="submitSchedule()">追加する</button><button onclick="closeModal('scheduleModal')" style="width:100%;padding:14px;border:none;background:none;color:#86868b;font-size:14px;font-weight:600;margin-top:8px;">キャンセル</button></div></div>
+<div class="modal-overlay" id="assignModal"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-title">担当者を変更</div><div id="assignMemberList"></div><button onclick="closeModal('assignModal')" style="width:100%;padding:14px;border:none;background:none;color:#86868b;font-size:14px;font-weight:600;margin-top:8px;">キャンセル</button></div></div>
+<div class="modal-overlay" id="expenseModal"><div class="modal-sheet"><div class="modal-handle"></div><div class="modal-title">経費を申請する</div><div class="form-group"><label class="form-label">日付</label><input type="date" class="form-input" id="expDate"></div><div class="form-group"><label class="form-label">カテゴリ</label><select class="form-input" id="expCategory"><option value="交通費">交通費</option><option value="宿泊費">宿泊費</option><option value="飲食費">飲食費</option><option value="備品">備品</option><option value="その他">その他</option></select></div><div class="form-group"><label class="form-label">金額</label><input type="number" class="form-input" id="expAmount" placeholder="¥"></div><div class="form-group"><label class="form-label">内容</label><input type="text" class="form-input" id="expDesc" placeholder="例：福井→金沢 往復"></div><button class="btn-primary" onclick="submitExpense()">申請する</button><button onclick="closeModal('expenseModal')" style="width:100%;padding:14px;border:none;background:none;color:#86868b;font-size:14px;font-weight:600;margin-top:8px;">キャンセル</button></div></div>
 
 <script>
-var supabase,currentMember=null;
-var members=[],prospects=[],schedules=[],expenses=[],evaluations=[];
+var supabase,currentMember=null,members=[],prospects=[],schedules=[],expenses=[],evaluations=[];
 var SUPABASE_URL='https://osyysvompcfuadlnuojs.supabase.co';
 var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zeXlzdm9tcGNmdWFkbG51b2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjYzODQsImV4cCI6MjA4MzY0MjM4NH0.6GkJnnULLFH0Ep2q7IzkV5O4XNlpy8vDEB2GNM7b0w4';
 var MEMBER_COLORS=['blue','green','amber','rose','purple'];
-var COLOR_MAP={blue:{bg:'#dbeafe',text:'#2563eb',dot:'#2563eb'},green:{bg:'#dcfce7',text:'#16a34a',dot:'#16a34a'},amber:{bg:'#fef3c7',text:'#d97706',dot:'#d97706'},rose:{bg:'#ffe4e6',text:'#e11d48',dot:'#e11d48'},purple:{bg:'#ede9fe',text:'#7c3aed',dot:'#7c3aed'}};
-var STATUS_COLORS={'アポ済':{bg:'#ede9fe',c:'#6366f1'},'訪問済み':{bg:'#dbeafe',c:'#2563eb'},'商談中':{bg:'#fef3c7',c:'#d97706'},'見込み':{bg:'#fef3c7',c:'#d97706'},'成約':{bg:'#d1fae5',c:'#059669'},'見送り':{bg:'#fee2e2',c:'#dc2626'},'未訪問':{bg:'#f3f4f6',c:'#6b7280'}};
+var COLOR_MAP={blue:{bg:'rgba(10,132,255,0.1)',text:'#0a84ff',dot:'#0a84ff'},green:{bg:'rgba(52,199,89,0.1)',text:'#34c759',dot:'#34c759'},amber:{bg:'rgba(255,159,10,0.1)',text:'#ff9f0a',dot:'#ff9f0a'},rose:{bg:'rgba(255,55,95,0.1)',text:'#ff375f',dot:'#ff375f'},purple:{bg:'rgba(175,82,222,0.1)',text:'#af52de',dot:'#af52de'}};
+var STATUS_COLORS={'アポ済':{bg:'rgba(175,82,222,0.1)',c:'#af52de'},'訪問済み':{bg:'rgba(10,132,255,0.1)',c:'#0a84ff'},'商談中':{bg:'rgba(255,159,10,0.1)',c:'#ff9f0a'},'見込み':{bg:'rgba(255,159,10,0.1)',c:'#ff9f0a'},'成約':{bg:'rgba(52,199,89,0.1)',c:'#34c759'},'見送り':{bg:'rgba(255,69,58,0.1)',c:'#ff453a'},'未訪問':{bg:'rgba(142,142,147,0.1)',c:'#8e8e93'}};
 var REGIONS={'北海道':['北海道'],'東北':['青森県','岩手県','宮城県','秋田県','山形県','福島県'],'関東':['東京都','神奈川県','埼玉県','千葉県','茨城県','栃木県','群馬県'],'北陸':['新潟県','富山県','石川県','福井県'],'東海':['山梨県','長野県','岐阜県','静岡県','愛知県','三重県'],'関西':['滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県'],'中国':['鳥取県','島根県','岡山県','広島県','山口県'],'四国':['徳島県','香川県','愛媛県','高知県'],'九州':['福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県']};
-
 var currentTab='home',calDate=new Date(),selectedDate=new Date().toISOString().split('T')[0];
 var visitSearch='',visitFilterStatus='',visitFilterRegion='',visitFilterMember='',visitSortDate=false;
 var scheduleScope='all',reviewResult='',assignProspectId=null;
 
-// ===== HELPERS =====
-function getMemberColor(mid){var i=members.findIndex(function(m){return m.id===mid});return COLOR_MAP[MEMBER_COLORS[i%MEMBER_COLORS.length]]||COLOR_MAP.blue;}
-function getMemberColorClass(mid){var i=members.findIndex(function(m){return m.id===mid});return 'mc-'+(MEMBER_COLORS[i%MEMBER_COLORS.length]||'blue');}
-function getMemberName(mid){var m=members.find(function(x){return x.id===mid});return m?m.name:'';}
+function mc(mid){var i=members.findIndex(function(m){return m.id===mid});return COLOR_MAP[MEMBER_COLORS[i%MEMBER_COLORS.length]]||COLOR_MAP.blue;}
+function mcc(mid){var i=members.findIndex(function(m){return m.id===mid});return'mc-'+(MEMBER_COLORS[i%MEMBER_COLORS.length]||'blue');}
+function mn(mid){var m=members.find(function(x){return x.id===mid});return m?m.name:'';}
 function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
 function pad(n){return String(n).padStart(2,'0');}
-function dstr(y,m,d){return y+'-'+pad(m)+'-'+pad(d);}
-function fmtDate(s){if(!s)return'-';var p=s.split('-');return parseInt(p[1])+'/'+parseInt(p[2]);}
-function getDow(s){return['日','月','火','水','木','金','土'][new Date(s).getDay()];}
-function getRegion(area){for(var r in REGIONS){if(REGIONS[r].indexOf(area)!==-1)return r;}return'';}
+function ds(y,m,d){return y+'-'+pad(m)+'-'+pad(d);}
+function fd(s){if(!s)return'-';var p=s.split('-');return parseInt(p[1])+'/'+parseInt(p[2]);}
+function gd(s){return['日','月','火','水','木','金','土'][new Date(s).getDay()];}
+function gr(a){for(var r in REGIONS){if(REGIONS[r].indexOf(a)!==-1)return r;}return'';}
 
-// ===== DATE PARSER: free text → YYYY-MM-DD =====
-function parseMeetingDate(text){
-  if(!text)return null;
-  // Already YYYY-MM-DD
-  var iso=/^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(text);
-  if(iso)return iso[1]+'-'+pad(parseInt(iso[2]))+'-'+pad(parseInt(iso[3]));
-  // "3月2日" or "3/2" or "03月02日"
-  var jp=/(\d{1,2})\s*[月\/]\s*(\d{1,2})\s*日?/.exec(text);
-  if(jp){
-    var m=parseInt(jp[1]),d=parseInt(jp[2]);
-    if(m>=1&&m<=12&&d>=1&&d<=31){
-      var y=new Date().getFullYear();
-      // If month is in the past, assume next year
-      var now=new Date();
-      if(m<now.getMonth()+1||(m===now.getMonth()+1&&d<now.getDate())){y++;}
-      return y+'-'+pad(m)+'-'+pad(d);
-    }
-  }
-  // "2/27" format
-  var slash=/^(\d{1,2})\/(\d{1,2})$/.exec(text.trim());
-  if(slash){
-    var m2=parseInt(slash[1]),d2=parseInt(slash[2]);
-    if(m2>=1&&m2<=12&&d2>=1&&d2<=31){
-      var y2=new Date().getFullYear();
-      return y2+'-'+pad(m2)+'-'+pad(d2);
-    }
-  }
-  return null; // cannot parse (e.g. "3月以降")
+function parseMD(t){
+  if(!t)return null;
+  var iso=/^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(t);if(iso)return iso[1]+'-'+pad(+iso[2])+'-'+pad(+iso[3]);
+  var jp=/(\d{1,2})\s*[月\/]\s*(\d{1,2})\s*日?/.exec(t);
+  if(jp){var m=+jp[1],d=+jp[2];if(m>=1&&m<=12&&d>=1&&d<=31){var y=new Date().getFullYear();var now=new Date();if(m<now.getMonth()+1||(m===now.getMonth()+1&&d<now.getDate()))y++;return y+'-'+pad(m)+'-'+pad(d);}}
+  var sl=/^(\d{1,2})\/(\d{1,2})$/.exec(t.trim());if(sl){var m2=+sl[1],d2=+sl[2];if(m2>=1&&m2<=12&&d2>=1&&d2<=31)return new Date().getFullYear()+'-'+pad(m2)+'-'+pad(d2);}
+  return null;
 }
+function buildAM(){var map={};prospects.forEach(function(p){var d=parseMD(p.meeting_date);if(d){if(!map[d])map[d]=[];map[d].push({co:p.company_name,time:p.meeting_time||'',to:p.assigned_to,id:p.id});}});return map;}
 
-// Build appointment date map from prospects
-function buildAppoMap(){
-  var map={}; // date → [{company, time, assigned_to, prospectId}]
-  prospects.forEach(function(p){
-    var parsed=parseMeetingDate(p.meeting_date);
-    if(parsed){
-      if(!map[parsed])map[parsed]=[];
-      map[parsed].push({company:p.company_name,time:p.meeting_time||'',assigned_to:p.assigned_to,prospectId:p.id,raw:p.meeting_date});
-    }
-  });
-  return map;
-}
-
-// ===== INIT =====
 window.onload=function(){
   supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
   var saved=localStorage.getItem('salesPortalMemberId');
-  if(saved){loadMembers(function(){loginAsMember(saved);});}
+  if(saved){loadMembers(function(){loginAs(saved);});}
   document.getElementById('loginName').onkeypress=function(e){if(e.key==='Enter')document.getElementById('loginPass').focus();};
   document.getElementById('loginPass').onkeypress=function(e){if(e.key==='Enter')doLogin();};
-  document.querySelectorAll('.bnav-btn').forEach(function(btn){btn.onclick=function(){switchTab(btn.dataset.tab);};});
+  document.querySelectorAll('.bnav-btn').forEach(function(b){b.onclick=function(){switchTab(b.dataset.tab);};});
 };
-function loadMembers(cb){supabase.from('sales_members').select('*').then(function(r){if(r.error)alert('DB error: '+r.error.message);members=r.data||[];if(cb)cb();});}
+function loadMembers(cb){supabase.from('sales_members').select('*').then(function(r){if(r.error)alert('DB: '+r.error.message);members=r.data||[];if(cb)cb();});}
 function doLogin(){
-  var name=document.getElementById('loginName').value.trim(),pw=document.getElementById('loginPass').value;
-  if(!name||!pw)return;
+  var name=document.getElementById('loginName').value.trim(),pw=document.getElementById('loginPass').value;if(!name||!pw)return;
   loadMembers(function(){
-    alert('メンバー数: '+members.length+'\n'+members.map(function(m){return '名前=['+m.name+'] pw=['+m.password+'] pw_hash=['+m.password_hash+']';}).join('\n'));
-    var found=members.find(function(m){return(m.name===name||m.name.indexOf(name)!==-1||name.indexOf(m.name)!==-1)&&(m.password===pw||m.password_hash===pw);});
-    if(found){localStorage.setItem('salesPortalMemberId',found.id);loginAsMember(found.id);}
-    else{document.getElementById('loginError').style.display='block';}
+    alert('メンバー数:'+members.length+'\n'+members.map(function(m){return m.name+'/'+m.password+'/'+m.password_hash;}).join('\n'));
+    var f=members.find(function(m){return(m.name===name||m.name.indexOf(name)!==-1||name.indexOf(m.name)!==-1)&&(m.password===pw||m.password_hash===pw);});
+    if(f){localStorage.setItem('salesPortalMemberId',f.id);loginAs(f.id);}else{document.getElementById('loginError').style.display='block';}
   });
 }
-function loginAsMember(id){
-  currentMember=members.find(function(m){return m.id===id;});
-  if(!currentMember){localStorage.removeItem('salesPortalMemberId');return;}
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('hdrBadge').className='hdr-badge '+getMemberColorClass(currentMember.id);
-  document.getElementById('hdrAvatar').textContent=currentMember.name.charAt(0);
-  document.getElementById('hdrName').textContent=currentMember.name;
-  loadAllData();
+function loginAs(id){
+  currentMember=members.find(function(m){return m.id===id;});if(!currentMember){localStorage.removeItem('salesPortalMemberId');return;}
+  document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';
+  document.getElementById('hdrBadge').className='hdr-badge '+mcc(currentMember.id);
+  document.getElementById('hdrAvatar').textContent=currentMember.name.charAt(0);document.getElementById('hdrName').textContent=currentMember.name;loadAllData();
 }
 function doLogout(){localStorage.removeItem('salesPortalMemberId');currentMember=null;document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('loginPass').value='';document.getElementById('loginName').value='';document.getElementById('loginError').style.display='none';}
 function loadAllData(){
@@ -363,349 +290,146 @@ function loadAllData(){
   supabase.from('sales_evaluations').select('*').eq('is_self_eval',true).order('eval_date',{ascending:false}).limit(50).then(function(r){evaluations=r.data||[];renderReview();});
 }
 function renderAll(){renderHome();renderVisits();renderSchedule();}
-function switchTab(tab){currentTab=tab;document.querySelectorAll('.bnav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.tab===tab);});document.querySelectorAll('.pg').forEach(function(p){p.classList.toggle('active',p.id==='pg-'+tab);});}
+function switchTab(t){currentTab=t;document.querySelectorAll('.bnav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.tab===t);});document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('active');});var el=document.getElementById('pg-'+t);if(el){el.style.opacity='0';el.style.transform='translateY(8px)';el.classList.add('active');requestAnimationFrame(function(){el.style.opacity='1';el.style.transform='translateY(0)';});}}
 
-// ========================================
-// HOME
-// ========================================
+// ===== HOME =====
 function renderHome(){
-  if(!currentMember)return;
-  var me=currentMember.id;
+  if(!currentMember)return;var me=currentMember.id;
   var myP=prospects.filter(function(p){return p.assigned_to===me;});
   var closed=myP.filter(function(p){return p.status==='成約';}).length;
   var nego=myP.filter(function(p){return p.status==='商談中';}).length;
   var appo=myP.filter(function(p){return p.status==='訪問済み'||p.status==='アポ済';}).length;
-  var now=new Date();
-  var dayNames=['日','月','火','水','木','金','土'];
-  var dateLabel=(now.getMonth()+1)+'月'+now.getDate()+'日（'+dayNames[now.getDay()]+'）';
-  var today=new Date().toISOString().split('T')[0];
-  var tomorrow=new Date(now.getTime()+86400000).toISOString().split('T')[0];
-  var appoMap=buildAppoMap();
-
-  var h='';
-  // Greeting
-  h+='<div style="padding:20px 16px 4px;"><div style="font-size:24px;font-weight:800;">'+esc(currentMember.name)+'さん</div>';
-  h+='<div style="font-size:13px;color:#999;margin-top:2px;">'+dateLabel+'</div></div>';
-
-  // ===== ALERT BANNER: upcoming appointments within 3 days =====
-  var upcoming3d=[];
-  for(var i=0;i<3;i++){
-    var d=new Date(now.getTime()+i*86400000).toISOString().split('T')[0];
-    if(appoMap[d]){
-      appoMap[d].forEach(function(a){upcoming3d.push({date:d,daysAway:i,company:a.company,time:a.time,assigned_to:a.assigned_to});});
-    }
-  }
-  // Also check all prospects for unparseable dates
-  var unparsed=prospects.filter(function(p){return p.meeting_date&&!parseMeetingDate(p.meeting_date);});
-
-  if(upcoming3d.length>0){
-    var urgentCount=upcoming3d.filter(function(a){return a.daysAway===0;}).length;
-    var soonCount=upcoming3d.length;
-    var bannerTitle=urgentCount>0?'🔴 今日のアポ '+urgentCount+'件':'⚠️ 直近のアポ '+soonCount+'件';
-    var bannerSub=upcoming3d.map(function(a){
-      var prefix=a.daysAway===0?'【今日】':a.daysAway===1?'【明日】':'【'+fmtDate(a.date)+'】';
-      return prefix+' '+a.company+(a.time?' '+a.time:'');
-    }).join('　');
-    h+='<div class="alert-banner"><div class="alert-icon">🔔</div><div class="alert-body"><div class="alert-title">'+bannerTitle+'</div><div class="alert-sub">'+esc(bannerSub)+'</div></div></div>';
-  }
-
-  // ===== TODAY / TOMORROW APPO CARDS =====
-  var todayAppos=appoMap[today]||[];
-  var tomorrowAppos=appoMap[tomorrow]||[];
-
-  todayAppos.forEach(function(a){
-    var dd=today.split('-');
-    h+='<div class="appo-card"><span class="appo-label today-label">TODAY</span>';
-    h+='<div class="appo-date-chip today-chip"><div class="appo-date-d">'+parseInt(dd[2])+'</div><div class="appo-date-w">'+getDow(today)+'</div></div>';
-    h+='<div class="appo-info"><div class="appo-company">'+esc(a.company)+'</div>';
-    h+='<div class="appo-time">'+(a.time?esc(a.time):'時間未定')+'</div></div></div>';
-  });
-  tomorrowAppos.forEach(function(a){
-    var dd=tomorrow.split('-');
-    h+='<div class="appo-card tomorrow"><span class="appo-label tomorrow-label">明日</span>';
-    h+='<div class="appo-date-chip tomorrow-chip"><div class="appo-date-d">'+parseInt(dd[2])+'</div><div class="appo-date-w">'+getDow(tomorrow)+'</div></div>';
-    h+='<div class="appo-info"><div class="appo-company">'+esc(a.company)+'</div>';
-    h+='<div class="appo-time">'+(a.time?esc(a.time):'時間未定')+'</div></div></div>';
-  });
-
+  var now=new Date(),dn=['日','月','火','水','木','金','土'];
+  var dl=(now.getMonth()+1)+'月'+now.getDate()+'日（'+dn[now.getDay()]+'）';
+  var today=now.toISOString().split('T')[0],tmrw=new Date(now.getTime()+864e5).toISOString().split('T')[0];
+  var am=buildAM(),h='';
+  h+='<div style="padding:24px 20px 8px;"><div style="font-size:28px;font-weight:900;letter-spacing:-0.5px;">'+esc(currentMember.name)+'さん</div>';
+  h+='<div style="font-size:14px;color:#86868b;margin-top:3px;font-weight:500;">'+dl+'</div></div>';
+  // Alert
+  var u3=[];for(var i=0;i<3;i++){var dd=new Date(now.getTime()+i*864e5).toISOString().split('T')[0];if(am[dd])am[dd].forEach(function(a){u3.push({d:dd,i:i,co:a.co,time:a.time});});}
+  if(u3.length>0){var uc=u3.filter(function(a){return a.i===0;}).length;h+='<div class="alert-banner"><div class="alert-icon">🔔</div><div class="alert-body"><div class="alert-title">'+(uc>0?'🔴 今日のアポ '+uc+'件':'⚠️ 直近のアポ '+u3.length+'件')+'</div><div class="alert-sub">'+u3.map(function(a){return(a.i===0?'【今日】':a.i===1?'【明日】':'【'+fd(a.d)+'】')+a.co+(a.time?' '+a.time:'');}).join('　')+'</div></div></div>';}
+  // Appo cards
+  (am[today]||[]).forEach(function(a){var dd=today.split('-');h+='<div class="appo-card"><span class="appo-label td">TODAY</span><div class="appo-chip td"><div class="appo-chip-d">'+parseInt(dd[2])+'</div><div class="appo-chip-w">'+gd(today)+'</div></div><div class="appo-info"><div class="appo-company">'+esc(a.co)+'</div><div class="appo-time">'+(a.time||'時間未定')+'</div></div></div>';});
+  (am[tmrw]||[]).forEach(function(a){var dd=tmrw.split('-');h+='<div class="appo-card tomorrow"><span class="appo-label tm">明日</span><div class="appo-chip tm"><div class="appo-chip-d">'+parseInt(dd[2])+'</div><div class="appo-chip-w">'+gd(tmrw)+'</div></div><div class="appo-info"><div class="appo-company">'+esc(a.co)+'</div><div class="appo-time">'+(a.time||'時間未定')+'</div></div></div>';});
   // Stats
-  h+='<div style="padding-top:16px;"><div class="stats">';
-  h+='<div class="stat-card"><div class="stat-val" style="color:#10b981;">'+closed+'</div><div class="stat-lbl">成約</div></div>';
-  h+='<div class="stat-card"><div class="stat-val" style="color:#f59e0b;">'+nego+'</div><div class="stat-lbl">商談中</div></div>';
-  h+='<div class="stat-card"><div class="stat-val" style="color:#6366f1;">'+appo+'</div><div class="stat-lbl">アポ済</div></div>';
-  h+='</div></div>';
-
-  // Calendar
-  h+=buildCalendar(calDate,selectedDate,true,appoMap);
-
-  // Selected date
-  var selD=selectedDate.split('-');
-  var selLabel=parseInt(selD[1])+'月'+parseInt(selD[2])+'日';
-  h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px;">';
-  h+='<div style="font-size:15px;font-weight:700;">'+selLabel+'の予定</div>';
-  h+='<button class="btn-sm" onclick="openAddSchedule(\''+selectedDate+'\')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg>追加</button></div>';
-
-  // Appointments on selected date
-  var selAppos=appoMap[selectedDate]||[];
-  selAppos.forEach(function(a){
-    h+='<div style="margin:0 16px 8px;padding:14px 16px;background:#fff;border-radius:16px;border-left:4px solid #ef4444;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">';
-    h+='<div style="font-size:13px;font-weight:800;color:#ef4444;width:50px;text-align:center;">'+(a.time||'--:--')+'</div>';
-    h+='<div style="flex:1;"><div style="font-weight:700;font-size:14px;">🏢 '+esc(a.company)+'</div>';
-    var mn=getMemberName(a.assigned_to);
-    if(mn) h+='<div style="font-size:11px;color:#999;margin-top:2px;">担当: '+esc(mn)+'</div>';
-    h+='</div></div>';
-  });
-
-  // Schedules on selected date
-  var selScheds=schedules.filter(function(s){return s.scheduled_date===selectedDate&&(s.member_id===me||(s.is_public!==false));});
-  selScheds.forEach(function(s){
-    var mc=getMemberColor(s.member_id);var mn=getMemberName(s.member_id);
-    var prospect=prospects.find(function(p){return p.id===s.prospect_id;});
-    var name=prospect?prospect.company_name:(s.memo||'予定');
-    h+='<div class="sch-card" style="border-left:4px solid '+mc.dot+';"><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+esc(name)+'</div>';
-    h+='<div style="font-size:11px;color:#999;margin-top:3px;">'+esc(mn)+(s.memo&&prospect?' ・ '+esc(s.memo):'')+'</div></div>';
-    if(s.is_public===false)h+='<span style="font-size:10px;color:#bbb;">🔒</span>';
-    h+='</div>';
-  });
-
-  if(selAppos.length===0&&selScheds.length===0){
-    h+='<div class="empty" style="margin-bottom:16px;">予定はありません</div>';
-  }
-
-  // Unparsed meeting dates warning
-  if(unparsed.length>0){
-    h+='<div style="margin:16px;padding:14px;background:#fefce8;border-radius:14px;border:1px solid #fde68a;">';
-    h+='<div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:6px;">📌 日付が確定していないアポ</div>';
-    unparsed.forEach(function(p){
-      h+='<div style="font-size:12px;color:#78350f;padding:2px 0;">'+esc(p.company_name)+' — <span style="font-weight:600;">'+esc(p.meeting_date)+'</span></div>';
-    });
-    h+='</div>';
-  }
-
+  h+='<div style="padding-top:20px;"><div class="stats"><div class="stat-card"><div class="stat-val" style="color:#34c759;">'+closed+'</div><div class="stat-lbl">成約</div></div><div class="stat-card"><div class="stat-val" style="color:#ff9f0a;">'+nego+'</div><div class="stat-lbl">商談中</div></div><div class="stat-card"><div class="stat-val" style="color:#0a84ff;">'+appo+'</div><div class="stat-lbl">アポ済</div></div></div></div>';
+  // Cal
+  h+=buildCal(calDate,selectedDate,'home',am);
+  // Sel date
+  var sd=selectedDate.split('-');h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px 10px;"><div style="font-size:17px;font-weight:700;letter-spacing:-0.3px;">'+parseInt(sd[1])+'月'+parseInt(sd[2])+'日</div><button class="btn-sm" onclick="openAddSch(\''+selectedDate+'\')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg>追加</button></div>';
+  var sa=am[selectedDate]||[];sa.forEach(function(a){h+='<div style="margin:0 16px 8px;padding:16px 18px;background:#fff;border-radius:14px;border-left:4px solid #ff453a;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);"><div style="font-size:14px;font-weight:800;color:#ff453a;width:50px;text-align:center;">'+(a.time||'--:--')+'</div><div style="flex:1;"><div style="font-weight:700;font-size:15px;">'+esc(a.co)+'</div>'+(a.to?'<div style="font-size:12px;color:#86868b;margin-top:2px;">'+esc(mn(a.to))+'</div>':'')+'</div></div>';});
+  var ss=schedules.filter(function(s){return s.scheduled_date===selectedDate&&(s.member_id===me||s.is_public!==false);});
+  ss.forEach(function(s){var c=mc(s.member_id);var pr=prospects.find(function(p){return p.id===s.prospect_id;});var nm=pr?pr.company_name:(s.memo||'予定');h+='<div class="sch-card" style="border-left:4px solid '+c.dot+';"><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+esc(nm)+'</div><div style="font-size:12px;color:#86868b;margin-top:3px;">'+esc(mn(s.member_id))+'</div></div>'+(s.is_public===false?'<span style="font-size:10px;color:#c7c7cc;">🔒</span>':'')+'</div>';});
+  if(!sa.length&&!ss.length)h+='<div class="empty">予定はありません</div>';
+  // Unparsed
+  var up=prospects.filter(function(p){return p.meeting_date&&!parseMD(p.meeting_date);});
+  if(up.length)h+='<div style="margin:16px;padding:16px;background:rgba(255,204,0,0.08);border-radius:14px;border:1px solid rgba(255,204,0,0.2);"><div style="font-size:13px;font-weight:700;color:#ff9f0a;margin-bottom:6px;">📌 日付未確定のアポ</div>'+up.map(function(p){return'<div style="font-size:13px;color:#3c3c43;padding:3px 0;">'+esc(p.company_name)+' — <b>'+esc(p.meeting_date)+'</b></div>';}).join('')+'</div>';
   document.getElementById('pg-home').innerHTML=h;
 }
-
-function buildCalendar(dt,selDate,isHome,appoMap){
-  var year=dt.getFullYear(),month=dt.getMonth()+1;
-  var today=new Date().toISOString().split('T')[0];
-  var prefix=isHome?'home':'sch';
-  appoMap=appoMap||buildAppoMap();
-  var h='<div class="cal-wrap"><div class="cal-nav">';
-  h+='<button class="cal-nav-btn" onclick="changeMonth(\''+prefix+'\',-1)"><svg width="16" height="16" fill="none" stroke="#333" stroke-width="2"><path d="M10 4l-4 4 4 4"/></svg></button>';
-  h+='<div style="font-weight:700;font-size:15px;">'+year+'年'+month+'月</div>';
-  h+='<button class="cal-nav-btn" onclick="changeMonth(\''+prefix+'\',1)"><svg width="16" height="16" fill="none" stroke="#333" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg></button>';
-  h+='</div><div class="cal-grid">';
+function buildCal(dt,sel,pfx,am){
+  var y=dt.getFullYear(),m=dt.getMonth()+1,today=new Date().toISOString().split('T')[0];am=am||buildAM();
+  var h='<div class="cal-wrap"><div class="cal-nav"><button class="cal-nav-btn" onclick="chMo(\''+pfx+'\',-1)"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3l-4 4 4 4"/></svg></button><div style="font-weight:700;font-size:16px;">'+y+'年'+m+'月</div><button class="cal-nav-btn" onclick="chMo(\''+pfx+'\',1)"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3l4 4-4 4"/></svg></button></div><div class="cal-grid">';
   ['日','月','火','水','木','金','土'].forEach(function(d,i){h+='<div class="cal-hdr'+(i===0?' sun':'')+(i===6?' sat':'')+'">'+d+'</div>';});
-  var firstDow=new Date(year,month-1,1).getDay();
-  var daysInMonth=new Date(year,month,0).getDate();
-  for(var i=0;i<firstDow;i++)h+='<div></div>';
-  for(var d=1;d<=daysInMonth;d++){
-    var ds=dstr(year,month,d);
-    var isToday=ds===today;
-    var isSel=ds===selDate;
-    var hasAppo=!!appoMap[ds];
-    var dayS=schedules.filter(function(s){return s.scheduled_date===ds;});
-    var uniq=[];dayS.forEach(function(s){if(uniq.indexOf(s.member_id)===-1)uniq.push(s.member_id);});
-    var cls='cal-day';
-    if(hasAppo)cls+=' has-appo';
-    if(isToday)cls+=' today';
-    if(isSel&&!isToday)cls+=' selected';
-    h+='<div class="'+cls+'" onclick="selectDate(\''+prefix+'\',\''+ds+'\')">';
-    if(hasAppo&&!isToday)h+='<div class="cal-appo-dot"></div>';
-    h+=d;
-    if(uniq.length>0&&!hasAppo){h+='<div class="cal-dots">';uniq.slice(0,3).forEach(function(mid){var dc=isToday?'#c9a962':getMemberColor(mid).dot;h+='<div class="cal-dot" style="background:'+dc+';"></div>';});h+='</div>';}
-    h+='</div>';
-  }
-  h+='</div></div>';
-  return h;
+  var fw=new Date(y,m-1,1).getDay(),dm=new Date(y,m,0).getDate();
+  for(var i=0;i<fw;i++)h+='<div></div>';
+  for(var d=1;d<=dm;d++){var s=ds(y,m,d),it=s===today,is=s===sel,ha=!!am[s];
+    var cl='cal-day';if(ha)cl+=' has-appo';if(it)cl+=' today';if(is&&!it)cl+=' selected';
+    h+='<div class="'+cl+'" onclick="selD(\''+pfx+'\',\''+s+'\')">';if(ha&&!it)h+='<div class="cal-appo-mark"></div>';h+=d;
+    var dS=schedules.filter(function(x){return x.scheduled_date===s;});var uq=[];dS.forEach(function(x){if(uq.indexOf(x.member_id)===-1)uq.push(x.member_id);});
+    if(uq.length&&!ha){h+='<div class="cal-dots">';uq.slice(0,3).forEach(function(mid){h+='<div class="cal-dot" style="background:'+(it?'rgba(255,255,255,0.6)':mc(mid).dot)+';"></div>';});h+='</div>';}
+    h+='</div>';}
+  h+='</div></div>';return h;
 }
+function chMo(p,d){calDate.setMonth(calDate.getMonth()+d);p==='home'?renderHome():renderSchedule();}
+function selD(p,d){selectedDate=d;p==='home'?renderHome():renderSchedule();}
+function openAddSch(d){document.getElementById('schDate').value=d||new Date().toISOString().slice(0,10);document.getElementById('schMemo').value='';document.getElementById('schPublic').checked=true;openModal('scheduleModal');}
+function submitSchedule(){var d=document.getElementById('schDate').value,m=document.getElementById('schMemo').value,p=document.getElementById('schPublic').checked;if(!d||!m){alert('日付と内容を入力');return;}supabase.from('sales_schedules').insert({member_id:currentMember.id,scheduled_date:d,memo:m,is_public:p}).then(function(r){if(r.error){alert(r.error.message);return;}closeModal('scheduleModal');supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r2){schedules=r2.data||[];renderAll();});});}
 
-function changeMonth(prefix,delta){calDate.setMonth(calDate.getMonth()+delta);if(prefix==='home')renderHome();else renderSchedule();}
-function selectDate(prefix,ds){selectedDate=ds;if(prefix==='home')renderHome();else renderSchedule();}
-function openAddSchedule(ds){document.getElementById('schDate').value=ds||new Date().toISOString().slice(0,10);document.getElementById('schMemo').value='';document.getElementById('schPublic').checked=true;openModal('scheduleModal');}
-function submitSchedule(){
-  var d=document.getElementById('schDate').value,memo=document.getElementById('schMemo').value,pub=document.getElementById('schPublic').checked;
-  if(!d||!memo){alert('日付と内容を入力してください');return;}
-  supabase.from('sales_schedules').insert({member_id:currentMember.id,scheduled_date:d,memo:memo,is_public:pub}).then(function(r){
-    if(r.error){alert('エラー: '+r.error.message);return;}
-    closeModal('scheduleModal');
-    supabase.from('sales_schedules').select('*').order('scheduled_date',{ascending:true}).then(function(r2){schedules=r2.data||[];renderAll();});
-  });
-}
-
-// ========================================
-// VISITS
-// ========================================
+// ===== VISITS =====
 function renderVisits(){
-  if(!currentMember)return;
-  var h='<div class="filter-bar">';
-  h+='<div class="filter-search"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="4.5"/><path d="M11 11l3.5 3.5"/></svg><input type="text" placeholder="会社名で検索" value="'+esc(visitSearch)+'" oninput="visitSearch=this.value;renderVisits()"></div>';
-  h+='<div class="filter-pills">';
-  ['','アポ済','商談中','成約','見込み','未訪問'].forEach(function(s){h+='<button class="fpill '+(visitFilterStatus===s?'active':'')+'" onclick="setVF(\'status\',\''+s+'\')">'+(s||'すべて')+'</button>';});
-  h+='</div><div class="filter-pills">';
-  var regionLabel=visitFilterRegion||'エリア';
-  h+='<button class="fpill '+(visitFilterRegion?'active':'')+'" onclick="cycleRegion()">'+regionLabel+'</button>';
-  var memberLabel=visitFilterMember?getMemberName(visitFilterMember):'担当者';
-  h+='<button class="fpill '+(visitFilterMember?'active':'')+'" onclick="cycleMember()">'+esc(memberLabel)+'</button>';
-  h+='<button class="sort-btn '+(visitSortDate?'active':'')+'" onclick="visitSortDate=!visitSortDate;renderVisits()">商談日順</button>';
-  h+='</div></div>';
-
-  var filtered=prospects.filter(function(p){
-    if(visitSearch&&p.company_name.indexOf(visitSearch)===-1)return false;
-    if(visitFilterStatus&&p.status!==visitFilterStatus)return false;
-    if(visitFilterRegion&&getRegion(p.area)!==visitFilterRegion)return false;
-    if(visitFilterMember&&p.assigned_to!==visitFilterMember)return false;
-    return true;
-  });
-  if(visitSortDate){filtered.sort(function(a,b){var da=parseMeetingDate(a.meeting_date)||'9999';var db=parseMeetingDate(b.meeting_date)||'9999';return da.localeCompare(db);});}
-  h+='<div style="padding:0 16px 8px;font-size:12px;color:#999;font-weight:600;">'+filtered.length+'件</div>';
-  h+='<div class="visit-grid">';
-  if(filtered.length===0){h+='<div class="empty" style="margin:0;">該当する訪問先がありません</div>';}
-  else{filtered.forEach(function(p){
-    var mc=getMemberColor(p.assigned_to);var mn=getMemberName(p.assigned_to);
-    var sc=STATUS_COLORS[p.status]||STATUS_COLORS['未訪問'];
-    var memo=p.hearing_content||p.notes||'';
-    h+='<div class="vcard"><div class="vcard-top"><div class="vcard-name">'+esc(p.company_name)+'</div>';
-    h+='<span class="badge" style="background:'+sc.bg+';color:'+sc.c+';">'+esc(p.status||'未訪問')+'</span></div>';
-    h+='<div class="vcard-info">';
-    if(p.meeting_date)h+='<div class="vcard-row"><svg fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="12" height="10" rx="1.5"/><path d="M2 7h12M5 2v3M11 2v3"/></svg><span style="color:#ef4444;font-weight:700;">'+esc(p.meeting_date)+(p.meeting_time?' '+esc(p.meeting_time):'')+'</span></div>';
+  if(!currentMember)return;var h='<div class="filter-bar"><div class="filter-search"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="4.5"/><path d="M11 11l3.5 3.5"/></svg><input type="text" placeholder="会社名で検索" value="'+esc(visitSearch)+'" oninput="visitSearch=this.value;renderVisits()"></div>';
+  h+='<div class="filter-pills">';['','アポ済','商談中','成約','見込み','未訪問'].forEach(function(s){h+='<button class="fpill '+(visitFilterStatus===s?'active':'')+'" onclick="setVF(\''+s+'\')">'+(s||'すべて')+'</button>';});
+  h+='</div><div class="filter-pills"><button class="fpill '+(visitFilterRegion?'active':'')+'" onclick="cycR()">'+(visitFilterRegion||'エリア')+'</button>';
+  h+='<button class="fpill '+(visitFilterMember?'active':'')+'" onclick="cycM()">'+esc(visitFilterMember?mn(visitFilterMember):'担当者')+'</button>';
+  h+='<button class="sort-btn '+(visitSortDate?'active':'')+'" onclick="visitSortDate=!visitSortDate;renderVisits()">商談日順</button></div></div>';
+  var fl=prospects.filter(function(p){if(visitSearch&&p.company_name.indexOf(visitSearch)===-1)return false;if(visitFilterStatus&&p.status!==visitFilterStatus)return false;if(visitFilterRegion&&gr(p.area)!==visitFilterRegion)return false;if(visitFilterMember&&p.assigned_to!==visitFilterMember)return false;return true;});
+  if(visitSortDate)fl.sort(function(a,b){return(parseMD(a.meeting_date)||'9999').localeCompare(parseMD(b.meeting_date)||'9999');});
+  h+='<div style="padding:2px 20px 10px;font-size:13px;color:#86868b;font-weight:600;">'+fl.length+'件</div><div class="visit-grid">';
+  if(!fl.length)h+='<div class="empty" style="margin:0;">該当なし</div>';
+  else fl.forEach(function(p){var c=mc(p.assigned_to),n=mn(p.assigned_to),sc=STATUS_COLORS[p.status]||STATUS_COLORS['未訪問'],memo=p.hearing_content||p.notes||'';
+    h+='<div class="vcard"><div class="vcard-top"><div class="vcard-name">'+esc(p.company_name)+'</div><span class="badge" style="background:'+sc.bg+';color:'+sc.c+';">'+esc(p.status||'未訪問')+'</span></div><div class="vcard-info">';
+    if(p.meeting_date)h+='<div class="vcard-row"><svg fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="12" height="10" rx="1.5"/><path d="M2 7h12M5 2v3M11 2v3"/></svg><span style="color:#ff453a;font-weight:700;">'+esc(p.meeting_date)+(p.meeting_time?' '+esc(p.meeting_time):'')+'</span></div>';
     if(p.phone)h+='<div class="vcard-row"><svg fill="none" stroke="currentColor" stroke-width="2"><path d="M3 1.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a1 1 0 0 1-1 1A14 14 0 0 1 2.5 3a1 1 0 0 1 1-1.5"/></svg><a href="tel:'+esc(p.phone)+'">'+esc(p.phone)+'</a></div>';
-    if(p.address)h+='<div class="vcard-row"><svg fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1C5 1 2.5 3.5 2.5 6.5S8 15 8 15s5.5-5 5.5-8.5S11 1 8 1z"/><circle cx="8" cy="6.5" r="1.5"/></svg><a href="https://www.google.com/maps/search/'+encodeURIComponent(p.address)+'" target="_blank" style="font-size:11px;">'+esc(p.address)+' ↗</a></div>';
+    if(p.address)h+='<div class="vcard-row"><svg fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1C5 1 2.5 3.5 2.5 6.5S8 15 8 15s5.5-5 5.5-8.5S11 1 8 1z"/><circle cx="8" cy="6.5" r="1.5"/></svg><a href="https://www.google.com/maps/search/'+encodeURIComponent(p.address)+'" target="_blank" style="font-size:12px;">'+esc(p.address)+' ↗</a></div>';
     if(p.contact_person)h+='<div class="vcard-row"><svg fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="5" r="3"/><path d="M2 15c0-3 3-5 6-5s6 2 6 5"/></svg>'+esc(p.contact_person)+'</div>';
-    h+='</div>';
-    if(memo)h+='<div class="vcard-memo" onclick="toggleVDetail(\''+p.id+'\')">'+esc(memo)+'</div>';
-    h+='<div class="vcard-footer">';
-    if(p.assigned_to&&mn){h+='<div class="vcard-assign"><div class="vcard-assign-avatar" style="background:'+mc.dot+';">'+esc(mn.charAt(0))+'</div><div class="vcard-assign-name">'+esc(mn)+'</div></div>';h+='<button class="assign-btn" onclick="openAssign(\''+p.id+'\')">変更</button>';}
-    else{h+='<div style="font-size:12px;color:#bbb;">担当未定</div>';h+='<button class="assign-btn" onclick="selfAssign(\''+p.id+'\')" style="border-style:solid;border-color:#6366f1;color:#6366f1;">🙋 行きます</button>';}
-    h+='</div>';
-    h+='<div class="vcard-detail" id="vd-'+p.id+'">';
-    if(p.website_url)h+='<div class="vcard-detail-row"><span style="color:#999;">HP</span><a href="'+esc(p.website_url)+'" target="_blank" style="color:#6366f1;font-size:12px;">'+esc(p.website_url)+'</a></div>';
-    if(p.email)h+='<div class="vcard-detail-row"><span style="color:#999;">メール</span><a href="mailto:'+esc(p.email)+'" style="color:#6366f1;font-size:12px;">'+esc(p.email)+'</a></div>';
-    if(p.area)h+='<div class="vcard-detail-row"><span style="color:#999;">エリア</span><span>'+esc(getRegion(p.area))+' / '+esc(p.area)+'</span></div>';
+    h+='</div>';if(memo)h+='<div class="vcard-memo" onclick="tVD(\''+p.id+'\')">'+esc(memo)+'</div>';
+    h+='<div class="vcard-footer">';if(p.assigned_to&&n){h+='<div class="vcard-assign"><div class="vcard-assign-avatar" style="background:'+c.dot+';">'+esc(n.charAt(0))+'</div><div class="vcard-assign-name">'+esc(n)+'</div></div><button class="assign-btn" onclick="openAssign(\''+p.id+'\')">変更</button>';}
+    else{h+='<div style="font-size:13px;color:#c7c7cc;">担当未定</div><button class="assign-btn" onclick="selfA(\''+p.id+'\')" style="border-style:solid;border-color:#0a84ff;color:#0a84ff;">🙋 行きます</button>';}
+    h+='</div><div class="vcard-detail" id="vd-'+p.id+'">';
+    if(p.website_url)h+='<div class="vcard-detail-row"><span style="color:#86868b;">HP</span><a href="'+esc(p.website_url)+'" target="_blank" style="color:#0a84ff;font-size:13px;">'+esc(p.website_url)+'</a></div>';
+    if(p.email)h+='<div class="vcard-detail-row"><span style="color:#86868b;">メール</span><a href="mailto:'+esc(p.email)+'" style="color:#0a84ff;font-size:13px;">'+esc(p.email)+'</a></div>';
+    if(p.area)h+='<div class="vcard-detail-row"><span style="color:#86868b;">エリア</span><span>'+esc(gr(p.area))+' / '+esc(p.area)+'</span></div>';
     if(memo)h+='<div class="vcard-full-memo">'+esc(memo)+'</div>';
-    h+='</div></div>';
-  });}
-  h+='</div>';
-  document.getElementById('pg-visits').innerHTML=h;
+    h+='</div></div>';});
+  h+='</div>';document.getElementById('pg-visits').innerHTML=h;
 }
-function setVF(type,val){if(type==='status')visitFilterStatus=visitFilterStatus===val?'':val;renderVisits();}
-function cycleRegion(){var k=Object.keys(REGIONS);var i=k.indexOf(visitFilterRegion);visitFilterRegion=i>=k.length-1?'':k[i+1];renderVisits();}
-function cycleMember(){var ids=members.map(function(m){return m.id;});var i=ids.indexOf(visitFilterMember);visitFilterMember=i>=ids.length-1?'':ids[i+1];renderVisits();}
-function toggleVDetail(id){var el=document.getElementById('vd-'+id);if(el)el.classList.toggle('open');}
-function selfAssign(pid){supabase.from('sales_prospects').update({assigned_to:currentMember.id}).eq('id',pid).then(function(r){if(r.error){alert('エラー: '+r.error.message);return;}var p=prospects.find(function(x){return x.id===pid;});if(p)p.assigned_to=currentMember.id;renderVisits();renderHome();});}
-function openAssign(pid){
-  assignProspectId=pid;var h='';
-  members.forEach(function(m){var mc=getMemberColor(m.id);h+='<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f0f0f5;cursor:pointer;" onclick="doAssign(\''+m.id+'\')"><div style="width:36px;height:36px;border-radius:50%;background:'+mc.dot+';display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;">'+esc(m.name.charAt(0))+'</div><div style="font-weight:600;font-size:14px;">'+esc(m.name)+'</div></div>';});
-  h+='<div style="display:flex;align-items:center;gap:14px;padding:14px 0;cursor:pointer;" onclick="doAssign(null)"><div style="width:36px;height:36px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#999;font-size:14px;">✕</div><div style="font-weight:600;font-size:14px;color:#999;">担当を外す</div></div>';
+function setVF(v){visitFilterStatus=visitFilterStatus===v?'':v;renderVisits();}
+function cycR(){var k=Object.keys(REGIONS),i=k.indexOf(visitFilterRegion);visitFilterRegion=i>=k.length-1?'':k[i+1];renderVisits();}
+function cycM(){var ids=members.map(function(m){return m.id;}),i=ids.indexOf(visitFilterMember);visitFilterMember=i>=ids.length-1?'':ids[i+1];renderVisits();}
+function tVD(id){var e=document.getElementById('vd-'+id);if(e)e.classList.toggle('open');}
+function selfA(pid){supabase.from('sales_prospects').update({assigned_to:currentMember.id}).eq('id',pid).then(function(r){if(r.error){alert(r.error.message);return;}var p=prospects.find(function(x){return x.id===pid;});if(p)p.assigned_to=currentMember.id;renderVisits();renderHome();});}
+function openAssign(pid){assignProspectId=pid;var h='';members.forEach(function(m){var c=mc(m.id);h+='<div style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:0.5px solid rgba(0,0,0,0.06);cursor:pointer;" onclick="doA(\''+m.id+'\')"><div style="width:38px;height:38px;border-radius:50%;background:'+c.dot+';display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;">'+esc(m.name.charAt(0))+'</div><div style="font-weight:600;font-size:16px;">'+esc(m.name)+'</div></div>';});
+  h+='<div style="display:flex;align-items:center;gap:14px;padding:16px 0;cursor:pointer;" onclick="doA(null)"><div style="width:38px;height:38px;border-radius:50%;background:#f2f2f7;display:flex;align-items:center;justify-content:center;color:#86868b;font-size:16px;">✕</div><div style="font-weight:600;font-size:16px;color:#86868b;">担当を外す</div></div>';
   document.getElementById('assignMemberList').innerHTML=h;openModal('assignModal');
 }
-function doAssign(mid){supabase.from('sales_prospects').update({assigned_to:mid}).eq('id',assignProspectId).then(function(r){if(r.error){alert('エラー: '+r.error.message);return;}var p=prospects.find(function(x){return x.id===assignProspectId;});if(p)p.assigned_to=mid;closeModal('assignModal');renderVisits();renderHome();});}
+function doA(mid){supabase.from('sales_prospects').update({assigned_to:mid}).eq('id',assignProspectId).then(function(r){if(r.error){alert(r.error.message);return;}var p=prospects.find(function(x){return x.id===assignProspectId;});if(p)p.assigned_to=mid;closeModal('assignModal');renderVisits();renderHome();});}
 
-// ========================================
-// SCHEDULE
-// ========================================
+// ===== SCHEDULE =====
 function renderSchedule(){
-  if(!currentMember)return;
-  var today=new Date().toISOString().split('T')[0];
-  var appoMap=buildAppoMap();
-  var h='<div class="section-title" style="display:flex;justify-content:space-between;align-items:center;"><span>スケジュール</span>';
-  h+='<div class="toggle-wrap"><button class="toggle-btn '+(scheduleScope==='mine'?'active':'')+'" onclick="scheduleScope=\'mine\';renderSchedule()">自分</button><button class="toggle-btn '+(scheduleScope==='all'?'active':'')+'" onclick="scheduleScope=\'all\';renderSchedule()">全員</button></div></div>';
-  if(scheduleScope==='all'){h+='<div style="display:flex;gap:10px;padding:0 16px 12px;flex-wrap:wrap;">';members.forEach(function(m){var c=getMemberColor(m.id);h+='<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#666;"><div style="width:10px;height:10px;border-radius:50%;background:'+c.dot+';"></div>'+esc(m.name)+'</div>';});h+='</div>';}
-
-  // Combine appointments + schedules
-  var allEvents=[];
-  // From prospects
-  for(var date in appoMap){
-    if(date<today)continue;
-    appoMap[date].forEach(function(a){allEvents.push({date:date,type:'appo',company:a.company,time:a.time,assigned_to:a.assigned_to});});
-  }
-  // From schedules
-  schedules.filter(function(s){
-    if(s.scheduled_date<today)return false;
-    if(scheduleScope==='mine')return s.member_id===currentMember.id;
-    return s.is_public!==false||s.member_id===currentMember.id;
-  }).forEach(function(s){
-    var prospect=prospects.find(function(p){return p.id===s.prospect_id;});
-    allEvents.push({date:s.scheduled_date,type:'schedule',name:prospect?prospect.company_name:(s.memo||'予定'),memo:s.memo,member_id:s.member_id,isPrivate:s.is_public===false});
-  });
-  allEvents.sort(function(a,b){return a.date.localeCompare(b.date);});
-
-  if(allEvents.length===0){h+='<div class="empty">予定はありません</div>';}
-  else{
-    allEvents.slice(0,30).forEach(function(e){
-      if(e.type==='appo'){
-        h+='<div class="sch-card" style="border-left:4px solid #ef4444;"><div class="sch-time" style="color:#ef4444;">'+fmtDate(e.date)+'</div>';
-        h+='<div style="flex:1;min-width:0;"><div style="font-weight:700;font-size:13px;">🏢 '+esc(e.company)+'</div>';
-        h+='<div style="font-size:11px;color:#999;margin-top:2px;">'+(e.time?esc(e.time):'時間未定')+' ・ '+esc(getMemberName(e.assigned_to))+'</div></div></div>';
-      }else{
-        var mc=getMemberColor(e.member_id);
-        h+='<div class="sch-card" style="border-left:4px solid '+mc.dot+';"><div class="sch-time">'+fmtDate(e.date)+'</div>';
-        h+='<div style="flex:1;min-width:0;"><div style="font-weight:700;font-size:13px;">'+esc(e.name)+'</div>';
-        h+='<div style="font-size:11px;color:#999;margin-top:2px;">'+esc(getMemberName(e.member_id))+'</div></div>';
-        if(e.isPrivate)h+='<span style="font-size:10px;color:#bbb;">🔒</span>';
-        h+='</div>';
-      }
-    });
-  }
+  if(!currentMember)return;var today=new Date().toISOString().split('T')[0],am=buildAM(),h='';
+  h+='<div class="s-title" style="display:flex;justify-content:space-between;align-items:center;">スケジュール<div class="toggle-wrap"><button class="toggle-btn '+(scheduleScope==='mine'?'active':'')+'" onclick="scheduleScope=\'mine\';renderSchedule()">自分</button><button class="toggle-btn '+(scheduleScope==='all'?'active':'')+'" onclick="scheduleScope=\'all\';renderSchedule()">全員</button></div></div>';
+  if(scheduleScope==='all'){h+='<div style="display:flex;gap:12px;padding:0 20px 14px;flex-wrap:wrap;">';members.forEach(function(m){var c=mc(m.id);h+='<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#3c3c43;font-weight:500;"><div style="width:10px;height:10px;border-radius:50%;background:'+c.dot+';"></div>'+esc(m.name)+'</div>';});h+='</div>';}
+  var all=[];for(var d in am){if(d<today)continue;am[d].forEach(function(a){all.push({d:d,type:'a',co:a.co,time:a.time,to:a.to});});}
+  schedules.filter(function(s){if(s.scheduled_date<today)return false;if(scheduleScope==='mine')return s.member_id===currentMember.id;return s.is_public!==false||s.member_id===currentMember.id;}).forEach(function(s){var pr=prospects.find(function(p){return p.id===s.prospect_id;});all.push({d:s.scheduled_date,type:'s',nm:pr?pr.company_name:(s.memo||'予定'),mid:s.member_id,priv:s.is_public===false});});
+  all.sort(function(a,b){return a.d.localeCompare(b.d);});
+  if(!all.length)h+='<div class="empty">予定はありません</div>';
+  else all.slice(0,30).forEach(function(e){if(e.type==='a'){h+='<div class="sch-card" style="border-left:4px solid #ff453a;"><div class="sch-time" style="color:#ff453a;">'+fd(e.d)+'</div><div style="flex:1;min-width:0;"><div style="font-weight:700;font-size:14px;">'+esc(e.co)+'</div><div style="font-size:12px;color:#86868b;margin-top:2px;">'+(e.time||'時間未定')+' ・ '+esc(mn(e.to))+'</div></div></div>';}else{var c=mc(e.mid);h+='<div class="sch-card" style="border-left:4px solid '+c.dot+';"><div class="sch-time">'+fd(e.d)+'</div><div style="flex:1;min-width:0;"><div style="font-weight:700;font-size:14px;">'+esc(e.nm)+'</div><div style="font-size:12px;color:#86868b;margin-top:2px;">'+esc(mn(e.mid))+'</div></div>'+(e.priv?'<span style="font-size:10px;color:#c7c7cc;">🔒</span>':'')+'</div>';}});
   document.getElementById('pg-schedule').innerHTML=h;
 }
 
-// ========================================
-// REVIEW
-// ========================================
+// ===== REVIEW (filtered to own prospects only) =====
 function renderReview(){
   if(!currentMember)return;
   var myP=prospects.filter(function(p){return p.assigned_to===currentMember.id;});
-  var myEvals=evaluations.filter(function(e){return e.member_id===currentMember.id;});
-  var h='<div class="section-title">振り返り</div><div class="section-pad"><div class="card" style="padding:20px;">';
-  h+='<div style="font-size:14px;font-weight:700;margin-bottom:16px;">商談を記録する</div>';
-  h+='<div class="form-group"><label class="form-label">商談先</label><select class="form-input" id="revCompany"><option value="">選択してください</option>';
+  var myE=evaluations.filter(function(e){return e.member_id===currentMember.id;});
+  var h='<div class="s-title">振り返り</div><div class="card"><div style="font-size:16px;font-weight:700;margin-bottom:18px;">商談を記録する</div>';
+  h+='<div class="form-group"><label class="form-label">商談先（自分の担当のみ）</label><select class="form-input" id="revCompany"><option value="">選択してください</option>';
   myP.forEach(function(p){h+='<option value="'+esc(p.company_name)+'">'+esc(p.company_name)+'</option>';});
   h+='</select></div>';
   h+='<div class="form-group"><label class="form-label">結果</label><div class="result-btns">';
   ['受注','見込み','継続','見送り'].forEach(function(r){h+='<button class="result-btn '+(reviewResult===r?'active':'')+'" onclick="reviewResult=\''+r+'\';renderReview()">'+r+'</button>';});
-  h+='</div></div>';
-  h+='<div class="form-group"><label class="form-label">日付</label><input type="date" class="form-input" id="revDate" value="'+new Date().toISOString().slice(0,10)+'"></div>';
+  h+='</div></div><div class="form-group"><label class="form-label">日付</label><input type="date" class="form-input" id="revDate" value="'+new Date().toISOString().slice(0,10)+'"></div>';
   h+='<div class="form-group"><label class="form-label">メモ</label><textarea class="form-textarea" id="revMemo" placeholder="商談の要点、次のアクション..."></textarea></div>';
-  h+='<button class="btn-primary" onclick="submitReview()">記録する</button></div></div>';
-  h+='<div class="section-title">履歴</div>';
-  if(myEvals.length===0){h+='<div class="empty">まだ記録がありません</div>';}
-  else{myEvals.forEach(function(e){var rc={'受注':'#10b981','見込み':'#f59e0b','継続':'#6366f1','見送り':'#ef4444'};var c=rc[e.result]||'#999';h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0 16px 8px;"><div><div style="font-weight:600;font-size:13px;">'+esc(e.company_name||'-')+'</div><div style="font-size:11px;color:#999;margin-top:2px;">'+esc(e.eval_date)+'</div></div><span class="badge" style="background:'+c+'22;color:'+c+';">'+esc(e.result||'-')+'</span></div>';});}
+  h+='<button class="btn-primary" onclick="submitReview()">記録する</button></div>';
+  h+='<div class="s-title" style="font-size:20px;">履歴</div>';
+  if(!myE.length)h+='<div class="empty">まだ記録がありません</div>';
+  else myE.forEach(function(e){var rc={'受注':'#34c759','見込み':'#ff9f0a','継続':'#0a84ff','見送り':'#ff453a'};var c=rc[e.result]||'#8e8e93';h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-weight:700;font-size:15px;">'+esc(e.company_name||'-')+'</div><div style="font-size:12px;color:#86868b;margin-top:3px;">'+esc(e.eval_date)+(e.comment?' ・ '+esc(e.comment.substring(0,30)):'')+'</div></div><span class="badge" style="background:'+c+'18;color:'+c+';">'+esc(e.result||'-')+'</span></div>';});
   document.getElementById('pg-review').innerHTML=h;
 }
-function submitReview(){
-  var company=document.getElementById('revCompany').value,evalDate=document.getElementById('revDate').value,memo=document.getElementById('revMemo').value;
-  if(!company||!reviewResult){alert('商談先と結果を選択してください');return;}
-  supabase.from('sales_evaluations').insert({member_id:currentMember.id,company_name:company,eval_date:evalDate,result:reviewResult,comment:memo,total_score:0,scores:'{}',is_self_eval:true}).then(function(r){
-    if(r.error){alert('保存に失敗: '+r.error.message);return;}
-    alert('記録しました');reviewResult='';loadAllData();
-  });
-}
+function submitReview(){var co=document.getElementById('revCompany').value,dt=document.getElementById('revDate').value,me=document.getElementById('revMemo').value;if(!co||!reviewResult){alert('商談先と結果を選択');return;}supabase.from('sales_evaluations').insert({member_id:currentMember.id,company_name:co,eval_date:dt,result:reviewResult,comment:me,total_score:0,scores:'{}',is_self_eval:true}).then(function(r){if(r.error){alert(r.error.message);return;}alert('記録しました');reviewResult='';loadAllData();});}
 
-// ========================================
-// EXPENSE
-// ========================================
+// ===== EXPENSE =====
 function renderExpense(){
-  if(!currentMember)return;
-  var myExp=expenses.filter(function(e){return e.member_id===currentMember.id;});
-  var pendingAmt=myExp.filter(function(e){return e.status==='申請中';}).reduce(function(s,e){return s+(e.amount||0);},0);
-  var approvedAmt=myExp.filter(function(e){return e.status==='承認';}).reduce(function(s,e){return s+(e.amount||0);},0);
-  var h='<div class="section-title" style="display:flex;justify-content:space-between;align-items:center;"><span>経費</span>';
-  h+='<button class="btn-sm" onclick="document.getElementById(\'expDate\').value=new Date().toISOString().slice(0,10);openModal(\'expenseModal\')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg>申請する</button></div>';
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:16px;">';
-  h+='<div class="stat-card"><div class="stat-val" style="font-size:22px;color:#f59e0b;">¥'+pendingAmt.toLocaleString()+'</div><div class="stat-lbl">申請中</div></div>';
-  h+='<div class="stat-card"><div class="stat-val" style="font-size:22px;color:#10b981;">¥'+approvedAmt.toLocaleString()+'</div><div class="stat-lbl">承認済</div></div></div>';
-  if(myExp.length===0){h+='<div class="empty">経費申請はありません</div>';}
-  else{myExp.forEach(function(e){var isPending=e.status==='申請中';var iconBg=isPending?'#fef3c7':(e.status==='承認'?'#d1fae5':'#fee2e2');var iconColor=isPending?'#d97706':(e.status==='承認'?'#059669':'#dc2626');h+='<div class="exp-item"><div class="exp-icon" style="background:'+iconBg+';"><svg width="18" height="18" fill="none" stroke="'+iconColor+'" stroke-width="2" stroke-linecap="round">'+(isPending?'<circle cx="9" cy="9" r="6"/><path d="M9 6v3h2"/>':'<path d="M4 9l3 3 7-7"/>')+'</svg></div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:13px;">'+esc(e.category)+'<span style="font-weight:400;color:#999;"> ・'+fmtDate(e.expense_date)+'</span></div><div style="font-size:12px;color:#999;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(e.description||'')+'</div></div><div style="font-weight:700;font-size:14px;flex-shrink:0;">¥'+(e.amount||0).toLocaleString()+'</div></div>';});}
+  if(!currentMember)return;var my=expenses.filter(function(e){return e.member_id===currentMember.id;});
+  var pa=my.filter(function(e){return e.status==='申請中';}).reduce(function(s,e){return s+(e.amount||0);},0);
+  var aa=my.filter(function(e){return e.status==='承認';}).reduce(function(s,e){return s+(e.amount||0);},0);
+  var h='<div class="s-title" style="display:flex;justify-content:space-between;align-items:center;">経費<button class="btn-sm" onclick="document.getElementById(\'expDate\').value=new Date().toISOString().slice(0,10);openModal(\'expenseModal\')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10"/></svg>申請</button></div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:16px;"><div class="stat-card"><div class="stat-val" style="font-size:24px;color:#ff9f0a;">¥'+pa.toLocaleString()+'</div><div class="stat-lbl">申請中</div></div><div class="stat-card"><div class="stat-val" style="font-size:24px;color:#34c759;">¥'+aa.toLocaleString()+'</div><div class="stat-lbl">承認済</div></div></div>';
+  if(!my.length)h+='<div class="empty">経費申請はありません</div>';
+  else my.forEach(function(e){var ip=e.status==='申請中';var ib=ip?'rgba(255,159,10,0.1)':(e.status==='承認'?'rgba(52,199,89,0.1)':'rgba(255,69,58,0.1)');var ic=ip?'#ff9f0a':(e.status==='承認'?'#34c759':'#ff453a');h+='<div class="exp-item"><div class="exp-icon" style="background:'+ib+';"><svg width="18" height="18" fill="none" stroke="'+ic+'" stroke-width="2" stroke-linecap="round">'+(ip?'<circle cx="9" cy="9" r="6"/><path d="M9 6v3h2"/>':'<path d="M4 9l3 3 7-7"/>')+'</svg></div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:14px;">'+esc(e.category)+'<span style="font-weight:400;color:#86868b;"> ・'+fd(e.expense_date)+'</span></div><div style="font-size:13px;color:#86868b;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(e.description||'')+'</div></div><div style="font-weight:800;font-size:15px;flex-shrink:0;">¥'+(e.amount||0).toLocaleString()+'</div></div>';});
   document.getElementById('pg-expense').innerHTML=h;
 }
-function submitExpense(){
-  var d=document.getElementById('expDate').value,cat=document.getElementById('expCategory').value,amt=parseInt(document.getElementById('expAmount').value)||0,desc=document.getElementById('expDesc').value;
-  if(!d||!amt){alert('日付と金額を入力してください');return;}
-  supabase.from('sales_expenses').insert({member_id:currentMember.id,expense_date:d,category:cat,amount:amt,description:desc,status:'申請中'}).then(function(r){
-    if(r.error){alert('申請に失敗: '+r.error.message);return;}alert('申請しました');closeModal('expenseModal');document.getElementById('expAmount').value='';document.getElementById('expDesc').value='';loadAllData();
-  });
-}
+function submitExpense(){var d=document.getElementById('expDate').value,c=document.getElementById('expCategory').value,a=parseInt(document.getElementById('expAmount').value)||0,desc=document.getElementById('expDesc').value;if(!d||!a){alert('日付と金額を入力');return;}supabase.from('sales_expenses').insert({member_id:currentMember.id,expense_date:d,category:c,amount:a,description:desc,status:'申請中'}).then(function(r){if(r.error){alert(r.error.message);return;}alert('申請しました');closeModal('expenseModal');document.getElementById('expAmount').value='';document.getElementById('expDesc').value='';loadAllData();});}
 function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 </script>
