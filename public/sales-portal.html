@@ -288,7 +288,7 @@ function doLogin() {
   var pw = document.getElementById('loginPass').value;
   if (!name || !pw) return;
   loadMembers(function() {
-    var found = members.find(function(m) { return m.name === name && m.password === pw; });
+    var found = members.find(function(m) { return (m.name === name || m.name.indexOf(name) !== -1 || name.indexOf(m.name) !== -1) && m.password === pw; });
     if (found) {
       localStorage.setItem('salesPortalMemberId', found.id);
       loginAsMember(found.id);
