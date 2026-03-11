@@ -93,8 +93,12 @@ export default function Home() {
 
     /* INTRO */
     const intro = document.getElementById('sk-intro')!;
-    intro.classList.add('hide');
-    intro.addEventListener('animationend', () => { intro.style.display = 'none'; });
+    const hideIntro = () => {
+      intro.style.opacity = '0';
+      intro.style.transition = 'opacity 0.5s';
+      setTimeout(() => { intro.style.display = 'none'; }, 500);
+    };
+    const introFallback = setTimeout(hideIntro, 3200);
 
     /* MAGNETIC BUTTON */
     document.querySelectorAll<HTMLElement>('.sk-btn-p').forEach(btn => {
@@ -191,7 +195,7 @@ export default function Home() {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', onScroll);
-      clearTimeout(st1); clearTimeout(t2); clearTimeout(t3);
+      clearTimeout(st1); clearTimeout(t2); clearTimeout(t3); clearTimeout(introFallback);
       clearInterval(iv1);
       io.disconnect();
     };
@@ -362,6 +366,17 @@ export default function Home() {
                 <li>導入後の運用・改善サポート</li>
               </ul>
               <a href="#contact" className="sk-sc-link">開発について相談する</a>
+              {/* 導入実績 */}
+              <div className="sk-case">
+                <p className="sk-case-label">CASE STUDY</p>
+                <div className="sk-case-item">
+                  <span className="sk-case-tag">電気工事業</span>
+                  <p className="sk-case-title">LINE連携 見積・施工管理システム</p>
+                  <p className="sk-case-desc">公式LINEから見積依頼を受け付け、自動で見積書を生成。施工スケジュールと顧客情報を一元管理するシステムをSHIKAKERUが0から構築しました。</p>
+                  <p className="sk-case-price">¥99,800〜</p>
+                  <a href="https://lin.ee/Dka76XC" target="_blank" rel="noopener noreferrer" className="sk-case-link">実際のLINEを見る →</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

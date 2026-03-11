@@ -232,7 +232,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--t
 .sk-co-val{font-size:.86rem;color:var(--text);line-height:1.85}
 .sk-co-row.full .sk-co-cell{grid-column:1/-1;border-right:none}
 
-/* CONTACT */
+/* CASE STUDY */
+.sk-case{margin-top:28px;padding-top:24px;border-top:1px solid var(--bdr)}
+.sk-case-label{font-family:'DM Sans',sans-serif;font-size:.58rem;letter-spacing:.3em;color:var(--muted);margin-bottom:14px}
+.sk-case-item{background:var(--off);border:1px solid var(--bdr);padding:18px 20px;position:relative}
+.sk-case-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--blue)}
+.sk-case-tag{display:inline-block;font-family:'DM Sans',sans-serif;font-size:.58rem;letter-spacing:.18em;color:var(--blue);background:var(--pale);padding:3px 9px;margin-bottom:10px}
+.sk-case-title{font-family:'Noto Serif JP',serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.6}
+.sk-case-desc{font-size:.76rem;color:var(--sub);line-height:1.9;font-weight:300;margin-bottom:12px}
+.sk-case-link{font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--blue);text-decoration:none;letter-spacing:.08em;transition:opacity .2s}
+.sk-case-link:hover{opacity:.7}
+.sk-case-price{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:10px;letter-spacing:.02em}
+
+
 .sk-ct-inner{max-width:520px;margin:0 auto;text-align:center}
 .sk-ct-desc{font-size:.88rem;color:var(--sub);line-height:2.2;font-weight:300;margin:12px 0 36px}
 .sk-ct-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
