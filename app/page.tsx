@@ -263,9 +263,10 @@ export default function Home() {
           <p className="sk-mission-label">MISSION</p>
           <h2 className="sk-mission-title">Spark <span className="ac">Life.</span></h2>
           <p className="sk-mission-body">
-            人の心に火をつけ、人生が動き出すきっかけをつくる。<br/><br/>
-            私たちは事業を通じて、一人ひとりの人生に「仕掛け」を届け続ける。<br/>
-            それが、SHIKAKERUの存在理由です。
+            人の心に火をつけ、人生が動き出すきっかけをつくる。
+          </p>
+          <p className="sk-mission-body" style={{marginTop:'1.6em'}}>
+            私たちは事業を通じて、一人ひとりの人生に「仕掛け」を届け続ける。それが、SHIKAKERUの存在理由です。
           </p>
         </div>
       </section>
@@ -319,9 +320,12 @@ export default function Home() {
           </div>
           <h2 className="sk-phil-title">見えない縁を、<br/><span className="hl">見える様に。</span></h2>
           <p className="sk-phil-body">
-            距離があっても、時間が経っていても、人と人のつながりは消えない。<br/><br/>
-            SHIKAKERUは、テクノロジーの力でそのつながりを可視化し、<br/>
-            「定数」だと思われていたことを「変数」に変えていく。<br/><br/>
+            距離があっても、時間が経っていても、人と人のつながりは消えない。
+          </p>
+          <p className="sk-phil-body" style={{marginTop:'1.4em'}}>
+            SHIKAKERUは、テクノロジーの力でそのつながりを可視化し、「定数」だと思われていたことを「変数」に変えていく。
+          </p>
+          <p className="sk-phil-body" style={{marginTop:'1.4em'}}>
             葬儀業界から始まり、すべての人生が動き出す社会へ。
           </p>
         </div>

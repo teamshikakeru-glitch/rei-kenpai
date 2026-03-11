@@ -414,7 +414,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--t
   margin-bottom:22px;
 }
 .sk-phil-title .hl{color:#90c0ff}
-.sk-phil-body{font-size:.86rem;color:rgba(255,255,255,.38);line-height:2.6;font-weight:300}
+.sk-phil-body{font-size:.86rem;color:rgba(255,255,255,.72);line-height:2.0;font-weight:300}
 
 /* big scroll ticker */
 .sk-bticker{background:#030818;padding:22px 0;overflow:hidden;border-top:1px solid rgba(255,255,255,.04)}
