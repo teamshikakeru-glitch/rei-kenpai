@@ -32,6 +32,12 @@
 .co-container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 .co-section { padding: 80px 0; }
 
+/* スマホのみ改行 */
+.sp-br { display: inline; }
+@media (min-width: 768px) {
+  .sp-br { display: none; }
+}
+
 /* ── Section Label ── */
 .co-label {
   display: inline-flex; align-items: center; gap: 10px;

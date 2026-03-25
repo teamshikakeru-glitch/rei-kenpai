@@ -25,13 +25,11 @@ export default function CompanyTopPage() {
             />
           </div>
           <h1 className="co-hero-title">
-            人生が動くきっかけを、<br />
+            人生が動くきっかけを、<br className="sp-br" />
             <em>仕掛ける。</em>
           </h1>
           <p className="co-hero-subtitle">
-            SHIKAKERUは、<br />
-            人・土地・組織の感情と行動が動き出す<br />
-            "仕掛け"を設計する会社です。
+            SHIKAKERUは、人・土地・組織の感情と行動が動き出す"仕掛け"を設計する会社です。
           </p>
           <div className="co-hero-actions">
             <a href="/rei-lp.html" className="co-btn co-btn-primary co-btn-full">
@@ -54,20 +52,17 @@ export default function CompanyTopPage() {
           <div className="co-philosophy-inner co-reveal">
             <div className="co-label">PHILOSOPHY</div>
             <h2>
-              心が動いた瞬間から、<br />人生は変わり始める。
+              心が動いた瞬間から、<br className="sp-br" />人生は変わり始める。
             </h2>
             <div className="co-philosophy-text">
               <p>
-                人は、正しい情報を知ったから動くのではありません。<br />
-                心が揺れた時に、はじめて行動を変えます。
+                人は、正しい情報を知ったから動くのではありません。心が揺れた時に、はじめて行動を変えます。
               </p>
               <p>
-                あの日の出来事。あの場所の空気。あの人との出会い。<br />
-                人生に残っている記憶は、いつも「感情が動いた瞬間」です。
+                あの日の出来事。あの場所の空気。あの人との出会い。人生に残っている記憶は、いつも「感情が動いた瞬間」です。
               </p>
               <p>
-                SHIKAKERUは、そんな瞬間を偶然に任せず、<br />
-                <strong>感情が動き、次の行動が生まれる構造</strong>を設計しています。
+                SHIKAKERUは、そんな瞬間を偶然に任せず、<strong>感情が動き、次の行動が生まれる構造</strong>を設計しています。
               </p>
             </div>
           </div>
@@ -82,17 +77,13 @@ export default function CompanyTopPage() {
             <h2>仕掛けをつくる会社です。</h2>
             <div className="co-definition-text">
               <p>
-                SHIKAKERUは、人や土地、組織が持つ想いや物語を起点に、<br />
-                行動が生まれる"仕掛け"を形にします。
+                SHIKAKERUは、人や土地、組織が持つ想いや物語を起点に、行動が生まれる"仕掛け"を形にします。
               </p>
               <p>
-                その仕掛けは、体験として現れることもあれば、<br />
-                プロジェクトや仕組み、物語や「場」として立ち上がることもあります。
+                その仕掛けは、体験として現れることもあれば、プロジェクトや仕組み、物語や「場」として立ち上がることもあります。
               </p>
               <p>
-                私たちが大切にしているのは、その瞬間の盛り上がりではありません。<br />
-                <strong>「その後、何かが始まったかどうか」</strong><br />
-                そこに、すべての価値があると考えています。
+                私たちが大切にしているのは、その瞬間の盛り上がりではありません。<strong>「その後、何かが始まったかどうか」</strong>——そこに、すべての価値があると考えています。
               </p>
             </div>
           </div>
@@ -148,28 +139,23 @@ export default function CompanyTopPage() {
           <div className="co-workplace-inner co-reveal">
             <div className="co-label">CULTURE</div>
             <h2>
-              挑戦できる「場」を、<br />仕事にする。
+              挑戦できる「場」を、<br className="sp-br" />仕事にする。
             </h2>
             <div className="co-workplace-text">
               <p>
                 SHIKAKERUは、完成された人材を集める会社ではありません。
               </p>
               <p>
-                未完成な若者が、自分で考え、自分で動き、<br />
-                主体的に挑戦できる"場"をつくる会社です。
+                未完成な若者が、自分で考え、自分で動き、主体的に挑戦できる"場"をつくる会社です。
               </p>
               <p>
-                指示を待つより、まず動く。<br />
-                正解を探すより、自分なりの答えをつくる。
+                指示を待つより、まず動く。正解を探すより、自分なりの答えをつくる。
               </p>
               <p>
-                ここで働くことは、仕事をこなすことではなく、<br />
-                <strong>自分の可能性を試すこと。</strong>
+                ここで働くことは、仕事をこなすことではなく、<strong>自分の可能性を試すこと。</strong>
               </p>
               <p>
-                SHIKAKERUで過ごす時間そのものが、<br />
-                人生を前に進める経験になることを、<br />
-                私たちは本気で目指しています。
+                SHIKAKERUで過ごす時間そのものが、人生を前に進める経験になることを、私たちは本気で目指しています。
               </p>
             </div>
           </div>
@@ -182,8 +168,7 @@ export default function CompanyTopPage() {
           <div className="co-lastmsg-inner co-reveal">
             <h2>仕掛け人は、私たちだけじゃない。</h2>
             <p>
-              この場所に関わった瞬間から、<br />
-              あなたも、物語の当事者になる。
+              この場所に関わった瞬間から、あなたも、物語の当事者になる。
             </p>
           </div>
         </div>
@@ -239,9 +224,7 @@ export default function CompanyTopPage() {
             <div className="co-label">CONTACT</div>
             <h2>お問い合わせ</h2>
             <p>
-              サービスに関するご質問、<br />
-              お仕事のご相談など、<br />
-              お気軽にお問い合わせください。
+              サービスに関するご質問、お仕事のご相談など、お気軽にお問い合わせください。
             </p>
             <div className="co-cta-actions">
               <Link href="/company/contact" className="co-btn co-btn-primary co-btn-full">

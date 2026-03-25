@@ -85,9 +85,7 @@ export default function AboutPage() {
             <div className="co-label">MISSION</div>
             <h2>人生が動くきっかけを、仕掛ける。</h2>
             <p>
-              SHIKAKERUは、人・土地・組織の感情と行動が動き出す「仕掛け」を設計する会社です。<br />
-              心が動いた瞬間から、人生は変わり始める。<br />
-              私たちは、そんな瞬間を偶然にしないために、感情が動く構造を設計しています。
+              SHIKAKERUは、人・土地・組織の感情と行動が動き出す「仕掛け」を設計する会社です。心が動いた瞬間から、人生は変わり始める。私たちは、そんな瞬間を偶然にしないために、感情が動く構造を設計しています。
             </p>
           </div>
         </div>
@@ -100,8 +98,7 @@ export default function AboutPage() {
             <div className="co-label">CONTACT</div>
             <h2>お問い合わせ</h2>
             <p>
-              サービスに関するご質問、お仕事のご相談など、<br />
-              お気軽にお問い合わせください。
+              サービスに関するご質問、お仕事のご相談など、お気軽にお問い合わせください。
             </p>
             <div className="co-cta-actions">
               <Link href="/company/contact" className="co-btn co-btn-primary">

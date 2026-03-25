@@ -23,13 +23,11 @@ export default function ServiceReiPage() {
               <span>礼（Rei）</span>
             </div>
             <h1>
-              遠くにいても、<br />
+              遠くにいても、<br className="sp-br" />
               <em>想いは届けられる。</em>
             </h1>
             <p className="co-lead">
-              「礼（Rei）」は、葬儀に参列できない方がオンラインで<br />
-              香典とメッセージを届けられる遠隔献杯システムです。<br />
-              スマートフォンひとつで、距離を超えた弔いが可能になります。
+              「礼（Rei）」は、葬儀に参列できない方がオンラインで香典とメッセージを届けられる遠隔献杯システムです。スマートフォンひとつで、距離を超えた弔いが可能になります。
             </p>
           </div>
         </div>
@@ -40,7 +38,7 @@ export default function ServiceReiPage() {
         <div className="co-container">
           <div className="rei-concept-inner co-reveal">
             <div className="co-label">ABOUT REI</div>
-            <h2>「献杯」という日本の文化を、<br />デジタルの力で守る。</h2>
+            <h2>「献杯」という日本の文化を、<br className="sp-br" />デジタルの力で守る。</h2>
             <div className="rei-concept-text">
               <p>
                 家族葬が増え、遠方の親族や友人が葬儀に参列できないケースは年々増加しています。
@@ -177,10 +175,9 @@ export default function ServiceReiPage() {
         <div className="co-container">
           <div className="co-cta-card co-reveal">
             <div className="co-label">CONTACT</div>
-            <h2>導入のご相談は<br />お気軽にどうぞ。</h2>
+            <h2>導入のご相談は<br className="sp-br" />お気軽にどうぞ。</h2>
             <p>
-              「まずは話を聞いてみたい」「自社の葬儀に合うか知りたい」など、<br />
-              どんな段階でもお気軽にお問い合わせください。
+              「まずは話を聞いてみたい」「自社の葬儀に合うか知りたい」など、どんな段階でもお気軽にお問い合わせください。
             </p>
             <div className="co-cta-actions">
               <Link href="/company/contact" className="co-btn co-btn-primary">

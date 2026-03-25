@@ -22,12 +22,11 @@ export default function ReiCustomPage() {
               <span>礼カスタム</span>
             </div>
             <h1>
-              御社だけの仕組みを、<br />
+              御社だけの仕組みを、<br className="sp-br" />
               <em>オーダーメイドで。</em>
             </h1>
             <p className="co-lead">
-              「礼カスタム」は、礼を導入いただいた葬儀社様だけにご提供する、<br />
-              業務システムのオーダーメイド開発サービスです。
+              「礼カスタム」は、礼を導入いただいた葬儀社様だけにご提供する、業務システムのオーダーメイド開発サービスです。
             </p>
           </div>
         </div>
@@ -49,8 +48,7 @@ export default function ReiCustomPage() {
               実際の画面をご覧ください
             </h2>
             <p style={{ color: "#CCCCCC", fontSize: "15px", marginBottom: "32px", lineHeight: "1.8" }}>
-              礼カスタムでどんなシステムが作れるのか、<br />
-              デモ画面でご確認いただけます。
+              礼カスタムでどんなシステムが作れるのか、デモ画面でご確認いただけます。
             </p>
             <a 
               href="/rei-showcase.html" 
@@ -68,7 +66,7 @@ export default function ReiCustomPage() {
         <div className="co-container">
           <div className="rc-concept-inner">
             <div className="co-label">CONCEPT</div>
-            <h2>大手ITにはない業界理解。<br />パッケージソフトにはない柔軟性。</h2>
+            <h2>大手ITにはない業界理解。<br className="sp-br" />パッケージソフトにはない柔軟性。</h2>
             <div className="rc-concept-text">
               <p>
                 葬儀業界には、他の業界にはない独特の業務フローや慣習があります。
@@ -202,10 +200,9 @@ export default function ReiCustomPage() {
         <div className="co-container">
           <div className="co-cta-card">
             <div className="co-label">CONTACT</div>
-            <h2>まずはお気軽に<br />ご相談ください。</h2>
+            <h2>まずはお気軽に<br className="sp-br" />ご相談ください。</h2>
             <p>
-              「どんな機能があるか詳しく知りたい」「自社に合うか相談したい」など、<br />
-              どんな段階でもお気軽にお問い合わせください。
+              「どんな機能があるか詳しく知りたい」「自社に合うか相談したい」など、どんな段階でもお気軽にお問い合わせください。
             </p>
             <div className="co-cta-actions">
               <Link href="/company/contact" className="co-btn co-btn-primary">
