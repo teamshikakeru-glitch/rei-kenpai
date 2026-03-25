@@ -1,11 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async rewrites() {
+  async redirects() {
     return [
       {
         source: '/',
         destination: '/rei-lp.html',
+        permanent: false,
       },
     ];
   },
