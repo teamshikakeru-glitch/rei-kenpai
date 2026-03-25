@@ -334,7 +334,7 @@ export default function Home() {
             <div className="sk-ey"><span className="sk-ey-line"></span><span className="sk-ey-text">SERVICES</span></div>
             <h2 className="sk-bsh">事業<span className="acc">紹介。</span></h2>
             <div className="sk-bsh-bar"></div>
-            <p className="sk-bsh-sub">葬儀業界を起点に、見えない縁を見える様にするテクノロジーを届けています。</p>
+            <p className="sk-bsh-sub">テクノロジーで見えない縁を見える様にし、人と社会が動く仕掛けを届けています。</p>
           </div>
           <div className="sk-svc-grid">
             <div className="sk-sc rvl d2">
@@ -354,6 +354,40 @@ export default function Home() {
             </div>
             <div className="sk-sc c2 rvr d3">
               <div className="sk-sc-num" style={{ color: 'var(--blue)' }}>02</div>
+              <div className="sk-sc-num-bar"></div>
+              <span className="sk-sc-tag">Idea IPO Market</span>
+              <h3 className="sk-sc-name">あいぽ</h3>
+              <p className="sk-sc-en">AIPO</p>
+              <p className="sk-sc-desc">アイデアを一行で"上場"し、投票とコメントでその価値がリアルタイムに動く、アイデアIPO市場。作る前に需要を確認する、新しい時代のアイデア検証プラットフォームです。</p>
+              <ul className="sk-sc-list">
+                <li>アイデアを1行で上場</li>
+                <li>投票・コメントでスコアがリアルタイムに変動</li>
+                <li>株券システムで応援を可視化</li>
+                <li>無料プランから始められる</li>
+              </ul>
+              <a href="https://aipo-tau.vercel.app/" target="_blank" rel="noopener noreferrer" className="sk-sc-link">あいぽを見る</a>
+            </div>
+          </div>
+
+          {/* 下段2カード */}
+          <div className="sk-svc-grid" style={{ marginTop: '24px' }}>
+            <div className="sk-sc rvl d2">
+              <div className="sk-sc-num">03</div>
+              <div className="sk-sc-num-bar"></div>
+              <span className="sk-sc-tag">LP Design &amp; Development</span>
+              <h3 className="sk-sc-name">SHIKAKERU Works</h3>
+              <p className="sk-sc-en">WEB PRODUCTION</p>
+              <p className="sk-sc-desc">LP制作¥30,000〜。AIを活用した制作フローで、一般的なWeb制作会社の1/10以下の価格で高品質なLPを提供。福井の中小企業に、Webの力を届けます。</p>
+              <ul className="sk-sc-list">
+                <li>高品質LP制作 ¥30,000〜</li>
+                <li>最短3日の納品対応</li>
+                <li>モバイル対応・SEO対策込み</li>
+                <li>修正対応・追加料金なし</li>
+              </ul>
+              <a href="https://lin.ee/tM9hty4" target="_blank" rel="noopener noreferrer" className="sk-sc-link">LINEで相談する</a>
+            </div>
+            <div className="sk-sc c2 rvr d3">
+              <div className="sk-sc-num" style={{ color: 'var(--blue)' }}>04</div>
               <div className="sk-sc-num-bar"></div>
               <span className="sk-sc-tag">LINE × AI Custom Development</span>
               <h3 className="sk-sc-name">LINE × AI</h3>
