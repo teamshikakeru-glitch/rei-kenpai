@@ -4,6 +4,8 @@
   --white:#fff;--off:#f7f8fb;--pale:#eef2ff;
   --text:#0a0f1e;--sub:#4a5168;--muted:#8b92a8;--bdr:#dde0ea;
 }
+.sp-br{display:none}
+@media(max-width:768px){.sp-br{display:inline}}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}
@@ -192,7 +194,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--t
 .sk-phil-kv-left{padding-right:clamp(24px,4vw,52px);border-right:1px solid rgba(255,255,255,.08)}
 .sk-phil-kv-right{padding-left:clamp(24px,4vw,52px)}
 .sk-phil-big{font-family:'Noto Serif JP',serif;font-size:clamp(2.4rem,4.8vw,4.4rem);font-weight:900;line-height:1.25;color:#fff;letter-spacing:-.02em}
-.sk-phil-big .ac{display:block;background:linear-gradient(90deg,#90c0ff,#c0d8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sk-phil-big .ac{display:inline;background:linear-gradient(90deg,#90c0ff,#c0d8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@media (max-width: 768px) { .sk-phil-big .ac{display:block} }
 .sk-phil-kv-right p{font-size:.9rem;color:rgba(255,255,255,.55);line-height:2.3;font-weight:300}
 .sk-phil-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.07)}
 .sk-phil-pillar{background:rgba(255,255,255,.02);padding:28px 24px;position:relative;transition:background .25s}
