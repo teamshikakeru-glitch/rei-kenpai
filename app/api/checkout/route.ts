@@ -13,18 +13,25 @@ export async function POST(request: NextRequest) {
   );
 
   try {
-    const { 
-      amount, 
-      donor_name, 
-      project_id, 
-      slug, 
-      message, 
+    const {
+      amount,
+      donor_name,
+      project_id,
+      slug,
+      message,
       is_anonymous,
       // 住所情報を追加
       postal_code,
       address,
       phone
     } = await request.json();
+
+    // 金額バリデーション（改ざん防止）
+    const ALLOWED_AMOUNTS = [3000, 5000, 10000, 30000, 50000, 100000];
+    const isCustomAmount = !ALLOWED_AMOUNTS.includes(amount);
+    if (typeof amount !== 'number' || amount < 1000 || amount > 1000000 || !Number.isInteger(amount)) {
+      return NextResponse.json({ error: '無効な金額です（1,000円〜1,000,000円）' }, { status: 400 });
+    }
 
     const { data: project, error: projectError } = await supabase
       .from('projects')

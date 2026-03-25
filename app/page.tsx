@@ -64,24 +64,24 @@ export default function LoginPage() {
     }
 
     try {
-      const { data, error: dbError } = await supabase
-        .from('funeral_homes')
-        .select('*')
-        .eq('name', funeralHomeName.trim())
-        .eq('password', password)
-        .single();
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: funeralHomeName.trim(), password }),
+      });
+      const result = await res.json();
 
-      if (dbError || !data) {
-        setError('葬儀社名またはパスワードが正しくありません');
+      if (!res.ok || !result.success) {
+        setError(result.error || '葬儀社名またはパスワードが正しくありません');
         setLoading(false);
         return;
       }
 
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('funeral_home_id', data.id);
-        sessionStorage.setItem('funeral_home_name', data.name);
+        sessionStorage.setItem('funeral_home_id', result.funeral_home.id);
+        sessionStorage.setItem('funeral_home_name', result.funeral_home.name);
       }
-      
+
       router.push('/admin');
     } catch (err) {
       console.error('Login error:', err);

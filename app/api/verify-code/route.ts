@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   const supabase = createClient(
@@ -29,12 +30,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '認証コードの有効期限が切れています' }, { status: 400 });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
     const { error: insertError } = await supabase
       .from('funeral_homes')
       .insert({
         name: verification.funeral_home_name,
         email: email,
-        password: password
+        password: hashedPassword
       });
 
     if (insertError) {

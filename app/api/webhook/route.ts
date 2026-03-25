@@ -26,7 +26,13 @@ export async function POST(request: NextRequest) {
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
-      
+
+      // 金額の整合性チェック
+      if (!session.amount_total || session.amount_total < 1000 || session.amount_total > 1000000) {
+        console.error('Invalid amount_total:', session.amount_total);
+        return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
+      }
+
       const { error } = await supabase.from('kenpai').insert({
         project_id: session.metadata?.project_id,
         donor_name: session.metadata?.donor_name || '匿名',
