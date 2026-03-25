@@ -25,7 +25,7 @@ export default function FamilyPage() {
       
       const { data: projectData, error } = await supabase
         .from('projects')
-        .select('id, deceased_name, slug, family_password')
+        .select('id, deceased_name, slug')
         .eq('slug', slug)
         .single();
       
@@ -61,22 +61,34 @@ export default function FamilyPage() {
     setKenpaiList(kenpaiData || []);
   };
 
-  // パスワード認証
+  // パスワード認証（サーバー側で検証）
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+
     if (!password) {
       setError('パスワードを入力してください');
       return;
     }
-    
-    if (password === project.family_password) {
+
+    try {
+      const res = await fetch('/api/family-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, password }),
+      });
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        setError(result.error || 'パスワードが正しくありません');
+        return;
+      }
+
       setIsAuthenticated(true);
       sessionStorage.setItem(`family_auth_${slug}`, 'true');
-      await fetchKenpaiData(project.id);
-    } else {
-      setError('パスワードが正しくありません');
+      await fetchKenpaiData(result.project_id || project.id);
+    } catch {
+      setError('認証に失敗しました');
     }
   };
 
