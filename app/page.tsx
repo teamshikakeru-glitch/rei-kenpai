@@ -76,7 +76,7 @@ export default function Home() {
       { text: '社会へ。', cls: '' },
     ];
     parts.forEach(p => {
-      if (p.cls === 'br') { const br = document.createElement('br'); br.className = 'sp-br'; h1el.appendChild(br); return; }
+      if (p.cls === 'br') { h1el.appendChild(document.createElement('br')); return; }
       const wrap = p.cls ? Object.assign(document.createElement('span'), { className: p.cls }) : null;
       p.text.split('').forEach((ch, i) => {
         const s = document.createElement('span');
@@ -241,7 +241,7 @@ export default function Home() {
           <h1 className="sk-h1" id="sk-h1"></h1>
           <p className="sk-h-en">Make Life Alive.</p>
           <div className="sk-h-bar"></div>
-          <p className="sk-h-desc">人生が動く瞬間は、たいてい偶然のように訪れる。でもその多くは、誰かが仕掛けたものかもしれない。SHIKAKERUは、見えない縁を見える様にする。</p>
+          <p className="sk-h-desc">人生が動く瞬間は、たいてい偶然のように訪れる。<br />でもその多くは、誰かが仕掛けたものかもしれない。<br />SHIKAKERUは、見えない縁を見える様にする。</p>
           <div className="sk-btns">
             <a href="#services" className="sk-btn-p"><span>事業を見る</span></a>
             <a href="#contact" className="sk-btn-s">お問い合わせ</a>
@@ -281,7 +281,7 @@ export default function Home() {
         <div className="sk-inn">
           <div className="rv">
             <div className="sk-ey"><span className="sk-ey-line"></span><span className="sk-ey-text">VALUES</span></div>
-            <h2 className="sk-bsh">私たちの<br className="sp-br" /><span className="acc">価値観。</span></h2>
+            <h2 className="sk-bsh">私たちの<br /><span className="acc">価値観。</span></h2>
             <div className="sk-bsh-bar"></div>
             <p className="sk-bsh-sub">SHIKAKERUが大切にする、5つの行動指針。</p>
           </div>
