@@ -1,512 +1,672 @@
 'use client';
-import { useEffect } from 'react';
-import './home.css';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
+
+export default function LoginPage() {
+  const [funeralHomeName, setFuneralHomeName] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
+
+  // 葬儀社名のバリデーション
+  const validateName = (name: string): string => {
+    if (!name) return '';
+    
+    // 前後のスペースチェック
+    if (name !== name.trim()) {
+      return '前後にスペースが含まれています';
+    }
+    
+    // 連続スペースチェック
+    if (/\s{2,}/.test(name)) {
+      return '連続するスペースは使用できません';
+    }
+    
+    // 特殊文字チェック（日本語、英数字、一部の記号のみ許可）
+    const invalidChars = name.match(/[^\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z0-9\s\-・．.()（）]/g);
+    if (invalidChars) {
+      const uniqueChars = [...new Set(invalidChars)].join(' ');
+      return `使用できない文字が含まれています: ${uniqueChars}`;
+    }
+    
+    return '';
+  };
+
+  // 葬儀社名が変更されたときにバリデーション
   useEffect(() => {
-    /* CURSOR */
-    const cur = document.getElementById('sk-cur')!;
-    const ring = document.getElementById('sk-ring')!;
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX; my = e.clientY;
-      cur.style.left = mx + 'px'; cur.style.top = my + 'px';
-    };
-    document.addEventListener('mousemove', onMove);
-    let raf: number;
-    const animRing = () => {
-      rx += (mx - rx) * .1; ry += (my - ry) * .1;
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-      raf = requestAnimationFrame(animRing);
-    };
-    animRing();
-    const hoverEls = document.querySelectorAll('a,button');
-    hoverEls.forEach(el => {
-      el.addEventListener('mouseenter', () => { cur.classList.add('big'); ring.classList.add('big'); });
-      el.addEventListener('mouseleave', () => { cur.classList.remove('big'); ring.classList.remove('big'); });
-    });
+    const error = validateName(funeralHomeName);
+    setNameError(error);
+  }, [funeralHomeName]);
 
-    /* STARS */
-    const cv = document.getElementById('sk-star-canvas') as HTMLCanvasElement;
-    const ctx = cv.getContext('2d')!;
-    const resize = () => { const r = cv.parentElement!.getBoundingClientRect(); cv.width = r.width; cv.height = r.height; };
-    resize();
-    window.addEventListener('resize', resize);
-    const STARS = Array.from({ length: 200 }, () => ({ x: Math.random(), y: Math.random(), r: .2 + Math.random() * 1.3, a: .15 + Math.random() * .6, sp: .007 + Math.random() * .013, ph: Math.random() * Math.PI * 2 }));
-    const shoots: { x: number; y: number; len: number; sp: number; t: number; a: number; ang: number }[] = [];
-    const addShoot = () => shoots.push({ x: Math.random() * .7 + .05, y: Math.random() * .4, len: 70 + Math.random() * 110, sp: .003 + Math.random() * .003, t: 0, a: .6 + Math.random() * .4, ang: Math.PI * .18 });
-    const st1 = setTimeout(() => { addShoot(); }, 2000);
-    const iv1 = setInterval(addShoot, 3400);
-    const drawStars = () => {
-      const W = cv.width, H = cv.height;
-      ctx.clearRect(0, 0, W, H);
-      const nb = ctx.createRadialGradient(W * .55, H * .38, 0, W * .55, H * .38, W * .5);
-      nb.addColorStop(0, 'rgba(28,58,165,.12)'); nb.addColorStop(1, 'rgba(5,14,42,0)');
-      ctx.fillStyle = nb; ctx.fillRect(0, 0, W, H);
-      STARS.forEach(s => {
-        s.ph += s.sp;
-        const a = s.a * (.55 + .45 * Math.sin(s.ph));
-        ctx.fillStyle = `rgba(215,230,255,${a})`; ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2); ctx.fill();
-        if (s.r > 1.1) { ctx.strokeStyle = `rgba(200,220,255,${a * .35})`; ctx.lineWidth = .5; const sz = s.r * 3.5, px = s.x * W, py = s.y * H; ctx.beginPath(); ctx.moveTo(px - sz, py); ctx.lineTo(px + sz, py); ctx.stroke(); ctx.beginPath(); ctx.moveTo(px, py - sz); ctx.lineTo(px, py + sz); ctx.stroke(); }
-      });
-      for (let i = shoots.length - 1; i >= 0; i--) {
-        const s = shoots[i]; s.t += s.sp;
-        if (s.t > 1) { shoots.splice(i, 1); continue; }
-        const ease = s.t < .2 ? s.t / .2 : s.t > .8 ? (1 - s.t) / .2 : 1;
-        const px = (s.x + Math.cos(s.ang) * s.t * .55) * W, py = (s.y + Math.sin(s.ang) * s.t * .55) * H;
-        const tx = px - Math.cos(s.ang) * s.len * ease, ty = py - Math.sin(s.ang) * s.len * ease;
-        const g = ctx.createLinearGradient(tx, ty, px, py);
-        g.addColorStop(0, 'rgba(200,225,255,0)'); g.addColorStop(1, `rgba(235,245,255,${s.a * ease})`);
-        ctx.strokeStyle = g; ctx.lineWidth = 1.1; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(px, py); ctx.stroke();
-        const hg = ctx.createRadialGradient(px, py, 0, px, py, 3.5);
-        hg.addColorStop(0, `rgba(255,255,255,${s.a * ease})`); hg.addColorStop(1, 'rgba(200,225,255,0)');
-        ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(px, py, 3.5, 0, Math.PI * 2); ctx.fill();
-      }
-      requestAnimationFrame(drawStars);
-    };
-    drawStars();
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    /* H1 CHAR ANIMATION */
-    const h1el = document.getElementById('sk-h1')!;
-    const parts = [
-      { text: '生きる', cls: '' },
-      { text: '仕掛け', cls: 'sk-blu' },
-      { text: 'を、', cls: '' },
-      { text: '\n', cls: 'br' },
-      { text: '社会へ。', cls: '' },
-    ];
-    parts.forEach(p => {
-      if (p.cls === 'br') { h1el.appendChild(document.createElement('br')); return; }
-      const wrap = p.cls ? Object.assign(document.createElement('span'), { className: p.cls }) : null;
-      p.text.split('').forEach((ch, i) => {
-        const s = document.createElement('span');
-        s.className = 'ch'; s.style.animationDelay = (0.55 + i * .05) + 's';
-        s.textContent = ch === ' ' ? '\u00a0' : ch;
-        if (wrap) wrap.appendChild(s); else h1el.appendChild(s);
-      });
-      if (wrap) h1el.appendChild(wrap);
-    });
-    const t2 = setTimeout(() => {
-      const blu = h1el.querySelector('.sk-blu') as HTMLElement;
-      if (blu) { blu.classList.add('glitch'); blu.setAttribute('data-text', blu.textContent || ''); }
-    }, 1800);
-
-    /* INTRO */
-    const intro = document.getElementById('sk-intro')!;
-    const hideIntro = () => {
-      intro.style.opacity = '0';
-      intro.style.transition = 'opacity 0.5s';
-      setTimeout(() => { intro.style.display = 'none'; }, 500);
-    };
-    const introFallback = setTimeout(hideIntro, 3200);
-
-    /* MAGNETIC BUTTON */
-    document.querySelectorAll<HTMLElement>('.sk-btn-p').forEach(btn => {
-      btn.addEventListener('mousemove', e => {
-        const r = btn.getBoundingClientRect();
-        btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .28}px,${(e.clientY - r.top - r.height / 2) * .28}px)`;
-        btn.classList.add('mag-hover');
-      });
-      btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; btn.classList.remove('mag-hover'); });
-    });
-
-    /* LETTER ANIMATION */
-    const msgs = [
-      { to: '田中ご遺族様へ', lines: ['葬儀に参列できず、', '申し訳ございません。', '', 'お父様のご冥福を', '心よりお祈りしております。', '', 'いつでも連絡ください。'], from: '大阪より　山田 花子', amt: '¥10,000 送金完了' },
-      { to: '佐藤ご遺族様へ', lines: ['遠くにいても、', 'ずっと一緒にいます。', '', 'おじさんには', 'たくさんお世話になりました。', '', 'ありがとうございました。'], from: '東京より　鈴木 一郎', amt: '¥30,000 送金完了' },
-      { to: '高橋ご遺族様へ', lines: ['急なことで、', '言葉が見つかりません。', '', 'でも、あなたの笑顔は', '絶対に忘れません。', '', '心よりご冥福をお祈りします。'], from: '北海道より　伊藤 美咲', amt: '¥5,000 送金完了' },
-    ];
-    let mi = 0, ci = 0, dt = '', ft = '';
-    const lto = document.getElementById('sk-lto')!;
-    const lb = document.getElementById('sk-lbody')!;
-    const lf = document.getElementById('sk-lfrom')!;
-    const p1 = document.getElementById('sk-p1')!;
-    const p1t = document.getElementById('sk-p1t')!;
-    const p2 = document.getElementById('sk-p2')!;
-    const lcur = document.createElement('span'); lcur.className = 'sk-lcursor';
-    const buildFull = () => msgs[mi % msgs.length].lines.join('\n');
-    const type = () => {
-      if (ci < ft.length) {
-        dt += ft[ci++]; lb.textContent = dt; lb.appendChild(lcur);
-        const c = ft[ci - 1];
-        setTimeout(type, c === '\n' ? 230 : (c === '。' || c === '、') ? 130 : 46 + Math.random() * 26);
-      } else {
-        lf.textContent = msgs[mi % msgs.length].from;
-        p1t.textContent = msgs[mi % msgs.length].amt;
-        setTimeout(() => p1.classList.add('on'), 400);
-        setTimeout(() => p2.classList.add('on'), 1100);
-        setTimeout(next, 4400);
-      }
-    };
-    const next = () => {
-      p1.classList.remove('on'); p2.classList.remove('on');
-      [lto, lb, lf].forEach(e => { e.style.transition = 'opacity .48s'; e.style.opacity = '0'; });
-      setTimeout(() => {
-        mi++; dt = ''; ci = 0; ft = buildFull();
-        lto.textContent = msgs[mi % msgs.length].to;
-        lb.textContent = ''; lb.appendChild(lcur); lf.textContent = '';
-        [lto, lb, lf].forEach(e => e.style.opacity = '1');
-        setTimeout(type, 480);
-      }, 580);
-    };
-    lto.textContent = msgs[0].to; ft = buildFull(); lb.appendChild(lcur);
-    const t3 = setTimeout(type, 1000);
-
-    /* NAV SCROLL */
-    const onScroll = () => {
-      document.getElementById('sk-nav')!.classList.toggle('sc', window.scrollY > 10);
-      const h = document.documentElement;
-      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-      const prog = document.getElementById('sk-prog')!;
-      prog.style.width = pct + '%';
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    /* HAMBURGER */
-    const hbg = document.getElementById('sk-hbg')!;
-    const mob = document.getElementById('sk-mob')!;
-    hbg.addEventListener('click', () => { hbg.classList.toggle('open'); mob.classList.toggle('open'); });
-    document.querySelectorAll('.sk-ml').forEach(a => a.addEventListener('click', () => { hbg.classList.remove('open'); mob.classList.remove('open'); }));
-
-    /* CEO LINE HIGHLIGHT */
-    const ceoEl = document.getElementById('sk-ceo-body')!;
-    if (ceoEl) {
-      const raw = ceoEl.innerText;
-      const sentences = raw.split(/(?<=。)\s*/g).filter(s => s.trim());
-      ceoEl.innerHTML = sentences.map(s => `<span class="sk-ceo-line">${s.trim()}</span>`).join('');
-      const lines = ceoEl.querySelectorAll<HTMLElement>('.sk-ceo-line');
-      const updateLines = () => {
-        const mid = window.innerHeight * .52;
-        lines.forEach(ln => {
-          const r = ln.getBoundingClientRect();
-          ln.classList.toggle('lit', Math.abs((r.top + r.bottom) / 2 - mid) < window.innerHeight * .28);
-        });
-      };
-      window.addEventListener('scroll', updateLines, { passive: true });
-      updateLines();
+    if (!funeralHomeName.trim() || !password) {
+      setError('葬儀社名とパスワードを入力してください');
+      setLoading(false);
+      return;
     }
 
-    /* REVEAL */
-    const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
-    document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(e => io.observe(e));
+    // 葬儀社名バリデーション
+    const nameValidationError = validateName(funeralHomeName);
+    if (nameValidationError) {
+      setError(nameValidationError);
+      setLoading(false);
+      return;
+    }
 
-    return () => {
-      document.removeEventListener('mousemove', onMove);
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('scroll', onScroll);
-      clearTimeout(st1); clearTimeout(t2); clearTimeout(t3); clearTimeout(introFallback);
-      clearInterval(iv1);
-      io.disconnect();
-    };
-  }, []);
+    try {
+      const { data, error: dbError } = await supabase
+        .from('funeral_homes')
+        .select('*')
+        .eq('name', funeralHomeName.trim())
+        .eq('password', password)
+        .single();
+
+      if (dbError || !data) {
+        setError('葬儀社名またはパスワードが正しくありません');
+        setLoading(false);
+        return;
+      }
+
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('funeral_home_id', data.id);
+        sessionStorage.setItem('funeral_home_name', data.name);
+      }
+      
+      router.push('/admin');
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('ログインに失敗しました');
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      {/* INTRO */}
-      <div className="sk-intro" id="sk-intro"><span className="sk-intro-logo">SHIKAKERU</span></div>
-      <div className="sk-prog" id="sk-prog"></div>
-      <div className="sk-cursor" id="sk-cur"></div>
-      <div className="sk-cursor-ring" id="sk-ring"></div>
+    <div className="login-page">
+      <style jsx>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 0.8; }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        
+        .login-page {
+          min-height: 100vh;
+          background: #0a0a0a;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        /* 背景エフェクト */
+        .bg-gradient-1 {
+          position: absolute;
+          top: -200px;
+          left: -200px;
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
+          pointer-events: none;
+          animation: pulse 8s ease-in-out infinite;
+        }
+        .bg-gradient-2 {
+          position: absolute;
+          bottom: -200px;
+          right: -200px;
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle, rgba(201, 162, 39, 0.1) 0%, transparent 70%);
+          pointer-events: none;
+          animation: pulse 8s ease-in-out infinite 4s;
+        }
+        .bg-line-1 {
+          position: absolute;
+          top: 0;
+          left: 25%;
+          width: 1px;
+          height: 100%;
+          background: linear-gradient(180deg, transparent 0%, rgba(201, 162, 39, 0.1) 50%, transparent 100%);
+        }
+        .bg-line-2 {
+          position: absolute;
+          top: 0;
+          right: 25%;
+          width: 1px;
+          height: 100%;
+          background: linear-gradient(180deg, transparent 0%, rgba(201, 162, 39, 0.1) 50%, transparent 100%);
+        }
+        .bg-dots {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(201, 162, 39, 0.03) 1px, transparent 1px);
+          background-size: 40px 40px;
+          pointer-events: none;
+        }
+        
+        .page-container {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 60px 24px;
+          position: relative;
+          z-index: 1;
+        }
+        
+        .hero-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 20px;
+          background: rgba(201, 162, 39, 0.08);
+          border: 1px solid rgba(201, 162, 39, 0.2);
+          border-radius: 100px;
+          font-size: 11px;
+          color: #c9a227;
+          letter-spacing: 0.15em;
+          margin-bottom: 32px;
+          animation: fadeUp 0.8s ease forwards;
+          backdrop-filter: blur(10px);
+        }
+        .hero-badge-dot {
+          width: 6px;
+          height: 6px;
+          background: #c9a227;
+          border-radius: 50%;
+          animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .hero-title {
+          font-size: 36px;
+          font-weight: 300;
+          color: #fff;
+          text-align: center;
+          line-height: 1.6;
+          letter-spacing: 0.05em;
+          margin-bottom: 20px;
+          animation: fadeUp 0.8s ease forwards;
+          animation-delay: 0.1s;
+          opacity: 0;
+        }
+        .hero-title strong {
+          font-weight: 600;
+          background: linear-gradient(135deg, #c9a227 0%, #e8d078 50%, #c9a227 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 3s linear infinite;
+        }
+        
+        .hero-subtitle {
+          font-size: 14px;
+          color: rgba(255,255,255,0.45);
+          text-align: center;
+          line-height: 2.2;
+          max-width: 360px;
+          margin: 0 auto 48px;
+          animation: fadeUp 0.8s ease forwards;
+          animation-delay: 0.2s;
+          opacity: 0;
+        }
+        
+        .login-card {
+          width: 100%;
+          max-width: 400px;
+          background: linear-gradient(180deg, rgba(20, 20, 20, 0.95) 0%, rgba(15, 15, 15, 0.98) 100%);
+          border: 1px solid rgba(201, 162, 39, 0.12);
+          border-radius: 28px;
+          padding: 48px 36px;
+          backdrop-filter: blur(40px);
+          animation: fadeUp 0.8s ease forwards;
+          animation-delay: 0.3s;
+          opacity: 0;
+          box-shadow: 
+            0 4px 6px rgba(0, 0, 0, 0.1),
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            0 0 80px rgba(201, 162, 39, 0.05);
+        }
+        
+        .login-logo {
+          width: 72px;
+          height: 72px;
+          background: linear-gradient(145deg, #c9a227 0%, #8b6914 100%);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 32px;
+          font-weight: 600;
+          color: white;
+          margin: 0 auto 20px;
+          box-shadow: 
+            0 8px 32px rgba(201, 162, 39, 0.35),
+            0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        .login-title {
+          font-size: 28px;
+          font-weight: 300;
+          color: #fff;
+          text-align: center;
+          letter-spacing: 0.25em;
+          margin-bottom: 6px;
+        }
+        
+        .login-subtitle-text {
+          font-size: 11px;
+          color: rgba(255,255,255,0.35);
+          text-align: center;
+          letter-spacing: 0.2em;
+          margin-bottom: 36px;
+        }
+        
+        .form-group {
+          margin-bottom: 20px;
+        }
+        
+        .form-label {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 12px;
+          font-weight: 500;
+          color: rgba(255,255,255,0.5);
+          margin-bottom: 10px;
+          letter-spacing: 0.08em;
+        }
+        .form-label-icon {
+          width: 16px;
+          height: 16px;
+          opacity: 0.6;
+        }
+        
+        .input-wrapper {
+          position: relative;
+        }
+        
+        .login-input {
+          width: 100%;
+          padding: 18px 20px;
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 14px;
+          font-size: 15px;
+          color: #fff;
+          background: rgba(255,255,255,0.03);
+          transition: all 0.3s ease;
+          box-sizing: border-box;
+        }
+        .login-input:focus {
+          outline: none;
+          border-color: rgba(201, 162, 39, 0.5);
+          background: rgba(255,255,255,0.05);
+          box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.1);
+        }
+        .login-input::placeholder {
+          color: rgba(255,255,255,0.25);
+        }
+        .login-input.error {
+          border-color: rgba(248, 113, 113, 0.5);
+          box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.1);
+        }
+        
+        .password-toggle {
+          position: absolute;
+          right: 16px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          padding: 4px;
+          cursor: pointer;
+          color: rgba(255, 255, 255, 0.4);
+          transition: color 0.3s ease;
+        }
+        .password-toggle:hover {
+          color: rgba(255, 255, 255, 0.7);
+        }
+        .password-toggle svg {
+          width: 20px;
+          height: 20px;
+        }
+        
+        .field-error {
+          font-size: 12px;
+          color: #f87171;
+          margin-top: 8px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 12px;
+          background: rgba(248, 113, 113, 0.08);
+          border-radius: 8px;
+        }
+        .field-error-icon {
+          width: 14px;
+          height: 14px;
+          flex-shrink: 0;
+        }
+        
+        .login-btn {
+          width: 100%;
+          padding: 18px;
+          background: linear-gradient(135deg, #c9a227 0%, #a08020 100%);
+          color: #0a0a0a;
+          border: none;
+          border-radius: 14px;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          letter-spacing: 0.1em;
+          margin-top: 12px;
+          position: relative;
+          overflow: hidden;
+        }
+        .login-btn::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, #d4ad32 0%, #c9a227 100%);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .login-btn:hover::before {
+          opacity: 1;
+        }
+        .login-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 32px rgba(201, 162, 39, 0.4);
+        }
+        .login-btn:active {
+          transform: translateY(0);
+        }
+        .login-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+        .login-btn-content {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+        
+        .spinner {
+          width: 18px;
+          height: 18px;
+          border: 2px solid rgba(10, 10, 10, 0.3);
+          border-top-color: #0a0a0a;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+          background: rgba(220, 38, 38, 0.08);
+          border: 1px solid rgba(220, 38, 38, 0.2);
+          color: #f87171;
+          padding: 14px 18px;
+          border-radius: 12px;
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 13px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+        .error-icon {
+          width: 18px;
+          height: 18px;
+          flex-shrink: 0;
+        }
+        
+        .divider {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin: 28px 0;
+        }
+        .divider-line {
+          flex: 1;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+        .divider-text {
+          font-size: 11px;
+          color: rgba(255,255,255,0.3);
+          letter-spacing: 0.15em;
+        }
+        
+        .login-footer {
+          text-align: center;
+        }
+        
+        .register-btn {
+          width: 100%;
+          padding: 16px;
+          background: transparent;
+          border: 1px solid rgba(201, 162, 39, 0.25);
+          border-radius: 14px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #c9a227;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          letter-spacing: 0.08em;
+        }
+        .register-btn:hover {
+          background: rgba(201, 162, 39, 0.08);
+          border-color: rgba(201, 162, 39, 0.4);
+        }
+        
+        .help-link {
+          display: inline-block;
+          margin-top: 20px;
+          font-size: 12px;
+          color: rgba(255,255,255,0.35);
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+        .help-link:hover {
+          color: #c9a227;
+        }
+        
+        .brand-footer {
+          margin-top: 48px;
+          font-size: 10px;
+          color: rgba(255,255,255,0.15);
+          letter-spacing: 0.25em;
+          animation: fadeUp 0.8s ease forwards;
+          animation-delay: 0.5s;
+          opacity: 0;
+        }
+        
+        @media (max-width: 480px) {
+          .page-container {
+            padding: 40px 20px;
+          }
+          .hero-title {
+            font-size: 26px;
+          }
+          .login-card {
+            padding: 36px 24px;
+            border-radius: 24px;
+          }
+          .login-logo {
+            width: 64px;
+            height: 64px;
+            font-size: 28px;
+          }
+        }
+      `}</style>
 
-      {/* NAV */}
-      <nav className="sk-nav" id="sk-nav">
-        <a className="sk-logo" href="#">SHIKAKERU</a>
-        <div className="sk-nav-r">
-          <ul className="sk-nav-links">
-            <li><a href="#vision">Vision</a></li>
-            <li><a href="#services">事業</a></li>
-            <li><a href="#company">会社概要</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-          <a href="#contact" className="sk-nav-cta">お問い合わせ</a>
-          <button className="sk-hbg" id="sk-hbg"><span></span><span></span><span></span></button>
+      {/* 背景エフェクト */}
+      <div className="bg-gradient-1" />
+      <div className="bg-gradient-2" />
+      <div className="bg-line-1" />
+      <div className="bg-line-2" />
+      <div className="bg-dots" />
+
+      <div className="page-container">
+        <div className="hero-badge">
+          <span className="hero-badge-dot" />
+          <span>FOR FUNERAL DIRECTORS</span>
+          <span className="hero-badge-dot" />
         </div>
-      </nav>
-      <div className="sk-mob" id="sk-mob">
-        <a href="#vision" className="sk-ml">Vision</a>
-        <a href="#services" className="sk-ml">事業</a>
-        <a href="#company" className="sk-ml">会社概要</a>
-        <a href="#contact" className="sk-ml">Contact</a>
-        <a href="#contact" className="mc sk-ml">お問い合わせ</a>
+
+        <h1 className="hero-title">
+          <strong>見積もり競争</strong>を<br />
+          勝ち抜くための新提案
+        </h1>
+
+        <p className="hero-subtitle">
+          献杯ページを即座に発行。<br />
+          支援金で葬儀費用の負担を軽減する<br />
+          新しい価値を提供できます。
+        </p>
+
+        <div className="login-card">
+          <div className="login-logo">礼</div>
+          <h2 className="login-title">Rei</h2>
+          <p className="login-subtitle-text">献杯管理システム</p>
+
+          {error && (
+            <div className="error-message">
+              <svg className="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label className="form-label">
+                <svg className="form-label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11" />
+                  <path d="M9 21v-4a3 3 0 0 1 6 0v4" />
+                </svg>
+                葬儀社名
+              </label>
+              <input
+                type="text"
+                className={`login-input ${nameError ? 'error' : ''}`}
+                placeholder="ご登録の葬儀社名"
+                value={funeralHomeName}
+                onChange={(e) => setFuneralHomeName(e.target.value)}
+                disabled={loading}
+              />
+              {nameError && (
+                <div className="field-error">
+                  <svg className="field-error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                  {nameError}
+                </div>
+              )}
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">
+                <svg className="form-label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                パスワード
+              </label>
+              <div className="input-wrapper">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className="login-input"
+                  placeholder="パスワード"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  style={{ paddingRight: '48px' }}
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+            
+            <button type="submit" className="login-btn" disabled={loading || !!nameError}>
+              <span className="login-btn-content">
+                {loading && <span className="spinner" />}
+                {loading ? '認証中...' : 'ログイン'}
+              </span>
+            </button>
+          </form>
+
+          <div className="divider">
+            <span className="divider-line" />
+            <span className="divider-text">または</span>
+            <span className="divider-line" />
+          </div>
+
+          <div className="login-footer">
+            <button 
+              type="button" 
+              className="register-btn"
+              onClick={() => router.push('/admin/register')}
+            >
+              新規登録はこちら
+            </button>
+            <a href="/forgot-password" className="help-link">
+              ログインでお困りの方はこちら
+            </a>
+          </div>
+        </div>
+
+        <p className="brand-footer">POWERED BY REI</p>
       </div>
-
-      {/* HERO */}
-      <section className="sk-hero">
-        <div className="sk-hl">
-          <div className="sk-eyebrow">
-            <span className="sk-eyebrow-dot"></span>
-            <span className="sk-eyebrow-txt">FUKUI, JAPAN — EST. 2025</span>
-          </div>
-          <h1 className="sk-h1" id="sk-h1"></h1>
-          <p className="sk-h-en">Make Life Alive.</p>
-          <div className="sk-h-bar"></div>
-          <p className="sk-h-desc">人生が動く瞬間は、たいてい偶然のように訪れる。<br />でもその多くは、誰かが仕掛けたものかもしれない。<br />SHIKAKERUは、見えない縁を見える様にする。</p>
-          <div className="sk-btns">
-            <a href="#services" className="sk-btn-p"><span>事業を見る</span></a>
-            <a href="#contact" className="sk-btn-s">お問い合わせ</a>
-          </div>
-        </div>
-        <div className="sk-hr">
-          <canvas id="sk-star-canvas" className="sk-star-canvas"></canvas>
-          <div className="sk-lw">
-            <div className="sk-ls"></div><div className="sk-ls"></div>
-            <div className="sk-lc">
-              <div className="sk-lstamp"><span className="sk-lstamp-s">香典</span><span className="sk-lstamp-c">礼</span></div>
-              <div className="sk-lto" id="sk-lto"></div>
-              <div className="sk-lbody" id="sk-lbody"></div>
-              <div className="sk-lfrom" id="sk-lfrom"></div>
-            </div>
-            <div className="sk-pill sk-p1" id="sk-p1"><span className="sk-pill-dot"></span><span id="sk-p1t"></span></div>
-            <div className="sk-pill sk-p2" id="sk-p2"><span className="sk-pill-dot"></span>メッセージが届きました</div>
-          </div>
-          <div className="sk-sh"><div className="sk-sh-line"></div><span className="sk-sh-txt">SCROLL</span></div>
-        </div>
-      </section>
-
-      {/* MARQUEE */}
-      <div className="sk-mq"><div className="sk-mq-track">
-        <span className="sk-mi lit">Make Life Alive.</span><span className="sk-mi">生きる仕掛けを。</span>
-        <span className="sk-mi lit">Spark Life.</span><span className="sk-mi">見えない縁を、見える様に。</span>
-        <span className="sk-mi lit">Start Before You&apos;re Ready.</span><span className="sk-mi">定数を変数に変える。</span>
-        <span className="sk-mi lit">Choose the Bold Path.</span><span className="sk-mi">業界を変える。</span>
-        <span className="sk-mi lit">Make Life Alive.</span><span className="sk-mi">生きる仕掛けを。</span>
-        <span className="sk-mi lit">Spark Life.</span><span className="sk-mi">見えない縁を、見える様に。</span>
-        <span className="sk-mi lit">Start Before You&apos;re Ready.</span><span className="sk-mi">定数を変数に変える。</span>
-        <span className="sk-mi lit">Choose the Bold Path.</span><span className="sk-mi">業界を変える。</span>
-      </div></div>
-
-      {/* VALUES */}
-      <section className="sk-sec" id="vision" style={{ background: 'var(--white)' }}>
-        <div className="sk-inn">
-          <div className="rv">
-            <div className="sk-ey"><span className="sk-ey-line"></span><span className="sk-ey-text">VALUES</span></div>
-            <h2 className="sk-bsh">私たちの<br /><span className="acc">価値観。</span></h2>
-            <div className="sk-bsh-bar"></div>
-            <p className="sk-bsh-sub">SHIKAKERUが大切にする、5つの行動指針。</p>
-          </div>
-          <div className="sk-val-grid">
-            {[
-              { n: '01', en: "Start Before You're Ready", ja: '完璧を待たず、\nまず仕掛ける。', desc: '完璧を待たず、まず仕掛ける。', body: 'アイデアは動き始めた瞬間に磨かれる。準備が整うのを待っていては、何も始まらない。', d: 'd1' },
-              { n: '02', en: 'Move Hearts', ja: '人の心が動くかを、\n判断基準にする。', desc: '人の心が動くかどうかを、すべての判断基準にする。', body: '数字より先に、人の心が動くかどうかを問う。それがSHIKAKERUの羅針盤。', d: 'd2' },
-              { n: '03', en: 'Create the Chance', ja: '人生が動く\nきっかけをつくる。', desc: '人生が動くきっかけをつくり続ける。', body: '偶然に見えるきっかけは、誰かが意図的に仕掛けたもの。その仕掛け人であり続ける。', d: 'd3' },
-              { n: '04', en: 'Build with Co-Conspirators', ja: '共犯者と\n未来をつくる。', desc: '共犯者と未来をつくる。', body: '仲間ではなく共犯者。同じ未来を信じ、共にリスクを取れる人たちと走る。', d: 'd4' },
-              { n: '05', en: 'Choose the Bold Path', ja: '安全より\n挑戦を選ぶ。', desc: '安全より挑戦を選ぶ。', body: '正解のない道を選ぶ勇気が、誰も見たことのない景色を見せてくれる。', d: 'd5' },
-            ].map(v => (
-              <div className={`sk-vi rv ${v.d}`} key={v.n}>
-                <div className="sk-vi-inner">
-                  <div className="sk-vi-front">
-                    <p className="sk-vn">VALUE {v.n}</p>
-                    <h3>{v.en}</h3>
-                    <p>{v.desc}</p>
-                    <span className="sk-vn-big">{v.n}</span>
-                  </div>
-                  <div className="sk-vi-back">
-                    <p className="vb-num">VALUE {v.n}</p>
-                    <p className="vb-en">{v.en}</p>
-                    <p className="vb-ja">{v.ja.split('\n').map((l, i) => <span key={i}>{l}{i === 0 && <br />}</span>)}</p>
-                    <p className="vb-body">{v.body}</p>
-                    <span className="vb-hint">HOVER</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div className="sk-vi" style={{ background: 'var(--off)' }}><div className="sk-vi-inner"><div className="sk-vi-front" style={{ background: 'var(--off)' }}></div></div></div>
-          </div>
-        </div>
-      </section>
-
-      {/* MISSION */}
-      <section className="sk-mission">
-        <div className="sk-mission-inner rv">
-          <p className="sk-m-label">MISSION</p>
-          <h2 className="sk-bsh" style={{ color: 'var(--navy)' }}>Spark <span className="acc" style={{ color: 'var(--blue)' }}>Life.</span></h2>
-          <div className="sk-bsh-bar"></div>
-          <p className="sk-bsh-sub">人の心に火をつけ、人生が動き出すきっかけをつくる。</p>
-          <p className="sk-bsh-sub" style={{ marginTop: '1.4em' }}>私たちは事業を通じて、一人ひとりの人生に「仕掛け」を届け続ける。それが、SHIKAKERUの存在理由です。</p>
-        </div>
-      </section>
-
-      {/* SERVICES */}
-      <section className="sk-sec" id="services" style={{ background: 'var(--off)' }}>
-        <div className="sk-inn">
-          <div className="rv">
-            <div className="sk-ey"><span className="sk-ey-line"></span><span className="sk-ey-text">SERVICES</span></div>
-            <h2 className="sk-bsh">事業<span className="acc">紹介。</span></h2>
-            <div className="sk-bsh-bar"></div>
-            <p className="sk-bsh-sub">テクノロジーで見えない縁を見える様にし、人と社会が動く仕掛けを届けています。</p>
-          </div>
-          <div className="sk-svc-grid">
-            <div className="sk-sc rvl d2">
-              <div className="sk-sc-num">01</div>
-              <div className="sk-sc-num-bar"></div>
-              <span className="sk-sc-tag">Remote Condolence System</span>
-              <h3 className="sk-sc-name">礼</h3>
-              <p className="sk-sc-en">REI</p>
-              <p className="sk-sc-desc">葬儀に参列できない方が、スマートフォンからオンラインで香典・お悔やみの気持ちを届けられる遠隔献杯システム。遠方からの香典送付を仕組み化し、葬儀社の新たな価値提供を実現します。</p>
-              <ul className="sk-sc-list">
-                <li>スマートフォンからオンライン香典を送金</li>
-                <li>お悔やみメッセージの送信</li>
-                <li>Stripe決済による安全な処理</li>
-                <li>遺族向けダッシュボードで一括管理</li>
-              </ul>
-              <a href="https://www.smartkenpai.com/rei-lp.html" className="sk-sc-link">サービス詳細を見る</a>
-            </div>
-            <div className="sk-sc c2 rvr d3">
-              <div className="sk-sc-num" style={{ color: 'var(--blue)' }}>02</div>
-              <div className="sk-sc-num-bar"></div>
-              <span className="sk-sc-tag">Idea IPO Market</span>
-              <h3 className="sk-sc-name">あいぽ</h3>
-              <p className="sk-sc-en">AIPO</p>
-              <p className="sk-sc-desc">アイデアを一行で"上場"し、投票とコメントでその価値がリアルタイムに動く、アイデアIPO市場。作る前に需要を確認する、新しい時代のアイデア検証プラットフォームです。</p>
-              <ul className="sk-sc-list">
-                <li>アイデアを1行で上場</li>
-                <li>投票・コメントでスコアがリアルタイムに変動</li>
-                <li>株券システムで応援を可視化</li>
-                <li>無料プランから始められる</li>
-              </ul>
-              <a href="https://aipo-tau.vercel.app/" target="_blank" rel="noopener noreferrer" className="sk-sc-link">あいぽを見る</a>
-            </div>
-          </div>
-
-          {/* 下段2カード */}
-          <div className="sk-svc-grid" style={{ marginTop: '24px' }}>
-            <div className="sk-sc rvl d2">
-              <div className="sk-sc-num">03</div>
-              <div className="sk-sc-num-bar"></div>
-              <span className="sk-sc-tag">LP Design &amp; Development</span>
-              <h3 className="sk-sc-name">SHIKAKERU Works</h3>
-              <p className="sk-sc-en">WEB PRODUCTION</p>
-              <p className="sk-sc-desc">LP制作¥30,000〜。AIを活用した制作フローで、一般的なWeb制作会社の1/10以下の価格で高品質なLPを提供。福井の中小企業に、Webの力を届けます。</p>
-              <ul className="sk-sc-list">
-                <li>高品質LP制作 ¥30,000〜</li>
-                <li>最短3日の納品対応</li>
-                <li>モバイル対応・SEO対策込み</li>
-                <li>修正対応・追加料金なし</li>
-              </ul>
-              <a href="https://lin.ee/tM9hty4" target="_blank" rel="noopener noreferrer" className="sk-sc-link">LINEで相談する</a>
-            </div>
-            <div className="sk-sc c2 rvr d3">
-              <div className="sk-sc-num" style={{ color: 'var(--blue)' }}>04</div>
-              <div className="sk-sc-num-bar"></div>
-              <span className="sk-sc-tag">LINE × AI Custom Development</span>
-              <h3 className="sk-sc-name">LINE × AI</h3>
-              <p className="sk-sc-en">CUSTOM BUILD</p>
-              <p className="sk-sc-desc">公式LINEとAIを組み合わせた、御社だけのシステムをゼロから開発します。業務効率化・顧客対応の自動化・独自ツールの構築まで、0→1のプロダクト開発を伴走します。</p>
-              <ul className="sk-sc-list">
-                <li>公式LINE × AI の完全カスタム開発</li>
-                <li>業務フローに合わせたゼロベース設計</li>
-                <li>チャットボット・自動応答・CRM連携</li>
-                <li>導入後の運用・改善サポート</li>
-              </ul>
-              <a href="#contact" className="sk-sc-link">開発について相談する</a>
-              {/* 導入実績 */}
-              <div className="sk-case">
-                <p className="sk-case-label">CASE STUDY</p>
-                <div className="sk-case-item">
-                  <span className="sk-case-tag">電気工事業</span>
-                  <p className="sk-case-title">LINE連携 見積・施工管理システム</p>
-                  <p className="sk-case-desc">公式LINEから見積依頼を受け付け、自動で見積書を生成。施工スケジュールと顧客情報を一元管理するシステムをSHIKAKERUが0から構築しました。</p>
-                  <p className="sk-case-price">¥99,800〜</p>
-                  <a href="https://lin.ee/Dka76XC" target="_blank" rel="noopener noreferrer" className="sk-case-link">実際のLINEを見る →</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PHILOSOPHY */}
-      <section className="sk-phil">
-        <div className="sk-phil-inner">
-          <div className="sk-ey wt rv" style={{ marginBottom: '28px' }}><span className="sk-ey-line"></span><span className="sk-ey-text">OUR PHILOSOPHY</span></div>
-          <div className="sk-phil-kv rv d1">
-            <div className="sk-phil-kv-left">
-              <h2 className="sk-phil-big">見えない縁を、<span className="ac">見える様に。</span></h2>
-            </div>
-            <div className="sk-phil-kv-right">
-              <p>距離があっても、時間が経っていても、人と人のつながりは消えない。</p>
-              <p style={{ marginTop: '1.4em' }}>SHIKAKERUは、テクノロジーの力でそのつながりを可視化し、「定数」だと思われていたことを「変数」に変えていく。葬儀業界から始まり、すべての人生が動き出す社会へ。</p>
-            </div>
-          </div>
-          <div className="sk-phil-pillars rv d2">
-            {[
-              { n: '01', title: '見えない縁を可視化する', body: '距離や時間を超えた人と人のつながりを、テクノロジーで見える形にする。' },
-              { n: '02', title: '定数を変数に変える', body: '「参列できない」「届けられない」という当たり前を、仕組みで変えていく。' },
-              { n: '03', title: '人生が動き出す仕掛けを', body: '葬儀業界を起点に、すべての人の人生が動き出すきっかけを社会に仕掛け続ける。' },
-            ].map(p => (
-              <div className="sk-phil-pillar" key={p.n}>
-                <p className="sk-pp-num">{p.n}</p>
-                <h3 className="sk-pp-title">{p.title}</h3>
-                <p className="sk-pp-body">{p.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* BIG TICKER */}
-      <div className="sk-bticker"><div className="sk-bticker-track">
-        <span className="sk-bti l">生きる仕掛けを。</span><span className="sk-bti">Make Life Alive.</span>
-        <span className="sk-bti l">見えない縁を、見える様に。</span><span className="sk-bti">Spark Life.</span>
-        <span className="sk-bti l">定数を変数に変える。</span><span className="sk-bti">Choose the Bold Path.</span>
-        <span className="sk-bti l">生きる仕掛けを。</span><span className="sk-bti">Make Life Alive.</span>
-        <span className="sk-bti l">見えない縁を、見える様に。</span><span className="sk-bti">Spark Life.</span>
-        <span className="sk-bti l">定数を変数に変える。</span><span className="sk-bti">Choose the Bold Path.</span>
-      </div></div>
-
-      {/* CEO */}
-      <section className="sk-ceo-sec">
-        <div className="sk-ceo-inner rv">
-          <div className="sk-ey"><span className="sk-ey-line"></span><span className="sk-ey-text">MESSAGE</span></div>
-          <blockquote className="sk-ceo-quote">葬儀は、人が最も「生きている」と感じる瞬間に<br />隣り合っている場所だと思っています。</blockquote>
-          <p className="sk-ceo-body" id="sk-ceo-body">日本では今、多くの人が「行きたくても行けない葬儀」に直面しています。遠方に住んでいる。仕事が休めない。それでも、誰かの死に向き合いたい気持ちは、距離では消えません。SHIKAKERUは、その「届けられなかった気持ち」を届けられる仕組みをつくっています。テクノロジーは、人の温かさに取って代わるものではなく、人の温かさが届く距離を伸ばすものだと信じているからです。葬儀業界から始まりますが、私たちのゴールはもっと先にあります。見えない縁を見える様にし、人の人生が動き出すきっかけを、社会に仕掛け続けること。それが、SHIKAKERUの存在理由です。</p>
-          <div className="sk-ceo-sig">
-            <div className="sk-ceo-badge"><span>礼</span></div>
-            <div><p className="sk-ceo-name">中川 航輝</p><p className="sk-ceo-role">Representative Director / CEO</p></div>
-          </div>
-        </div>
-      </section>
-
-      {/* COMPANY */}
-      <section className="sk-sec" id="company" style={{ background: 'var(--white)' }}>
-        <div className="sk-inn-sm">
-          <div className="rv">
-            <div className="sk-ey"><span className="sk-ey-line"></span><span className="sk-ey-text">COMPANY</span></div>
-            <h2 className="sk-bsh">会社<span className="acc">概要。</span></h2>
-            <div className="sk-bsh-bar"></div>
-          </div>
-          <div className="sk-co-table rv d2">
-            <div className="sk-co-row"><div className="sk-co-cell"><span className="sk-co-key">会社名</span><span className="sk-co-val">株式会社SHIKAKERU</span></div><div className="sk-co-cell"><span className="sk-co-key">設立</span><span className="sk-co-val">2025年12月</span></div></div>
-            <div className="sk-co-row"><div className="sk-co-cell"><span className="sk-co-key">資本金</span><span className="sk-co-val">300万円</span></div><div className="sk-co-cell"><span className="sk-co-key">代表取締役</span><span className="sk-co-val">中川 航輝</span></div></div>
-            <div className="sk-co-row"><div className="sk-co-cell"><span className="sk-co-key">所在地</span><span className="sk-co-val">福井県福井市文京2-26-2</span></div><div className="sk-co-cell"><span className="sk-co-key">取引銀行</span><span className="sk-co-val">福井銀行</span></div></div>
-            <div className="sk-co-row full"><div className="sk-co-cell"><span className="sk-co-key">事業内容</span><span className="sk-co-val">遠隔献杯システム「礼（Rei）」の開発・運営　／　公式LINE × AIカスタムシステムの開発</span></div></div>
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section className="sk-sec" id="contact" style={{ background: 'var(--off)', borderTop: '1px solid var(--bdr)' }}>
-        <div className="sk-ct-inner">
-          <div className="rv">
-            <div className="sk-ey" style={{ justifyContent: 'center' }}><span className="sk-ey-line"></span><span className="sk-ey-text">CONTACT</span></div>
-            <h2 className="sk-bsh" style={{ textAlign: 'center' }}>お問い<span className="acc">合わせ。</span></h2>
-            <div className="sk-bsh-bar" style={{ margin: '0 auto 22px' }}></div>
-            <p className="sk-ct-desc">葬儀社様のご導入相談、投資家様のお問い合わせ、<br />採用・開発依頼など、お気軽にご連絡ください。</p>
-          </div>
-          <div className="sk-ct-btns rv d2">
-            <a href="mailto:team.shikakeru@gmail.com" className="sk-ct-btn mail">メールで問い合わせる</a>
-            <a href="https://lin.ee/tM9hty4" target="_blank" rel="noopener noreferrer" className="sk-ct-btn line">LINEで問い合わせる</a>
-            <a href="https://x.com/end_of_office" target="_blank" rel="noopener noreferrer" className="sk-ct-btn xbtn">X をフォローする</a>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="sk-footer">
-        <div><div className="sk-f-logo" style={{ marginBottom: '10px' }}>SHIKAKERU</div><div className="sk-f-links"><a href="/terms">プライバシーポリシー</a><a href="/terms">利用規約</a></div></div>
-        <span className="sk-f-copy">© 2025 株式会社SHIKAKERU. All rights reserved.</span>
-      </footer>
-    </>
+    </div>
   );
 }
