@@ -114,6 +114,38 @@ export default function CompanyTopPage() {
               </a>
             </div>
 
+            {/* aipo */}
+            <div className="co-service-card co-reveal">
+              <div className="co-service-icon">💡</div>
+              <div className="co-service-tag co-service-tag-green">アイデアIPO市場</div>
+              <h3>あいぽ（aipo）</h3>
+              <p>
+                アイデアを"上場"し、投票とコメントでその価値がリアルタイムに動く、アイデアIPO市場。
+              </p>
+              <p className="co-service-point">
+                ひらめきが、唯一の資産になる。
+              </p>
+              <a href="https://aipo-tau.vercel.app/" target="_blank" rel="noopener noreferrer" className="co-btn co-btn-primary co-btn-full">
+                あいぽを見る<span className="co-btn-arrow">→</span>
+              </a>
+            </div>
+
+            {/* SHIKAKERU Works */}
+            <div className="co-service-card co-reveal">
+              <div className="co-service-icon">🖥️</div>
+              <div className="co-service-tag co-service-tag-gold">Web制作・AI開発</div>
+              <h3>SHIKAKERU Works</h3>
+              <p>
+                LP制作¥30,000〜、LINE×AI開発まで。福井の中小企業のためのWeb制作・業務自動化サービス。
+              </p>
+              <p className="co-service-point">
+                福井の中小企業に、Webの力を。
+              </p>
+              <a href="https://lin.ee/tM9hty4" target="_blank" rel="noopener noreferrer" className="co-btn co-btn-outline co-btn-full">
+                LINEで相談する<span className="co-btn-arrow">→</span>
+              </a>
+            </div>
+
             {/* Rei Custom */}
             <div className="co-service-card co-reveal">
               <div className="co-service-icon">⚙️</div>
@@ -210,6 +242,8 @@ export default function CompanyTopPage() {
               <div className="co-company-th">事業内容</div>
               <div className="co-company-td">
                 遠隔献杯システム「礼」の企画・開発・運営<br />
+                アイデアIPO市場「あいぽ」の企画・開発・運営<br />
+                中小企業向けLP制作・LINE×AI開発<br />
                 葬儀社向け業務システムの開発
               </div>
             </div>

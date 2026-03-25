@@ -44,6 +44,8 @@ export default function AboutPage() {
                     <tr><th>資本金</th><td>300万円</td></tr>
                     <tr><th>事業内容</th><td>
                       遠隔献杯システム「礼」の企画・開発・運営<br />
+                      アイデアIPO市場「あいぽ」の企画・開発・運営<br />
+                      中小企業向けLP制作・LINE×AI開発<br />
                       葬儀社向け業務システムの開発<br />
                       イベント企画・運営・制作
                     </td></tr>
